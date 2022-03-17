@@ -842,6 +842,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                
                 Route::post('/complain', 'ApplicationController@complain');
                 Route::get('/category', 'ApplicationController@category');
+                Route::get('/history', 'ApplicationController@history');
                 
             });
 
@@ -880,6 +881,11 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::post('/update', 'IndexController@update');
                 Route::delete('/destroy_temp', 'IndexController@destroy_temp');
 
+                Route::post('/damage_status/{id}', 'IndexController@damage_status');
+                
+                Route::get('/sort_by_product', 'IndexController@sort_by_product');
+                
+
                 // office
                 Route::get('/office', 'IndexController@office');
                 // deliver
@@ -915,14 +921,20 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
                 Route::prefix('given-product')->group(function(){
                     Route::get('/index', 'IndexController@given_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_given');                    
                 });
 
                 Route::prefix('running-product')->group(function(){
                     Route::get('/index', 'IndexController@running_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_running');                    
                 });
 
                 Route::prefix('damaged-product')->group(function(){
                     Route::get('/index', 'IndexController@damaged_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_damage');
                 });
             });
 
@@ -931,10 +943,14 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
                 Route::prefix('warranty-product')->group(function(){
                     Route::get('/index', 'IndexController@warranty_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_warranty');
                 });
 
                 Route::prefix('expire-product')->group(function(){
                     Route::get('/index', 'IndexController@expire_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_expire');
                 });
             });
 
@@ -965,6 +981,80 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         
     });
     // Inventory End
+
+
+
+    // iTemp Start
+    Route::namespace('iTemp')->prefix('itemp')->group(function(){
+
+        // Admin
+        Route::middleware(['can:SMSAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+
+            Route::get('/dashboard_data', 'IndexController@dashboard_data');
+
+            // allemployee Management
+            Route::namespace('Allemployee')->prefix('all-employee')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/status/{id}', 'IndexController@status');
+                Route::delete('/destroy/{id}', 'IndexController@deleteDataDirict');
+            });
+
+            Route::namespace('Allcheckpoint')->prefix('all-checkpoints')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update', 'IndexController@update');
+                Route::delete('/destroy/{id}', 'IndexController@deleteDataDirict');
+            });
+
+
+            Route::namespace('Report')->prefix('report')->group(function(){
+
+                Route::prefix('employee-records')->group(function(){
+
+                    Route::get('/index', 'IndexController@emp_rec');
+                    Route::get('/emp_data', 'IndexController@emp_data');
+                    Route::get('/export_data', 'IndexController@export_data_allemp');
+
+                });
+
+                Route::prefix('other-records')->group(function(){
+
+                    Route::get('/other_emp_rec', 'IndexController@other_emp_rec');
+                    Route::get('/export_data', 'IndexController@export_data_otheremp');
+                    
+                });
+                
+            });
+
+
+           
+            Route::get('{any?}', 'IndexController@index');
+        });
+
+        // User
+        Route::middleware(['can:SMS'])->namespace('User')->group(function(){
+
+            // allemployee Management
+            Route::namespace('Allemployee')->prefix('all-employee')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+
+                Route::get('/check_point', 'IndexController@check_point');
+
+                
+            });
+
+
+            Route::namespace('Dashboard')->prefix('dashboard')->group(function(){
+                
+                Route::get('/dashboard_graph', 'IndexController@dashboard_graph');
+                
+            });
+
+            Route::get('{any?}', 'IndexController@index');
+        });
+    });
+    // SMS End
 
 
 

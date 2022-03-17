@@ -24,13 +24,29 @@ class IndexController extends Controller
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
 
-        $search_field  = Request('search_field', '');
+        $search_field     = Request('search_field', '');
+        $sort_by_product  = Request('sort_by_product', '');
+        $sort_by_startDate    = Request('sort_by_startDate', '');
+        $sort_by_endDate    = Request('sort_by_endDate', '');
 
         $allDataQuery = InventoryNewProduct::with('makby', 'category', 'subcategory')
             ->where('delete_temp', '!=', '1')
             ->where('give_st', '!=', '1');
 
 
+
+        // sort_by_product
+        if(!empty($sort_by_product) && $sort_by_product != 'All'){
+            $allDataQuery->where('name', $sort_by_product);
+        }
+
+        // sort_by_startDate
+
+        if(!empty($sort_by_startDate) && !empty($sort_by_endDate) ){
+            
+            $allDataQuery ->whereDate('created_at', '>=', $sort_by_startDate)
+                      ->whereDate('created_at', '<=', $sort_by_endDate);
+        }
 
             // Search
         if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id'){
@@ -71,6 +87,23 @@ class IndexController extends Controller
 
     }
 
+
+    // sort_by_product
+    public function sort_by_product(){
+        $allData = InventoryNewProduct::whereNotNull('name')
+            ->select('name')
+            ->orderBy('name')
+            ->groupBy('name')
+            ->get()
+            ->toArray();
+
+        // Custom Field Data Add
+        $custom = collect( [['name' => 'All']] );
+        $allData = $custom->merge($allData);
+
+        return response()->json($allData,200);
+    }
+
    
     // store
     public function store(Request $request){
@@ -78,15 +111,16 @@ class IndexController extends Controller
 
         //Validate
         $this->validate($request,[
-            'cat_id'        =>  'required',
-            'subcat_id'     =>  'required',
-            'name'          =>  'required',
-            'serial'        =>  'required|max:200|unique:inventory_new_products',
-            'po_number'     =>  'nullable|max:200|unique:inventory_new_products',
-            'invoice_num'      =>  'nullable|max:200|unique:inventory_new_products',
-            'req_payment_num'  =>  'nullable|max:200|unique:inventory_new_products',
-            'purchase'      =>  'required',
-            'remarks'       =>  'required|min:10|max:2000',
+            'cat_id'            =>  'required',
+            'subcat_id'         =>  'required',
+            'name'              =>  'required',
+            'serial'            =>  'required|max:200|unique:inventory_new_products',
+            'po_number'         =>  'nullable|max:200|unique:inventory_new_products',
+            'invoice_num'       =>  'nullable|max:200|unique:inventory_new_products',
+            'req_payment_num'   =>  'nullable|max:200|unique:inventory_new_products',
+            'purchase'          =>  'required',
+            'unit_price'        =>  'required',
+            'remarks'           =>  'required|min:10|max:2000',
         ]);
 
         $data = new InventoryNewProduct();
@@ -108,6 +142,7 @@ class IndexController extends Controller
         $data->remarks      = $request->remarks;
         $data->purchase     = $request->purchase;
         $data->warranty     = $request->warranty;
+        $data->unit_price   = $request->unit_price;
         $data->invoice_num     = $request->invoice_num;
         $data->bill_submit     = $request->bill_submit;
         $data->req_payment_num = $request->req_payment_num;
@@ -127,6 +162,28 @@ class IndexController extends Controller
     }
 
 
+
+    // damage_status
+    public function damage_status($id){
+
+        $data       =  InventoryNewProduct::find($id);
+        if($data){
+
+           $status = $data->damage_st;
+           
+            if($status == 1){
+                $data->status = null;
+            }else{
+                $data->status = 1;
+            }
+            $success    =  $data->save();
+            return response()->json('success', 200);
+
+        }
+
+    }
+
+
     // update
     public function update(Request $request){
 
@@ -137,6 +194,7 @@ class IndexController extends Controller
             'cat_id'        =>  'required',
             'subcat_id'     =>  'required',
             'name'          =>  'required',
+            'unit_price'        =>  'required',
             'serial'        =>  'required|max:200|unique:inventory_new_products,serial,'.$request->id,
             'po_number'     =>  'nullable|max:200|unique:inventory_new_products,po_number,'.$request->id,
             'invoice_num'     =>  'nullable|max:200|unique:inventory_new_products,invoice_num,'.$request->id,
@@ -169,6 +227,7 @@ class IndexController extends Controller
         $data->remarks      = $request->remarks;
         $data->purchase     = $request->purchase;
         $data->warranty     = $request->warranty;
+        $data->unit_price   = $request->unit_price;
         $data->invoice_num     = $request->invoice_num;
         $data->bill_submit     = $request->bill_submit;
         $data->req_payment_num = $request->req_payment_num;

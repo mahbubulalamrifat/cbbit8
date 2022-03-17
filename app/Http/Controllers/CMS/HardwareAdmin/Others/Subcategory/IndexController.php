@@ -58,10 +58,9 @@ class IndexController extends Controller
 
         if($checksubcat){
             return response()->json([
-                'status'=>'error',
                 'msg'=>'Subcategory Already Exist in this Category !! &#128530;', 
                 'icon'=>'warning'
-            ]);
+            ], 208);
         }
 
     
@@ -99,10 +98,9 @@ class IndexController extends Controller
 
         if($checksubcat){
             return response()->json([
-                'status'=>'error',
                 'msg'=>'Subcategory Already Exist in this Category !! &#128530;', 
                 'icon'=>'warning'
-            ]);
+            ], 208);
         }
 
       

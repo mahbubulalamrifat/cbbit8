@@ -40,7 +40,7 @@ class IndexController extends Controller
         
 
         // Search
-        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id'){
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id'  && $search_field != 'operation'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
@@ -60,6 +60,16 @@ class IndexController extends Controller
             $val = trim(preg_replace('/\s+/' ,' ', $search));
 
             $allDataQuery->whereHas( 'subcategory', function($query) use($val){
+                //$query->where( 'name', $search_field );
+                $query->where('name', 'LIKE', '%'.$val.'%');
+            });
+
+        }
+        elseif($search_field == 'operation'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+
+            $allDataQuery->whereHas( 'operation', function($query) use($val){
                 //$query->where( 'name', $search_field );
                 $query->where('name', 'LIKE', '%'.$val.'%');
             });

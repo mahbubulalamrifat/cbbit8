@@ -7,7 +7,10 @@
                         All Expire Product
                     </v-col>
                     <v-col cols="2">
-                        
+                        <v-btn outlined elevation="5" class="float-right" small @click="exportExcel()" :loading="exportLoading">
+                            <v-icon left color="success">mdi-file-excel</v-icon>
+                            Export
+                        </v-btn>
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -21,7 +24,14 @@
                             </v-select>
                         </v-col>
 
-                        <v-col lg="10" cols="8">
+                        <v-col lg="2" cols="4">
+                            <!-- search_field -->
+                            <v-select v-model="search_field" label="Search By:" :items="customSrcByFields" item-text="text"
+                                item-value="value" outlined dense>
+                            </v-select>
+                        </v-col>
+
+                        <v-col lg="8" cols="4">
                             <v-text-field
                                 v-model="search"
                                 append-icon="mdi-magnify"
@@ -74,7 +84,7 @@
                                         <span v-else class="error--text">N/A</span>
                                     </td>
                                     <td>
-                                        <span v-if="singleData.remarks">{{ singleData.remarks }}</span>
+                                        <span v-if="singleData.remarks" v-html="singleData.remarks"></span>
                                         <span v-else class="error--text">N/A</span>
                                     </td>
                                 </tr>
@@ -123,6 +133,29 @@
                 currentUrl: '/inventory/admin/w-product/expire-product',
 
 
+                customSrcByFields:[
+                    {
+                        value: 'All',
+                        text: 'All'
+                    },
+                    {
+                        value: 'serial',
+                        text: 'Serial'
+                    },
+                    {
+                        value: 'cat_id',
+                        text: 'Category'
+                    },
+                    {
+                        value: 'subcat_id',
+                        text: 'Subcategory'
+                    },
+                ],
+
+                // exportLoading
+                exportLoading: false,
+
+
             }
 
 
@@ -130,6 +163,45 @@
 
         methods: {
 
+            exportExcel(){
+                this.exportLoading = true;
+
+                axios({
+                    method: 'get',
+                    url: this.currentUrl+'/export_data?search=' + this.search +
+                        '&sort_direction=' + this.sort_direction +
+                        '&sort_field=' + this.sort_field +
+                        '&search_field=' + this.search_field,
+
+                    responseType: 'blob', // important
+                }).then((response) => {
+
+                    
+
+                    let repName = new Date();
+
+                    const url = URL.createObjectURL(new Blob([response.data]))
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.setAttribute('download', `${repName}.xlsx`)
+                    document.body.appendChild(link)
+                    link.click()
+
+                    this.exportLoading = false;
+
+                }).catch(error => {
+                    //stop Loading
+                    this.exportLoading = false
+                    console.log(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error !!',
+                        text: 'Somthing going wrong !!'
+                    })
+                })
+
+
+            }
 
 
         },

@@ -40,6 +40,15 @@
                     </a>
                 </div>
 
+                <div class="col-lg-3 col-6" v-if="isSms()">
+                    <a href="/itemp" class="text-decoration-none text-dark d-flex justify-content-center align-items-center flex-column">
+                        <div class="logo_div">
+                            <div class="sms img__logo"><img src="/all-assets/common/icon/sms.png" alt="SMS" class="img-fluid rotate_icon"></div>
+                        </div>
+                        <div class="h3 mt-3 logo_text_response text-center font-weight-bold">iTemp</div> 
+                    </a>
+                </div>
+
 
                 
                 <!--

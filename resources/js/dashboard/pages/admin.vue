@@ -42,6 +42,15 @@
                         <div class="h3 mt-3 logo_text_response text-center font-weight-bold">Hardware</div> 
                     </a>
                 </div>
+
+                <div class="col-lg-3 col-6" v-if="isHardwareAdmin()">
+                    <a href="/itemp/admin" class="text-decoration-none text-dark d-flex justify-content-center align-items-center flex-column">
+                        <div class="logo_div">
+                            <div class="hardware img__logo"><img src="/all-assets/common/icon/hardware.png" alt="Hardware" class="img-fluid rotate_icon"></div>
+                        </div>
+                        <div class="h3 mt-3 logo_text_response text-center font-weight-bold">iTemp</div> 
+                    </a>
+                </div>
             </div>
 
             <!-- <div class="d-flex flex-wrap justify-content-around mt-5">

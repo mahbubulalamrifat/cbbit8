@@ -1,6 +1,57 @@
 <template>
     <div>
         <v-card>
+            <v-card-title>
+                <v-row>
+                    <v-col cols="2">
+                        <v-autocomplete v-model="sort_by_product" label="Choose Product:" :items="sortByProduct" item-text="name"
+                            item-value="name" outlined dense>
+                        </v-autocomplete>
+                    </v-col>
+
+                    <v-col cols="2">
+                        <v-menu v-model="menu" min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-inner-icon="mdi-calendar"
+                                    readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                            </template>
+
+                            <v-date-picker v-model="sort_by_startDate" no-title scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu = false">
+                                    Cancel
+                                </v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-col>
+
+                    <v-col cols="2">
+                        <v-menu v-model="menu2" min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="sort_by_endDate" label="End Date" prepend-inner-icon="mdi-calendar"
+                                    readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                            </template>
+
+                            <v-date-picker v-model="sort_by_endDate" no-title scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu2 = false">
+                                    Cancel
+                                </v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-col>
+
+                    <v-col cols="6">
+                        <v-btn outlined elevation="5" class="float-right" small @click="exportExcel()" :loading="exportLoading">
+                            <v-icon left color="success">mdi-file-excel</v-icon>
+                            Export
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                
+
+                
+            </v-card-title>
             <v-card-title class="justify-center">
                 <v-row>
                     <v-col cols="10">
@@ -72,6 +123,15 @@
                                     <v-btn class="ma-2" @click="deliever(singleData)" color="orange" elevation="20" small>
                                         <v-icon small>mdi-upload</v-icon> Delivery
                                     </v-btn>
+
+                                    <v-btn v-if="singleData.damage_st === null" @click="damageChange(singleData)" color="success"
+                                        depressed small>
+                                        <v-icon small>mdi-check-circle-outline</v-icon> Good
+                                    </v-btn>
+                                    <v-btn v-else @click="statusChange(singleData)" color="warning" depressed small>
+                                        <v-icon small>mdi-alert-circle-outline </v-icon> Damage
+                                    </v-btn>
+
                                     <br>
                                     <span v-if="singleData.makby" class="small text-muted">Create By--
                                         {{ singleData.makby.name }}</span>
@@ -84,6 +144,13 @@
                                             </div>
                                             <div>
                                                 <b>Product Serial</b> <span v-html="singleData.remarks"></span>
+                                            </div>
+
+                                            <div>
+                                                <b>Unit Price</b> <span v-if="singleData.unit_price">
+                                                    {{singleData.unit_price}}
+                                                </span>
+                                                <span v-else class="error--text">Not Available</span>
                                             </div>
                                         </div>
                                         <div>
@@ -241,7 +308,7 @@
                                     <div class="small text-danger" v-if="form.errors.has('bill_submit')"
                                         v-html="form.errors.get('bill_submit')" />
                                     <!-- Date Picker -->
-                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
+                                    <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false"
                                         :return-value.sync="date" offset-y min-width="auto" dense>
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="form.bill_submit" label="Bill Submit Date"  prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" dense >
@@ -249,9 +316,9 @@
                                         </template>
                                         <v-date-picker v-model="form.bill_submit" scrollable  dense>
                                             <v-spacer></v-spacer>
-                                            <v-btn text color="primary" @click="menu = false">
+                                            <v-btn text color="primary" @click="menu2 = false">
                                                 Cancel</v-btn>
-                                            <v-btn text color="primary" @click="$refs.menu.save(date)">
+                                            <v-btn text color="primary" @click="$refs.menu2.save(date)">
                                                 OK </v-btn>
                                         </v-date-picker>
                                     </v-menu>
@@ -272,6 +339,14 @@
                                         <v-radio label="Yes" value="y" color="success"></v-radio>
                                         <v-radio label="No" value="n" color="error"></v-radio>
                                     </v-radio-group>
+                                </v-col>
+
+                                <v-col cols="12" lg="4">
+                                    <div class="small text-danger" v-if="form.errors.has('unit_price')"
+                                        v-html="form.errors.get('unit_price')" />
+                                    <v-text-field v-model="form.unit_price" label="Unit Price"
+                                        placeholder="Enter request payment number" dense >
+                                    </v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" lg="4" v-if="warranty == 'y'">
@@ -377,6 +452,7 @@
 
                 // timepicker
                 menu: false,
+                menu2: false,
                 date: '',
 
 
@@ -418,6 +494,7 @@
                     document: '',
                     purchase: '',
                     warranty: '',
+                    unit_price: '',
                     invoice_num: '',
                     bill_submit: '',
                     req_payment_num: '',
@@ -445,6 +522,8 @@
                     },
                 ],
 
+                sortByProduct: [],
+
                 
 
 
@@ -453,6 +532,21 @@
                 leaveActionKey:0,
                 currentCategory:'',
                 currentSubcategory:'',
+
+
+                // exportLoading
+                exportLoading: false,
+
+                // sort_by_product
+                sort_by_product: '',
+
+                // sort by between date
+                sort_by_startDate: '',
+                sort_by_endDate: '',
+
+                // datepicker
+                menu: '',
+                menu2: '',
 
             }
 
@@ -652,8 +746,6 @@
             },
 
 
-
-            // Get table data
             getResults(page = 1) {
                 this.dataLoading = true;
                 axios.get(this.currentUrl+'/index?page=' + page +
@@ -661,7 +753,10 @@
                         '&search=' + this.search +
                         '&sort_direction=' + this.sort_direction +
                         '&sort_field=' + this.sort_field +
-                        '&search_field=' + this.search_field
+                        '&search_field=' + this.search_field +
+                        '&sort_by_product=' + this.sort_by_product +
+                        '&sort_by_startDate=' + this.sort_by_startDate +
+                        '&sort_by_endDate=' + this.sort_by_endDate
                     )
                     .then(response => {
                         //console.log(response.data.data);
@@ -677,6 +772,94 @@
                     });
             },
 
+
+
+            getProductName() {
+                axios.get(this.currentUrl + '/sort_by_product').then(response => {
+
+                    this.sortByProduct = response.data;
+
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+
+
+
+
+
+            exportExcel(){
+                this.exportLoading = true;
+
+                axios({
+                    method: 'get',
+                    url: this.currentUrl+'/export_data?search=' + this.search +
+                        '&sort_direction=' + this.sort_direction +
+                        '&sort_field=' + this.sort_field +
+                        '&search_field=' + this.search_field +
+                        '&sort_by_product=' + this.sort_by_product +
+                        '&sort_by_startDate=' + this.sort_by_startDate +
+                        '&sort_by_endDate=' + this.sort_by_endDate,
+                        
+
+                    responseType: 'blob', // important
+                }).then((response) => {
+
+                    
+
+                    let repName = new Date();
+
+                    const url = URL.createObjectURL(new Blob([response.data]))
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.setAttribute('download', `${repName}.xlsx`)
+                    document.body.appendChild(link)
+                    link.click()
+
+                    this.exportLoading = false;
+
+                }).catch(error => {
+                    //stop Loading
+                    this.exportLoading = false
+                    console.log(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error !!',
+                        text: 'Somthing going wrong !!'
+                    })
+                })
+
+
+            }
+
+
+
+        },
+
+        watch:{
+            sort_by_product: function (value) {
+                this.$Progress.start();
+                this.getResults();
+                this.$Progress.finish();
+            },
+
+
+            sort_by_startDate: function (value) {
+                this.$Progress.start();
+                this.getResults();
+                this.$Progress.finish();
+            },
+
+            sort_by_endDate: function (value) {
+                this.$Progress.start();
+                this.getResults();
+                this.$Progress.finish();
+            }
+        },
+
+
+        mounted(){
+            this.getProductName();
 
         },
 

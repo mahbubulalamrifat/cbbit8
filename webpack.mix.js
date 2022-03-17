@@ -208,4 +208,27 @@ mix.styles([
 // *********End Inventory *********End
 
 
+
+// *********Start iTemp *********Start
+
+//iTemp admin JS 
+mix.js('resources/js/itemp/admin/js/app.js', 'public/js/itemp/admin/app.js')
+    .vue(); 
+//itemp admin CSS 
+mix.styles([
+        'resources/css/common/preloader.css',
+    ], 'public/css/itemp/admin/app.css');
+
+
+//iTemp user JS 
+mix.js('resources/js/itemp/user/js/app.js', 'public/js/itemp/user/app.js')
+    .vue();
+//itemp user CSS 
+mix.styles([
+        'resources/css/common/preloader.css',
+    ], 'public/css/itemp/user/app.css');
+
+// *********End itemp *********End
+
+
     

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-app-bar app flat dense dark class="bg_gradient">
+        <v-app-bar flat dense dark class="bg_gradient">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
             <v-spacer></v-spacer>
@@ -186,7 +186,7 @@
                
 
                 <!-- Damaged Sidebar Multi level Item -->
-                <v-list-group prepend-icon="mdi-account-group" active-class="dark--text" no-action>
+                <v-list-group prepend-icon="mdi-account-group" active-class="indigo lighten-3 white--text" no-action>
                     <template v-slot:activator>
                         <v-list-item-title>Damaged</v-list-item-title>
                     </template>
@@ -200,7 +200,7 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-group sub-group>
+                    <v-list-group sub-group active-class="indigo lighten-3 white--text">
                         <template v-slot:activator>
                             <v-list-item-title>Applicable</v-list-item-title>
                         </template>

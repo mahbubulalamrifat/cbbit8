@@ -460,10 +460,6 @@
                         text: 'All'
                     },
                     {
-                        value: 'rec_contact',
-                        text: 'Receiver Contact'
-                    },
-                    {
                         value: 'invoice_num',
                         text: 'Invoice Number'
                     },
@@ -488,7 +484,7 @@
                         text: 'Name'
                     },
                     {
-                        value: 'operation_id',
+                        value: 'operation',
                         text: 'Operation'
                     },
                     // {

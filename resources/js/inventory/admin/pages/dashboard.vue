@@ -1,17 +1,22 @@
 <template>
     <div>
-        <v-card>
-            <v-card-title>
-                Remaining Stock:
-            </v-card-title>
-            <v-card-text>
-                <v-row>
-                    <v-col cols="12" lg="3"  v-for="(item, index) in allDashboardData" :key="index">
-                       {{ item.category.name }} : <b>{{ item.total }}</b>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-        </v-card>
+        <h3>Remaining Stock</h3>
+        <v-row>
+            <v-col cols="12" lg="3"  v-for="(item, index) in allDashboardData" :key="index">
+                <v-card>
+                    <v-img
+                    class="white--text align-end teal"
+                    height="150px"
+                    >
+                    <div class="d-flex justify-content-between">
+                        <v-card-title v-text="item.category.name"></v-card-title>
+                        
+                        <v-card-title v-text="item.total" class="align-end"></v-card-title>
+                    </div>
+                    </v-img>
+                </v-card>
+            </v-col>
+        </v-row>
     </div>
 </template>
 
@@ -26,6 +31,7 @@ export default {
             // current Url
             currentUrl : '/inventory/admin',
             allDashboardData : '',
+
            
         }
     },

@@ -63,7 +63,7 @@
                                 <td>
                                     <span v-for="(item, i) in singleData.audits_importer" :key="i">
                                         <!-- {{ item.id }}, -->
-                                        <v-btn v-if="item.status == 1" @click="singleAuditShow(item.id)" x-small class="info">Audit by {{ item.auditordata.name }}</v-btn>
+                                        <v-btn v-if="item.status == 1" @click="singleAuditShow(item.id)" small class="info m-1">Audit by {{ item.auditordata.name }}</v-btn>
                                     </span>
                                 </td>
 
@@ -71,7 +71,7 @@
 
                                     <!-- {{ singleData.audits_importer.length }} -->
                                     <v-btn v-if="singleData.audits_importer.length > 0"
-                                        @click="auditReportShow(singleData.token)" x-small class="info">Summary</v-btn>
+                                        @click="auditReportShow(singleData.token)" small class="info">Summary</v-btn>
                                 </td>
 
 
