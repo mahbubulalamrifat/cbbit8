@@ -1,57 +1,6 @@
 <template>
     <div>
         <v-card>
-            <v-card-title>
-                <v-row>
-                    <v-col cols="2">
-                        <v-autocomplete v-model="sort_by_product" label="Choose Product:" :items="sortByProduct" item-text="name"
-                            item-value="name" outlined dense>
-                        </v-autocomplete>
-                    </v-col>
-
-                    <v-col cols="2">
-                        <v-menu v-model="menu" min-width="auto">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-inner-icon="mdi-calendar"
-                                    readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
-                            </template>
-
-                            <v-date-picker v-model="sort_by_startDate" no-title scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="menu = false">
-                                    Cancel
-                                </v-btn>
-                            </v-date-picker>
-                        </v-menu>
-                    </v-col>
-
-                    <v-col cols="2">
-                        <v-menu v-model="menu2" min-width="auto">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="sort_by_endDate" label="End Date" prepend-inner-icon="mdi-calendar"
-                                    readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
-                            </template>
-
-                            <v-date-picker v-model="sort_by_endDate" no-title scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="menu2 = false">
-                                    Cancel
-                                </v-btn>
-                            </v-date-picker>
-                        </v-menu>
-                    </v-col>
-
-                    <v-col cols="6">
-                        <v-btn outlined elevation="5" class="float-right" small @click="exportExcel()" :loading="exportLoading">
-                            <v-icon left color="success">mdi-file-excel</v-icon>
-                            Export
-                        </v-btn>
-                    </v-col>
-                </v-row>
-                
-
-                
-            </v-card-title>
             <v-card-title class="justify-center">
                 <v-row>
                     <v-col cols="10">
@@ -143,7 +92,7 @@
                                                 <b>Product Name/Model</b> {{ singleData.name }}
                                             </div>
                                             <div>
-                                                <b>Product Serial</b> <span v-html="singleData.remarks"></span>
+                                                <b>Product Serial</b> <span v-html="singleData.serial"></span>
                                             </div>
 
                                             <div>
@@ -534,19 +483,7 @@
                 currentSubcategory:'',
 
 
-                // exportLoading
-                exportLoading: false,
-
-                // sort_by_product
-                sort_by_product: '',
-
-                // sort by between date
-                sort_by_startDate: '',
-                sort_by_endDate: '',
-
-                // datepicker
-                menu: '',
-                menu2: '',
+               
 
             }
 
@@ -746,122 +683,14 @@
             },
 
 
-            getResults(page = 1) {
-                this.dataLoading = true;
-                axios.get(this.currentUrl+'/index?page=' + page +
-                        '&paginate=' + this.paginate +
-                        '&search=' + this.search +
-                        '&sort_direction=' + this.sort_direction +
-                        '&sort_field=' + this.sort_field +
-                        '&search_field=' + this.search_field +
-                        '&sort_by_product=' + this.sort_by_product +
-                        '&sort_by_startDate=' + this.sort_by_startDate +
-                        '&sort_by_endDate=' + this.sort_by_endDate
-                    )
-                    .then(response => {
-                        //console.log(response.data.data);
-                        //console.log(response.data.from, response.data.to, response.data.current_page);
-                        this.allData = response.data;
-                        this.totalValue = response.data.total;
-                        this.dataShowFrom = response.data.from;
-                        this.dataShowTo = response.data.to;
-                        this.currentPageNumber  = response.data.current_page
-                        // Loading Animation
-                        this.dataLoading = false;
-
-                    });
-            },
 
 
 
-            getProductName() {
-                axios.get(this.currentUrl + '/sort_by_product').then(response => {
-
-                    this.sortByProduct = response.data;
-
-                }).catch(error => {
-                    console.log(error)
-                })
-            },
-
-
-
-
-
-            exportExcel(){
-                this.exportLoading = true;
-
-                axios({
-                    method: 'get',
-                    url: this.currentUrl+'/export_data?search=' + this.search +
-                        '&sort_direction=' + this.sort_direction +
-                        '&sort_field=' + this.sort_field +
-                        '&search_field=' + this.search_field +
-                        '&sort_by_product=' + this.sort_by_product +
-                        '&sort_by_startDate=' + this.sort_by_startDate +
-                        '&sort_by_endDate=' + this.sort_by_endDate,
-                        
-
-                    responseType: 'blob', // important
-                }).then((response) => {
-
-                    
-
-                    let repName = new Date();
-
-                    const url = URL.createObjectURL(new Blob([response.data]))
-                    const link = document.createElement('a')
-                    link.href = url
-                    link.setAttribute('download', `${repName}.xlsx`)
-                    document.body.appendChild(link)
-                    link.click()
-
-                    this.exportLoading = false;
-
-                }).catch(error => {
-                    //stop Loading
-                    this.exportLoading = false
-                    console.log(error)
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error !!',
-                        text: 'Somthing going wrong !!'
-                    })
-                })
-
-
-            }
 
 
 
         },
 
-        watch:{
-            sort_by_product: function (value) {
-                this.$Progress.start();
-                this.getResults();
-                this.$Progress.finish();
-            },
-
-
-            sort_by_startDate: function (value) {
-                this.$Progress.start();
-                this.getResults();
-                this.$Progress.finish();
-            },
-
-            sort_by_endDate: function (value) {
-                this.$Progress.start();
-                this.getResults();
-                this.$Progress.finish();
-            }
-        },
-
-
-        mounted(){
-            this.getProductName();
-
-        },
 
 
         created() {

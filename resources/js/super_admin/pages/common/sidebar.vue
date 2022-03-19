@@ -129,42 +129,6 @@
 
 
 
-
-                <!-- Sidebar Multi level Item -->
-                <v-list-group prepend-icon="mdi-account-group" active-class="dark--text" no-action>
-                    <template v-slot:activator>
-                        <v-list-item-title>Dropdown</v-list-item-title>
-                    </template>
-
-                    <v-list-item link router to="#">
-                        <v-list-item-icon>
-                            <v-icon>mdi-account-details</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title>Lavel-1</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-
-                    <v-list-group sub-group>
-                        <template v-slot:activator>
-                            <v-list-item-title>Level-2</v-list-item-title>
-                        </template>
-
-                        <v-list-item link router to="##">
-                            <v-list-item-icon>
-                                <v-icon>mdi-account-multiple-outline</v-icon>
-                            </v-list-item-icon>
-
-                            <v-list-item-content>
-                                <v-list-item-title>Level-2 Item-1</v-list-item-title>
-                            </v-list-item-content>
-
-                        </v-list-item>
-                    </v-list-group>
-                </v-list-group>
-
-
-
                 <!-- Sidebar Item -->
                 <v-list-item link href="/logout">
                     <v-list-item-icon>

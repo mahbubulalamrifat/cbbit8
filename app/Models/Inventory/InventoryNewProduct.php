@@ -33,6 +33,10 @@ class InventoryNewProduct extends Model
         return $this->belongsTo('App\Models\User', 'office_id', 'id');
     }
 
+    public function newold(){
+        return $this->belongsTo('App\Models\Inventory\InventoryOldProduct', 'id', 'new_pro_id');
+    }
+
 
     public function scopeSearch($query, $val='')
     {

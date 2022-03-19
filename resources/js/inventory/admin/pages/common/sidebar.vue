@@ -137,6 +137,25 @@
                     </v-list-item>
 
                 </v-list-group>
+
+
+                <v-list-group no-action prepend-icon="mdi-timetable" active-class="indigo white--text">
+                    <template v-slot:activator>
+                        <v-list-item-title>Report Section</v-list-item-title>
+                    </template>
+
+
+                    <v-list-item link router :to="{name: 'new_product'}">
+                        <v-list-item-icon>
+                            <v-icon>mdi-grid-large</v-icon>
+                        </v-list-item-icon>
+                        
+                        <v-list-item-content>
+                            <v-list-item-title>New Product</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                </v-list-group>
                 
 
                 <v-list-item link router :to="{name: 'operation'}" exact>

@@ -12,6 +12,8 @@ use App\Models\User;
 use Auth;
 use App\Http\Controllers\Common\ImageUpload;
 
+
+
 class IndexController extends Controller
 {
     use ImageUpload;
@@ -25,28 +27,12 @@ class IndexController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $search_field     = Request('search_field', '');
-        $sort_by_product  = Request('sort_by_product', '');
-        $sort_by_startDate    = Request('sort_by_startDate', '');
-        $sort_by_endDate    = Request('sort_by_endDate', '');
 
         $allDataQuery = InventoryNewProduct::with('makby', 'category', 'subcategory')
             ->where('delete_temp', '!=', '1')
             ->where('give_st', '!=', '1');
 
 
-
-        // sort_by_product
-        if(!empty($sort_by_product) && $sort_by_product != 'All'){
-            $allDataQuery->where('name', $sort_by_product);
-        }
-
-        // sort_by_startDate
-
-        if(!empty($sort_by_startDate) && !empty($sort_by_endDate) ){
-            
-            $allDataQuery ->whereDate('created_at', '>=', $sort_by_startDate)
-                      ->whereDate('created_at', '<=', $sort_by_endDate);
-        }
 
             // Search
         if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id'){
@@ -88,21 +74,7 @@ class IndexController extends Controller
     }
 
 
-    // sort_by_product
-    public function sort_by_product(){
-        $allData = InventoryNewProduct::whereNotNull('name')
-            ->select('name')
-            ->orderBy('name')
-            ->groupBy('name')
-            ->get()
-            ->toArray();
-
-        // Custom Field Data Add
-        $custom = collect( [['name' => 'All']] );
-        $allData = $custom->merge($allData);
-
-        return response()->json($allData,200);
-    }
+    
 
    
     // store
@@ -337,4 +309,7 @@ class IndexController extends Controller
 
 
     }
+
+
+    
 }

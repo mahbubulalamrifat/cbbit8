@@ -5,36 +5,212 @@ namespace App\Http\Controllers\Inventory\Admin\Reportsection;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+
+use App\Models\Inventory\InventoryNewProduct;
+use App\Models\Inventory\InventoryOperation;
+use App\Models\Inventory\InventoryOldProduct;
+use App\Models\User;
+use Auth;
+use App\Http\Controllers\Common\ImageUpload;
+
+use App\Exports\inventory\newProduct;
+use Maatwebsite\Excel\Facades\Excel;
+use DB;
+
 class IndexController extends Controller
 {
 
     //index
+    // public function index(){
+
+    //     $paginate         = Request('paginate', 10);
+    //     $search           = Request('search', '');
+    //     $sort_direction   = Request('sort_direction', 'desc');
+    //     $sort_field       = Request('sort_field', 'id');
+    //     $search_operation = Request('search_operation', '');
+
+    //     $allData = InventoryOldProduct::with('operation')
+    //         ->where('delete_temp', '!=', '1')
+    //         ->orderBy($sort_field, $sort_direction)
+    //         ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
+    //         ->paginate($paginate);
+
+
+    //     return response()->json($allData, 200);
+
+    // }
+
+    
+    //operation
+    // public function operation(){
+
+    //     $allData = InventoryOperation::select('id', 'name')->get()->toArray();
+
+    //     return response()->json($allData);
+
+    // }
+
+
+    //index
     public function index(){
 
-        $paginate         = Request('paginate', 10);
-        $search           = Request('search', '');
-        $sort_direction   = Request('sort_direction', 'desc');
-        $sort_field       = Request('sort_field', 'id');
-        $search_operation = Request('search_operation', '');
+        $paginate       = Request('paginate', 10);
+        $search         = Request('search', '');
+        $sort_direction = Request('sort_direction', 'desc');
+        $sort_field     = Request('sort_field', 'id');
 
-        $allData = InventoryOldProduct::with('operation')
-            ->where('delete_temp', '!=', '1')
-            ->orderBy($sort_field, $sort_direction)
-            ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
-            ->paginate($paginate);
+        $search_field     = Request('search_field', '');
+        $sort_by_product  = Request('sort_by_product', '');
+        $sort_by_startDate    = Request('sort_by_startDate', '');
+        $sort_by_endDate    = Request('sort_by_endDate', '');
 
+        $allDataQuery = InventoryNewProduct::with('makby', 'category', 'subcategory', 'newold')
+            ->where('delete_temp', '!=', '1');
+
+
+
+        // sort_by_product
+        if(!empty($sort_by_product) && $sort_by_product != 'All'){
+            $allDataQuery->where('name', $sort_by_product);
+        }
+
+        // sort_by_startDate
+
+        if(!empty($sort_by_startDate) && !empty($sort_by_endDate) ){
+            
+            $allDataQuery ->whereDate('created_at', '>=', $sort_by_startDate)
+                      ->whereDate('created_at', '<=', $sort_by_endDate);
+        }
+
+            // Search
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+            $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
+
+        }elseif($search_field == 'cat_id'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+
+            $allDataQuery->whereHas( 'category', function($query) use($val){
+                //$query->where( 'name', $search_field );
+                $query->where('name', 'LIKE', '%'.$val.'%');
+            });
+
+        }
+        elseif($search_field == 'subcat_id'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+
+            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
+                //$query->where( 'name', $search_field );
+                $query->where('name', 'LIKE', '%'.$val.'%');
+            });
+
+        }
+        else{
+            $allDataQuery->search( trim(preg_replace('/\s+/' ,' ', $search)) );
+        }
+
+
+         // Final Data
+        $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)
+                ->paginate($paginate);
 
         return response()->json($allData, 200);
 
     }
 
-    
-    //operation
-    public function operation(){
 
-        $allData = InventoryOperation::select('id', 'name')->get()->toArray();
+    // sort_by_product
+    public function sort_by_product(){
+        $allData = InventoryNewProduct::whereNotNull('name')
+            ->select('name')
+            ->orderBy('name')
+            ->groupBy('name')
+            ->get()
+            ->toArray();
 
-        return response()->json($allData);
+        // Custom Field Data Add
+        $custom = collect( [['name' => 'All']] );
+        $allData = $custom->merge($allData);
 
+        return response()->json($allData,200);
+    }
+
+
+    // export_data
+    public function export_data(Request $request) 
+    {
+        $search         = Request('search', '');
+        $sort_direction = Request('sort_direction', 'desc');
+        $sort_field     = Request('sort_field', 'id');
+
+        $search_field     = Request('search_field', '');
+        $sort_by_product  = Request('sort_by_product', '');
+        $sort_by_startDate    = Request('sort_by_startDate', '');
+        $sort_by_endDate    = Request('sort_by_endDate', '');
+
+        $allDataQuery = InventoryNewProduct::with('makby', 'category', 'subcategory', 'newold')
+            ->where('delete_temp', '!=', '1');
+
+
+
+        // sort_by_product
+        if(!empty($sort_by_product) && $sort_by_product != 'All'){
+            $allDataQuery->where('name', $sort_by_product);
+        }
+
+        // sort_by_startDate
+
+        if(!empty($sort_by_startDate) && !empty($sort_by_endDate) ){
+            
+            $allDataQuery ->whereDate('created_at', '>=', $sort_by_startDate)
+                      ->whereDate('created_at', '<=', $sort_by_endDate);
+        }
+
+            // Search
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+            $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
+
+        }elseif($search_field == 'cat_id'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+
+            $allDataQuery->whereHas( 'category', function($query) use($val){
+                //$query->where( 'name', $search_field );
+                $query->where('name', 'LIKE', '%'.$val.'%');
+            });
+
+        }
+        elseif($search_field == 'subcat_id'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+
+            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
+                //$query->where( 'name', $search_field );
+                $query->where('name', 'LIKE', '%'.$val.'%');
+            });
+
+        }
+        else{
+            $allDataQuery->search( trim(preg_replace('/\s+/' ,' ', $search)) );
+        }
+
+
+
+         // Final Data
+        $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)->where('give_st', 1)->get();
+
+        $lengthData =  $allDataQuery->orderBy($sort_field, $sort_direction)->get();
+        
+
+       $lengthData = $lengthData->prepend($lengthData->count(), 'total');
+
+
+
+       return Excel::download(new newProduct($allData, $lengthData), 'product-' . time() . '.xlsx');
     }
 }

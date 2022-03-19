@@ -138,6 +138,11 @@
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
+                                            <div>
+                                                <b>Remarks : </b> <span v-if="singleData.remarks" v-html="singleData.remarks"></span>
+                                                <span v-else class="error--text">N/A</span>
+                                            </div>
+
                                         </v-col>
                                     </v-row>
                                     

@@ -883,8 +883,6 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
                 Route::post('/damage_status/{id}', 'IndexController@damage_status');
                 
-                Route::get('/sort_by_product', 'IndexController@sort_by_product');
-                
 
                 // office
                 Route::get('/office', 'IndexController@office');
@@ -957,7 +955,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
             //Report section 
             Route::namespace('Reportsection')->prefix('report')->group(function(){
                 Route::get('/index', 'IndexController@index');
-                Route::get('/operation', 'IndexController@operation');
+                Route::get('/sort_by_product', 'IndexController@sort_by_product');
+                Route::get('/export_data', 'IndexController@export_data');
             });
 
             //Deleted section 
