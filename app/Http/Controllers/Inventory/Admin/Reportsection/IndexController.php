@@ -199,16 +199,25 @@ class IndexController extends Controller
             $allDataQuery->search( trim(preg_replace('/\s+/' ,' ', $search)) );
         }
 
+        $allDataQuery->orderBy($sort_field, $sort_direction);
+
+        $allData = $allDataQuery->where('give_st', 1)->get();
 
 
-         // Final Data
-        $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)->where('give_st', 1)->get();
-
-        $lengthData =  $allDataQuery->orderBy($sort_field, $sort_direction)->get();
         
 
-       $lengthData = $lengthData->prepend($lengthData->count(), 'total');
+        $received = $allDataQuery->orderBy($sort_field, $sort_direction)->count();
+        $received_amount = $allDataQuery->orderBy($sort_field, $sort_direction)->sum('unit_price');
+        $received_unit_price = $allDataQuery->orderBy($sort_field, $sort_direction)->where('unit_price', '!=', 0)->groupBy('unit_price')->get();
 
+
+        $lengthData = [$received,$received_amount,$received_unit_price];
+
+        
+        
+
+
+        dd($allData, $lengthData);
 
 
        return Excel::download(new newProduct($allData, $lengthData), 'product-' . time() . '.xlsx');

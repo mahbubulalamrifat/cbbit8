@@ -2,19 +2,19 @@
     <thead>
         <tr>
             <td colspan="8" rowspan="3">
-                C.P. Bangladesh Co., Ltd. - Head Office <br> Information Technology <br> Battery Stock Record
+                C.P. Bangladesh Co., Ltd. - Head Office <br> Information Technology <br> {{$product[0]->category->name}} Stock Record
             </td>
         </tr>
         <tr></tr>
         <tr></tr>
         <tr>
-            <td rowspan="2" style="background-color: khaki">DATE</td>
-            <td rowspan="2" style="background-color: khaki">Doc.No</td>
-            <td rowspan="2" style="background-color: khaki">LOCATION</td>
-            <td rowspan="2" style="background-color: khaki">DEPARTMENT</td>
-            <td colspan="2" style="background-color: khaki">BALANCE</td>
-            <td rowspan="2" style="background-color: khaki">Unit Price</td>
-            <td rowspan="2" style="background-color: khaki">Remark</td>
+            <td rowspan="2" style="background-color: khaki;font-weight:bold;">DATE</td>
+            <td rowspan="2" style="background-color: khaki;font-weight:bold;">Doc.No</td>
+            <td rowspan="2" style="background-color: khaki;font-weight:bold;">LOCATION</td>
+            <td rowspan="2" style="background-color: khaki;font-weight:bold;">DEPARTMENT</td>
+            <td colspan="2" style="background-color: khaki;font-weight:bold;">BALANCE</td>
+            <td rowspan="2" style="background-color: khaki;font-weight:bold;">Unit Price</td>
+            <td rowspan="2" style="background-color: khaki;font-weight:bold;">Remark</td>
         </tr>
         <tr>
             <td style="background-color: khaki">Quantity</td>
@@ -50,14 +50,20 @@
             <td style="color:red">N/A</td>
             @endif
 
+            @if($product->remark)
+            <td>{{ $product->remark }}</td>
+            @else
+            <td style="color:red">N/A</td>
+            @endif
+
             @if($product->unit_price)
             <td>{{ $product->unit_price }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($product->remark)
-            <td>{{ $product->remark }}</td>
+            @if($product->remarks)
+            <td>{{ $product->remarks }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
@@ -94,10 +100,19 @@
             <td></td>
             <td></td>
         </tr>
-         <tr>
+
+        <tr>
+            <td rowspan="5"></td>
+            <td colspan="2">TOTAL USAGE</td>
+            <td>Unit Price</td>
+            <td>AMOUNT</td>
             <td></td>
+        </tr>
+        <tr>
             <td>Received</td>
-            <td>{{ $length->total }}</td>
+            <td>
+                {{$length[0]}}
+            </td>
             <td>0.00</td>
             <td>0.00</td>
             <td colspan="9" rowspan="5"></td>
@@ -105,7 +120,6 @@
         </tr>
 
         <tr>
-            <td></td>
             <td>Issue</td>
             <td>3</td>
             <td>2,625.00</td>
@@ -114,7 +128,6 @@
         </tr>
 
         <tr>
-            <td></td>
             <td>Damage</td>
             <td>0</td>
             <td>0.00</td>
@@ -124,7 +137,6 @@
 
         <tr>
             <td></td>
-            <td></td>
             <td>3</td>
             <td>2,625.00</td>
             <td>7,875.00</td>
@@ -132,7 +144,6 @@
         </tr>
 
         <tr>
-            <td></td>
             <td></td>
             <td>3</td>
             <td>2,625.00</td>

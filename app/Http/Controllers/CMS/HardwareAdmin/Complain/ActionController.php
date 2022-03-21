@@ -176,6 +176,7 @@ class ActionController extends Controller
         // Update inventory Old Product table 
         $inventory_old_data = new InventoryOldProduct();
         $inventory_old_data->new_pro_id        = $product_id;
+         $inventory_old_data->comp_id          = $request->comp_id; //add complain id
         $inventory_old_data->cat_id            = $inventory_new_data->cat_id;
         $inventory_old_data->subcat_id         = $inventory_new_data->subcat_id;
         $inventory_old_data->name              = $inventory_new_data->name;

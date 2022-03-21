@@ -231,4 +231,38 @@ mix.styles([
 // *********End itemp *********End
 
 
+
+// *********Start network *********Start
+
+//network admin JS 
+mix.js('resources/js/network/admin/js/app.js', 'public/js/network/admin/app.js')
+    .vue();
+    
+//network admin CSS 
+mix.styles([
+        'resources/css/common/preloader.css',
+], 'public/css/network/admin/app.css');
+    
+
+
+// *********End network *********End
+
+
+
+
+//iaccess user JS 
+mix.js('resources/js/iaccess/user/js/app.js', 'public/js/iaccess/user/app.js')
+    .vue();
+//iaccess user CSS 
+mix.styles([
+        'resources/css/common/preloader.css',
+        'resources/css/iaccess/user/style.css',
+    ], 'public/css/iaccess/user/app.css');
+
+// *********End iaccess *********End
+
+
+
+
+
     

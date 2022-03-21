@@ -61,7 +61,7 @@
                 </v-list-item> -->
 
                 <!-- Sidebar Multi level Item -->
-                <v-list-group prepend-icon="mdi-format-list-group" active-class="indigo lighten-3 white--text" no-action>
+                <v-list-group prepend-icon="mdi-account-supervisor" active-class="indigo lighten-3 white--text" no-action>
                     <template v-slot:activator>
                         <v-list-item-title>User Manage</v-list-item-title>
                     </template>
@@ -89,7 +89,7 @@
 
                 <v-list-item link router :to="{name: 'NotProcess'}" >
                     <v-list-item-icon>
-                        <v-icon>mdi-account-group</v-icon>
+                        <v-icon>mdi-car-brake-hold</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Not Process
@@ -100,7 +100,7 @@
 
                 <v-list-item link router :to="{name: 'Processing'}" >
                     <v-list-item-icon>
-                        <v-icon>mdi-account-group</v-icon>
+                        <v-icon>mdi-run-fast</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Processing
@@ -111,7 +111,7 @@
 
                 <v-list-item link router :to="{name: 'Closed'}" >
                     <v-list-item-icon>
-                        <v-icon>mdi-account-group</v-icon>
+                        <v-icon>mdi-close-circle</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Closed</v-list-item-title>
@@ -120,7 +120,7 @@
 
                 <v-list-item link router :to="{name: 'Service'}" >
                     <v-list-item-icon>
-                        <v-icon>mdi-account-group</v-icon>
+                        <v-icon>mdi-tools</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Service
@@ -131,7 +131,7 @@
 
                 <v-list-item link router :to="{name: 'Deliverable'}" >
                     <v-list-item-icon>
-                        <v-icon>mdi-account-group</v-icon>
+                        <v-icon>mdi-truck-delivery-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Deliverable
@@ -143,14 +143,14 @@
                
 
                 <!-- Sidebar Multi level Item -->
-                <v-list-group prepend-icon="mdi-format-list-group" active-class="indigo lighten-3 white--text" no-action>
+                <v-list-group prepend-icon="mdi-chart-bell-curve" active-class="indigo lighten-3 white--text" no-action>
                     <template v-slot:activator>
                         <v-list-item-title>Reports</v-list-item-title>
                     </template>
 
                     <v-list-item link router :to="{name: 'ReportIndex'}">
                         <v-list-item-icon>
-                            <v-icon>mdi-account-group</v-icon>
+                            <v-icon>mdi-select-group</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title>All</v-list-item-title>
@@ -159,7 +159,7 @@
 
                     <v-list-item link router :to="{name: 'ReportDamaged'}">
                         <v-list-item-icon>
-                            <v-icon>mdi-account-group</v-icon>
+                            <v-icon>mdi-select-group</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title>Damaged</v-list-item-title>
@@ -168,7 +168,7 @@
 
                     <v-list-item link router :to="{name: 'ReportDamagedReplace'}">
                         <v-list-item-icon>
-                            <v-icon>mdi-account-group</v-icon>
+                            <v-icon>mdi-select-group</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title>Damaged Replace</v-list-item-title>
@@ -186,14 +186,14 @@
                
 
                 <!-- Damaged Sidebar Multi level Item -->
-                <v-list-group prepend-icon="mdi-account-group" active-class="indigo lighten-3 white--text" no-action>
+                <v-list-group prepend-icon="mdi-iobroker" active-class="indigo lighten-3 white--text" no-action>
                     <template v-slot:activator>
                         <v-list-item-title>Damaged</v-list-item-title>
                     </template>
 
                     <v-list-item link router :to="{name: 'AllDamaged'}">
                         <v-list-item-icon>
-                            <v-icon>mdi-account-details</v-icon>
+                            <v-icon>mdi-select-group</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title>All</v-list-item-title>
@@ -207,7 +207,7 @@
 
                         <v-list-item link router :to="{ name:'ApplicableDamaged' }">
                             <v-list-item-icon>
-                                <v-icon>mdi-account-multiple-outline</v-icon>
+                                <v-icon>mdi-select-group</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title>Damaged</v-list-item-title>
@@ -215,7 +215,7 @@
                         </v-list-item>
                         <v-list-item link router :to="{ name:'ApplicablePartialDamaged' }">
                             <v-list-item-icon>
-                                <v-icon>mdi-account-multiple-outline</v-icon>
+                                <v-icon>mdi-select-group</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title>Partial Damaged</v-list-item-title>
@@ -230,7 +230,7 @@
 
                         <v-list-item link router :to="{ name:'NotApplicableDamaged' }">
                             <v-list-item-icon>
-                                <v-icon>mdi-account-multiple-outline</v-icon>
+                                <v-icon>mdi-select-group</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title>Damaged</v-list-item-title>
@@ -238,7 +238,7 @@
                         </v-list-item>
                         <v-list-item link router :to="{ name:'NotApplicablePartialDamaged' }">
                             <v-list-item-icon>
-                                <v-icon>mdi-account-multiple-outline</v-icon>
+                                <v-icon>mdi-select-group</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title>Partial Damaged</v-list-item-title>
@@ -256,7 +256,7 @@
 
                     <v-list-item link router :to="{name: 'HOServiceIndex'}">
                         <v-list-item-icon>
-                            <v-icon>mdi-account-group</v-icon>
+                            <v-icon>mdi-select-group</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title>All</v-list-item-title>
@@ -269,7 +269,7 @@
 
                  <v-list-item link router :to="{name: 'Draft'}" >
                     <v-list-item-icon>
-                        <v-icon>mdi-account-group</v-icon>
+                        <v-icon>mdi-book-open-page-variant-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Draft</v-list-item-title>

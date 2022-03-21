@@ -1053,9 +1053,84 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
             Route::get('{any?}', 'IndexController@index');
         });
     });
-    // SMS End
+    // iTemp End
 
 
+
+    // network start
+    Route::namespace('Network')->prefix('network')->group(function(){
+
+        Route::get('/dashboard_all', 'IndexController@dashboardData');
+
+        // Admin
+        Route::middleware(['can:roomAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+
+            Route::namespace('Allgroup')->prefix('all-group')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update/{id}', 'IndexController@update');
+                Route::delete('/destroy/{id}', 'IndexController@destroy');
+            });
+
+            Route::namespace('Mainip')->prefix('main-ip')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update/{id}', 'IndexController@update');
+                Route::delete('/destroy/{id}', 'IndexController@destroy');
+                Route::post('/status/{id}', 'IndexController@status');
+
+                Route::view('/singlePing', 'network.admin.ping');
+                Route::get('/pingAll', 'IndexController@pingAll');
+                
+
+            });
+
+            Route::namespace('Report')->prefix('report')->group(function(){
+                Route::get('/mainip-report', 'IndexController@mainIpReport');
+                Route::get('/ip_name', 'IndexController@ipName');
+
+
+                // for subip
+                Route::get('/suball-report', 'IndexController@subAllReport');
+                Route::get('/group_name', 'IndexController@groupName');
+            });
+
+            Route::namespace('Subip')->prefix('sub-ip')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update/{id}', 'IndexController@update');
+                Route::delete('/destroy/{id}', 'IndexController@destroy');
+                Route::post('/status/{id}', 'IndexController@status');
+                Route::get('/group_name', 'IndexController@groupName');
+
+                Route::view('/singlePing', 'network.admin.ping');
+                Route::get('/pingAll', 'IndexController@pingAll');
+            });
+
+
+            Route::get('{any?}', 'IndexController@index');
+        });
+    });
+
+
+    // network end
+
+
+
+
+
+    // iAccess Start
+    Route::namespace('iAccess')->prefix('iaccess')->group(function(){
+
+
+        // User
+        Route::namespace('User')->group(function(){
+
+
+            Route::get('{any?}', 'IndexController@index');
+        });
+    });
+    // iAccess End
 
 
 

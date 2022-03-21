@@ -20,7 +20,6 @@ class newProduct implements FromView, ShouldAutoSize, WithEvents
     public function __construct($data, $length){
         $this->data = $data;
         $this->length = $length;
-       // dd($this->data);
     }
 
 
@@ -38,12 +37,14 @@ class newProduct implements FromView, ShouldAutoSize, WithEvents
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                $event->sheet->getDelegate()->getStyle('A:E')
+                $event->sheet->getDelegate()->getStyle('A:H')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-                $event->sheet->getDelegate()->getStyle('A:E')
+                $event->sheet->getDelegate()->getStyle('A:H')
                 ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                
+
+
+                //$event->sheet->setCellValue('=SUM(Table1[BALANCE])');
              
             },
         ];

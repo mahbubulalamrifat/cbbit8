@@ -139,7 +139,7 @@
                 </v-list-group>
 
 
-                <v-list-group no-action prepend-icon="mdi-timetable" active-class="indigo white--text">
+                <v-list-group no-action prepend-icon="mdi-chart-bell-curve" active-class="indigo white--text">
                     <template v-slot:activator>
                         <v-list-item-title>Report Section</v-list-item-title>
                     </template>

@@ -328,45 +328,57 @@
 
 
             exportExcel(){
-                this.exportLoading = true;
+                if(this.sort_by_product){
 
-                axios({
-                    method: 'get',
-                    url: this.currentUrl+'/export_data?search=' + this.search +
-                        '&sort_direction=' + this.sort_direction +
-                        '&sort_field=' + this.sort_field +
-                        '&search_field=' + this.search_field +
-                        '&sort_by_product=' + this.sort_by_product +
-                        '&sort_by_startDate=' + this.sort_by_startDate +
-                        '&sort_by_endDate=' + this.sort_by_endDate,
+                    this.exportLoading = true;
+
+                    axios({
+                        method: 'get',
+                        url: this.currentUrl+'/export_data?search=' + this.search +
+                            '&sort_direction=' + this.sort_direction +
+                            '&sort_field=' + this.sort_field +
+                            '&search_field=' + this.search_field +
+                            '&sort_by_product=' + this.sort_by_product +
+                            '&sort_by_startDate=' + this.sort_by_startDate +
+                            '&sort_by_endDate=' + this.sort_by_endDate,
+                            
+
+                        responseType: 'blob', // important
+                    }).then((response) => {
+
                         
 
-                    responseType: 'blob', // important
-                }).then((response) => {
+                        let repName = new Date();
 
-                    
+                        const url = URL.createObjectURL(new Blob([response.data]))
+                        const link = document.createElement('a')
+                        link.href = url
+                        link.setAttribute('download', `${repName}.xlsx`)
+                        document.body.appendChild(link)
+                        link.click()
 
-                    let repName = new Date();
+                        this.exportLoading = false;
 
-                    const url = URL.createObjectURL(new Blob([response.data]))
-                    const link = document.createElement('a')
-                    link.href = url
-                    link.setAttribute('download', `${repName}.xlsx`)
-                    document.body.appendChild(link)
-                    link.click()
+                    }).catch(error => {
+                        //stop Loading
+                        this.exportLoading = false
+                        console.log(error)
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error !!',
+                            text: 'Somthing going wrong !!'
+                        })
+                    })
 
-                    this.exportLoading = false;
+                }else{
 
-                }).catch(error => {
-                    //stop Loading
-                    this.exportLoading = false
-                    console.log(error)
                     Swal.fire({
                         icon: 'error',
                         title: 'Error !!',
-                        text: 'Somthing going wrong !!'
+                        text: 'You must have to select product before Export !!'
                     })
-                })
+
+                }
 
 
             }

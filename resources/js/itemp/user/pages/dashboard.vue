@@ -101,7 +101,6 @@ export default {
 
         getDashboardData(){
             axios.get( '/itemp/admin/dashboard_data').then(response=>{
-                console.log(response.data)
                 this.allEmp = response.data.allEmp
 
                 this.todayTempRec = response.data.todayTempRec
@@ -116,23 +115,23 @@ export default {
 
         getGraphData(){
                 axios.get( this.currentUrl+ '/dashboard_graph').then(response=>{
-                    console.log('all',response.data)
                     this.allDashboardData = response.data
 
                     let chData = response.data
+                    console.log(chData);
                     // For chart
                     if(chData){
 
-                        let chlavels = [];
+                        let chlabels = [];
                         let chdata = [];
                         chData.forEach(item=>{
                            if(item){
-                               chlavels.push(item.department)
+                               chlabels.push(item.department)
                            }
                             chdata.push(item.total)
                         })
 
-                        let dataArry = { labels: chlavels, data: chdata }
+                        let dataArry = { labels: chlabels, data: chdata }
 
                         // assign data 
                         this.allChartData = dataArry;

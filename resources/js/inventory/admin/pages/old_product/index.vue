@@ -688,6 +688,10 @@
                 this.editmode       = true;
                 this.dataModelTitle = 'Update Data'
                 this.form.fill(singleData);
+
+                if(singleData.remarks === null){
+                    this.form.remarks = '';
+                }
                 // Subcategory
                 this.getSubcategory()
                 this.dataModalDialog = true;
