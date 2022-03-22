@@ -46,6 +46,9 @@ class CreateIaccessEmailRequestsTable extends Migration
             $table->string('it_signature')->nullable();
             $table->dateTime('it_date')->nullable();
 
+            // form
+            $table->string('form')->nullable();
+
             $table->integer('created_by')->nullable();
             $table->timestamps();
         });

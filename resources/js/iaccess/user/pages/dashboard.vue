@@ -12,7 +12,7 @@
                     <v-col lg="3" cols="6">
                         <v-hover>
                             <template v-slot:default="{ hover }">
-                                <v-card @click="emailModal = true">
+                                <v-card @click="emailModal = true, emailActionKey++;">
                                     <v-img
                                     class="align-end font-weight-bold bg-info"
                                     contain
@@ -42,7 +42,7 @@
                     <v-col lg="3" cols="6">
                         <v-hover>
                             <template v-slot:default="{ hover }">
-                                <v-card @click="accountModal = true">
+                                <v-card @click="accountModal = true, accountActionKey++ ">
                                     <v-img
                                     class="align-end font-weight-bold bg-info"
                                     contain
@@ -70,7 +70,7 @@
                     <v-col lg="3" cols="6">
                         <v-hover>
                             <template v-slot:default="{ hover }">
-                                <v-card @click="internetModal = true">
+                                <v-card @click="internetModal = true, internetActionKey++ ">
                                     <v-img
                                     class="align-end font-weight-bold bg-info"
                                     contain
@@ -98,7 +98,7 @@
                     <v-col lg="3" cols="6">
                         <v-hover>
                             <template v-slot:default="{ hover }">
-                                <v-card @click="guestModal = true">
+                                <v-card @click="guestModal = true, guestActionKey++ ">
                                     <v-img
                                     class="align-end font-weight-bold bg-info"
                                     contain
@@ -130,16 +130,16 @@
 
 
         <!-- email form -->
-        <email-form v-if="emailModal"></email-form>
+        <email-form v-if="emailModal" :key="emailActionKey"></email-form>
 
         <!-- internet form -->
-        <internet-form v-if="internetModal"></internet-form>
+        <internet-form v-if="internetModal" :key="internetActionKey"></internet-form>
 
         <!-- account form -->
-        <account-form v-if="accountModal"></account-form>
+        <account-form v-if="accountModal" :key="accountActionKey"></account-form>
 
         <!-- guest form -->
-        <guest-form v-if="guestModal"></guest-form>
+        <guest-form v-if="guestModal" :key="guestActionKey"></guest-form>
 
 
 
@@ -210,10 +210,21 @@ export default {
                 },
             ],
 
+            // email component
             emailModal: '',
+            emailActionKey:0,
+
+            // internet component
             internetModal: '',
+            internetActionKey:0,
+
+            // account component
             accountModal: '',
+            accountActionKey:0,
+
+            // guest component
             guestModal: '',
+            guestActionKey:0,
 
 
             
@@ -224,6 +235,12 @@ export default {
     },
 
     methods: {
+
+        // email(){
+        //     this.emailModal = true;
+        //     this.emailActionKey++;
+            
+        // }
 
 
         

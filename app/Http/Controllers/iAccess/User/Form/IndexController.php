@@ -4,15 +4,25 @@ namespace App\Http\Controllers\iAccess\User\Form;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Models\iAccess\iaccessEmailRequest;
-use App\Http\Models\iAccess\iaccessAccountRequest;
-use App\Http\Models\iAccess\iaccessGuestRequest;
-use App\Http\Models\iAccess\iaccessInternetRequest;
+use App\Models\iAccess\iaccessEmailRequest;
+use App\Models\iAccess\iaccessAccountRequest;
+use App\Models\iAccess\iaccessGuestRequest;
+use App\Models\iAccess\iaccessInternetRequest;
+use App\Http\Controllers\Common\ImageUpload;
 use Auth;
 use Carbon\Carbon;
+use PDF;
+use Illuminate\Support\Str;
+
+use App\Http\Controllers\Common\Email\ScheduleEmailIaccessEmailRequest;
+use App\Http\Controllers\Common\Email\ScheduleEmailIaccessInternetRequest;
+use App\Http\Controllers\Common\Email\ScheduleEmailIaccessAccountRequest;
+use App\Http\Controllers\Common\Email\ScheduleEmailIaccessGuestRequest;
 
 class IndexController extends Controller
 {
+    use ImageUpload;
+
     //email_store
     public function email_store(Request $request){
 
@@ -45,15 +55,19 @@ class IndexController extends Controller
         $data->personal_email    = $request->personal_email;
         $data->bu_head_email     = $request->bu_head_email;
 
-        $data->request_for       = $request->request_for;
+        $data->request_for       = implode(",", $request->request_for);
         $data->requested_email   = $request->requested_email;
         $data->purpose           = $request->purpose;
 
         $data->signature         = $request->name;
-        $data->date              = Carbon::new();
+        $data->date              = Carbon::now();
         
-        $data->created_by   =  Auth::user()->id;
-        $success            = $data->save();
+        $data->created_by        = Auth::user()->id;
+        $success                 = $data->save();
+
+
+        $this->pdfEmailGenerate($data->id);
+
 
         if($success){
             return response()->json(['msg'=>'Stored Successfully &#128513;', 'icon'=>'success'], 200);
@@ -65,9 +79,33 @@ class IndexController extends Controller
 
     }
 
+    // pdfEmailGenerate
+    public function pdfEmailGenerate($id){
+
+        $newData = iaccessEmailRequest::find($id);
+
+       
+        // PDF Generate
+        $pdf = PDF::loadView('iaccess.user.pdf.emailRequestDownload', compact('newData'))
+        ->setOption('footer-font-size', 6)
+        ->setOption('margin-bottom', 4)
+        ->setOption("encoding", "UTF-8");
+
+        $filename = Str::random(10);
+
+        $pdf->save(storage_path('images/iaccess/email/'.$filename.'.pdf'));
+        
+       
+
+        ScheduleEmailIaccessEmailRequest::STORE($newData, $filename);
+
+    }
+
+
+
 
     //internet_store
-    public function internet_store(Request $request){
+    public function webaccess_store(Request $request){
 
         //Validate
         $this->validate($request,[
@@ -97,15 +135,18 @@ class IndexController extends Controller
         $data->personal_email    = $request->personal_email;
         $data->office_email      = $request->office_email;
 
-        $data->request_for       = $request->request_for;
+        $data->request_for       = implode(",", $request->request_for);
         $data->internet_id       = $request->internet_id;
         $data->purpose           = $request->purpose;
 
         $data->signature         = $request->name;
-        $data->date              = Carbon::new();
+        $data->date              = Carbon::now();
         
         $data->created_by   =  Auth::user()->id;
         $success            = $data->save();
+
+
+        $this->pdfInternetGenerate($data->id);
 
         if($success){
             return response()->json(['msg'=>'Stored Successfully &#128513;', 'icon'=>'success'], 200);
@@ -116,6 +157,30 @@ class IndexController extends Controller
         }
 
     }
+
+    // pdfInternetGenerate
+    public function pdfInternetGenerate($id){
+
+        $newData = iaccessInternetRequest::find($id);
+
+       
+        // PDF Generate
+        $pdf = PDF::loadView('iaccess.user.pdf.webAccessRequest', compact('newData'))
+        ->setOption('footer-font-size', 6)
+        ->setOption('margin-bottom', 4)
+        ->setOption("encoding", "UTF-8");
+
+        $filename = Str::random(10);
+
+        $pdf->save(storage_path('images/iaccess/internet/'.$filename.'.pdf'));
+        
+       
+
+        ScheduleEmailIaccessInternetRequest::STORE($newData, $filename);
+
+    }
+
+
 
 
     //account_store
@@ -159,6 +224,9 @@ class IndexController extends Controller
         $data->created_by   =  Auth::user()->id;
         $success            = $data->save();
 
+
+        $this->pdfIAccountGenerate($data->id);
+
         if($success){
             return response()->json(['msg'=>'Stored Successfully &#128513;', 'icon'=>'success'], 200);
         }else{
@@ -168,6 +236,30 @@ class IndexController extends Controller
         }
 
     }
+
+    // pdfInternetGenerate
+    public function pdfIAccountGenerate($id){
+
+        $newData = iaccessAccountRequest::find($id);
+
+       
+        // PDF Generate
+        $pdf = PDF::loadView('iaccess.user.pdf.internetRequestDownload', compact('newData'))
+        ->setOption('footer-font-size', 6)
+        ->setOption('margin-bottom', 4)
+        ->setOption("encoding", "UTF-8");
+
+        $filename = Str::random(10);
+
+        $pdf->save(storage_path('images/iaccess/email/'.$filename.'.pdf'));
+        
+       
+
+        ScheduleEmailIaccessInternetRequest::STORE($newData, $filename);
+
+    }
+
+
 
 
     //guest_store
@@ -208,10 +300,13 @@ class IndexController extends Controller
         $data->end_date          = $request->end_date;
 
         $data->signature         = $request->name;
-        $data->date              = Carbon::new();
+        $data->date              = Carbon::now();
         
         $data->created_by   =  Auth::user()->id;
         $success            = $data->save();
+
+
+        $this->pdfGuestGenerate($data->id);
 
         if($success){
             return response()->json(['msg'=>'Stored Successfully &#128513;', 'icon'=>'success'], 200);
@@ -220,6 +315,28 @@ class IndexController extends Controller
                 'msg' => 'Data not save in DB !!'
             ], 422);
         }
+
+    }
+
+    // pdfInternetGenerate
+    public function pdfGuestGenerate($id){
+
+        $newData = iaccessGuestRequest::find($id);
+
+       
+        // PDF Generate
+        $pdf = PDF::loadView('iaccess.user.pdf.guestUserDownload', compact('newData'))
+        ->setOption('footer-font-size', 6)
+        ->setOption('margin-bottom', 4)
+        ->setOption("encoding", "UTF-8");
+
+        $filename = Str::random(10);
+
+        $pdf->save(storage_path('images/iaccess/guest/'.$filename.'.pdf'));
+        
+       
+
+        ScheduleEmailIaccessGuestRequest::STORE($newData, $filename);
 
     }
 }

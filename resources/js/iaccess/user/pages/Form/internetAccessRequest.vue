@@ -166,7 +166,7 @@ import Form from 'vform';
                 internetModal: true,
 
 
-                currentUrl: '/iaccess/form/internet',
+                currentUrl: '/iaccess/form/webaccess',
 
                 form: new Form({
 

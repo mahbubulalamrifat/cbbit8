@@ -238,9 +238,7 @@ class IndexController extends Controller
 
 
          // Final Data
-        $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)->get();
-
-        dd($allData);
+        $allData =  $allQuery->orderBy($sort_field, $sort_direction)->get();
 
         return Excel::download(new carpoolAll($allData), 'product-' . time() . '.xlsx');
     }
@@ -257,10 +255,7 @@ class IndexController extends Controller
             ->where('type', 'lev')
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
-            ->get()
-            ->toArray();
-
-        dd($allData);
+            ->get();
 
         return Excel::download(new carpoolLeave($allData), 'product-' . time() . '.xlsx');
     }
@@ -274,13 +269,10 @@ class IndexController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $allData = CarpoolLeaves::with('car', 'driver')
-             ->where('type', 'req')
+            ->where('type', 'req')
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
-            ->get()
-            ->toArray();
-
-        dd($allData);
+            ->get();
 
         return Excel::download(new carpoolReq($allData), 'product-' . time() . '.xlsx');
     }
@@ -297,10 +289,7 @@ class IndexController extends Controller
              ->where('type', 'mant')
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
-            ->get()
-            ->toArray();
-
-        dd($allData);
+            ->get();
 
         return Excel::download(new carpoolMaint($allData), 'product-' . time() . '.xlsx');
     }

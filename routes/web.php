@@ -251,6 +251,12 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
                 // car data
                 Route::get('/car-data', 'IndexController@CarData');
+
+                // export_data
+                Route::get('/export_data_all', 'IndexController@export_data_all');
+                Route::get('/export_data_req', 'IndexController@export_data_req');
+                Route::get('/export_data_maint', 'IndexController@export_data_maint');
+                Route::get('/export_data_leave', 'IndexController@export_data_leave');
             });
 
 
@@ -1119,18 +1125,39 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
 
 
-    // iAccess Start
+    // iaccess Start
     Route::namespace('iAccess')->prefix('iaccess')->group(function(){
 
-
-        // User
+        // user
         Route::namespace('User')->group(function(){
+
+            Route::namespace('Form')->prefix('form')->group(function(){
+
+                Route::prefix('email')->group(function(){
+                    Route::post('/store', 'IndexController@email_store');
+                });
+
+                Route::prefix('account')->group(function(){
+                    Route::post('/store', 'IndexController@account_store');
+                });
+
+                Route::prefix('guest')->group(function(){
+                    Route::post('/store', 'IndexController@guest_store');
+                });
+
+                Route::prefix('webaccess')->group(function(){
+                    Route::post('/store', 'IndexController@webaccess_store');
+                });
+                
+            });
 
 
             Route::get('{any?}', 'IndexController@index');
         });
+
+        
     });
-    // iAccess End
+    // iaccess End
 
 
 

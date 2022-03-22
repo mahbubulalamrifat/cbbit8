@@ -13,8 +13,7 @@ export default{
             this.dataModalLoading = false;
             // Hide model
             this.dataModalDialog = false;
-            // Refresh Tbl Data with current page
-            this.getResults(this.currentPageNumber);
+            
             this.$Progress.finish();
 
             Toast.fire({

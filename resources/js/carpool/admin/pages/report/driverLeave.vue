@@ -246,7 +246,7 @@
 
                     axios({
                         method: 'get',
-                        url: this.currentUrl+'/export_data_req?search=' + this.search +
+                        url: this.currentUrl+'/export_data_leave?search=' + this.search +
                             '&sort_direction=' + this.sort_direction +
                             '&sort_field=' + this.sort_field +
                             '&search_field=' + this.search_field,

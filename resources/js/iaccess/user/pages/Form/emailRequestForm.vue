@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="emailModal" max-width="900">
+    <v-dialog v-model="dataModalDialog" max-width="900">
 
         <v-card>
             <v-card-title>
@@ -8,7 +8,7 @@
                         Official Email Request Form
                     </v-col>
                     <v-col cols="2">
-                        <v-btn @click="emailModal = false" color="error" small outlined
+                        <v-btn @click="dataModalDialog = false" color="error" small outlined
                             class="float-right">
                             <v-icon left dark>mdi-close </v-icon> Close
                         </v-btn>
@@ -82,7 +82,7 @@
                                 </v-col>
                             </v-row>
 
-                            <v-btn color="primary" @click="step = 2">
+                            <v-btn color="primary" @click="step = 2" v-if="form.name && form.branch && form.department && form.office_mobile && form.personal_mobile && form.personal_email != '' ">
                                 Continue
                             </v-btn>
                         </v-stepper-content>
@@ -153,7 +153,7 @@ import Form from 'vform';
                 ],
 
                 
-                emailModal: true,
+                dataModalDialog: true,
 
 
                 currentUrl: '/iaccess/form/email',
