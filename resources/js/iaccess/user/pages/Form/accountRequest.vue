@@ -47,7 +47,8 @@
 
                                 <v-col cols="12" lg="6">
                                     <div class="text-danger" v-if="form.errors.has('branch')" v-html="form.errors.get('branch')" />
-                                    <v-text-field label="Branch" v-model="form.branch" required :rules="[v => !!v || 'Branch is required!']" outlined dense></v-text-field>
+                                    <v-autocomplete label="Branch:" v-model="form.branch" required :rules="[v => !!v || 'Branch is required!']" :items="allOffice" item-text="text" item-value="text" outlined dense>
+                                    </v-autocomplete>
                                 </v-col>
 
                                 <v-col cols="12" lg="6">
@@ -82,7 +83,7 @@
                                 </v-col>
                             </v-row>
 
-                            <v-btn color="primary" @click="step = 2">
+                            <v-btn color="primary" @click="step = 2" v-if="form.name && form.branch && form.department && form.office_mobile && form.personal_mobile && form.personal_email != '' ">
                                 Continue
                             </v-btn>
                         </v-stepper-content>
@@ -102,6 +103,8 @@
                                 </v-col>
                             </v-row>
 
+                            <div class="text-danger" v-if="form.errors.has('Modules')" v-html="form.errors.get('purpose')" />
+                            <v-textarea label="Modules" v-model="form.modules" outlined dense></v-textarea>
 
                             <div class="text-danger" v-if="form.errors.has('purpose')" v-html="form.errors.get('purpose')" />
                             <v-textarea label="Purpose" v-model="form.purpose" required :rules="[v => !!v || 'Purpose is required!']" outlined dense></v-textarea>
@@ -202,6 +205,7 @@ import Form from 'vform';
 
                     request_for: '',
                     access_for: '',
+                    modules: '',
                     purpose: '',
 
                 }),
@@ -217,6 +221,7 @@ import Form from 'vform';
 
         mounted(){
             this.getDepartments();
+            this.getOffice();
         }
     }
 

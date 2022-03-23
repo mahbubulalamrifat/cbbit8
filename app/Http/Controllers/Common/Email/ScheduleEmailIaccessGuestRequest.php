@@ -18,38 +18,65 @@ class ScheduleEmailIaccessGuestRequest extends Controller
     //store 
     public static function STORE($Data, $doc){
 
-        $userData = User::whereNotNull('manager_id')->where('department',$Data->department)->first();
+        $userData = User::where('department',$Data->department)->where('zone_office',$Data->branch)->first();
 
-        $personal_email = $userData->personal_email;
-        $office_email   = $userData->office_email;
-
-        if( !empty($office_email) ){
-            $to = $office_email;
-        }else{
-            $to = $personal_email;
-        }
-
+        // manager
         $managerId      = $userData->manager_id;
+
         if( !empty($managerId) )
         {
             $managerId      = explode(',', $managerId);
             $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
+
             if( !empty($managerMail) ){
                 $managerMail    = implode(", ", array_filter($managerMail));
+                $managerMail = strtok($managerMail, ", ");
             }else{ $managerMail = null; }
         }
         elseif( !empty($userData->manager_emails) ){
-            $managerMail =  $userData->manager_emails;
+            $managerMail =  strtok($userData->manager_emails, ", ");
         }
         else{ $managerMail    = null; }
 
+        // managerName
+        if( !empty($managerMail) ){
+            $managerName = User::where( 'office_email', $managerMail )->orWhere('personal_email', $managerMail)->pluck('name')->first();
+        }
 
-        $subject = $Data->name.' : Official Guest User Request';
+        // bu information
+        if( !empty($managerMail) ){
+            $managerBusinessUnit = User::where('office_email', $managerMail )->orWhere('personal_email', $managerMail)->pluck('business_unit')->first();
+
+            if( !empty($managerBusinessUnit) ){
+                $bu_head = User::where('department', 'Business Unit Head')->where('zone_office',$Data->branch)->where('business_unit', $managerBusinessUnit)->first();
+                $buName = $bu_head->name;
+                
+                if( !empty($bu_head->office_email) ){
+                    $buMail = $bu_head->office_email ;
+                }else{
+                    $buMail = $bu_head->personal_email ;
+                }
+            }else{
+                $buMail = null;
+                $buName = null;
+            }
+
+            //dd($managerBusinessUnit, $managerName, $managerMail, $buMail, $buName );
+
+        }
+        
+        // end bu
+
+        $subject = $Data->name.' : Official Email Request';
 
         $data = new ScheduleEmailIaccessGuestReq();
 
-        $data->to             = $managerMail;
-        $data->cc             = null;
+        $data->to_bu          = $buMail;
+        $data->bu_name        = $buName;
+
+        $data->to_it          = 'sagor@cpbangladesh.com';
+        $data->it_name        = 'Md Saiful Alam (Sagor)';
+
         $data->name           = $Data->name;
         $data->guest_form_id  = $Data->id;
         $data->subject        = $subject;
@@ -63,47 +90,47 @@ class ScheduleEmailIaccessGuestRequest extends Controller
             return false;
         }
 
+
     }
 
 
     // Send Email
     public static function SEND(){
 
-        $counter = ScheduleEmailIaccessGuestReq::whereNull('status')->count();
+        $bu_counter = ScheduleEmailIaccessGuestReq::whereNull('bu_status')->count();
+        $it_counter = ScheduleEmailIaccessGuestReq::whereNull('it_status')->count();
 
-        if( !empty($counter) ){
+        if( !empty($bu_counter) ){
 
-            for($i=1; $i <= $counter; $i++){
+            for($i=1; $i <= $bu_counter; $i++){
 
-                $item = ScheduleEmailIaccessGuestReq::whereNull('status')->first();
+                $item = ScheduleEmailIaccessGuestReq::whereNull('manager_status')->first();
                 
     
                 $mailData = [
-                    'to'         => $item->to,
-                    'cc'         => $item->cc,
+                    'to'         => $item->to_bu,
+                    'to_name'    => $item->bu_name,
                     'name'       => $item->name,
                     'subject'    => $item->subject,
                     'document'   => $item->document,
+                    'form_type'  => 'Guest User Request',
                 ];
     
                
                 //Send Mail
-                Mail::send('mail.app-complain-action', $mailData, function ($message) use ($mailData) {
+                Mail::send('mail.iaccess-email', $mailData, function ($message) use ($mailData) {
                     //Remove if space have
                     $arrayTo = array_map( 'trim', explode(',', $mailData['to']) );
                         $message->to($arrayTo);
 
-                    if( !empty($mailData['cc']) ){
-                        $arrayCC = array_map( 'trim', explode(',', $mailData['cc']) );
-                        $message->cc($arrayCC);
-                    }
+                    
                     $message->subject($mailData['subject']);
                     $message->from('it-noreply@cpbangladesh.com');
                     //If Attachment Have
                     if ( !empty($mailData['document']) ) {
                         // $message->attach( public_path('/images/application/'.$mailData['document']) );
 
-                        $message->attach( storage_path('images/iaccess/guest/'.$mailData['document'].'pdf') );
+                        $message->attach( public_path('images/iaccess/email/'.$mailData['document'].'pdf') );
                     }
                 });
 
@@ -114,6 +141,50 @@ class ScheduleEmailIaccessGuestRequest extends Controller
 
             return true;
             
+        }
+
+
+        if(empty($bu_counter)){
+            if( !empty($it_counter) ){
+
+                for($i=1; $i <= $it_counter; $i++){
+
+                    $item = ScheduleEmailIaccessGuestReq::whereNull('it_status')->first();
+                    
+        
+                    $mailData = [
+                        'to'         => $item->to_it,
+                        'to_name'    => $item->it_name,
+                        'name'       => $item->name,
+                        'subject'    => $item->subject,
+                        'document'   => $item->document,
+                        'form_type'  => 'Email Request',
+                    ];
+        
+                
+                    //Send Mail
+                    Mail::send('mail.iaccess-email', $mailData, function ($message) use ($mailData) {
+                        //Remove if space have
+                        $arrayTo = array_map( 'trim', explode(',', $mailData['to']) );
+                            $message->to($arrayTo);
+
+                        $message->subject($mailData['subject']);
+                        $message->from('it-noreply@cpbangladesh.com');
+                        //If Attachment Have
+                        if ( !empty($mailData['document']) ) {
+
+                            $message->attach( public_path('images/iaccess/email/'.$mailData['document'].'pdf') );
+                        }
+                    });
+
+                    $item->status = 1;
+                    $item->save();
+
+                }
+
+                return true;
+                
+            }
         }
 
         return true;

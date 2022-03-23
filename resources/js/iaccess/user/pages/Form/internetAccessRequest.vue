@@ -5,7 +5,7 @@
             <v-card-title>
                 <v-row>
                     <v-col cols="10">
-                        Official Email Request Form
+                        Internet Access Request Form
                     </v-col>
                     <v-col cols="2">
                         <v-btn @click="internetModal = false" color="error" small outlined
@@ -47,7 +47,8 @@
 
                                 <v-col cols="12" lg="6">
                                     <div class="text-danger" v-if="form.errors.has('branch')" v-html="form.errors.get('branch')" />
-                                    <v-text-field label="Branch" v-model="form.branch" required :rules="[v => !!v || 'Branch is required!']" outlined dense></v-text-field>
+                                    <v-autocomplete label="Branch:" v-model="form.branch" required :rules="[v => !!v || 'Branch is required!']" :items="allOffice" item-text="text" item-value="text" outlined dense>
+                                    </v-autocomplete>
                                 </v-col>
 
                                 <v-col cols="12" lg="6">
@@ -78,11 +79,11 @@
 
                                 <v-col cols="12" lg="6">
                                     <div class="text-danger" v-if="form.errors.has('office_email')" v-html="form.errors.get('office_email')" />
-                                    <v-text-field label="BU Head e-mail" v-model="form.office_email" outlined dense></v-text-field>
+                                    <v-text-field label="Office e-mail" v-model="form.office_email" outlined dense></v-text-field>
                                 </v-col>
                             </v-row>
 
-                            <v-btn color="primary" @click="step = 2">
+                            <v-btn color="primary" @click="step = 2" v-if="form.name && form.branch && form.department && form.office_mobile && form.personal_mobile && form.personal_email != '' ">
                                 Continue
                             </v-btn>
                         </v-stepper-content>
@@ -110,6 +111,8 @@
                                 </v-col>
                             </v-row>
 
+                            <div class="text-danger" v-if="form.errors.has('web_url')" v-html="form.errors.get('web_url')" />
+                            <v-textarea label="Web Address (URL)" v-model="form.web_url" outlined dense></v-textarea>
 
                             <div class="text-danger" v-if="form.errors.has('purpose')" v-html="form.errors.get('purpose')" />
                             <v-textarea label="Purpose" v-model="form.purpose" required :rules="[v => !!v || 'Purpose is required!']" outlined dense></v-textarea>
@@ -182,6 +185,7 @@ import Form from 'vform';
 
                     internet_id: '',
                     request_for: '',
+                    web_url: '',
                     purpose: '',
 
                 }),
@@ -197,6 +201,7 @@ import Form from 'vform';
 
         mounted(){
             this.getDepartments();
+            this.getOffice();
         }
     }
 

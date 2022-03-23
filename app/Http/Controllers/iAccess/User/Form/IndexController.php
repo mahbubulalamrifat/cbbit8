@@ -69,13 +69,6 @@ class IndexController extends Controller
         $this->pdfEmailGenerate($data->id);
 
 
-        if($success){
-            return response()->json(['msg'=>'Stored Successfully &#128513;', 'icon'=>'success'], 200);
-        }else{
-            return response()->json([
-                'msg' => 'Data not save in DB !!'
-            ], 422);
-        }
 
     }
 
@@ -86,18 +79,26 @@ class IndexController extends Controller
 
        
         // PDF Generate
-        $pdf = PDF::loadView('iaccess.user.pdf.emailRequestDownload', compact('newData'))
+        $pdf = PDF::loadView('iaccess.user.pdf.emailRequestForm', compact('newData'))
         ->setOption('footer-font-size', 6)
         ->setOption('margin-bottom', 4)
         ->setOption("encoding", "UTF-8");
 
-        $filename = Str::random(10);
+        $filename = 'email_access_'.Str::random(10);
 
-        $pdf->save(storage_path('images/iaccess/email/'.$filename.'.pdf'));
+        $pdf->save(public_path('images/iaccess/email/'.$filename.'.pdf'));
         
        
 
-        ScheduleEmailIaccessEmailRequest::STORE($newData, $filename);
+        $mail = ScheduleEmailIaccessEmailRequest::STORE($newData, $filename);
+
+        if($mail){
+            return response()->json(['msg'=>'Mail Sent Successfully &#128513;', 'icon'=>'success'], 200);
+        }else{
+            return response()->json([
+                'msg' => 'Mail could not sent !!'
+            ], 422);
+        }
 
     }
 
@@ -148,14 +149,6 @@ class IndexController extends Controller
 
         $this->pdfInternetGenerate($data->id);
 
-        if($success){
-            return response()->json(['msg'=>'Stored Successfully &#128513;', 'icon'=>'success'], 200);
-        }else{
-            return response()->json([
-                'msg' => 'Data not save in DB !!'
-            ], 422);
-        }
-
     }
 
     // pdfInternetGenerate
@@ -165,18 +158,26 @@ class IndexController extends Controller
 
        
         // PDF Generate
-        $pdf = PDF::loadView('iaccess.user.pdf.webAccessRequest', compact('newData'))
+        $pdf = PDF::loadView('iaccess.user.pdf.internetAccessRequestForm', compact('newData'))
         ->setOption('footer-font-size', 6)
         ->setOption('margin-bottom', 4)
         ->setOption("encoding", "UTF-8");
 
-        $filename = Str::random(10);
+        $filename = 'internet_access_'.Str::random(10);
 
-        $pdf->save(storage_path('images/iaccess/internet/'.$filename.'.pdf'));
+        $pdf->save(public_path('images/iaccess/internet/'.$filename.'.pdf'));
         
        
 
-        ScheduleEmailIaccessInternetRequest::STORE($newData, $filename);
+        $internet = ScheduleEmailIaccessInternetRequest::STORE($newData, $filename);
+
+        if($internet){
+            return response()->json(['msg'=>'Mail Sent Successfully &#128513;', 'icon'=>'success'], 200);
+        }else{
+            return response()->json([
+                'msg' => 'Mail could not sent !!'
+            ], 422);
+        }
 
     }
 
@@ -214,12 +215,12 @@ class IndexController extends Controller
         $data->personal_email    = $request->personal_email;
         $data->office_email      = $request->office_email;
 
-        $data->request_for       = $request->request_for;
-        $data->access_for        = $request->access_for;
+        $data->request_for       = implode(",", $request->request_for);
+        $data->access_for        = implode(",", $request->access_for);
         $data->purpose           = $request->purpose;
 
         $data->signature         = $request->name;
-        $data->date              = Carbon::new();
+        $data->date              = Carbon::now();
         
         $data->created_by   =  Auth::user()->id;
         $success            = $data->save();
@@ -227,13 +228,7 @@ class IndexController extends Controller
 
         $this->pdfIAccountGenerate($data->id);
 
-        if($success){
-            return response()->json(['msg'=>'Stored Successfully &#128513;', 'icon'=>'success'], 200);
-        }else{
-            return response()->json([
-                'msg' => 'Data not save in DB !!'
-            ], 422);
-        }
+        
 
     }
 
@@ -244,19 +239,26 @@ class IndexController extends Controller
 
        
         // PDF Generate
-        $pdf = PDF::loadView('iaccess.user.pdf.internetRequestDownload', compact('newData'))
+        $pdf = PDF::loadView('iaccess.user.pdf.accountAuthorityForm', compact('newData'))
         ->setOption('footer-font-size', 6)
         ->setOption('margin-bottom', 4)
         ->setOption("encoding", "UTF-8");
 
-        $filename = Str::random(10);
+        $filename = 'account_authority_'.Str::random(10);
 
-        $pdf->save(storage_path('images/iaccess/email/'.$filename.'.pdf'));
+        $pdf->save(public_path('images/iaccess/account/'.$filename.'.pdf'));
         
        
 
-        ScheduleEmailIaccessInternetRequest::STORE($newData, $filename);
+        $account = ScheduleEmailIaccessAccountRequest::STORE($newData, $filename);
 
+        if($account){
+            return response()->json(['msg'=>'Mail Sent Successfully &#128513;', 'icon'=>'success'], 200);
+        }else{
+            return response()->json([
+                'msg' => 'Mail could not sent !!'
+            ], 422);
+        }
     }
 
 
@@ -308,13 +310,6 @@ class IndexController extends Controller
 
         $this->pdfGuestGenerate($data->id);
 
-        if($success){
-            return response()->json(['msg'=>'Stored Successfully &#128513;', 'icon'=>'success'], 200);
-        }else{
-            return response()->json([
-                'msg' => 'Data not save in DB !!'
-            ], 422);
-        }
 
     }
 
@@ -325,18 +320,27 @@ class IndexController extends Controller
 
        
         // PDF Generate
-        $pdf = PDF::loadView('iaccess.user.pdf.guestUserDownload', compact('newData'))
+        $pdf = PDF::loadView('iaccess.user.pdf.guestUserForm', compact('newData'))
         ->setOption('footer-font-size', 6)
         ->setOption('margin-bottom', 4)
         ->setOption("encoding", "UTF-8");
 
-        $filename = Str::random(10);
+        $filename = 'guest_access_'.Str::random(10);
 
-        $pdf->save(storage_path('images/iaccess/guest/'.$filename.'.pdf'));
+        $pdf->save(public_path('images/iaccess/guest/'.$filename.'.pdf'));
         
        
 
-        ScheduleEmailIaccessGuestRequest::STORE($newData, $filename);
+        $guest = ScheduleEmailIaccessGuestRequest::STORE($newData, $filename);
+
+
+        if($guest){
+            return response()->json(['msg'=>'Mail Sent Successfully &#128513;', 'icon'=>'success'], 200);
+        }else{
+            return response()->json([
+                'msg' => 'Mail could not sent !!'
+            ], 422);
+        }
 
     }
 }

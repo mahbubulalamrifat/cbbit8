@@ -41,6 +41,7 @@ export default {
             overlayshow: false,
 
             allDepartments: [],
+            allOffice: [],
 
 
         }
@@ -91,10 +92,28 @@ export default {
             axios.get('/super_admin/user/departments').then(response => {
                 //console.log(response.data)
                 this.allDepartments = response.data
+
+                this.allDepartments.shift();
             }).catch(error => {
                 console.log(error)
             })
         },
+
+
+
+        getOffice() {
+            axios.get('/inventory/admin/new_product/office').then(response => {
+                // zone_office
+                response.data.office.forEach(element => {
+                    this.allOffice.push({
+                        value: element.zone_office,
+                        text: element.zone_office
+                    });
+                });
+            });
+        },
+
+        
 
 
 

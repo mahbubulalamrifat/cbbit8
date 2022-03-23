@@ -47,7 +47,8 @@
 
                                 <v-col cols="12" lg="6">
                                     <div class="text-danger" v-if="form.errors.has('branch')" v-html="form.errors.get('branch')" />
-                                    <v-text-field label="Branch" v-model="form.branch" required :rules="[v => !!v || 'Branch is required!']" outlined dense></v-text-field>
+                                    <v-autocomplete label="Branch:" v-model="form.branch" required :rules="[v => !!v || 'Branch is required!']" :items="allOffice" item-text="text" item-value="text" outlined dense>
+                                    </v-autocomplete>
                                 </v-col>
 
                                 <v-col cols="12" lg="6">
@@ -58,7 +59,7 @@
                                 <v-col cols="12" lg="6">
                                     <div class="text-danger" v-if="form.errors.has('department')" v-html="form.errors.get('department')" />
                                     <v-autocomplete label="Departments:" v-model="form.department" required :rules="[v => !!v || 'Department is required!']" :items="allDepartments" item-text="department" item-value="department" outlined dense>
-                                    </v-autocomplete>  
+                                    </v-autocomplete>
                                 </v-col>
 
                                 <v-col cols="12" lg="6">
@@ -71,15 +72,15 @@
                                     <v-text-field label="Personal Mobile" v-model="form.personal_mobile" required :rules="[v => !!v || 'Personal Mobile is required!']" outlined dense></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" lg="6">
+                                <v-col cols="12" lg="12">
                                     <div class="text-danger" v-if="form.errors.has('personal_email')" v-html="form.errors.get('personal_email')" />
                                     <v-text-field label="Personal e-mail" v-model="form.personal_email" required :rules="[v => !!v || 'Personal Email is required!']" outlined dense></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" lg="6">
+                                <!-- <v-col cols="12" lg="6">
                                     <div class="text-danger" v-if="form.errors.has('bu_head_email')" v-html="form.errors.get('bu_head_email')" />
                                     <v-text-field label="BU Head e-mail" v-model="form.bu_head_email" outlined dense></v-text-field>
-                                </v-col>
+                                </v-col> -->
                             </v-row>
 
                             <v-btn color="primary" @click="step = 2" v-if="form.name && form.branch && form.department && form.office_mobile && form.personal_mobile && form.personal_email != '' ">
@@ -154,7 +155,7 @@ import Form from 'vform';
 
                 
                 dataModalDialog: true,
-
+                
 
                 currentUrl: '/iaccess/form/email',
 
@@ -186,6 +187,7 @@ import Form from 'vform';
 
         mounted(){
             this.getDepartments();
+            this.getOffice();
         }
     }
 

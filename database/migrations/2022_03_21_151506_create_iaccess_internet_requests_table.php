@@ -25,6 +25,7 @@ class CreateIaccessInternetRequestsTable extends Migration
             $table->string('office_email')->nullable();
             $table->string('request_for')->nullable();
             $table->string('internet_id')->nullable();
+            $table->string('web_url')->nullable();
             $table->string('purpose')->nullable();
 
             // user

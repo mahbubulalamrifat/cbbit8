@@ -47,7 +47,8 @@
 
                                 <v-col cols="12" lg="6">
                                     <div class="text-danger" v-if="form.errors.has('branch')" v-html="form.errors.get('branch')" />
-                                    <v-text-field label="Branch" v-model="form.branch" required :rules="[v => !!v || 'Branch is required!']" outlined dense></v-text-field>
+                                    <v-autocomplete label="Branch:" v-model="form.branch" required :rules="[v => !!v || 'Branch is required!']" :items="allOffice" item-text="text" item-value="text" outlined dense>
+                                    </v-autocomplete>
                                 </v-col>
 
                                 <v-col cols="12" lg="6">
@@ -72,7 +73,7 @@
                                 </v-col>
                             </v-row>
 
-                            <v-btn color="primary" @click="step = 2">
+                            <v-btn color="primary" @click="step = 2" v-if="form.name && form.branch && form.department && form.mobile && form.personal_email != '' ">
                                 Continue
                             </v-btn>
                         </v-stepper-content>
@@ -225,6 +226,7 @@ import Form from 'vform';
 
         mounted(){
             this.getDepartments();
+            this.getOffice();
         }
     }
 

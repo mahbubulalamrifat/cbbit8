@@ -25,6 +25,7 @@ class CreateIaccessAccountRequestsTable extends Migration
             $table->string('office_email')->nullable();
             $table->string('request_for')->nullable();
             $table->string('access_for')->nullable();
+            $table->string('modules')->nullable();
             $table->string('purpose')->nullable();
 
             // user

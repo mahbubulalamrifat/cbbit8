@@ -15,13 +15,19 @@ class CreateScheduleEmailIaccessGuestReqsTable extends Migration
     {
         Schema::create('schedule_email_iaccess_guest_reqs', function (Blueprint $table) {
             $table->id();
-            $table->string('to');
-            $table->string('cc');
+            $table->string('to_bu')->nullable();
+            $table->string('to_it')->nullable();
+            $table->string('cc')->nullable();
             $table->string('name')->nullable();
             $table->integer('guest_form_id')->nullable();
             $table->string('subject')->nullable();
             $table->string('document')->nullable();
-            $table->integer('status')->nullable();
+            $table->integer('bu_status')->nullable();
+            $table->string('bu_name')->nullable();
+            $table->datetime('bu_datetime')->nullable();
+            $table->integer('it_status')->nullable();
+            $table->string('it_name')->nullable();
+            $table->datetime('it_datetime')->nullable();
             $table->integer('created_by')->nullable();
             $table->timestamps();
         });
