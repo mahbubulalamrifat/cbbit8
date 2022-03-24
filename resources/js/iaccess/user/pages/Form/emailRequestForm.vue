@@ -103,7 +103,7 @@
                             <div class="text-danger" v-if="form.errors.has('purpose')" v-html="form.errors.get('purpose')" />
                             <v-textarea label="Purpose" v-model="form.purpose" required :rules="[v => !!v || 'Purpose is required!']" outlined dense></v-textarea>
 
-                            <v-btn color="primary" type="submit">
+                            <v-btn color="primary" type="submit" :loading="dataModalLoading">
                                 Submit
                             </v-btn>
 
@@ -155,6 +155,8 @@ import Form from 'vform';
 
                 
                 dataModalDialog: true,
+
+                dataModalLoading: false,
                 
 
                 currentUrl: '/iaccess/form/email',

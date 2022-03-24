@@ -22,7 +22,7 @@
                 <h4>C.P Bangladesh Co., Ltd.</h4>
             </div>
             <div>
-                Date: <span>{{ date("F j, Y, g:i a", strtotime($newData->date)) }}</span>
+                Date:  <span>{{ date("F j, Y,", strtotime($newData->date)) }}</span>
             </div>
         </div>
 
@@ -48,10 +48,10 @@
                         <td>Personal Email: <span>{{$newData->personal_email}}</span></td>
                         <td>BU Head Email: 
                             <span>
-                                @if($newData->bu_head_email)
-                                    {{ $newData->bu_head_email }}
+                                @if (!empty($newData->emailschedule))
+                                    {{ $newData->emailschedule->to_bu }}
                                 @else
-                                    N/A
+                                    <span class="text-error"> N/A </span>
                                 @endif
                             </span>
                         </td>
@@ -65,13 +65,15 @@
             <div class="h5 text-center w-50 py-2 bg-dark text-white">Request For</div>
             <div class="my-2 font-weight-bold">{{ $newData->request_for }}</div>
             <hr>
-            <div>Request Email ID: 
+            <div><b>Request Email ID:</b> 
                 <span>
+                    <i>
                     @if($newData->requested_email)
-                        {{ $newData->requested_email }}
+                        {{ $newData->requested_email}}
                     @else
-                        N/A
+                        <span class="text-error"> N/A </span>
                     @endif
+                    </i>
                 </span>
             </div>
         </div>
@@ -96,8 +98,8 @@
                         Signature: <span>{{$newData->name}}</span>
                     </div>
                     <div class="d-flex">
-                        <div>Date <span>{{ date("F j, Y", strtotime($newData->date)) }}</span></div>
-                        <div>Time <span>{{ date("g:i a", strtotime($newData->date)) }}</span></div>
+                        <div class="mr-5">Date:  <span>{{ date("F j, Y", strtotime($newData->date)) }}</span></div>
+                        <div>Time:  <span>{{ date("g:i a", strtotime($newData->date)) }}</span></div>
                     </div>
                 </div>
 
@@ -106,55 +108,109 @@
                     <small>I Confirm that all the details provided in this form are correct & true</small>
 
                     <div class="mt-4">
-                        Name: <span>
-                            @if($newData->manager_name)
-                                {{ $newData->manager_name }}
+                        Name: 
+                        <span>
+                            @if (!empty($newData->emailschedule))
+                                @if($newData->emailschedule->manager_status == 1)
+                                    {{ $newData->emailschedule->manager_name }}
+                                @endif
                             @else
-                                N/A
+                                <span class="text-error small">Waiting for Your Approval</span>
                             @endif
-                            </span>
+                        </span>
                     </div>
                     <div class="my-2">
-                        Signature: <span>
-                            @if($newData->manager_name)
-                                {{ $newData->manager_name }}
+                        Signature: 
+                        <span>
+                            @if (!empty($newData->emailschedule))
+                                @if($newData->emailschedule->manager_status == 1)
+                                    {{ $newData->emailschedule->manager_name }}
+                                @endif
                             @else
-                                N/A
+                                <span class="text-error small">Waiting for Your Approval</span>
                             @endif
                         </span>
                     </div>
                     <div class="d-flex">
-                        <div>Date <span>29-08-2021</span></div>
-                        <div>Time <span>09:21 AM</span></div>
+                        <div class="mr-5">Date: 
+                            <span>
+                                @if (!empty($newData->emailschedule))
+                                    @if($newData->emailschedule->manager_status == 1)
+                                        {{ date("F j, Y", strtotime($newData->emailschedule->manager_datetime)) }}
+                                    @endif
+                                @else
+                                    <span class="text-error small">Waiting for Your Approval</span>
+                                @endif
+                            </span>
+                        </div>
+                        <div>Time: 
+                            <span>
+                                @if (!empty($newData->emailschedule))
+                                    @if($newData->emailschedule->manager_status == 1)
+                                        {{ date("g:i a", strtotime($newData->emailschedule->manager_datetime)) }}
+                                    @endif
+                                @else
+                                    <span class="text-error small">Waiting for Your Approval</span>
+                                @endif
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="d-flex justify-content-between">
+
                 <div>
                     <div class="h5 text-center d-block py-2 bg-dark text-white">Approved By BU Head</div>
                     <small>I Confirm that all the details provided in this form are correct & true</small>
 
                     <div class="mt-4">
-                        Name: <span>
-                            @if($newData->bu_name)
-                                {{ $newData->bu_name }}
+                        Name: 
+                        <span>
+                            @if (!empty($newData->emailschedule))
+                                @if($newData->emailschedule->bu_status == 1)
+                                    {{ $newData->emailschedule->bu_name }}
+                                @endif
                             @else
-                                N/A
+                                <span class="text-error small"> Waiting For Manager Approval </span>
                             @endif
                         </span>
                     </div>
                     <div class="my-2">
-                        Signature: <span>
-                            @if($newData->bu_name)
-                                {{ $newData->bu_name }}
+                        Signature: 
+                        <span>
+                            @if (!empty($newData->emailschedule))
+                                @if($newData->emailschedule->bu_status == 1)
+                                    {{ $newData->emailschedule->bu_name }}
+                                @endif
                             @else
-                                N/A
+                                <span class="text-error small"> Waiting For Manager Approval </span>
                             @endif
                         </span>
                     </div>
                     <div class="d-flex">
-                        <div>Date <span>29-08-2021</span></div>
-                        <div>Time <span>09:21 AM</span></div>
+                        <div class="mr-5">Date: 
+                            <span>
+                                @if (!empty($newData->emailschedule))
+                                    @if($newData->emailschedule->bu_status == 1)
+                                        {{ date("F j, Y", strtotime($newData->emailschedule->bu_datetime)) }}
+                                    @endif
+                                @else
+                                    <span class="text-error small"> Waiting For Manager Approval </span>
+                                @endif
+                            </span>
+                        </div>
+                        <div>Time: 
+                            <span>
+                                @if (!empty($newData->emailschedule))
+                                    @if($newData->emailschedule->bu_status == 1)
+                                        {{ date("g:i a", strtotime($newData->emailschedule->bu_datetime)) }}
+                                    @endif
+                                @else
+                                    <span class="text-error small"> Waiting For Manager Approval </span>
+                                @endif
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -163,28 +219,55 @@
                     <small>I Confirm that all the details provided in this form are correct & true</small>
 
                     <div class="mt-4">
-                        Name: <span>
-                            @if($newData->it_name)
-                                {{ $newData->it_name }}
+                        Name: 
+                        <span>
+                            @if (!empty($newData->emailschedule))
+                                @if($newData->emailschedule->it_status == 1)
+                                    {{ $newData->emailschedule->it_name }}
+                                @endif
                             @else
-                                N/A
+                                <span class="text-error small"> Waiting For BU Approval </span>
                             @endif
                         </span>
                     </div>
                     <div class="my-2">
-                        Signature: <span>
-                            @if($newData->it_name)
-                                {{ $newData->it_name }}
+                        Signature: 
+                        <span>
+                            @if (!empty($newData->emailschedule))
+                                @if($newData->emailschedule->it_status == 1)
+                                    {{ $newData->emailschedule->it_name }}
+                                @endif
                             @else
-                                N/A
+                                <span class="text-error small"> Waiting For BU Approval </span>
                             @endif
                         </span>
                     </div>
                     <div class="d-flex">
-                        <div>Date <span>29-08-2021</span></div>
-                        <div>Time <span>09:21 AM</span></div>
+                        <div class="mr-5">Date: 
+                            <span>
+                                @if (!empty($newData->emailschedule))
+                                    @if($newData->emailschedule->it_status == 1)
+                                        {{ date("F j, Y", strtotime($newData->emailschedule->it_datetime)) }}
+                                    @endif
+                                @else
+                                    <span class="text-error small"> Waiting For BU Approval </span>
+                                @endif
+                            </span>
+                        </div>
+                        <div>Time: 
+                            <span>
+                                @if (!empty($newData->emailschedule))
+                                    @if($newData->emailschedule->it_status == 1)
+                                        {{ date("g:i a", strtotime($newData->emailschedule->it_datetime)) }}
+                                    @endif
+                                @else
+                                    <span class="text-error small"> Waiting For BU Approval </span>
+                                @endif
+                            </span>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
         

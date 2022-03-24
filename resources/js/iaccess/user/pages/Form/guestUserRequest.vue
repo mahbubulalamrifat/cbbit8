@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="guestModal" max-width="900">
+    <v-dialog v-model="dataModalDialog" max-width="900">
 
         <v-card>
             <v-card-title>
@@ -8,7 +8,7 @@
                         Guest User Request Form
                     </v-col>
                     <v-col cols="2">
-                        <v-btn @click="guestModal = false" color="error" small outlined
+                        <v-btn @click="dataModalDialog = false" color="error" small outlined
                             class="float-right">
                             <v-icon left dark>mdi-close </v-icon> Close
                         </v-btn>
@@ -135,7 +135,7 @@
                             </v-row>
                             
 
-                            <v-btn color="primary" type="submit">
+                            <v-btn color="primary" type="submit" :loading="dataModalLoading">
                                 Submit
                             </v-btn>
 
@@ -186,7 +186,8 @@ import Form from 'vform';
                 ],
 
                 
-                guestModal: true,
+                dataModalDialog: true,
+                dataModalLoading: false,
 
 
                 currentUrl: '/iaccess/form/guest',

@@ -68,6 +68,14 @@ class IndexController extends Controller
 
         $this->pdfEmailGenerate($data->id);
 
+        if($success){
+            return response()->json(['msg'=>'Application Submitted Successfully &#128513;', 'icon'=>'success'], 200);
+        }else{
+            return response()->json([
+                'msg' => 'Application could not Submit !!'
+            ], 422);
+        }
+
 
 
     }
@@ -75,9 +83,8 @@ class IndexController extends Controller
     // pdfEmailGenerate
     public function pdfEmailGenerate($id){
 
-        $newData = iaccessEmailRequest::find($id);
+        $newData = iaccessEmailRequest::with('emailschedule')->where('id',$id)->first();
 
-       
         // PDF Generate
         $pdf = PDF::loadView('iaccess.user.pdf.emailRequestForm', compact('newData'))
         ->setOption('footer-font-size', 6)
@@ -102,7 +109,49 @@ class IndexController extends Controller
 
     }
 
+    // email_status
+    public function email_status($id){
 
+        $newData = iaccessEmailRequest::with('emailschedule')
+        ->whereHas('emailschedule', function($q) use($id){
+            $q->where('id', $id);
+        })
+        ->first();
+
+        if($newData){
+
+            // if (empty($newData->emailschedule->manager_status)){
+            //     $newData->emailschedule->manager_status = 1;
+            //     $newData->emailschedule->manager_datetime = Carbon::now();
+            // }elseif (empty($newData->emailschedule->bu_status)) {
+            //     $newData->emailschedule->bu_status = 1;
+            //     $newData->emailschedule->bu_datetime = Carbon::now();
+            // }elseif (empty($newData->emailschedule->it_status)) {
+            //     $newData->emailschedule->it_status = 1;
+            //     $newData->emailschedule->it_datetime = Carbon::now();
+            // }
+
+            $currentDoc = $newData->emailschedule->document;
+            unlink(public_path('images/iaccess/email/'.$currentDoc.'.pdf'));
+
+            $success    =  $newData->save();
+
+            $pdf = PDF::loadView('iaccess.user.pdf.emailRequestForm', compact('newData'))
+            ->setOption('footer-font-size', 6)
+            ->setOption('margin-bottom', 4)
+            ->setOption("encoding", "UTF-8");
+
+            $pdf->save(public_path('images/iaccess/email/'.$currentDoc.'.pdf'));
+
+            ScheduleEmailIaccessEmailRequest::SEND();
+
+            return view('iaccess.user.pdf.success');
+
+        }
+    }
+
+
+    // *************************************************************************************************************
 
 
     //internet_store
@@ -149,6 +198,14 @@ class IndexController extends Controller
 
         $this->pdfInternetGenerate($data->id);
 
+        if($success){
+            return response()->json(['msg'=>'Application Submitted Successfully &#128513;', 'icon'=>'success'], 200);
+        }else{
+            return response()->json([
+                'msg' => 'Application could not Submit !!'
+            ], 422);
+        }
+
     }
 
     // pdfInternetGenerate
@@ -171,17 +228,51 @@ class IndexController extends Controller
 
         $internet = ScheduleEmailIaccessInternetRequest::STORE($newData, $filename);
 
-        if($internet){
-            return response()->json(['msg'=>'Mail Sent Successfully &#128513;', 'icon'=>'success'], 200);
-        }else{
-            return response()->json([
-                'msg' => 'Mail could not sent !!'
-            ], 422);
-        }
+    }
 
+    // internet_status
+    public function internet_status($id){
+
+        $newData = iaccessInternetRequest::with('emailschedule')
+        ->whereHas('emailschedule', function($q) use($id){
+            $q->where('id', $id);
+        })
+        ->first();
+
+        if($newData){
+
+            // if (empty($newData->emailschedule->manager_status)){
+            //     $newData->emailschedule->manager_status = 1;
+            //     $newData->emailschedule->manager_datetime = Carbon::now();
+            // }elseif (empty($newData->emailschedule->bu_status)) {
+            //     $newData->emailschedule->bu_status = 1;
+            //     $newData->emailschedule->bu_datetime = Carbon::now();
+            // }elseif (empty($newData->emailschedule->it_status)) {
+            //     $newData->emailschedule->it_status = 1;
+            //     $newData->emailschedule->it_datetime = Carbon::now();
+            // }
+
+            $currentDoc = $newData->emailschedule->document;
+            unlink(public_path('images/iaccess/internet/'.$currentDoc.'.pdf'));
+
+            $success    =  $newData->save();
+
+            $pdf = PDF::loadView('iaccess.user.pdf.internetAccessRequestForm', compact('newData'))
+            ->setOption('footer-font-size', 6)
+            ->setOption('margin-bottom', 4)
+            ->setOption("encoding", "UTF-8");
+
+            $pdf->save(public_path('images/iaccess/internet/'.$currentDoc.'.pdf'));
+
+            ScheduleEmailIaccessInternetRequest::SEND();
+
+            return view('iaccess.user.pdf.success');
+
+        }
     }
 
 
+    // *************************************************************************************************************
 
 
     //account_store
@@ -228,6 +319,15 @@ class IndexController extends Controller
 
         $this->pdfIAccountGenerate($data->id);
 
+
+        if($success){
+            return response()->json(['msg'=>'Application Submitted Successfully &#128513;', 'icon'=>'success'], 200);
+        }else{
+            return response()->json([
+                'msg' => 'Application could not Submit !!'
+            ], 422);
+        }
+
         
 
     }
@@ -252,15 +352,52 @@ class IndexController extends Controller
 
         $account = ScheduleEmailIaccessAccountRequest::STORE($newData, $filename);
 
-        if($account){
-            return response()->json(['msg'=>'Mail Sent Successfully &#128513;', 'icon'=>'success'], 200);
-        }else{
-            return response()->json([
-                'msg' => 'Mail could not sent !!'
-            ], 422);
+    }
+
+    // account_status
+    public function account_status($id){
+
+        $newData = iaccessAccountRequest::with('emailschedule')
+        ->whereHas('emailschedule', function($q) use($id){
+            $q->where('id', $id);
+        })
+        ->first();
+
+        if($newData){
+
+            // if (empty($newData->emailschedule->manager_status)){
+            //     $newData->emailschedule->manager_status = 1;
+            //     $newData->emailschedule->manager_datetime = Carbon::now();
+            // }elseif (empty($newData->emailschedule->bu_status)) {
+            //     $newData->emailschedule->bu_status = 1;
+            //     $newData->emailschedule->bu_datetime = Carbon::now();
+            // }elseif (empty($newData->emailschedule->it_status)) {
+            //     $newData->emailschedule->it_status = 1;
+            //     $newData->emailschedule->it_datetime = Carbon::now();
+            // }
+
+            $currentDoc = $newData->emailschedule->document;
+            unlink(public_path('images/iaccess/account/'.$currentDoc.'.pdf'));
+
+            $success    =  $newData->save();
+
+            $pdf = PDF::loadView('iaccess.user.pdf.accountAuthorityForm', compact('newData'))
+            ->setOption('footer-font-size', 6)
+            ->setOption('margin-bottom', 4)
+            ->setOption("encoding", "UTF-8");
+
+            $pdf->save(public_path('images/iaccess/account/'.$currentDoc.'.pdf'));
+
+            ScheduleEmailIaccessAccountRequest::SEND();
+
+            return view('iaccess.user.pdf.success');
+
         }
     }
 
+
+
+    // *************************************************************************************************************
 
 
 
@@ -311,6 +448,15 @@ class IndexController extends Controller
         $this->pdfGuestGenerate($data->id);
 
 
+        if($success){
+            return response()->json(['msg'=>'Application Submitted Successfully &#128513;', 'icon'=>'success'], 200);
+        }else{
+            return response()->json([
+                'msg' => 'Application could not Submit !!'
+            ], 422);
+        }
+
+
     }
 
     // pdfInternetGenerate
@@ -333,14 +479,46 @@ class IndexController extends Controller
 
         $guest = ScheduleEmailIaccessGuestRequest::STORE($newData, $filename);
 
+    }
 
-        if($guest){
-            return response()->json(['msg'=>'Mail Sent Successfully &#128513;', 'icon'=>'success'], 200);
-        }else{
-            return response()->json([
-                'msg' => 'Mail could not sent !!'
-            ], 422);
+    // guest_status
+    public function guest_status($id){
+
+        $newData = iaccessGuestRequest::with('emailschedule')
+        ->whereHas('emailschedule', function($q) use($id){
+            $q->where('id', $id);
+        })
+        ->first();
+
+        if($newData){
+
+            // if (empty($newData->emailschedule->manager_status)){
+            //     $newData->emailschedule->manager_status = 1;
+            //     $newData->emailschedule->manager_datetime = Carbon::now();
+            // }elseif (empty($newData->emailschedule->bu_status)) {
+            //     $newData->emailschedule->bu_status = 1;
+            //     $newData->emailschedule->bu_datetime = Carbon::now();
+            // }elseif (empty($newData->emailschedule->it_status)) {
+            //     $newData->emailschedule->it_status = 1;
+            //     $newData->emailschedule->it_datetime = Carbon::now();
+            // }
+
+            $currentDoc = $newData->emailschedule->document;
+            unlink(public_path('images/iaccess/guest/'.$currentDoc.'.pdf'));
+
+            $success    =  $newData->save();
+
+            $pdf = PDF::loadView('iaccess.user.pdf.accountAuthorityForm', compact('newData'))
+            ->setOption('footer-font-size', 6)
+            ->setOption('margin-bottom', 4)
+            ->setOption("encoding", "UTF-8");
+
+            $pdf->save(public_path('images/iaccess/guest/'.$currentDoc.'.pdf'));
+
+            ScheduleEmailIaccessGuestRequest::SEND();
+
+            return view('iaccess.user.pdf.success');
+
         }
-
     }
 }

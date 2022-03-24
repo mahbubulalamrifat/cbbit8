@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class ScheduleEmailIaccessInternetReq extends Model
 {
     use HasFactory;
+
+    public function scopeSearch($query, $val='')
+    {
+        return $query
+        ->where('name', 'LIKE', '%'.$val.'%'); 
+    }
 }

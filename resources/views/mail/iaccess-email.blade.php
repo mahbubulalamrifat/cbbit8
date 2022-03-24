@@ -152,10 +152,10 @@
                                                                 <div style="margin: auto;padding: 1.4rem;background-color: white;border-radius: 8px;">
 
                                                                     
-                                                                    <b> Mr {{$to_name}}</b>
+                                                                    Dear <b>Mr {{$to_name}}</b>
                                                                     <br>
                                                                     <br>
-                                                                    Here is an <b> {{$form_type}} </b> on behlaf of <br> MR {{$name}} <br>.
+                                                                    Here is an <b> {{$form_type}} </b> on behlaf of <b> MR {{$name}} <b>
                                                                     <br>
                                                                     <br>
                                                                     An Application Form is attached below with this email. 
@@ -165,7 +165,7 @@
                                                                     <br>
                                                                     <br>
                                                                     <div style="margin: 1rem 0;text-align:center;">
-                                                                        <a href="https://www.facebook.com" class="button_div" style="padding:0.7rem 1.8rem;background-color: #68c880;border-radius: 3px;color: white;text-decoration: none;">Approve</a>
+                                                                        <a href="{{$url}}" class="button_div" style="padding:0.7rem 1.8rem;background-color: #68c880;border-radius: 3px;color: white;text-decoration: none;">Approve</a>
                                                                     </div>
                                                                     <br>
                                                                     <br>

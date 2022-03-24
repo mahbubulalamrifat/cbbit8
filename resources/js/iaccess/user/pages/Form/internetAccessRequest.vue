@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="internetModal" max-width="900">
+    <v-dialog v-model="dataModalDialog" max-width="900">
 
         <v-card>
             <v-card-title>
@@ -8,7 +8,7 @@
                         Internet Access Request Form
                     </v-col>
                     <v-col cols="2">
-                        <v-btn @click="internetModal = false" color="error" small outlined
+                        <v-btn @click="dataModalDialog = false" color="error" small outlined
                             class="float-right">
                             <v-icon left dark>mdi-close </v-icon> Close
                         </v-btn>
@@ -117,7 +117,7 @@
                             <div class="text-danger" v-if="form.errors.has('purpose')" v-html="form.errors.get('purpose')" />
                             <v-textarea label="Purpose" v-model="form.purpose" required :rules="[v => !!v || 'Purpose is required!']" outlined dense></v-textarea>
 
-                            <v-btn color="primary" type="submit">
+                            <v-btn color="primary" type="submit" :loading="dataModalLoading">
                                 Submit
                             </v-btn>
 
@@ -166,7 +166,8 @@ import Form from 'vform';
                 ],
 
                 
-                internetModal: true,
+                dataModalDialog: true,
+                dataModalLoading: false,
 
 
                 currentUrl: '/iaccess/form/webaccess',

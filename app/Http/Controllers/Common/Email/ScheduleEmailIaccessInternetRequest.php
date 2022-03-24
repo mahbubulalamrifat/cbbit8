@@ -67,7 +67,7 @@ class ScheduleEmailIaccessInternetRequest extends Controller
         
         // end bu
 
-        $subject = $Data->name.' : Official Email Request';
+        $subject = $Data->name.' : Official Internet Access Request';
 
         $data = new ScheduleEmailIaccessInternetReq();
 
@@ -80,12 +80,14 @@ class ScheduleEmailIaccessInternetRequest extends Controller
         $data->to_it          = 'sagor@cpbangladesh.com';
         $data->it_name        = 'Md Saiful Alam (Sagor)';
 
-        $data->name           = $Data->name;
-        $data->internet_form_id  = $Data->id;
-        $data->subject        = $subject;
-        $data->document       = $doc;
-        $data->created_by     = $Data->created_by;
-        $success              = $data->save();
+        $data->name             = $Data->name;
+        $data->internet_form_id = $Data->id;
+        $data->subject          = $subject;
+        $data->document         = $doc;
+        $data->created_by       = $Data->created_by;
+        $success                = $data->save();
+
+        self::SEND();
 
         if($success){
             return true;
@@ -104,6 +106,18 @@ class ScheduleEmailIaccessInternetRequest extends Controller
         $bu_counter = ScheduleEmailIaccessInternetReq::whereNull('bu_status')->count();
         $it_counter = ScheduleEmailIaccessInternetReq::whereNull('it_status')->count();
 
+        // current_url
+        // if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'){
+        //     $url = "https://";   
+        // }else{
+        //     $url = "http://";
+        // } 
+        // $url.= $_SERVER['HTTP_HOST'];   
+        // // Append the requested resource location to the URL   
+        // $url.= $_SERVER['REQUEST_URI'];
+
+        $url = 'http://cpbit-8/iaccess/form/webaccess/internet_status/' ;
+
         if( !empty($manager_counter) ){
 
             for($i=1; $i <= $manager_counter; $i++){
@@ -112,12 +126,14 @@ class ScheduleEmailIaccessInternetRequest extends Controller
                 
     
                 $mailData = [
-                    'to'         => $item->to_manager,
+                    //'to'         => $item->to_manager,
+                    'to'         => 'mahbubulalamrifat@gmail.com',
                     'to_name'    => $item->manager_name,
                     'name'       => $item->name,
                     'subject'    => $item->subject,
                     'document'   => $item->document,
                     'form_type'  => 'Internet Access Request',
+                    'url'        => $url.$item->id,
                 ];
     
                
@@ -131,13 +147,14 @@ class ScheduleEmailIaccessInternetRequest extends Controller
                     $message->subject($mailData['subject']);
                     $message->from('it-noreply@cpbangladesh.com');
                     //If Attachment Have
-                    if ( !empty($mailData['document']) ) {
+                    if ( !empty($item->document) ) {
 
-                        $message->attach( public_path('images/iaccess/document/'.$mailData['document'].'pdf') );
+                        $message->attach( public_path('images/iaccess/document/'.$item->document.'pdf') );
                     }
                 });
 
-                $item->status = 1;
+                $item->manager_status = 1;
+                $item->manager_datetime = Carbon::now();
                 $item->save();
 
             }
@@ -155,12 +172,14 @@ class ScheduleEmailIaccessInternetRequest extends Controller
                     
         
                     $mailData = [
-                        'to'         => $item->to_bu,
+                        //'to'         => $item->to_bu,
+                        'to'         => 'mahbubulalamrifat@gmail.com',
                         'to_name'    => $item->bu_name,
                         'name'       => $item->name,
                         'subject'    => $item->subject,
                         'document'   => $item->document,
                         'form_type'  => 'Internet Access Request',
+                        'url'        => $url.$item->id,
                     ];
         
                 
@@ -173,13 +192,14 @@ class ScheduleEmailIaccessInternetRequest extends Controller
                         $message->subject($mailData['subject']);
                         $message->from('it-noreply@cpbangladesh.com');
                         //If Attachment Have
-                        if ( !empty($mailData['document']) ) {
+                        if ( !empty($item->document) ) {
 
-                            $message->attach( public_path('images/iaccess/internet/'.$mailData['document'].'pdf') );
+                            $message->attach( public_path('images/iaccess/internet/'.$item->document.'pdf') );
                         }
                     });
 
-                    $item->status = 1;
+                    $item->bu_status = 1;
+                    $item->bu_datetime = Carbon::now();
                     $item->save();
 
                 }
@@ -198,12 +218,14 @@ class ScheduleEmailIaccessInternetRequest extends Controller
                     
         
                     $mailData = [
-                        'to'         => $item->to_it,
+                        //'to'         => $item->to_it,
+                        'to'         => 'mahbubulalamrifat@gmail.com',
                         'to_name'    => $item->it_name,
                         'name'       => $item->name,
                         'subject'    => $item->subject,
                         'document'   => $item->document,
                         'form_type'  => 'Internet Access Request',
+                        'url'        => $url.$item->id,
                     ];
         
                 
@@ -216,13 +238,14 @@ class ScheduleEmailIaccessInternetRequest extends Controller
                         $message->subject($mailData['subject']);
                         $message->from('it-noreply@cpbangladesh.com');
                         //If Attachment Have
-                        if ( !empty($mailData['document']) ) {
+                        if ( !empty($item->document) ) {
 
-                            $message->attach( public_path('images/iaccess/internet/'.$mailData['document'].'pdf') );
+                            $message->attach( public_path('images/iaccess/internet/'.$item->document.'pdf') );
                         }
                     });
 
-                    $item->status = 1;
+                    $item->it_status = 1;
+                    $item->it_datetime = Carbon::now();
                     $item->save();
 
                 }
