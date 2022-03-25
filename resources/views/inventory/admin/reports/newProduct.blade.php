@@ -1,7 +1,7 @@
 <table>
     <thead>
         <tr>
-            <td colspan="8" rowspan="3">
+            <td colspan="9" rowspan="3">
                 C.P. Bangladesh Co., Ltd. - Head Office <br> Information Technology <br> {{$product[0]->category->name}} Stock Record
             </td>
         </tr>
@@ -12,6 +12,7 @@
             <td rowspan="2" style="background-color: khaki;font-weight:bold;">Doc.No</td>
             <td rowspan="2" style="background-color: khaki;font-weight:bold;">LOCATION</td>
             <td rowspan="2" style="background-color: khaki;font-weight:bold;">DEPARTMENT</td>
+            <td rowspan="2" style="background-color: khaki;font-weight:bold;">Product Type</td>
             <td colspan="2" style="background-color: khaki;font-weight:bold;">BALANCE</td>
             <td rowspan="2" style="background-color: khaki;font-weight:bold;">Unit Price</td>
             <td rowspan="2" style="background-color: khaki;font-weight:bold;">Remark</td>
@@ -24,46 +25,67 @@
     <tbody>
         @foreach($product as $product)
         <tr>
+            {{-- date --}}
             <td>{{date("F j, Y", strtotime($product->created_at))}}</td>
 
-            @if($product->category)
-            <td>{{ $product->category->name }}</td>
+            {{-- doc no --}}
+            @if($product->newold)
+                <td>
+                    @if ($product->newold->comp_id)
+                        CMS-{{ $product->newold->comp_id }}
+                    @else
+                        <span style="color:red">N/A</span>
+                    @endif
+                </td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
+            {{-- location --}}
             @if($product->newold)
             <td>{{ $product->newold->business_unit }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
+            {{-- department --}}
             @if($product->newold)
             <td>{{ $product->newold->office }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($product->business_unit)
-            <td>{{ $product->business_unit }}</td>
+            {{-- product type --}}
+            @if($product->category)
+            <td>{{ $product->category->name }} - {{ $product->subcategory->name }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($product->remark)
-            <td>{{ $product->remark }}</td>
+            {{-- quantity --}}
+            @if($product->qty)
+            <td>{{ $product->qty }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
+            {{-- amount --}}
+            @if($product->amount)
+            <td>{{ $product->amount }}</td>
+            @else
+            <td style="color:red">N/A</td>
+            @endif
+
+            {{-- unit_price --}}
             @if($product->unit_price)
             <td>{{ $product->unit_price }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
+            {{-- remark --}}
             @if($product->remarks)
-            <td>{{ $product->remarks }}</td>
+            <td>{{ strip_tags($product->remarks) }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
@@ -71,35 +93,9 @@
         </tr>
         @endforeach
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td colspan="9"></td>
         </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+ 
 
         <tr>
             <td rowspan="5"></td>
@@ -113,41 +109,51 @@
             <td>
                 {{$length[0]}}
             </td>
-            <td>0.00</td>
-            <td>0.00</td>
+            <td>
+                @if (!empty($length[1]))
+                    {{$length[1]->unit_price}}
+                @else
+                0
+                @endif
+            </td>
+            <td>{{$length[2]}}</td>
             <td colspan="9" rowspan="5"></td>
             <td></td>
         </tr>
 
         <tr>
             <td>Issue</td>
-            <td>3</td>
-            <td>2,625.00</td>
-            <td>7,875.00</td>
+            <td>{{$length[3]}}</td>
+            <td>
+                @if (!empty($length[4]))
+                    {{$length[4]->unit_price}}
+                @else
+                0
+                @endif
+            </td>
+            <td>{{$length[5]}}</td>
             <td></td>
         </tr>
 
         <tr>
             <td>Damage</td>
-            <td>0</td>
-            <td>0.00</td>
-            <td>0.00</td>
+            <td>{{$length[6]}}</td>
+            <td>
+                @if (!empty($length[7]))
+                    {{$length[7]->unit_price}}
+                @else
+                0
+                @endif
+            </td>
+            <td>{{$length[8]}}</td>
             <td></td>
         </tr>
 
         <tr>
             <td></td>
-            <td>3</td>
-            <td>2,625.00</td>
-            <td>7,875.00</td>
-            <td></td>
-        </tr>
-
-        <tr>
-            <td></td>
-            <td>3</td>
-            <td>2,625.00</td>
-            <td>7,875.00</td>
+            <td>{{ $length[0]+$length[3]+$length[6] }}</td>
+            <td>{{ $length[1]->unit_price }}</td>
+            <td>{{ $length[2]+$length[5]+$length[8] }}</td>
             <td></td>
         </tr>
 

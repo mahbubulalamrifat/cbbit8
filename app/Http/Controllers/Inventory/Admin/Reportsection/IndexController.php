@@ -146,9 +146,9 @@ class IndexController extends Controller
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
 
-        $search_field     = Request('search_field', '');
-        $sort_by_product  = Request('sort_by_product', '');
-        $sort_by_startDate    = Request('sort_by_startDate', '');
+        $search_field       = Request('search_field', '');
+        $sort_by_product    = Request('sort_by_product', '');
+        $sort_by_startDate  = Request('sort_by_startDate', '');
         $sort_by_endDate    = Request('sort_by_endDate', '');
 
         $allDataQuery = InventoryNewProduct::with('makby', 'category', 'subcategory', 'newold')
@@ -203,23 +203,82 @@ class IndexController extends Controller
 
         $allData = $allDataQuery->where('give_st', 1)->get();
 
+        // issue 
+        $issue = $allDataQuery->count();
+        $issue_unit_price = $allDataQuery->where('unit_price', '!=', 0)->groupBy('unit_price')->first();
+        $issue_amount = $allDataQuery->sum('unit_price');
+
+        // damage
+        $allDataQuery->where('damage_st', 1)->get();
+
+        $damage = $allDataQuery->count();
+        $damage_unit_price = $allDataQuery->where('unit_price', '!=', 0)->groupBy('unit_price')->first();
+        $damage_amount = $allDataQuery->sum('unit_price');
 
         
 
-        $received = $allDataQuery->orderBy($sort_field, $sort_direction)->count();
-        $received_amount = $allDataQuery->orderBy($sort_field, $sort_direction)->sum('unit_price');
-        $received_unit_price = $allDataQuery->orderBy($sort_field, $sort_direction)->where('unit_price', '!=', 0)->groupBy('unit_price')->get();
 
 
-        $lengthData = [$received,$received_amount,$received_unit_price];
 
-        
-        
-
-
-        dd($allData, $lengthData);
+        ///////////////// all added product data ////////////////////
+        $allDataQuery2 = InventoryNewProduct::with('makby', 'category', 'subcategory', 'newold')
+            ->where('delete_temp', '!=', '1');
 
 
+
+        // sort_by_product
+        if(!empty($sort_by_product) && $sort_by_product != 'All'){
+            $allDataQuery2->where('name', $sort_by_product);
+        }
+
+        // sort_by_startDate
+
+        if(!empty($sort_by_startDate) && !empty($sort_by_endDate) ){
+            
+            $allDataQuery2 ->whereDate('created_at', '>=', $sort_by_startDate)
+                      ->whereDate('created_at', '<=', $sort_by_endDate);
+        }
+
+            // Search
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+            $allDataQuery2->where($search_field, 'LIKE', '%'.$val.'%');
+
+        }elseif($search_field == 'cat_id'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+
+            $allDataQuery2->whereHas( 'category', function($query) use($val){
+                //$query->where( 'name', $search_field );
+                $query->where('name', 'LIKE', '%'.$val.'%');
+            });
+
+        }
+        elseif($search_field == 'subcat_id'){
+
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+
+            $allDataQuery2->whereHas( 'subcategory', function($query) use($val){
+                //$query->where( 'name', $search_field );
+                $query->where('name', 'LIKE', '%'.$val.'%');
+            });
+
+        }
+        else{
+            $allDataQuery2->search( trim(preg_replace('/\s+/' ,' ', $search)) );
+        }
+
+        $allDataQuery2->orderBy($sort_field, $sort_direction);
+
+        $received = $allDataQuery2->count();
+        $received_unit_price = $allDataQuery2->where('unit_price', '!=', 0)->groupBy('unit_price')->first();
+        $received_amount = $allDataQuery2->sum('unit_price');
+
+        $lengthData = [$received,$received_unit_price,$received_amount, $issue,$issue_unit_price,$issue_amount, $damage,$damage_unit_price,$damage_amount];
+
+
+        //dd($lengthData);
        return Excel::download(new newProduct($allData, $lengthData), 'product-' . time() . '.xlsx');
     }
 }
