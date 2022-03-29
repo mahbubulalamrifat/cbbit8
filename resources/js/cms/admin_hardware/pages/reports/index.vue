@@ -15,18 +15,18 @@
                 </v-row>
             </v-card-title>
 
-            <v-card-text class="table-responsive">
+            <v-card-text class="table-responsive pt-3">
                 <div v-if="allData.data">
                     <v-row>
                         <v-col cols="2">
                             <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
+                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
                             </v-select>
                         </v-col>
                          <v-col cols="2">
                             <!-- {{ zone_office }} -->
                             <v-select v-model="zone_office" label="Zones:" :items="allZoneOffices" item-text="name"
-                                item-value="offices" small>
+                                item-value="offices" outlined dense>
                             </v-select>
                         </v-col>
 
@@ -34,20 +34,46 @@
                         <v-col cols="2">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
-                                item-text="department" item-value="department" small>
+                                item-text="department" item-value="department" outlined dense>
                             </v-select>
                         </v-col>
 
                         <v-col cols="2">
-                            <v-text-field prepend-icon="mdi-calendar-cursor" label="Start:" type="date" v-model="start_date" ></v-text-field>
+                            <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="Start:" type="date" v-model="start_date" ></v-text-field> -->
+                            <v-menu v-model="menu" min-width="auto">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field v-model="start_date" label="Start Date" prepend-inner-icon="mdi-calendar"
+                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                </template>
+
+                                <v-date-picker v-model="start_date" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu = false">
+                                        Cancel
+                                    </v-btn>
+                                </v-date-picker>
+                            </v-menu>
                         </v-col>
                         <v-col cols="2">
-                            <v-text-field prepend-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" ></v-text-field>
+                            <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" ></v-text-field> -->
+                            <v-menu v-model="menu2" min-width="auto">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field v-model="end_date" label="End Date" prepend-inner-icon="mdi-calendar"
+                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                </template>
+
+                                <v-date-picker v-model="end_date" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu2 = false">
+                                        Cancel
+                                    </v-btn>
+                                </v-date-picker>
+                            </v-menu>
                         </v-col>
 
                         <v-col cols="2">
-                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..."></v-text-field>
+                            <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
+                                placeholder="Search Input..." outlined dense></v-text-field>
                         </v-col>
                     </v-row>
 
@@ -178,6 +204,10 @@
 
                 // exportLoading
                 exportLoading: false,
+
+                // datepicker
+                menu: '',
+                menu2: '',
 
                 
             }

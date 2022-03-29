@@ -27,7 +27,7 @@ class CreateScheduleEmailIaccessInternetReqsTable extends Migration
             $table->string('manager_name')->nullable();
             $table->datetime('manager_datetime')->nullable();
             $table->integer('bu_status')->nullable();
-            $table->sring('bu_name')->nullable();
+            $table->string('bu_name')->nullable();
             $table->datetime('bu_datetime')->nullable();
             $table->integer('it_status')->nullable();
             $table->string('it_name')->nullable();

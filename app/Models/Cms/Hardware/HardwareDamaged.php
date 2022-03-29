@@ -4,6 +4,7 @@ namespace App\Models\Cms\Hardware;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Inventory\InventoryNewProduct;
 
 class HardwareDamaged extends Model
 {
@@ -17,9 +18,24 @@ class HardwareDamaged extends Model
         return $this->hasOne('App\Models\Cms\Hardware\HardwareComplain', 'id', 'comp_id');
     }
 
-    public function product(){
-        return $this->hasOne('App\Models\Inventory\InventoryNewProduct', 'id', 'rep_pro_id');
+    // public function product(){
+    //     //return $this->hasOne('App\Models\Inventory\InventoryNewProduct', 'id', 'rep_pro_id');
+    //     return $this->hasMany('App\Models\Inventory\InventoryNewProduct', 'id', 'rep_pro_id');
+    // }
+
+
+    public function product()
+    {
+        $take_devs = explode(',', $this->rep_pro_id);
+        $list_dev = array();
+        foreach($take_devs as $value)
+        {
+            $list_dev[] = InventoryNewProduct::where('id', $value)->first();
+        }
+
     }
+
+  
 
     public function scopeSearch($query, $val='')
     {

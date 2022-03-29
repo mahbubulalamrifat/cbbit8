@@ -62,10 +62,36 @@
                         </v-col>
 
                         <v-col cols="2">
-                            <v-text-field prepend-inner-icon="mdi-calendar-cursor" label="Start:" type="date" v-model="start_date" outlined dense></v-text-field>
+                            <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="Start:" type="date" v-model="start_date" ></v-text-field> -->
+                            <v-menu v-model="menu" min-width="auto">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field v-model="start_date" label="Start Date" prepend-inner-icon="mdi-calendar"
+                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                </template>
+
+                                <v-date-picker v-model="start_date" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu = false">
+                                        Cancel
+                                    </v-btn>
+                                </v-date-picker>
+                            </v-menu>
                         </v-col>
                         <v-col cols="2">
-                            <v-text-field prepend-inner-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" outlined dense></v-text-field>
+                            <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" ></v-text-field> -->
+                            <v-menu v-model="menu2" min-width="auto">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field v-model="end_date" label="End Date:" prepend-inner-icon="mdi-calendar"
+                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                </template>
+
+                                <v-date-picker v-model="end_date" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu2 = false">
+                                        Cancel
+                                    </v-btn>
+                                </v-date-picker>
+                            </v-menu>
                         </v-col>
 
                         <v-col cols="2">
@@ -84,7 +110,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                            <tr v-for="(singleData, index) in allData.data" :key="index">
 
                                 <td class="text-center">
                                     <v-btn @click="action(singleData.comp_id)" color="error" depressed small elevation="20">
@@ -159,53 +185,53 @@
                                 <td>
                                     <v-row>
                                         <v-col cols="4">
-                                            <div>
-                                                <b>Prouct Name</b> <span v-if="singleData.product.name">{{ singleData.product.name }}</span>
+                                            <div v-for="(newData,index) in singleData.product" :key="index">
+                                                <b>Prouct Name</b> <span v-if="newData.name">{{ newData.name }}</span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div>
-                                                <b>Prouct Serial</b> <span v-if="singleData.product.serial">{{ singleData.product.serial }}</span>
+                                            <div v-for="newData in singleData.product" :key="newData.id">
+                                                <b>Prouct Serial</b> <span v-if="newData.serial">{{ newData.serial }}</span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div>
-                                                <b>Purchase Date</b> <span v-if="singleData.product.purchase">{{ singleData.product.purchase }}</span>
+                                            <div v-for="newData in singleData.product" :key="newData.id">
+                                                <b>Purchase Date</b> <span v-if="newData.purchase">{{ newData.purchase }}</span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
                                         </v-col>
                                         <v-col cols="4">
-                                            <div>
-                                                <b>PO Number</b> <span v-if="singleData.product.po_number">{{ singleData.product.po_number }}</span>
+                                            <div v-for="newData in singleData.product" :key="newData.id">
+                                                <b>PO Number</b> <span v-if="newData.po_number">{{ newData.po_number }}</span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div>
-                                                <b>Request Payment Number</b> <span v-if="singleData.product.req_payment_num">{{ singleData.product.req_payment_num }}</span>
+                                            <div v-for="newData in singleData.product" :key="newData.id">
+                                                <b>Request Payment Number</b> <span v-if="newData.req_payment_num">{{ newData.req_payment_num }}</span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div>
-                                                <b>Bill submit Date</b> <span v-if="singleData.product.bill_submit">{{ singleData.product.bill_submit }}</span>
+                                            <div v-for="newData in singleData.product" :key="newData.id">
+                                                <b>Bill submit Date</b> <span v-if="newData.bill_submit">{{ newData.bill_submit }}</span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
                                         </v-col>
                                         <v-col cols="4">
 
-                                            <div>
-                                                <b>Invoice Number</b> <span v-if="singleData.product.invoice_num">{{ singleData.product.invoice_num }}</span>
+                                            <div v-for="newData in singleData.product" :key="newData.id">
+                                                <b>Invoice Number</b> <span v-if="newData.invoice_num">{{ newData.invoice_num }}</span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div>
-                                                <b>Warranty</b> <span v-if="singleData.product.warranty">{{ singleData.product.warranty | moment("from", singleData.product.warranty ) }}</span>
+                                            <div v-for="newData in singleData.product" :key="newData.id">
+                                                <b>Warranty</b> <span v-if="newData.warranty">{{ newData.warranty | moment("from", newData.warranty ) }}</span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div>
+                                            <div v-for="newData in singleData.product" :key="newData.id">
                                                 <b>Document</b>
-                                                <a v-if="singleData.product" :href="'/images/inventory/'+singleData.product.document"
+                                                <a v-if="newData.document" :href="'/images/inventory/'+newData.document"
                                                     class="btn btn-info btn-sm text-white" download>
                                                     <v-icon color="white">mdi-download-network-outline</v-icon> Document
                                                 </a>
@@ -309,6 +335,10 @@
                 damaged_reason: '',
                 applicable_type: '',
                 damaged_type: '',
+
+                // datepicker
+                menu: '',
+                menu2: '',
             }
         },
 

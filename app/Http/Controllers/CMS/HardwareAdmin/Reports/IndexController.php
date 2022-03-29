@@ -155,9 +155,6 @@ class IndexController extends Controller
 
     }
 
-
-
-
     // damaged replace
     public function damaged_replace(){
 
@@ -180,7 +177,11 @@ class IndexController extends Controller
         
 
         // Query
-        $allDataQuery =  HardwareDamaged::with('makby', 'complain', 'complain.category', 'complain.subcategory', 'complain.makby', 'product')->whereNotNull('rep_pro_id');
+        $allDataQuery =  HardwareDamaged::with('makby', 'complain', 'complain.category', 'complain.subcategory', 'complain.makby', 'product')
+                // ->whereHas('product', function ($q){
+                //     $q->whereIn('id', explode(",",'rep_pro_id'));
+                // })
+                ->whereNotNull('rep_pro_id');
         
         
         // start, end Selected
@@ -384,8 +385,7 @@ class IndexController extends Controller
 
     // damage replace
 
-    public function export_data_damagereplace(Request $request) 
-    {
+    public function export_data_damagereplace(Request $request){
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
@@ -455,6 +455,8 @@ class IndexController extends Controller
             
         // Final Data
         $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)->get();
+
+        //dd($allData);
             
 
         //dd($allData);

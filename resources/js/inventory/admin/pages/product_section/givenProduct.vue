@@ -91,10 +91,10 @@
                                         </v-btn>
                                     </td>
                                     <td>
-                                        <a v-if="singleData.newtbldata" :href="'/images/inventory/'+singleData.newtbldata.document"
-                                            class="btn btn-info btn-sm text-white" download>
-                                            <v-icon color="white">mdi-download-network-outline</v-icon> Document
-                                        </a>
+                                        <v-btn v-if="singleData.document"
+                                            :href="'/images/inventory/'+singleData.document" color="info" download>
+                                            <v-icon left>mdi-download-network-outline</v-icon> File
+                                        </v-btn>
                                         <span v-else class="text-danger">Not Attached</span>
                                     </td>
                                     <td>

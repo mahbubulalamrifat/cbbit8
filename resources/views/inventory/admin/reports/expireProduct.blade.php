@@ -8,11 +8,11 @@
         <tr></tr>
         <tr></tr>
         <tr>
-            <td style="font-weight:bold; background-color: khaki">Product Name/Model</td>
-            <td style="font-weight:bold; background-color: khaki">Category</td>
-            <td style="font-weight:bold; background-color: khaki">Subcategory</td>
-            <td style="font-weight:bold; background-color: khaki">Serial</td>
-            <td style="font-weight:bold; background-color: khaki">Purchase Date</td>
+            <td style="font-weight:bold; background-color: #3F51B5;color:white;">Product Name/Model</td>
+            <td style="font-weight:bold; background-color: #3F51B5;color:white;">Category</td>
+            <td style="font-weight:bold; background-color: #3F51B5;color:white;">Subcategory</td>
+            <td style="font-weight:bold; background-color: #3F51B5;color:white;">Serial</td>
+            <td style="font-weight:bold; background-color: #3F51B5;color:white;">Purchase Date</td>
         </tr>
     </thead>
     <tbody>

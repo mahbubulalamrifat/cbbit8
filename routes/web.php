@@ -842,121 +842,127 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
 
     // Inventory Start
-    Route::namespace('Inventory')->prefix('inventory')->group(function(){
+        Route::namespace('Inventory')->prefix('inventory')->group(function(){
 
-        // Admin
-        Route::middleware(['can:roomAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
-
-            Route::get('/dashboard_data', 'IndexController@dashboard_data');
-
-            Route::get('/category', 'IndexController@category');
-
-            // NewProduct Management
-            Route::namespace('NewProduct')->prefix('new_product')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::post('/store', 'IndexController@store');
-                Route::post('/update', 'IndexController@update');
-                Route::delete('/destroy_temp', 'IndexController@destroy_temp');
-
-                Route::post('/damage_status/{id}', 'IndexController@damage_status');
-                
-
-                // office
-                Route::get('/office', 'IndexController@office');
-                // deliver
-                Route::post('/deliver', 'IndexController@deliver');
-
-            });
-
-
-            // OldProduct Management
-            Route::namespace('OldProduct')->prefix('old_product')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::post('/store', 'IndexController@store');
-                Route::put('/update', 'IndexController@update');
-                Route::delete('/destroy_temp', 'IndexController@destroy_temp');
-
-                // office
-                Route::get('/office', 'IndexController@office');
-                Route::get('/business_unit', 'IndexController@businessUnit');
-                
-            });
-
-            //Operation 
-            Route::namespace('Operation')->prefix('operation')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::post('/store', 'IndexController@store');
-                Route::put('/update', 'IndexController@update');
-                Route::delete('/destroy', 'IndexController@destroy');
-            });
-
-
-            //product section 
-            Route::namespace('Productsection')->prefix('product')->group(function(){
-
-                Route::prefix('given-product')->group(function(){
-                    Route::get('/index', 'IndexController@given_product');
-
-                    Route::get('/export_data', 'IndexController@export_data_given');                    
+            // Admin
+            Route::middleware(['can:roomAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+    
+                Route::get('/dashboard_data', 'IndexController@dashboard_data');
+    
+                Route::get('/category', 'IndexController@category');
+    
+                // NewProduct Management
+                Route::namespace('NewProduct')->prefix('new_product')->group(function(){
+                    Route::get('/index', 'IndexController@index');
+                    Route::post('/store', 'IndexController@store');
+                    Route::post('/update', 'IndexController@update');
+                    Route::delete('/destroy_temp', 'IndexController@destroy_temp');
+    
+                    Route::post('/damage_status/{id}', 'IndexController@damage_status');
+                    
+    
+                    // office
+                    Route::get('/office', 'IndexController@office');
+                    // deliver
+                    Route::post('/deliver', 'IndexController@deliver');
+    
                 });
-
-                Route::prefix('running-product')->group(function(){
-                    Route::get('/index', 'IndexController@running_product');
-
-                    Route::get('/export_data', 'IndexController@export_data_running');                    
+    
+    
+                // OldProduct Management
+                Route::namespace('OldProduct')->prefix('old_product')->group(function(){
+                    Route::get('/index', 'IndexController@index');
+                    Route::post('/store', 'IndexController@store');
+                    Route::put('/update', 'IndexController@update');
+                    Route::delete('/destroy_temp', 'IndexController@destroy_temp');
+    
+                    // office
+                    Route::get('/office', 'IndexController@office');
+                    Route::get('/business_unit', 'IndexController@businessUnit');
+                    
                 });
-
-                Route::prefix('damaged-product')->group(function(){
-                    Route::get('/index', 'IndexController@damaged_product');
-
-                    Route::get('/export_data', 'IndexController@export_data_damage');
-                });
-            });
-
-            //Warranty section 
-            Route::namespace('Warrantysection')->prefix('w-product')->group(function(){
-
-                Route::prefix('warranty-product')->group(function(){
-                    Route::get('/index', 'IndexController@warranty_product');
-
-                    Route::get('/export_data', 'IndexController@export_data_warranty');
-                });
-
-                Route::prefix('expire-product')->group(function(){
-                    Route::get('/index', 'IndexController@expire_product');
-
-                    Route::get('/export_data', 'IndexController@export_data_expire');
-                });
-            });
-
-            //Report section 
-            Route::namespace('Reportsection')->prefix('report')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::get('/sort_by_product', 'IndexController@sort_by_product');
-                Route::get('/export_data', 'IndexController@export_data');
-            });
-
-            //Deleted section 
-            Route::namespace('Deletedsection')->prefix('delete')->group(function(){
-                Route::prefix('new-product')->group(function(){
-                    Route::get('/index', 'IndexController@new_product');    
+    
+                //Operation 
+                Route::namespace('Operation')->prefix('operation')->group(function(){
+                    Route::get('/index', 'IndexController@index');
+                    Route::post('/store', 'IndexController@store');
+                    Route::put('/update', 'IndexController@update');
                     Route::delete('/destroy', 'IndexController@destroy');
-                    Route::put('/restore', 'IndexController@restore');
                 });
-                Route::prefix('old-product')->group(function(){
-                    Route::get('/index', 'IndexController@old_product');
-                    Route::delete('/destroy', 'IndexController@destroy');
-                    Route::put('/restore', 'IndexController@restore');
+    
+    
+                //product section 
+                Route::namespace('Productsection')->prefix('product')->group(function(){
+    
+                    Route::prefix('given-product')->group(function(){
+                        Route::get('/index', 'IndexController@given_product');
+    
+                        Route::get('/export_data', 'IndexController@export_data_given');                    
+                    });
+    
+                    Route::prefix('running-product')->group(function(){
+                        Route::get('/index', 'IndexController@running_product');
+    
+                        Route::get('/export_data', 'IndexController@export_data_running');                    
+                    });
+    
+                    Route::prefix('damaged-product')->group(function(){
+                        Route::get('/index', 'IndexController@damaged_product');
+    
+                        Route::get('/export_data', 'IndexController@export_data_damage');
+                    });
                 });
+    
+                //Warranty section 
+                Route::namespace('Warrantysection')->prefix('w-product')->group(function(){
+    
+                    Route::prefix('warranty-product')->group(function(){
+                        Route::get('/index', 'IndexController@warranty_product');
+    
+                        Route::get('/export_data', 'IndexController@export_data_warranty');
+                    });
+    
+                    Route::prefix('expire-product')->group(function(){
+                        Route::get('/index', 'IndexController@expire_product');
+    
+                        Route::get('/export_data', 'IndexController@export_data_expire');
+                    });
+                });
+    
+                //Report section 
+                Route::namespace('Reportsection')->prefix('report')->group(function(){
+                    // Route::get('/index', 'IndexController@index');
+                    // Route::get('/sort_by_product', 'IndexController@sort_by_product');
+                    // Route::get('/export_data', 'IndexController@export_data');
+    
+                    Route::prefix('stock')->group(function(){
+                        Route::get('/', 'StockController@index');
+                        Route::get('/export_data', 'StockController@export_data');
+                    });
+    
+                });
+    
+                //Deleted section 
+                Route::namespace('Deletedsection')->prefix('delete')->group(function(){
+                    Route::prefix('new-product')->group(function(){
+                        Route::get('/index', 'IndexController@new_product');    
+                        Route::delete('/destroy', 'IndexController@destroy');
+                        Route::put('/restore', 'IndexController@restore');
+                    });
+                    Route::prefix('old-product')->group(function(){
+                        Route::get('/index', 'IndexController@old_product');
+                        Route::delete('/destroy', 'IndexController@destroy');
+                        Route::put('/restore', 'IndexController@restore');
+                    });
+                });
+    
+               
+                Route::get('{any?}', 'IndexController@index');
             });
-
-           
-            Route::get('{any?}', 'IndexController@index');
+    
+            
         });
-
-        
-    });
-    // Inventory End
+        // Inventory End
 
 
 

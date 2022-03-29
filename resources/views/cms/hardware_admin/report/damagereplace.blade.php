@@ -31,117 +31,120 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($complain as $complain)
+        @foreach($complain as $data)
         <tr>
-            <td>{{ $complain->id }}</td>
+            <td>{{ $data->id }}</td>
 
-            @if($complain->complain->category)
-            <td>{{ $complain->complain->category->name }}</td>
+            @if($data->complain->category)
+            <td>{{ $data->complain->category->name }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->complain->subcategory)
-            <td>{{ $complain->complain->subcategory->name }}</td>
+            @if($data->complain->subcategory)
+            <td>{{ $data->complain->subcategory->name }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->damaged_reason)
-            <td>{{ $complain->damaged_reason }}</td>
+            @if($data->damaged_reason)
+            <td>{{ $data->damaged_reason }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->complain->makby)
-            <td>{{ $complain->complain->makby->name }}</td>
+            @if($data->complain->makby)
+            <td>{{ $data->complain->makby->name }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->makby)
-            <td>{{ $complain->makby->department }}</td>
+            @if($data->makby)
+            <td>{{ $data->makby->department }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->makby)
-            <td>{{ $complain->makby->name }}</td>
+            @if($data->makby)
+            <td>{{ $data->makby->name }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->rec_name)
-            <td>{{ $complain->rec_name }}</td>
+            @if($data->rec_name)
+            <td>{{ $data->rec_name }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->rec_contact)
-            <td>{{ $complain->rec_contact }}</td>
+            @if($data->rec_contact)
+            <td>{{ $data->rec_contact }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->rec_position)
-            <td>{{ $complain->rec_position }}</td>
+            @if($data->rec_position)
+            <td>{{ $data->rec_position }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->product->name)
-            <td>{{ $complain->product->name }}</td>
+            {{-- @if($data->product->length) --}}
+            <td>
+                @foreach($product as $data->product)
+                {{ $product->name }}
+                @endforeach
+            </td>
+            {{-- @else
+            <td style="color:red">N/A</td>
+            @endif --}}
+
+            {{-- @if($data->product)
+            <td>{{ $data->product->serial }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->product->serial)
-            <td>{{ $complain->product->serial }}</td>
+            @if($data->product)
+            <td>{{ $data->product->purchase }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->product->purchase)
-            <td>{{ $complain->product->purchase }}</td>
+            @if($data->product)
+            <td>{{ $data->product->po_number }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->product->po_number)
-            <td>{{ $complain->product->po_number }}</td>
+            @if($data->product)
+            <td>{{ $data->product->req_payment_num }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->product->req_payment_num)
-            <td>{{ $complain->product->req_payment_num }}</td>
+            @if($data->product)
+            <td>{{ $data->product->bill_submit }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($complain->product->bill_submit)
-            <td>{{ $complain->product->bill_submit }}</td>
-            @else
-            <td style="color:red">N/A</td>
-            @endif
-
-            @if($complain->product->invoice_num)
-            <td>{{ $complain->product->invoice_num }}</td>
+            @if($data->product)
+            <td>{{ $data->product->invoice_num }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
             
 
-            @if($complain->product->warranty)
-           
-            <td>{{ warranty_check($complain->product->warranty ) }}</td>
+            @if($data->product)
+            <td>{{ warranty_check($data->product->warranty ) }}</td>
             @else
             <td style="color:red">N/A</td>
-            @endif
+            @endif --}}
 
-            <td>{{date("F j, Y, g:i a", strtotime($complain->created_at))}}</td>
-            <td>{{date("F j, Y, g:i a", strtotime($complain->updated_at))}}</td>
+            <td>{{date("F j, Y, g:i a", strtotime($data->created_at))}}</td>
+            <td>{{date("F j, Y, g:i a", strtotime($data->updated_at))}}</td>
 
         </tr>
         @endforeach

@@ -2,7 +2,8 @@
     <div>
         <v-app-bar app flat dense dark class="bg_gradient">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
+            <v-spacer></v-spacer>
+            <v-app-bar-title>Today: {{ $moment(new Date()).format('YYYY-MMM-DD') }}</v-app-bar-title>
             <v-spacer></v-spacer>
             <v-app-bar-title v-if="isAdministrator()" class="red--text" small>Administrator</v-app-bar-title>
             <v-spacer></v-spacer>
@@ -149,9 +150,17 @@
                         <v-list-item-icon>
                             <v-icon>mdi-grid-large</v-icon>
                         </v-list-item-icon>
-                        
                         <v-list-item-content>
                             <v-list-item-title>New Product</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item link router :to="{name: 'reportStock'}">
+                        <v-list-item-icon>
+                            <v-icon>mdi-grid-large</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Stock</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
 

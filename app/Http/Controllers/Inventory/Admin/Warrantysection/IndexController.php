@@ -35,7 +35,8 @@ class IndexController extends Controller
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
 
-        }elseif($search_field == 'cat_id'){
+        }
+        elseif($search_field == 'cat_id'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
 

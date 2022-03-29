@@ -15,7 +15,7 @@
                 </v-row>
             </v-card-title>
 
-            <v-card-text class="table-responsive pt-3">
+            <v-card-text class="table-responsive mt-5">
                 <div v-if="allData.data">
                     <v-row>
                         <v-col cols="4">
@@ -62,10 +62,36 @@
                         </v-col>
 
                         <v-col cols="2">
-                            <v-text-field prepend-inner-icon="mdi-calendar-cursor" label="Start:" type="date" v-model="start_date" outlined dense></v-text-field>
+                            <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="Start:" type="date" v-model="start_date" ></v-text-field> -->
+                            <v-menu v-model="menu" min-width="auto">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field v-model="start_date" label="Start Date" prepend-inner-icon="mdi-calendar"
+                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                </template>
+
+                                <v-date-picker v-model="start_date" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu = false">
+                                        Cancel
+                                    </v-btn>
+                                </v-date-picker>
+                            </v-menu>
                         </v-col>
                         <v-col cols="2">
-                            <v-text-field prepend-inner-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" outlined dense></v-text-field>
+                            <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" ></v-text-field> -->
+                            <v-menu v-model="menu2" min-width="auto">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field v-model="end_date" label="End Date" prepend-inner-icon="mdi-calendar"
+                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                </template>
+
+                                <v-date-picker v-model="end_date" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu2 = false">
+                                        Cancel
+                                    </v-btn>
+                                </v-date-picker>
+                            </v-menu>
                         </v-col>
 
                         <v-col cols="2">
@@ -246,6 +272,10 @@
                 damaged_reason: '',
                 applicable_type: '',
                 damaged_type: '',
+
+                // datepicker
+                menu: '',
+                menu2: '',
             }
         },
 

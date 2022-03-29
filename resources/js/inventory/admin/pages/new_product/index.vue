@@ -62,23 +62,23 @@
                                 <td class="text-center">
 
                                     <v-btn class="m-1" @click="editDataModel(singleData)" color="info" elevation="20" small>
-                                        <v-icon small>mdi-circle-edit-outline</v-icon> Edit
+                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
                                     </v-btn>
 
                                     <v-btn class="ma-2" @click="deleteDataTemp(singleData.id)" color="error" elevation="20" small>
-                                        <v-icon small>mdi-delete-empty</v-icon> Delete
+                                        <v-icon left>mdi-delete-empty</v-icon> Delete
                                     </v-btn>
 
                                     <v-btn class="ma-2" @click="deliever(singleData)" color="orange" elevation="20" small>
-                                        <v-icon small>mdi-upload</v-icon> Delivery
+                                        <v-icon left>mdi-upload</v-icon> Delivery
                                     </v-btn>
 
                                     <v-btn v-if="singleData.damage_st === null" @click="damageChange(singleData)" color="success"
                                         depressed small>
-                                        <v-icon small>mdi-check-circle-outline</v-icon> Good
+                                        <v-icon left>mdi-check-circle-outline</v-icon> Good
                                     </v-btn>
                                     <v-btn v-else @click="statusChange(singleData)" color="warning" depressed small>
-                                        <v-icon small>mdi-alert-circle-outline </v-icon> Damage
+                                        <v-icon left>mdi-alert-circle-outline </v-icon> Damage
                                     </v-btn>
 
                                     <br>
@@ -89,10 +89,10 @@
                                     <div class="d-flex justify-content-between align-center">
                                         <div>
                                             <div>
-                                                <b>Product Name/Model</b> {{ singleData.name }}
+                                                <b>Name/Model</b> {{ singleData.name }}
                                             </div>
                                             <div>
-                                                <b>Product Serial</b> <span v-html="singleData.serial"></span>
+                                                <b>Serial</b> <span v-html="singleData.serial"></span>
                                             </div>
 
                                             <div>
@@ -104,19 +104,20 @@
                                         </div>
                                         <div>
                                             <div>
-                                                <b>Product Category</b> <span v-if="singleData.category">{{ singleData.category.name }}</span>
+                                                <b>Category</b> <span v-if="singleData.category">{{ singleData.category.name }}</span>
                                             </div>
                                             <div>
-                                                <b>Product Subcategory</b> <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
+                                                <b>Subcategory</b> <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
+                                            </div>
+                                            <div>
+                                                <b>Warranty</b> <span v-if="singleData.warranty && singleData.warranty > $moment(new Date()).format('YYYY-MM-DD')"> {{ singleData.warranty | moment("from") }} </span> 
+                                                <span v-else class="error--text">Expired </span>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <a v-if="singleData.document" :href="'/images/inventory/'+singleData.document"
-                                        class="btn btn-info btn-sm text-white" download>
-                                        <v-icon color="white">mdi-download-network-outline</v-icon> Document
-                                    </a>
+                                    <v-btn v-if="singleData.document" :href="'/images/inventory/'+singleData.document" color="info" download><v-icon left>mdi-download-network-outline</v-icon> File</v-btn>
                                     <span v-else class="text-danger">Not Attached</span>
                                 </td>
 

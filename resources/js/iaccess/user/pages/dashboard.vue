@@ -9,18 +9,17 @@
             <v-card-text>
 
                 <v-row>
-                    <v-col lg="3" cols="6">
+                    <v-col lg="3" cols="12" height="350">
                         <v-hover>
                             <template v-slot:default="{ hover }">
-                                <v-card @click="emailModal = true, emailActionKey++;">
+                                <v-card @click="emailModal = true, emailActionKey++"> 
+                                    <v-card-title>Official Email Request Form</v-card-title>
                                     <v-img
                                     class="align-end font-weight-bold bg-info"
                                     contain
-                                    src="https://asset.cpbangladesh.com/documents/email_request_form_20220321032846p4nG6WUJcr.jpg"
-                                    gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+                                    src="/all-assets/common/icon/email_request.png"
                                     height="330px"
                                     >
-                                    <v-card-title>Official Email Request Form</v-card-title>
                                     </v-img>
 
                                     <v-fade-transition>
@@ -39,18 +38,17 @@
                         </v-hover>
                     </v-col>
 
-                    <v-col lg="3" cols="6">
+                    <v-col lg="3" cols="12" height="350">
                         <v-hover>
                             <template v-slot:default="{ hover }">
                                 <v-card @click="accountModal = true, accountActionKey++ ">
+                                    <v-card-title>Account Authority Request Form</v-card-title>
                                     <v-img
                                     class="align-end font-weight-bold bg-info"
                                     contain
-                                    src="https://asset.cpbangladesh.com/documents/account_authority_form_20220321033015CW0QxQwCZN.jpg"
-                                    gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+                                    src="/all-assets/common/icon/account_authority.png"
                                     height="330px"
                                     >
-                                    <v-card-title>Account Authority Request Form</v-card-title>
                                     </v-img>
 
                                     <v-fade-transition>
@@ -67,18 +65,17 @@
                         </v-hover>
                     </v-col>
 
-                    <v-col lg="3" cols="6">
+                    <v-col lg="3" cols="12" height="350">
                         <v-hover>
                             <template v-slot:default="{ hover }">
                                 <v-card @click="internetModal = true, internetActionKey++ ">
+                                    <v-card-title>Internet/Web Access Request Form</v-card-title>
                                     <v-img
                                     class="align-end font-weight-bold bg-info"
                                     contain
-                                    src="https://asset.cpbangladesh.com/documents/web_access_form_20220321032942CvsCg4XcfW.jpg"
-                                    gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+                                    src="/all-assets/common/icon/internet_access.png"
                                     height="330px"
                                     >
-                                    <v-card-title>Internet/Web Access Request Form</v-card-title>
                                     </v-img>
 
                                     <v-fade-transition>
@@ -95,18 +92,17 @@
                         </v-hover>
                     </v-col>
 
-                    <v-col lg="3" cols="6">
+                    <v-col lg="3" cols="12" height="350">
                         <v-hover>
                             <template v-slot:default="{ hover }">
                                 <v-card @click="guestModal = true, guestActionKey++ ">
+                                    <v-card-title>Guest User Request Form</v-card-title>
                                     <v-img
                                     class="align-end font-weight-bold bg-info"
                                     contain
-                                    src="https://asset.cpbangladesh.com/documents/guest_user_form_20220321032959Yji3cqBO3r.jpg"
-                                    gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+                                    src="/all-assets/common/icon/guest_request.png"
                                     height="330px"
                                     >
-                                    <v-card-title>Guest User Request Form</v-card-title>
                                     </v-img>
 
                                     <v-fade-transition>

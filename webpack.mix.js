@@ -242,8 +242,6 @@ mix.js('resources/js/network/admin/js/app.js', 'public/js/network/admin/app.js')
 mix.styles([
         'resources/css/common/preloader.css',
 ], 'public/css/network/admin/app.css');
-    
-
 
 // *********End network *********End
 

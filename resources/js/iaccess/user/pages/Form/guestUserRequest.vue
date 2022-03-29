@@ -88,7 +88,7 @@
 
                                 <v-col cols="12" lg="6">
                                     <div class="text-danger" v-if="form.errors.has('no_of_guest')" v-html="form.errors.get('no_of_guest')" />
-                                    <v-text-field label="No of Guest" v-model="form.no_of_guest" required :rules="[v => !!v || 'No of guest is required!']" outlined dense></v-text-field>
+                                    <v-text-field label="No of Guest" type="text" v-model="form.no_of_guest" required :rules="[v => !!v || 'No of guest is required!']" outlined dense></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" lg="6">
