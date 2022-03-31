@@ -39,7 +39,7 @@ class IndexController extends Controller
         
         //Percent calculation
         $userPercent = round( ( $totalRoleUser * 100 ) / $totalUser );
-
+        
     
         // Data group by category
         $chartData = ApplicationComplain::where('status', 1)

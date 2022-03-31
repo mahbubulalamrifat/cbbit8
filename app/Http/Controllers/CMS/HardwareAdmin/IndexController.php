@@ -9,6 +9,7 @@ use Auth;
 
 use App\Http\Controllers\CMS\HardwareAdmin\CommonController;
 use App\Models\Cms\Hardware\HardwareComplain;
+use App\Models\Cms\Hardware\HardwareDamaged;
 
 class IndexController extends Controller
 {
@@ -62,5 +63,29 @@ class IndexController extends Controller
 
         return response()->json(['notprocess'=>$notprocess,'process'=>$process, 'deliverable'=>$deliverable, 'service'=>$service]);
 
+    }
+
+
+
+    // dashboard_data
+    public function dashboard_data(){
+
+        $allComplain = HardwareComplain::count();
+
+        $productWiseComplain = HardwareComplain::with('category')
+            ->groupBy('cat_id')
+            ->selectRaw('count(*) as total, cat_id')
+            ->get()
+            ->toArray();
+
+
+        $damageWiseComplain = HardwareDamaged::with('complain', 'complain.category')
+            ->groupBy('damaged_type')
+            ->whereNotNull('damaged_type')
+            ->selectRaw('count(*) as total, damaged_type')
+            ->get()
+            ->toArray();
+
+        return response()->json(['productWiseComplain'=>$productWiseComplain,'allComplain'=>$allComplain, 'damageWiseComplain'=>$damageWiseComplain]);
     }
 }

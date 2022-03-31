@@ -77,7 +77,7 @@
                                         depressed small>
                                         <v-icon left>mdi-check-circle-outline</v-icon> Good
                                     </v-btn>
-                                    <v-btn v-else @click="statusChange(singleData)" color="warning" depressed small>
+                                    <v-btn v-else @click="damageChange(singleData)" color="warning" depressed small>
                                         <v-icon left>mdi-alert-circle-outline </v-icon> Damage
                                     </v-btn>
 

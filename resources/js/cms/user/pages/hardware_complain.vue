@@ -158,11 +158,8 @@
 
             // getSubcategory
             getSubcategory() {
-                //console.log('cat id', this.form.cat_id)
 
                 this.allCatData.forEach(element => {
-                    //console.log(element.id)
-                    //this.currentAccessoriesData = ''
 
                     // Check Selected category ID 
                     if (element.id == this.form.cat_id) {
@@ -170,10 +167,7 @@
                         if (element.acsosoris.length > 0) {
                            
                             this.currentAccessoriesData = element.acsosoris
-
-                            //console.log('acsosoris', this.currentAccessoriesData, element.acsosoris)
                         }
-                        //console.log(element)
                         this.allSubcategory = []
                         if (element.subcat.length > 0) {
                             for (let i = 0; i < element.subcat.length; i++) {
@@ -194,23 +188,6 @@
                         
                     }
                 })
-
-                // Make Empty
-                // this.allSubcategory = []
-
-                // axios.get(this.currentUrl + '/subcategory/' + this.form.cat_id).then(response => {
-                //     //this.allCategory = response.data
-                //     //console.log(response.data)
-                //     for (let i = 0; i < response.data.length; i++) {
-                //         this.allSubcategory.push(response.data[i]);
-                //         this.allSubcategory[i] = {
-                //             value: response.data[i].id,
-                //             text: response.data[i].name
-                //         };
-                //     }
-                // }).catch(error => {
-                //     console.log(error)
-                // })
             },
 
             // complainStore

@@ -671,6 +671,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         //Hardware Admin 
         Route::middleware(['can:hardAdmin'])->namespace('HardwareAdmin')->prefix('h_admin')->group(function(){
 
+            Route::get('/dashboard_data', 'IndexController@dashboard_data');
+
             Route::get('/zone_access', 'Complain\ComplainController@zone_access');
 
             // index
@@ -1043,10 +1045,9 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
     // network start
     Route::namespace('Network')->prefix('network')->group(function(){
 
-        Route::get('/dashboard_all', 'IndexController@dashboardData');
-
         // Admin
         Route::middleware(['can:roomAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+            Route::get('/dashboard_all', 'IndexController@dashboardData');
 
             Route::namespace('Allgroup')->prefix('all-group')->group(function(){
                 Route::get('/index', 'IndexController@index');

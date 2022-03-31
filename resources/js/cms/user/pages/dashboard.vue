@@ -10,7 +10,9 @@
                 <div class="col-12 col-lg-6 m-auto responsive-gap">
                     <div class="d-flex flex-column align-items-center">
                         <div @click="hardwareComplainDialog()">
-                            <img src="/all-assets/common/icon/hardware.png" alt="image" class="img-fluid images bg-white" />
+                            <v-avatar size="250" style="background-color:white;">
+                                <v-img src="/all-assets/common/icon/user_hard_net.png" contain></v-img>
+                            </v-avatar>
                         </div>
                         <div class="h2 my-1">Hardware & Network</div>
                     </div>
@@ -18,7 +20,9 @@
                 <div class="col-12 col-lg-6 m-auto">
                     <div class="d-flex flex-column align-items-center">
                         <div @click="applicationComplainDialog()">
-                            <img src="/all-assets/common/icon/application.png" alt="image" class="img-fluid images bg-white" />
+                            <v-avatar size="250" style="background-color:white;">
+                                <v-img src="/all-assets/common/icon/user_business_app.png" contain></v-img>
+                            </v-avatar>
                         </div>
                         <div class="h2 my-1">Business Application</div>
                     </div>
