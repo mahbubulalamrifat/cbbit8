@@ -22,7 +22,7 @@
 
                         <v-row align-content="center" class="pt-5">
 
-                            <v-col lg="6" md="6" cols="12">
+                            <v-col lg="6" cols="12">
                                 <div class="small text-danger" v-if="form.errors.has('cat_id')"
                                     v-html="form.errors.get('cat_id')" />
                                 <v-autocomplete :items="allCategory" @change="getSubcategory
@@ -30,7 +30,7 @@
                                     :rules="[v => !!v || 'category is required!']" outlined required>
                                 </v-autocomplete>
                             </v-col>
-                            <v-col lg="6" md="6" cols="12">
+                            <v-col lg="6" cols="12">
                                 <div class="small text-danger" v-if="form.errors.has('subcat_id')"
                                     v-html="form.errors.get('subcat_id')" />
                                 <v-autocomplete :items="allSubcategory" v-model="form.subcat_id"
@@ -61,7 +61,7 @@
                             </v-col>
 
                             <!-- document -->
-                            <v-col lg="6" md="6" cols="12">
+                            <v-col lg="6" cols="12">
                                 <v-file-input @change="uploadDocByName($event, 'document')" show-size label="Document"
                                     accept="image/*, .pdf, .xlsx, .docx" :rules="docRules" outlined></v-file-input>
                             </v-col>

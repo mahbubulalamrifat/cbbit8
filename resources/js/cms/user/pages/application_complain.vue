@@ -20,12 +20,12 @@
                      <form @submit.prevent="complainStore()"> 
                         
                             <v-row align-content="center" class="pt-5">
-                                <v-col cols="6">
+                                <v-col cols="12" lg="6">
                                     <div class="small text-danger" v-if="form.errors.has('cat_id')" v-html="form.errors.get('cat_id')" />
                                     <v-autocomplete :items="allCategory" @change="getSubcategory
                                     ()" v-model="form.cat_id" label="Select Software" :rules="[v => !!v || 'Software is required!']" outlined required></v-autocomplete>
                                 </v-col>
-                                <v-col cols="6">
+                                <v-col cols="12" lg="6">
                                     <div class="small text-danger" v-if="form.errors.has('subcat_id')" v-html="form.errors.get('subcat_id')" />
                                     <v-autocomplete :items="allSubcategory"
                                     v-model="form.subcat_id" label="Select Software Module" :rules="[v => !!v || 'Software Module is required!']" outlined required></v-autocomplete>

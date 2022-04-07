@@ -10,64 +10,66 @@
         </div>
         <div class="text_content col-lg-9 col-md-7 ml-auto">
             
-            <table class="table table-bordered">
-                <tr>
-                    <th>Login-ID</th>
-                    <td>{{data.login}}</td>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Login-ID</th>
+                        <td>{{data.login}}</td>
 
-                    <th>Full Name</th>
-                    <td>{{data.name}}</td>
-                </tr>
+                        <th>Full Name</th>
+                        <td>{{data.name}}</td>
+                    </tr>
 
-                <tr>
-                    <th>Office-ID</th>
-                    <td>{{data.office_id}}</td>
+                    <tr>
+                        <th>Office-ID</th>
+                        <td>{{data.office_id}}</td>
 
-                    <th>Personal Email</th>
-                    <td>{{data.personal_email}}</td>
-                </tr>
+                        <th>Personal Email</th>
+                        <td>{{data.personal_email}}</td>
+                    </tr>
 
-                <tr>
-                    <th>Designation</th>
-                    <td>{{data.department}}</td>
+                    <tr>
+                        <th>Designation</th>
+                        <td>{{data.department}}</td>
 
-                    <th>Office Email</th>
-                    <td>
-                        <span v-if="data.office_email">
-                            {{data.office_email}}
-                        </span>
-                    </td>
-                </tr>
+                        <th>Office Email</th>
+                        <td>
+                            <span v-if="data.office_email">
+                                {{data.office_email}}
+                            </span>
+                        </td>
+                    </tr>
 
-                <tr>
-                    <th>Personal Contact</th>
-                    <td>
-                        <span v-if="data.personal_contact">
-                            {{data.personal_contact}}
-                        </span>
-                    </td>
+                    <tr>
+                        <th>Personal Contact</th>
+                        <td>
+                            <span v-if="data.personal_contact">
+                                {{data.personal_contact}}
+                            </span>
+                        </td>
 
-                    <th>Office</th>
-                    <td>{{data.office}}</td>
-                </tr>
+                        <th>Office</th>
+                        <td>{{data.office}}</td>
+                    </tr>
 
-                <tr>
-                    <th>Office Contact</th>
-                    <td>
-                        <span v-if="data.office_contact">
-                            {{data.office_contact}}
-                        </span>
-                    </td>
+                    <tr>
+                        <th>Office Contact</th>
+                        <td>
+                            <span v-if="data.office_contact">
+                                {{data.office_contact}}
+                            </span>
+                        </td>
 
-                    <th>Business Unit</th>
-                    <td>
-                        <span v-if="data.business_unit">
-                            {{data.business_unit}}
-                        </span>
-                    </td>
-                </tr>
-                
-            </table>
+                        <th>Business Unit</th>
+                        <td>
+                            <span v-if="data.business_unit">
+                                {{data.business_unit}}
+                            </span>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
         </div>
 
     </div>

@@ -68,7 +68,7 @@
 
                 {{-- unit_price --}}
                 @if($singleData->unit_price)
-                <td>{{ $singleData->unit_price }}</td>
+                <td>{{ number_format($singleData->unit_price) }}</td>
                 @else
                 <td style="color:red">N/A</td>
                 @endif
@@ -97,14 +97,21 @@
         <tr></tr>
         @endif
         <tr>
-            <td colspan="9"></td>
+            <td colspan="7"></td>
         </tr>
  
         <tr>
-            <td colspan="2">TOTAL USAGE</td>
-            <td>Unit Price</td>
-            <td>AMOUNT</td>
-            <td rowspan="5" colspan="3"></td>
+            <td style="background-color: #009688; color:white" colspan="2">TOTAL USAGE</td>
+            <td style="background-color: #009688; color:white">Unit Price</td>
+            <td style="background-color: #009688; color:white">AMOUNT</td>
+            <td rowspan="6" colspan="3"></td>
+        </tr>
+
+        <tr>
+            <td>B/F</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
         </tr>
         
         <tr>
@@ -113,19 +120,19 @@
             @if($product->totalReceived)
             <td>{{ $product->totalReceived }}</td>
             @else
-            <td>0</td>
+            <td>-</td>
             @endif
 
             @if($product->receivedAmmountUnit)
-            <td>{{ $product->receivedAmmountUnit }}</td>
+            <td>{{ number_format($product->receivedAmmountUnit) }}</td>
             @else
-            <td>0</td>
+            <td>-</td>
             @endif
 
             @if($product->totalReceivedAmmount)
-            <td>{{ $product->totalReceivedAmmount }}</td>
+            <td>{{ number_format($product->totalReceivedAmmount) }}</td>
             @else
-            <td>0</td>
+            <td>-</td>
             @endif
 
             
@@ -137,19 +144,19 @@
             @if($product->totalIssue)
             <td>{{ $product->totalIssue }}</td>
             @else
-            <td>0</td>
+            <td>-</td>
             @endif
 
             @if($product->issueAmmountUnit)
-            <td>{{ $product->issueAmmountUnit }}</td>
+            <td>{{ number_format($product->issueAmmountUnit) }}</td>
             @else
-            <td>0</td>
+            <td>-</td>
             @endif
 
             @if($product->totalIssueAmmount)
-            <td>{{ $product->totalIssueAmmount }}</td>
+            <td>{{ number_format($product->totalIssueAmmount) }}</td>
             @else
-            <td>0</td>
+            <td>-</td>
             @endif
             
         </tr>
@@ -160,58 +167,66 @@
             @if($product->totalDamaged)
             <td>{{ $product->totalDamaged }}</td>
             @else
-            <td>0</td>
+            <td>-</td>
             @endif
 
             @if($product->totalDamagedAmmount)
-            <td>{{ $product->totalDamagedAmmount }}</td>
+            <td>{{ number_format($product->totalDamagedAmmount) }}</td>
             @else
-            <td>0</td>
+            <td>-</td>
             @endif
 
             @if($product->damagedAmmountUnit)
-            <td>{{ $product->damagedAmmountUnit }}</td>
+            <td>{{ number_format($product->damagedAmmountUnit) }}</td>
             @else
-            <td>0</td>
+            <td>-</td>
             @endif
 
         </tr>
 
         <tr>
-            <td style="background-color: #009688; color:white">Remaining</td>
+            <td style="background-color: #009688; color:white">C\F</td>
             
             @if($product->totalRemaining)
             <td style="background-color: #009688; color:white">{{ $product->totalRemaining }}</td>
             @else
-            <td style="background-color: #009688; color:white">0</td>
+            <td style="background-color: #009688; color:white">-</td>
             @endif
 
             @if($product->totalRemainingAmmount)
-            <td style="background-color: #009688; color:white">{{ $product->totalRemainingAmmount }}</td>
+            <td style="background-color: #009688; color:white">{{ number_format($product->totalRemainingAmmount) }}</td>
             @else
-            <td style="background-color: #009688; color:white">0</td>
+            <td style="background-color: #009688; color:white">-</td>
             @endif
 
             @if($product->remainingAmmountUnit)
-            <td style="background-color: #009688; color:white">{{ $product->remainingAmmountUnit }}</td>
+            <td style="background-color: #009688; color:white">{{ number_format($product->remainingAmmountUnit) }}</td>
             @else
-            <td style="background-color: #009688; color:white">0</td>
+            <td style="background-color: #009688; color:white">-</td>
             @endif
+
 
         </tr>
 
         <tr>
             <td></td>
             <td colspan="3"></td>
-            <td colspan="1" rowspan="2">
+            <td colspan="1" rowspan="3">
                 .........................................
-                <br> Mr Saiful Islam
+                <br>Reported By
+                <br>Md. Moniruzzaman
             </td>
             <td colspan="1"></td>
-            <td colspan="1" rowspan="2">
+            <td colspan="1" rowspan="3">
                 .........................................
-                <br> Mr Surachai Praneerachlerd</td>
+                <br>Approved By
+                <br>Mr Surachai Praneerachlerd 
+                </td>
             <td></td>
+        </tr>
+
+        <tr>
+            <td style="color: #dddddd">{{date('d-m-y h:i:s')}}</td>
         </tr>
     </tbody>
 </table>

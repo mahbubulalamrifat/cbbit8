@@ -14,6 +14,7 @@ use Auth;
 use App\Exports\inventory\stock;
 use Maatwebsite\Excel\Facades\Excel;
 use DB;
+use Carbon\Carbon;
 
 class StockController extends Controller
 {
@@ -236,7 +237,7 @@ class StockController extends Controller
            'totalRemainingAmmount'   => $totalRemainingAmmount,
            'remainingAmmountUnit'    => $remainingAmmountUnit,
 
-           'catagoryName'            => $product_name,
+           'catagoryName'            => '('. Carbon::createFromFormat('Y-m-d',$sort_by_startDate)->todatestring() . ' to ' . Carbon::createFromFormat('Y-m-d',$sort_by_endDate)->todatestring() .')' .$product_name,
 
         ];
 

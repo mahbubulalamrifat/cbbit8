@@ -314,6 +314,20 @@
 
         methods: {
 
+            clipboard(data) {
+
+                alert(data.ip)
+                
+                try{
+                    navigator.clipboard.writeText(data.ip)
+                }catch(e){
+                    throw e
+                }
+                this.checkID = data.id;
+
+                
+            }
+
         },
 
 

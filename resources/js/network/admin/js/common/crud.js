@@ -246,8 +246,8 @@ export default{
 
 
 
-    clipboard(data) {
-        navigator.clipboard.writeText(data.ip);
-        this.checkID = data.id;
-    }
+    // clipboard(data) {
+    //     navigator.clipboard.writeText(data.ip);
+    //     this.checkID = data.id;
+    // }
 }

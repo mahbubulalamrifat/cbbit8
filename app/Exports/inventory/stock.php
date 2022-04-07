@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeSheet;
 
 use DB;
 
@@ -33,15 +34,24 @@ class stock implements FromView, ShouldAutoSize, WithEvents
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                $event->sheet->getDelegate()->getStyle('A:L')
+                $event->sheet->getDelegate()->getStyle('A:G')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-                $event->sheet->getDelegate()->getStyle('A:L')
+                $event->sheet->getDelegate()->getStyle('A:G')
                 ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
-
-                //$event->sheet->setCellValue('=SUM(Table1[BALANCE])');
+                $event->sheet->getDelegate()->getStyle('A:G')
+                ->getAlignment()->setShrinkToFit(true);
              
+            },
+
+            BeforeSheet::class => function (BeforeSheet $event) {
+                $event->sheet
+                    ->getPageSetup()
+                    ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+
+                $event->sheet->getPageSetup()
+                    ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
             },
         ];
     }

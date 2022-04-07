@@ -275,8 +275,8 @@
                     responseType: 'blob', // important
                 }).then((response) => {
 
-                    let repName = this.current_category.name + ' Stock Report -(' + this.sort_by_startDate +
-                        ' to ' + this.sort_by_endDate + ')';
+                    let repName = this.current_category.name + ' Stock Report -(' + this.$moment(this.sort_by_startDate).format('MMM Do YYYY') +
+                        ' to ' + this.$moment(this.sort_by_endDate).format('MMM Do YYYY') + ')';
                     const url = URL.createObjectURL(new Blob([response.data]))
                     const link = document.createElement('a')
                     link.href = url

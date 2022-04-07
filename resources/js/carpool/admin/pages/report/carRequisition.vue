@@ -18,80 +18,82 @@
             <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
+                        <v-col cols="6" lg="10">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('name')">Driver</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('name')">Car</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('start')">Requisition Start</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'start'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'start'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('end')">Requisition End</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'end'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'end'">&darr;</span>
-                                </th>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('name')">Driver</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('name')">Car</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('start')">Requisition Start</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'start'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'start'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('end')">Requisition End</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'end'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'end'">&darr;</span>
+                                    </th>
+                                    
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('status')">Status</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'status'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'status'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('register')">Register</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'register'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'register'">&darr;</span>
+                                    </th>
                                 
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('status')">Status</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'status'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'status'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('register')">Register</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'register'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'register'">&darr;</span>
-                                </th>
-                             
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>
-                                    <span v-if="singleData.driver">
-                                        <v-btn color="indigo white--text" small depressed @click=" getDriverModalData( singleData.driver.id)">
-                                            {{ singleData.driver.name }}
-                                        </v-btn>
-                                    </span>
-                                    <span v-else class="error--text">Not Found !</span>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.car">{{ singleData.car.name }} || {{ singleData.car.number }}</span>
-                                    <span v-else class="error--text">Not Found !</span>
-                                </td>
-                                <td>{{ singleData.start  | moment("MMMM Do YYYY, h:mm a") }}</td>
-                                <td>{{ singleData.end  | moment("MMMM Do YYYY, h:mm a") }}</td>
-                                <td><span v-if="singleData.status == 1" >Accepted</span><span v-else>Canceled</span> </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>
+                                        <span v-if="singleData.driver">
+                                            <v-btn color="indigo white--text" small depressed @click=" getDriverModalData( singleData.driver.id)">
+                                                {{ singleData.driver.name }}
+                                            </v-btn>
+                                        </span>
+                                        <span v-else class="error--text">Not Found !</span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.car">{{ singleData.car.name }} || {{ singleData.car.number }}</span>
+                                        <span v-else class="error--text">Not Found !</span>
+                                    </td>
+                                    <td>{{ singleData.start  | moment("MMMM Do YYYY, h:mm a") }}</td>
+                                    <td>{{ singleData.end  | moment("MMMM Do YYYY, h:mm a") }}</td>
+                                    <td><span v-if="singleData.status == 1" >Accepted</span><span v-else>Canceled</span> </td>
 
-                                <td> <span v-if="singleData">{{ singleData.created_at }}</span></td>
+                                    <td> <span v-if="singleData">{{ singleData.created_at }}</span></td>
+                                    
                                 
-                               
-                            
-                            </tr>
-                        </tbody>
-                    </table>
+                                
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

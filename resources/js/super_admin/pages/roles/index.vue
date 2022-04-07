@@ -3,10 +3,10 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-10">
                         <h3 class="card-title">Global Roles List</h3>
                     </div>
-                    <div class="col-6">
+                    <div class="col-2">
                         <v-btn @click="addDataModel" elevation="10" small class="float-right" color="primary" outlined>
                             <v-icon small>mdi-card-plus</v-icon> Add
                         </v-btn>
@@ -18,15 +18,15 @@
             <div class="card-body">
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
+                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
-                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..."></v-text-field>
+                        <v-col cols="6" lg="10">
+                            <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
+                                placeholder="Search Input..." outlined dense></v-text-field>
                         </v-col>
                     </v-row>
 

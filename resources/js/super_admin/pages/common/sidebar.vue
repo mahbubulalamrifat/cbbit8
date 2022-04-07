@@ -171,4 +171,8 @@
         background: linear-gradient(180deg, #a8bfbb, #0cb7bb);
     }
 
+    a{
+        text-decoration: none;
+    }
+
 </style>

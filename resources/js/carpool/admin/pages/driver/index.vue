@@ -18,142 +18,144 @@
             <v-card-text>
                 <div v-if="allData.data" class="table-responsive">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
+                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
-                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..."></v-text-field>
+                        <v-col cols="6" lg="10">
+                            <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
+                                placeholder="Search Input..." outlined dense></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th>
-                                    Driver Information
-                                </th>
-                                <th>
-                                    Car Information
-                                </th>
-                                <th>
-                                    Driver Status
-                                </th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>
-                                    <v-hover v-slot="{ hover }">
-                                        <v-card class="mx-auto" color="grey lighten-4">
-                                            <v-img v-if="singleData.image" :src="imagePathSm + singleData.image"
-                                                max-height="180" max-width="230">
-                                                <v-expand-transition>
-                                                    <div v-if="hover"
-                                                        class="transition-fast-in-fast-out teal darken-2 v-card--reveal white--text d-flex flex-column justify-center align-center"
-                                                        style="height: 100%;">
-
-                                                        <div>
-                                                            Driver Name: {{ singleData.name}}
-                                                        </div>
-                                                        <div>
-                                                            Driver Number: {{ singleData.contact}}
-                                                        </div>
-                                                        <div>
-                                                            Driver License: {{ singleData.license}}
-                                                        </div>
-                                                        <div>
-                                                            Driver NID:{{ singleData.nid}}
-                                                        </div>
-
-                                                    </div>
-                                                </v-expand-transition>
-                                            </v-img>
-                                        </v-card>
-                                    </v-hover>
-                                </td>
-                                <td>
-                                    <div v-if="singleData.car">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>
+                                        Driver Information
+                                    </th>
+                                    <th>
+                                        Car Information
+                                    </th>
+                                    <th>
+                                        Driver Status
+                                    </th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>
                                         <v-hover v-slot="{ hover }">
                                             <v-card class="mx-auto" color="grey lighten-4">
-                                                <v-img v-if="singleData.car.image"
-                                                    :src="imagePathSmCar + singleData.car.image" max-height="180"
-                                                    max-width="230">
+                                                <v-img v-if="singleData.image" :src="imagePathSm + singleData.image"
+                                                    max-height="180" max-width="230">
                                                     <v-expand-transition>
                                                         <div v-if="hover"
                                                             class="transition-fast-in-fast-out teal darken-2 v-card--reveal white--text d-flex flex-column justify-center align-center"
                                                             style="height: 100%;">
 
-                                                            <div v-if="singleData.car.name">
-                                                                Car Name: {{ singleData.car.name}}
+                                                            <div>
+                                                                Driver Name: {{ singleData.name}}
                                                             </div>
-                                                            <div v-if="singleData.car.number">
-                                                                Car Number: {{ singleData.car.number}}
+                                                            <div>
+                                                                Driver Number: {{ singleData.contact}}
                                                             </div>
-                                                            <div v-if="singleData.car.capacity">
-                                                                Car Capacity: {{ singleData.car.capacity}}
+                                                            <div>
+                                                                Driver License: {{ singleData.license}}
                                                             </div>
-                                                            <div v-if="singleData.car.temporary==0">
-                                                                Car Type: Temporary
+                                                            <div>
+                                                                Driver NID:{{ singleData.nid}}
                                                             </div>
-                                                            <div v-if="singleData.car.temporary==1">
-                                                                Car Type: Regular
-                                                            </div>
+
                                                         </div>
                                                     </v-expand-transition>
                                                 </v-img>
                                             </v-card>
                                         </v-hover>
-                                    </div>
-                                </td>
+                                    </td>
+                                    <td>
+                                        <div v-if="singleData.car">
+                                            <v-hover v-slot="{ hover }">
+                                                <v-card class="mx-auto" color="grey lighten-4">
+                                                    <v-img v-if="singleData.car.image"
+                                                        :src="imagePathSmCar + singleData.car.image" max-height="180"
+                                                        max-width="230">
+                                                        <v-expand-transition>
+                                                            <div v-if="hover"
+                                                                class="transition-fast-in-fast-out teal darken-2 v-card--reveal white--text d-flex flex-column justify-center align-center"
+                                                                style="height: 100%;">
 
-                                <td v-if="singleData.active_leave.length > 0" class="col-3 text-center align-middle">
-                                    <v-btn small color="info" @click="driverAllStatus(singleData.active_leave)">
-                                        <v-icon left>mdi-ship-wheel</v-icon> View Leave Status
-                                    </v-btn>
-                                </td>
+                                                                <div v-if="singleData.car.name">
+                                                                    Car Name: {{ singleData.car.name}}
+                                                                </div>
+                                                                <div v-if="singleData.car.number">
+                                                                    Car Number: {{ singleData.car.number}}
+                                                                </div>
+                                                                <div v-if="singleData.car.capacity">
+                                                                    Car Capacity: {{ singleData.car.capacity}}
+                                                                </div>
+                                                                <div v-if="singleData.car.temporary==0">
+                                                                    Car Type: Temporary
+                                                                </div>
+                                                                <div v-if="singleData.car.temporary==1">
+                                                                    Car Type: Regular
+                                                                </div>
+                                                            </div>
+                                                        </v-expand-transition>
+                                                    </v-img>
+                                                </v-card>
+                                            </v-hover>
+                                        </div>
+                                    </td>
 
-                                <td v-else class="col-3 text-center align-middle">
-                                    <div class="error--text">
-                                        Not Available!!
-                                    </div>
-                                </td>
+                                    <td v-if="singleData.active_leave.length > 0" class="col-3 text-center align-middle">
+                                        <v-btn small color="info" @click="driverAllStatus(singleData.active_leave)">
+                                            <v-icon left>mdi-ship-wheel</v-icon> View Leave Status
+                                        </v-btn>
+                                    </td>
+
+                                    <td v-else class="col-3 text-center align-middle">
+                                        <div class="error--text">
+                                            Not Available!!
+                                        </div>
+                                    </td>
 
 
-                                <td class="text-center col-3">
-                                    <v-btn @click="driverLeave(singleData)" color="info" depressed small class="m-1">
-                                        <v-icon left>mdi-ship-wheel</v-icon> Leave Action
-                                    </v-btn>
+                                    <td class="text-center col-3">
+                                        <v-btn @click="driverLeave(singleData)" color="info" depressed small class="m-1">
+                                            <v-icon left>mdi-ship-wheel</v-icon> Leave Action
+                                        </v-btn>
 
-                                    <v-btn v-if="singleData.car.status" @click="statusChange(singleData.car)"
-                                        color="success" depressed small class="m-1">
-                                        <v-icon small>mdi-check-circle-outline</v-icon> Active
-                                    </v-btn>
-                                    <v-btn v-else @click="statusChange(singleData.car)" color="warning" depressed small
-                                        class="m-1">
-                                        <v-icon small>mdi-alert-circle-outline </v-icon> Inactive
-                                    </v-btn>
+                                        <v-btn v-if="singleData.car.status" @click="statusChange(singleData.car)"
+                                            color="success" depressed small class="m-1">
+                                            <v-icon small>mdi-check-circle-outline</v-icon> Active
+                                        </v-btn>
+                                        <v-btn v-else @click="statusChange(singleData.car)" color="warning" depressed small
+                                            class="m-1">
+                                            <v-icon small>mdi-alert-circle-outline </v-icon> Inactive
+                                        </v-btn>
 
-                                    <v-btn @click="editDataModel(singleData)" color="info" depressed small class="m-1">
-                                        <v-icon small>mdi-pencil-box-multiple-outline</v-icon> Edit
-                                    </v-btn>
+                                        <v-btn @click="editDataModel(singleData)" color="info" depressed small class="m-1">
+                                            <v-icon small>mdi-pencil-box-multiple-outline</v-icon> Edit
+                                        </v-btn>
 
-                                    <v-btn @click="deleteDataTemp(singleData.id)" color="error" depressed small
-                                        class="m-1">
-                                        <v-icon small>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>
+                                        <v-btn @click="deleteDataTemp(singleData.id)" color="error" depressed small
+                                            class="m-1">
+                                            <v-icon small>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
 
-                                    <br>
-                                    <span v-if="singleData.makby" class="small text-muted">Create By--
-                                        {{ singleData.makby.name }}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        <br>
+                                        <span v-if="singleData.makby" class="small text-muted">Create By--
+                                            {{ singleData.makby.name }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
