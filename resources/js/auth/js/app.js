@@ -21,6 +21,7 @@ import Register from '../pages/register.vue'
 const router = new VueRouter({
     mode: 'history',
     routes: [
+        
         {
             path: '/login',
             name: 'Login',
@@ -29,6 +30,7 @@ const router = new VueRouter({
                 title: 'Login',
             }, 
         },
+
         {
             path: '/register',
             name: 'Register',

@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app style="overflow:hidden">
         <nav-bar></nav-bar>
         <v-main>
             <v-container fluid>

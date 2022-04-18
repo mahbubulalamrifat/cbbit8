@@ -1,5 +1,7 @@
 import axios from "axios";
+import store from './../store'
 import { mapGetters } from 'vuex'
+
 
 
 import paginateMethods from './paginate_methods'
@@ -73,28 +75,6 @@ export default {
 
 
     
-        handleResize() {
-            this.window.width = window.innerWidth;
-            this.window.height = window.innerHeight;
-        },
-
-       
-        // Add model show
-        newModal() {
-            this.editmode = false;
-            this.form.reset();
-            $('#addNew').modal('show');
-        },
-
-        // Edit Model show
-        editModal(singleData) {
-            this.editmode = true;
-            this.form.reset();
-            $('#addNew').modal('show');
-            this.form.fill(singleData);
-        },
-
-
         // get Zone Offices
         getZoneOffices(){
             axios.get('/super_admin/user/zoneoffices').then(response=>{
@@ -113,6 +93,22 @@ export default {
             }).catch(error=>{
                 console.log(error)
             })
+        },
+
+
+        // countNotProcess
+        countAll() {
+
+            axios.get('/cms/a_admin/count/sidebar_count_data').then(response=>{
+                //console.log(response.data)
+
+                store.commit('setCountNotProcess', response.data.notprocess)
+                store.commit('setCountProcess', response.data.process)
+            }).
+            catch(error=>{
+                console.log(error)
+            })
+            
         },
 
 
@@ -171,7 +167,9 @@ export default {
         // map this.count to store.state.count getLoading 
         ...mapGetters({
             'auth'      : 'getAuth',
-            'roles'     : 'getRoles',
+            'roles': 'getRoles',
+            'sidebar_notprocess_counter'  : 'getCountNotProcess',
+            'sidebar_process_counter'     : 'getCountProcess',
         }),
 
     },

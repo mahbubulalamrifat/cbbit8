@@ -212,7 +212,7 @@
                                             <span v-if="form.document" class="text-success"><v-icon color="success">mdi-check-decagram-outline</v-icon> Yes</span>
                                             <span v-else class="text-danger"><v-icon color="error">mdi-close-octagon</v-icon> No</span>
                                         </template>
-                                        </v-file-input>
+                                    </v-file-input>
                                 </v-col>
 
                                 <v-col cols="12" lg="4">
@@ -341,10 +341,6 @@
 
                                 </v-col>
                             </v-row>
-
-
-
-
 
 
                             <v-btn v-show="editmode" type="submit" block depressed :loading="dataModalLoading"
@@ -593,7 +589,7 @@
             editDataModel(singleData){
                 
                 this.editmode       = true;
-                this.dataModelTitle = 'Update Data'
+                this.dataModelTitle = 'Update Product'
                 //this.form.reset();
                
                 // Warranty

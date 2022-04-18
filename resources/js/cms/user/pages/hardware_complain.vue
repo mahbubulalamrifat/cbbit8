@@ -37,27 +37,44 @@
                                     label="Select Subcategory" :rules="[v => !!v || 'Subcategory  is required!']"
                                     outlined required></v-autocomplete>
                             </v-col>
-                            
-                            <!-- Accessoris currentAccessories:  {{ currentAccessoriesData }} --> 
+
+                            <!-- Accessoris currentAccessories:  {{ currentAccessoriesData }} -->
                             <v-col cols="12" v-if="currentAccessoriesData">
                                 <v-input hide-details>Which Accessories are you send in Hardware, Please Select
                                 </v-input>
                                 <div class="d-flex align-center">
                                     <div v-for="(item, index) in currentAccessoriesData" :key="index">
-                                        <v-checkbox class="mr-5" :value="item.name" :label="item.name" v-model="checkedAccessories" 
-                                            hide-details></v-checkbox>
+                                        <v-checkbox class="mr-5" :value="item.name" :label="item.name"
+                                            v-model="checkedAccessories" hide-details></v-checkbox>
                                     </div>
                                 </div>
-                                <v-text-field label="Other accessoris that you provide mention here" v-model="otherAccessoris" ></v-text-field>
-                            </v-col>   
+                                <v-text-field label="Other accessoris that you provide mention here"
+                                    v-model="otherAccessoris"></v-text-field>
+                            </v-col>
 
                             <!-- details -->
                             <v-col cols="12">
                                 <div class="small text-danger" v-if="form.errors.has('details')"
                                     v-html="form.errors.get('details')" />
-                                <v-textarea outlined label="Details" v-model="form.details"
+                                <vue-editor
+                                    :class="{ error_bg: (form.details && ( form.details.length <= 10 || form.details.length >= 20000 )) }"
+                                    v-model="form.details" :editorToolbar="customToolbar"></vue-editor>
+                                <v-row>
+                                    <v-col cols="10">
+                                        <span v-if="(form.details && form.details.length <= 10)"
+                                            class="small text-danger">10 chars minimum or more.</span>
+                                        <span v-if="(form.details && form.details.length >= 20000)"
+                                            class="small text-danger">Description must be 20,000 characters or
+                                            less.</span>
+                                    </v-col>
+                                    <v-col cols="2">
+                                        <span class="float-right">{{ form.details.length }}/ 20,000</span>
+                                    </v-col>
+                                </v-row>
+
+                                <!-- <v-textarea outlined label="Details" v-model="form.details"
                                     placeholder="Please, Mention your problem in details" :counter="20000"
-                                    :rules="remRules" required></v-textarea>
+                                    :rules="remRules" required></v-textarea> -->
                             </v-col>
 
                             <!-- document -->
@@ -67,7 +84,8 @@
                             </v-col>
 
                             <v-col lg="6" md="6" cols="12" v-if="computerNameLavel">
-                                <v-text-field :label="computerNameLavel" placeholder="Enter correct name" v-model="form.computer_name"  outlined ></v-text-field>
+                                <v-text-field :label="computerNameLavel" placeholder="Enter correct name"
+                                    v-model="form.computer_name" outlined></v-text-field>
                             </v-col>
 
                         </v-row>
@@ -91,8 +109,15 @@
 <script>
     // vform
     import Form from 'vform';
+    import {
+        VueEditor
+    } from "vue2-editor";
+    import vue2EditorToolbar from "../js/vue2_editor_toolbar"
 
     export default {
+        components: {
+            VueEditor
+        },
 
         data() {
             return {
@@ -117,8 +142,8 @@
                 allCatData: [],
                 currentAccessoriesData: '',
 
-                checkedAccessories:[],
-                otherAccessoris:'',
+                checkedAccessories: [],
+                otherAccessoris: '',
                 computerNameLavel: '',
 
                 dataModalLoading: false,
@@ -132,6 +157,9 @@
                     computer_name: '',
                     accessories: '',
                 }),
+
+                // vue2EditorToolbar
+                ...vue2EditorToolbar,
             }
         },
 
@@ -165,7 +193,7 @@
                     if (element.id == this.form.cat_id) {
 
                         if (element.acsosoris.length > 0) {
-                           
+
                             this.currentAccessoriesData = element.acsosoris
                         }
                         this.allSubcategory = []
@@ -182,10 +210,10 @@
 
                         // Computer Name Field
                         this.computerNameLavel = ''
-                        if(element.label){
+                        if (element.label) {
                             this.computerNameLavel = element.label
                         }
-                        
+
                     }
                 })
             },
@@ -196,10 +224,10 @@
                 this.dataModalLoading = true
 
                 // combaine array and text
-                if(this.otherAccessoris){
+                if (this.otherAccessoris) {
                     this.checkedAccessories.push(this.otherAccessoris)
                 }
-                
+
                 // Assign in form 
                 this.form.accessories = this.checkedAccessories
 

@@ -626,6 +626,11 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         Route::middleware(['can:appAdmin'])->namespace('ApplicationAdmin')->prefix('a_admin')->group(function(){
 
             Route::get('/dashboard_data', 'IndexController@dashboard_data');
+            
+            // index
+            Route::prefix('count')->group(function(){
+                Route::get('/sidebar_count_data', 'IndexController@sidebar_count_data');
+            });
 
             //Category 
             Route::namespace('Category')->prefix('category')->group(function(){

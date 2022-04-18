@@ -46,7 +46,8 @@ Vue.use(require('vue-moment'));
 Vue.component('pagination', require('laravel-vue-pagination'));
 
 
-Vue.component('index-component', require('../index.vue').default);
+// Vue.component('index-component', require('../index.vue').default);
+Vue.component('index-component', require('../map.vue').default);
 
 
 
