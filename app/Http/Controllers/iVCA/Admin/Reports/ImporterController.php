@@ -13,6 +13,9 @@ use App\Models\iVCA\ivcaAuditMroToken;
 use App\Models\iVCA\ivcaAuditMroImporter;
 use App\Models\iVca\ivcaTemplateMroImporter;
 
+use App\Exports\ivca\singleImporter;
+use Maatwebsite\Excel\Facades\Excel;
+
 class ImporterController extends Controller
 {
     use CommonFunction;
@@ -63,6 +66,26 @@ class ImporterController extends Controller
         // return response()->json(['auditData'=>$auditData, 'templateData'=>$templateData ], 200);
 
     } 
+
+    // export_single_audit_data
+    public function export_single_audit_data($id){
+
+        $templateData = ivcaTemplateMroImporter::first();
+        $auditData = ivcaAuditMroImporter::with(['auditordata', 'vendor'])->find($id);
+
+        // dd($templateData); 
+
+        if( $auditData->status == 1 ){
+
+           $singleAuditReport = $this->importerSingleRiport($auditData);
+
+            return Excel::download(new singleImporter($singleAuditReport, $templateData), 'product-' . time() . '.xlsx');
+
+        }else{
+            return response()->json(['No Data Available'], 204);
+        }
+
+    }
 
     
 
@@ -176,8 +199,7 @@ class ImporterController extends Controller
         $auditData = ivcaAuditMroImporter::with(['auditordata', 'vendor'])->find($id); 
 
         if( $auditData->status == 1 ){
-        $singleAuditReport = $this->importerSingleRiport($auditData);
-            //dd( $singleAuditReport );
+            $singleAuditReport = $this->importerSingleRiport($auditData);
         }
 
         // PDF Generate

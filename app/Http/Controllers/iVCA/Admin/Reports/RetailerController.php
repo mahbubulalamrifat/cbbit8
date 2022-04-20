@@ -13,6 +13,9 @@ use App\Models\iVCA\ivcaAuditMroToken;
 use App\Models\iVCA\ivcaAuditMroRetailer;
 use App\Models\iVca\ivcaTemplateMroRetailer;
 
+use App\Exports\ivca\singleRetailer;
+use Maatwebsite\Excel\Facades\Excel;
+
 class RetailerController extends Controller
 {
     use CommonFunction;
@@ -62,7 +65,28 @@ class RetailerController extends Controller
 
         // return response()->json(['auditData'=>$auditData, 'templateData'=>$templateData ], 200);
 
-    } 
+    }
+
+
+    // export_single_audit_data
+    public function export_single_audit_data($id){
+
+        $templateData = ivcaTemplateMroRetailer::first();
+        $auditData = ivcaAuditMroRetailer::with(['auditordata', 'vendor'])->find($id);
+
+        // dd($templateData); 
+
+        if( $auditData->status == 1 ){
+
+           $singleAuditReport = $this->retailerSingleRiport($auditData);
+
+            return Excel::download(new singleRetailer($singleAuditReport, $templateData), 'product-' . time() . '.xlsx');
+
+        }else{
+            return response()->json(['No Data Available'], 204);
+        }
+
+    }
 
     
 

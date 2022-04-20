@@ -440,7 +440,9 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::prefix('manufacturer')->group(function(){
                     Route::get('/index', 'ManufacturerController@index');
                     Route::get('/single_audit_data/{id}', 'ManufacturerController@single_audit_data');
+                    Route::get('/export_single_audit_data/{id}', 'ManufacturerController@export_single_audit_data');
                     Route::post('/summary_audit_data', 'ManufacturerController@summary_audit_data');
+                    Route::get('/export_summary_audit_data/{token}', 'ManufacturerController@export_summary_audit_data');
 
                     // manufacturer PDF
                     Route::prefix('pdf')->group(function(){
@@ -455,6 +457,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::prefix('importer')->group(function(){
                     Route::get('/index', 'ImporterController@index');
                     Route::get('/single_audit_data/{id}', 'ImporterController@single_audit_data');
+                    Route::get('/export_single_audit_data/{id}', 'ImporterController@export_single_audit_data');
                     Route::post('/summary_audit_data', 'ImporterController@summary_audit_data');
 
                     // importer PDF
@@ -471,6 +474,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::prefix('retailer')->group(function(){
                     Route::get('/index', 'RetailerController@index');
                     Route::get('/single_audit_data/{id}', 'RetailerController@single_audit_data');
+                    Route::get('/export_single_audit_data/{id}', 'RetailerController@export_single_audit_data');
                     Route::post('/summary_audit_data', 'RetailerController@summary_audit_data');
 
                     // retailer PDF

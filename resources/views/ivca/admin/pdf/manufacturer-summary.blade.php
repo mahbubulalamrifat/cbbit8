@@ -144,7 +144,7 @@
                         @foreach ($finalResult->allData as $key=>$item)
 
                         <tr>
-                            <th>{{ $key+1 }}. {{ $item->auditordata->name }}</th>
+                            <th>{{ $key+1 }}. Surveyor</th>
                             <td>{{ $item->auditordata->name }}</td>
                             <th>Position</th>
                             <td>{{ $item->auditordata->designation }}</td>
