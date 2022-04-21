@@ -12,6 +12,7 @@ use App\Models\iVCA\ivcaAuditMroToken;
 
 use App\Models\iVCA\ivcaAuditMroRetailer;
 use App\Models\iVca\ivcaTemplateMroRetailer;
+use App\Exports\ivca\summuryRetailer;
 
 use App\Exports\ivca\singleRetailer;
 use Maatwebsite\Excel\Facades\Excel;
@@ -115,6 +116,29 @@ class RetailerController extends Controller
             return response()->json(['No Data Available'], 204);
         }
         
+    }
+
+
+    public function export_summary_audit_data(Request $request){
+        $token = $request->token;
+
+        $allData = ivcaAuditMroRetailer::with(['vendor', 'auditordata'])
+                    ->where('token', $token)
+                    ->where('status', 1)
+                    ->orderBy('id')
+                    ->get();
+
+        // dd($token, $allData, $allData->isEmpty());
+
+        if( ! $allData->isEmpty() ){
+
+            $finalResult = $this->retailerSummaryReport($allData);
+
+            return Excel::download(new summuryRetailer($finalResult), 'product-' . time() . '.xlsx');
+
+        }else{
+            return response()->json(['No Data Available'], 204);
+        }
     }
 
 

@@ -79,7 +79,7 @@ class singleImporter implements FromView, ShouldAutoSize, WithEvents, WithStyles
                 $event->sheet->getDelegate()->getStyle('A40')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 
-                 $event->sheet->getDelegate()->getStyle('A53')
+                $event->sheet->getDelegate()->getStyle('A53')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
                
             },

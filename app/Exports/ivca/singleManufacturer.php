@@ -79,7 +79,10 @@ class singleManufacturer implements FromView, ShouldAutoSize, WithEvents, WithSt
                 $event->sheet->getDelegate()->getStyle('A44')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 
-                 $event->sheet->getDelegate()->getStyle('A45')
+                $event->sheet->getDelegate()->getStyle('A45')
+                ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
+                $event->sheet->getDelegate()->getStyle('A58')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
                
             },

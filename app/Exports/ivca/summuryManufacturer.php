@@ -49,21 +49,25 @@ class summuryManufacturer implements FromView, ShouldAutoSize, WithEvents, WithS
                 $event->sheet->getDelegate()->getStyle('B:D')
                 ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
-                $event->sheet->getDelegate()->getStyle('A21')
-                ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
-
                 $event->sheet->getDelegate()->getStyle('A9:D9')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
                 $event->sheet->getDelegate()->getStyle('A9:D9')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
+                $event->sheet->getDelegate()->getStyle('A26')
+                ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
+                $event->sheet->getDelegate()->getStyle('A27')
+                ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
                
             },
         ];
     }
 
-    public function newStyles(Worksheet $sheet)
+    public function styles(Worksheet $sheet)
     {
+        
        $styleArray = [
             'borders' => [
                 'allBorders' => [
@@ -71,15 +75,17 @@ class summuryManufacturer implements FromView, ShouldAutoSize, WithEvents, WithS
                     'color' => ['argb' => '00000000'],
                 ],
             ],
-            // '3'  => ['font' => ['size' => 16]],
-            // '1'  => ['font' => ['bold' => true]],
             
         ];
+
+        
 
         $sheet->getStyle('A19:D27')->applyFromArray($styleArray);
 
 
     }
+
+    
 
 
 }

@@ -12,6 +12,7 @@ use App\Models\iVCA\ivcaAuditMroToken;
 
 use App\Models\iVCA\ivcaAuditMroImporter;
 use App\Models\iVca\ivcaTemplateMroImporter;
+use App\Exports\ivca\summuryImporter;
 
 use App\Exports\ivca\singleImporter;
 use Maatwebsite\Excel\Facades\Excel;
@@ -114,6 +115,29 @@ class ImporterController extends Controller
             return response()->json(['No Data Available'], 204);
         }
         
+    }
+
+
+    public function export_summary_audit_data(Request $request){
+        $token = $request->token;
+
+        $allData = ivcaAuditMroImporter::with(['vendor', 'auditordata'])
+                    ->where('token', $token)
+                    ->where('status', 1)
+                    ->orderBy('id')
+                    ->get();
+
+        // dd($token, $allData, $allData->isEmpty());
+
+        if( ! $allData->isEmpty() ){
+
+            $finalResult = $this->importerSummaryReport($allData);
+
+            return Excel::download(new summuryImporter($finalResult), 'product-' . time() . '.xlsx');
+
+        }else{
+            return response()->json(['No Data Available'], 204);
+        }
     }
 
 

@@ -459,6 +459,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                     Route::get('/single_audit_data/{id}', 'ImporterController@single_audit_data');
                     Route::get('/export_single_audit_data/{id}', 'ImporterController@export_single_audit_data');
                     Route::post('/summary_audit_data', 'ImporterController@summary_audit_data');
+                    Route::get('/export_summary_audit_data/{token}', 'ImporterController@export_summary_audit_data');
 
                     // importer PDF
                     Route::prefix('pdf')->group(function(){
@@ -476,6 +477,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                     Route::get('/single_audit_data/{id}', 'RetailerController@single_audit_data');
                     Route::get('/export_single_audit_data/{id}', 'RetailerController@export_single_audit_data');
                     Route::post('/summary_audit_data', 'RetailerController@summary_audit_data');
+                    Route::get('/export_summary_audit_data/{token}', 'RetailerController@export_summary_audit_data');
 
                     // retailer PDF
                     Route::prefix('pdf')->group(function(){
@@ -491,6 +493,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::prefix('food')->group(function(){
                     Route::get('/index', 'FoodController@index');
                     Route::get('/food_summery/{id}', 'FoodController@food_summery');
+                     Route::get('/export_summary_audit_data/{id}', 'FoodController@export_summary_audit_data');
                 
                     // Food PDF
                     Route::prefix('pdf')->group(function(){

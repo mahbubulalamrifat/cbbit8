@@ -36,10 +36,7 @@
         <th style="font-weight: bold">Actually</th>
     </tr>
     <tr>
-        <th style="font-weight: bold">Place of Production / storage location</th>
-        <td></td>
-        <td></td>
-        <td></td>
+        <th style="font-weight: bold; background-color:#1e755d; color:white;" colspan="4">Place of Production / storage location</th>
     </tr>
     <tr>
         <td>{{ $templateData->storage_1 }}</td>
@@ -75,11 +72,7 @@
     </tr>
     {{-- 2 --}}
     <tr>
-        <th style="font-weight: bold">Production planning / control product quality and service
-        </th>
-        <td></td>
-        <td></td>
-        <td></td>
+        <th style="font-weight: bold;background-color:#1e755d; color:white;" colspan="4">Production planning / control product quality and service</th>
     </tr>
     <tr>
         <td>{{ $templateData->production_qs_1 }}</td>
@@ -116,10 +109,7 @@
 
     {{-- 3 --}}
     <tr>
-        <th style="font-weight: bold">Safety</th>
-        <td></td>
-        <td></td>
-        <td></td>
+        <th style="font-weight: bold;background-color:#1e755d; color:white;" colspan="4">Safety</th>
     </tr>
     <tr>
         <td>{{ $templateData->safety_1 }}</td>
@@ -156,10 +146,7 @@
 
     {{-- 4 --}}
     <tr>
-        <th style="font-weight: bold">Environment and Surrounding condition</th>
-        <td></td>
-        <td></td>
-        <td></td>
+        <th style="font-weight: bold;background-color:#1e755d; color:white;" colspan="4">Environment and Surrounding condition</th>
     </tr>
     <tr>
         <td>{{ $templateData->env_sur_con_1 }}</td>
@@ -195,10 +182,7 @@
 
     {{-- 5 --}}
     <tr>
-        <th style="font-weight: bold">Machinery Equipment</th>
-        <td></td>
-        <td></td>
-        <td></td>
+        <th style="font-weight: bold;background-color:#1e755d; color:white;" colspan="4">Machinery Equipment</th>
     </tr>
     <tr>
         <td>{{ $templateData->equipment_1 }}</td>
@@ -229,10 +213,7 @@
 
     {{-- 6 --}}
     <tr>
-        <th style="font-weight: bold">To cooperate with the company</th>
-        <td></td>
-        <td></td>
-        <td></td>
+        <th style="font-weight: bold;background-color:#1e755d; color:white;" colspan="4">To cooperate with the company</th>
     </tr>
     <tr>
         <td>{{ $templateData->cooperate_1 }}</td>
@@ -263,13 +244,13 @@
     </tr>
 
     <tr>
-        <td style="font-weight: bold">Sum Total</td>
+        <td style="font-weight: bold;background-color:#1e755d; color:white;">Sum Total</td>
         <td>{{ $singleAuditReport->sumOfSectionMaxVal }}</td>
         <td>{{ $singleAuditReport->sumOfSectionActualVal }}</td>
         <td rowspan="2"></td>
     </tr>
     <tr>
-        <td  style="font-weight: bold">Average %</td>
+        <td  style="font-weight: bold;background-color:#1e755d; color:white;">Average %</td>
         <td colspan="2">{{ round($singleAuditReport->avgSectionPercentageVal, 2) }} %</td>
     </tr>
 
@@ -303,36 +284,36 @@
     </tr>
     <tr>
         <td>1. Place of production and storage location</td>
-        <td>{{ $singleAuditReport->storageSection->totalMaxVal }}</td>
+        <td style="color: red">{{ $singleAuditReport->storageSection->totalMaxVal }}</td>
         <td>{{ $singleAuditReport->storageSection->totalActualVal }}</td>
         <td>{{ $singleAuditReport->storageSection->avgSectionVal }} %</td>
     </tr>
     <tr>
         <td>2. Production planning/ control product quality and service</td>
-        <td>{{ $singleAuditReport->production_qsSection->totalMaxVal }}</td>
+        <td style="color: red">{{ $singleAuditReport->production_qsSection->totalMaxVal }}</td>
         <td>{{ $singleAuditReport->production_qsSection->totalActualVal }}</td>
         <td>{{ $singleAuditReport->production_qsSection->avgSectionVal }} %</td>
     </tr>
     <tr>
         <td>3. Safety</td>
-        <td>{{ $singleAuditReport->safetySection->totalMaxVal }}</td>
+        <td style="color: red">{{ $singleAuditReport->safetySection->totalMaxVal }}</td>
         <td>{{ $singleAuditReport->safetySection->totalActualVal }}</td>
         <td>{{ $singleAuditReport->safetySection->avgSectionVal }} %</td>
     </tr>
     <tr>
         <td>4. Environment</td>
-        <td>{{ $singleAuditReport->env_sur_conSection->totalMaxVal }}</td>
+        <td style="color: red">{{ $singleAuditReport->env_sur_conSection->totalMaxVal }}</td>
         <td>{{ $singleAuditReport->env_sur_conSection->totalActualVal }}</td>
         <td>{{ $singleAuditReport->env_sur_conSection->avgSectionVal }} %</td>
     </tr>
     <tr>
         <td>5. To Operate with the company</td>
-        <td>{{ $singleAuditReport->cooperateSection->totalMaxVal }}</td>
+        <td style="color: red">{{ $singleAuditReport->cooperateSection->totalMaxVal }}</td>
         <td>{{ $singleAuditReport->cooperateSection->totalActualVal }}</td>
         <td>{{ $singleAuditReport->cooperateSection->avgSectionVal }} %</td>
     </tr>
     <tr>
-        <td style="font-weight: bold">Total</td>
+        <td style="font-weight: bold;background-color:#1e755d; color:white;">Total</td>
         <td>{{ $singleAuditReport->sumOfSectionMaxVal }}</td>
         <td>{{ $singleAuditReport->sumOfSectionActualVal }}</td>
         <td>{{ round($singleAuditReport->avgSectionPercentageVal, 2) }} %</td>
