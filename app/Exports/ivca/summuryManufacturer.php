@@ -12,10 +12,11 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-use DB;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 
-class summuryManufacturer implements FromView, ShouldAutoSize, WithEvents, WithStyles
+class summuryManufacturer implements FromView, ShouldAutoSize, WithEvents, WithStyles, WithDrawings
 {
     public $data;
 
@@ -31,6 +32,27 @@ class summuryManufacturer implements FromView, ShouldAutoSize, WithEvents, WithS
         //dd($finalResult);
         
         return view('ivca.admin.excel.summuryManufacturer', compact('finalResult'));
+    }
+
+    public function drawings()
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('CPB Logo');
+        $drawing->setPath(public_path('/all-assets/common/logo/cpb/cpbgroup.png'));
+        $drawing->setHeight(40);
+        $drawing->setCoordinates('A1');
+
+        $drawing2 = new Drawing();
+        $drawing2->setName('Logo2');
+        $drawing2->setDescription('Food Logo');
+        $drawing2->setPath(public_path('/all-assets/common/logo/cpb/food.png'));
+        $drawing2->setHeight(40);
+        $drawing2->setCoordinates('D1');
+        $drawing2->setOffsetX(35);
+
+        return [$drawing, $drawing2];
+
     }
 
     public function registerEvents(): array

@@ -51,9 +51,7 @@
         <td rowspan="2">{{ $templateData->building_facilities_a }}</td>
         <td rowspan="2">
             @if($auditData->building_facilities_a_image)
-            {{-- <img src="http://cpbit-8/images/ivca/food/Awr3pv1637405800.jpeg" alt=""> --}}
-            {{-- <img src="{{URL::asset($auditData->imglgpath.$auditData->building_facilities_a_image)}}" /> --}}
-            {{-- <img src="{{ $auditData->imglgpath.$auditData->building_facilities_a_image }}" alt="image"> --}}
+            {{URL::asset($auditData->imglgpath.$auditData->building_facilities_a_image)}}
             @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
@@ -66,7 +64,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->building_facilities_b }}</td>
         <td rowspan="2">
-            
+            @if($auditData->building_facilities_b_image)
+                {{URL::asset($auditData->imglgpath.$auditData->building_facilities_b_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->building_facilities_b }}
@@ -78,7 +78,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->building_facilities_c }}</td>
         <td rowspan="2">
-            
+            @if($auditData->building_facilities_c_image)
+                {{URL::asset($auditData->imglgpath.$auditData->building_facilities_c_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->building_facilities_c }}
@@ -90,7 +92,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->building_facilities_d }}</td>
         <td rowspan="2">
-            
+            @if($auditData->building_facilities_d_image)
+                {{URL::asset($auditData->imglgpath.$auditData->building_facilities_d_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->building_facilities_d }}
@@ -102,7 +106,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->building_facilities_e }}</td>
         <td rowspan="2">
-           
+            @if($auditData->building_facilities_e_image)
+                {{URL::asset($auditData->imglgpath.$auditData->building_facilities_e_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->building_facilities_e }}
@@ -122,7 +128,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->equipment_a }}</td>
         <td rowspan="2">
-            
+            @if($auditData->equipment_a_image)
+                {{URL::asset($auditData->imglgpath.$auditData->equipment_a_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->equipment_a }}
@@ -137,7 +145,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->equipment_b }}</td>
         <td rowspan="2">
-            
+            @if($auditData->equipment_b_image)
+                {{URL::asset($auditData->imglgpath.$auditData->equipment_b_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->equipment_b }}
@@ -149,7 +159,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->equipment_c }}</td>
         <td rowspan="2">
-            
+            @if($auditData->equipment_c_image)
+                {{URL::asset($auditData->imglgpath.$auditData->equipment_c_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->equipment_c }}
@@ -169,7 +181,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->personnel_a }}</td>
         <td rowspan="2">
-            
+            @if($auditData->personnel_a_image)
+                {{URL::asset($auditData->imglgpath.$auditData->personnel_a_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->personnel_a }}
@@ -181,7 +195,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->personnel_b }}</td>
         <td rowspan="2">
-            
+            @if($auditData->personnel_b_image)
+                {{URL::asset($auditData->imglgpath.$auditData->personnel_b_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->personnel_b }}
@@ -193,7 +209,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->personnel_c }}</td>
         <td rowspan="2">
-            
+            @if($auditData->personnel_c_image)
+                {{URL::asset($auditData->imglgpath.$auditData->personnel_c_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->personnel_c }}
@@ -213,7 +231,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->raw_materials_a }}</td>
         <td rowspan="2">
-            
+            @if($auditData->raw_materials_a_image)
+                {{URL::asset($auditData->imglgpath.$auditData->raw_materials_a_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->raw_materials_a }}
@@ -225,7 +245,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->raw_materials_b }}</td>
         <td rowspan="2">
-            
+            @if($auditData->raw_materials_b_image)
+                {{URL::asset($auditData->imglgpath.$auditData->raw_materials_b_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->raw_materials_b }}
@@ -237,7 +259,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->raw_materials_c }}</td>
         <td rowspan="2">
-            
+            @if($auditData->raw_materials_c_image)
+                {{URL::asset($auditData->imglgpath.$auditData->raw_materials_c_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->raw_materials_c }}
@@ -249,7 +273,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->raw_materials_d }}</td>
         <td rowspan="2">
-            
+            @if($auditData->raw_materials_d_image)
+                {{URL::asset($auditData->imglgpath.$auditData->raw_materials_d_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->raw_materials_d }}
@@ -261,7 +287,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->raw_materials_e }}</td>
         <td rowspan="2">
-            
+            @if($auditData->raw_materials_e_image)
+                {{URL::asset($auditData->imglgpath.$auditData->raw_materials_e_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->raw_materials_e }}
@@ -281,7 +309,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->production_a }}</td>
         <td rowspan="2">
-            
+            @if($auditData->production_a_image)
+                {{URL::asset($auditData->imglgpath.$auditData->production_a_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->production_a }}
@@ -293,7 +323,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->production_b }}</td>
         <td rowspan="2">
-            
+            @if($auditData->production_b_image)
+                {{URL::asset($auditData->imglgpath.$auditData->production_b_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->production_b }}
@@ -305,7 +337,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->production_c }}</td>
         <td rowspan="2">
-            
+            @if($auditData->production_c_image)
+                {{URL::asset($auditData->imglgpath.$auditData->production_c_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->production_c }}
@@ -317,7 +351,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->production_d }}</td>
         <td rowspan="2">
-            
+            @if($auditData->production_d_image)
+                {{URL::asset($auditData->imglgpath.$auditData->production_d_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->production_d }}
@@ -329,7 +365,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->production_e }}</td>
         <td rowspan="2">
-            
+            @if($auditData->production_e_image)
+                {{URL::asset($auditData->imglgpath.$auditData->production_e_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->production_e }}
@@ -341,7 +379,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->production_f }}</td>
         <td rowspan="2">
-            
+            @if($auditData->production_f_image)
+                {{URL::asset($auditData->imglgpath.$auditData->production_f_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->production_f }}
@@ -361,7 +401,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->records_a }}</td>
         <td rowspan="2">
-            
+            @if($auditData->records_a_image)
+                {{URL::asset($auditData->imglgpath.$auditData->records_a_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->records_a }}
@@ -373,7 +415,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->records_b }}</td>
         <td rowspan="2">
-            
+            @if($auditData->records_b_image)
+                {{URL::asset($auditData->imglgpath.$auditData->records_b_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->records_b }}
@@ -385,7 +429,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->records_c }}</td>
         <td rowspan="2">
-            
+            @if($auditData->records_c_image)
+                {{URL::asset($auditData->imglgpath.$auditData->records_c_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->records_c }}
@@ -397,7 +443,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->records_d }}</td>
         <td rowspan="2">
-            
+            @if($auditData->records_d_image)
+                {{URL::asset($auditData->imglgpath.$auditData->records_d_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->records_d }}
@@ -417,7 +465,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->labeling_a }}</td>
         <td rowspan="2">
-            
+            @if($auditData->labeling_a_image)
+                {{URL::asset($auditData->imglgpath.$auditData->labeling_a_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->labeling_a }}
@@ -429,7 +479,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->labeling_b }}</td>
         <td rowspan="2">
-            
+            @if($auditData->labeling_b_image)
+                {{URL::asset($auditData->imglgpath.$auditData->labeling_b_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->labeling_b }}
@@ -441,7 +493,9 @@
     <tr>
         <td rowspan="2">{{ $templateData->labeling_c }}</td>
         <td rowspan="2">
-            
+            @if($auditData->labeling_c_image)
+                {{URL::asset($auditData->imglgpath.$auditData->labeling_c_image)}}
+            @endif
         </td>
         <td rowspan="2" style="font-weight: bold">
             Get Point: {{ $auditData->labeling_c }}

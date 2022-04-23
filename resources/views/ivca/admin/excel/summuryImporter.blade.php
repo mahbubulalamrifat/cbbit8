@@ -20,7 +20,8 @@
             <br>
             Name of Owner/Manager : {{ $finalResult->allData[0]->vendor->contact_name ?? ''}}
             <br>
-            Vendor Code : {{ $finalResult->allData[0]->vendor->vendor_number ?? ''}}
+            Vendor Code : {{ $finalResult->allData[0]->vendor->vendor_number ?? ''}} 
+            {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->vendor_image)}}
         </td>
     </tr>
     <tr></tr>
@@ -38,6 +39,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Position:
             {{ $item->auditordata->designation }} <br>
             @endforeach
+            {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->group_image)}}
         </th>
     </tr>
     <tr></tr>
@@ -136,6 +138,7 @@
             @endif
 
             @endforeach
+            {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->storage_image)}}
         </td>
     </tr>
     <tr>
@@ -174,6 +177,7 @@
             @endif
 
             @endforeach
+            {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->production_qs_image)}}
         </td>
     </tr>
     <tr>
@@ -212,6 +216,7 @@
             @endif
 
             @endforeach
+            {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->safety_image)}}
         </td>
     </tr>
     <tr>
@@ -250,6 +255,7 @@
             @endif
 
             @endforeach
+            {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->env_sur_con_image)}}
         </td>
     </tr>
     <tr>
@@ -283,6 +289,7 @@
             @endif
 
             @endforeach
+            {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->cooperate_image)}}
         </td>
     </tr>
 </table>

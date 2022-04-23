@@ -4,7 +4,7 @@
     </tr>
 
     <tr>
-        <th rowspan="6" colspan="4">
+        <th rowspan="6" colspan="4" style="text-align: center">
             Date of survey : {{ $singleAuditReport->auditData->date }}
             <br>
             Date of survey : {{ $singleAuditReport->auditData->vendor->suppier_name ?? '' }}

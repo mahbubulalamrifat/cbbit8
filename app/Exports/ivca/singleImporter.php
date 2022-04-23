@@ -12,10 +12,13 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+
 use DB;
 
 
-class singleImporter implements FromView, ShouldAutoSize, WithEvents, WithStyles
+class singleImporter implements FromView, ShouldAutoSize, WithEvents, WithStyles, WithDrawings
 {
     public $data;
     public $data2;
@@ -34,6 +37,26 @@ class singleImporter implements FromView, ShouldAutoSize, WithEvents, WithStyles
         //dd($singleAuditReport ,$templateData);
         
         return view('ivca.admin.excel.singleImporter', compact('singleAuditReport','templateData'));
+    }
+
+    public function drawings()
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('CPB Logo');
+        $drawing->setPath(public_path('/all-assets/common/logo/cpb/cpbgroup.png'));
+        $drawing->setHeight(60);
+        $drawing->setCoordinates('A2');
+        
+        $drawing2 = new Drawing();
+        $drawing2->setName('Logo2');
+        $drawing2->setDescription('Food Logo');
+        $drawing2->setPath(public_path('/all-assets/common/logo/cpb/food.png'));
+        $drawing2->setHeight(60);
+        $drawing2->setCoordinates('D2');
+        $drawing2->setOffsetX(225);
+
+        return [$drawing, $drawing2];
     }
 
     public function registerEvents(): array
