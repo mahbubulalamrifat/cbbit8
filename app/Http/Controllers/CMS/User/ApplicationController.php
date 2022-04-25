@@ -154,4 +154,35 @@ class ApplicationController extends Controller
 
         return response()->json('Status Changed', 200);
     }
+
+
+    public function feedback(Request $request){
+
+        $data = ApplicationComplain::find($request->id);
+
+        //Validate
+        $this->validate($request,[
+            'rating'    => 'required',
+            'feedback'  => 'nullable|min:10|max:20000',
+        ]);
+
+
+        $data->rating    = $request->rating;
+        $data->feedback      = $request->feedback;
+
+        $success = $data->save();
+
+
+        if($success){
+            return response()->json(['msg'=>'Submited Successfully &#128513;', 'icon'=>'success'], 200);
+        }else{
+            return response()->json([
+                'msg' => 'Data not save in DB !!'
+            ], 422);
+        }
+
+
+
+        
+    }
 }

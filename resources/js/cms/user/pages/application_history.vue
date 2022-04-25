@@ -113,10 +113,6 @@
                                         v-if="singleData.created_at">{{ singleData.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
                                 </td>
                                 <td class="text-center">
-                                    <!-- <v-btn @click="remarksDetailsShow(singleData)" color="success" depressed small
-                                        elevation="20">
-                                        <v-icon small>mdi-eye-arrow-left </v-icon> View
-                                    </v-btn> -->
                                     <span v-if="singleData.process == 'Not Process'">
                                         <v-btn v-if="singleData.process == 'Not Process' && singleData.status == 1"
                                             @click="complainCancel(singleData.id)" color="error" depressed
@@ -128,6 +124,11 @@
                                     <v-btn v-else @click="remarksDetailsShow(singleData)" color="success" depressed
                                         small elevation="20">
                                         <v-icon left>mdi-eye-arrow-left </v-icon> View
+                                    </v-btn>
+
+                                    <v-btn v-if=" singleData.process == 'Closed' && singleData.rating == null" @click="feedback(singleData)"
+                                        color="teal white--text" depressed small elevation="20">
+                                        <v-icon left>mdi-star-half-full </v-icon> Rating
                                     </v-btn>
                                 </td>
 
@@ -215,6 +216,42 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+{{form.errors.has}}
+
+        <v-dialog v-model="ratingDialog" max-width="400">
+
+            <v-card class="elevation-16 mx-auto" width="400" :class="form.errors ? 'shake' : ''">
+                <v-card-title class="text-h5 justify-center">
+                    Give Feedback
+                </v-card-title>
+                <v-divider></v-divider>
+                <form action="" @submit.prevent="feedbackStore()">
+                    <v-card-text>
+
+                        <v-textarea label="Feedback" placeholder="Give Your Feedback" outlined v-model="form.feedback" sm="1"></v-textarea>
+                        <div class="small text-danger" v-if="form.errors.has('feedback')" v-html="form.errors.get('feedback')" />
+
+                        <div class="text-center">
+                            <h5>Rating</h5>
+                            <v-rating v-model="form.rating" color="yellow darken-3" background-color="grey darken-1"
+                                empty-icon="$ratingFull" half-increments hover large required></v-rating>
+                            <div class="small text-danger" v-if="form.errors.has('rating')" v-html="form.errors.get('rating')" />
+                        </div>
+                        
+                    </v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-actions class="justify-space-between">
+                        <v-btn text @click="ratingDialog = false" color="error">
+                            Close
+                        </v-btn>
+                        <v-btn color="primary" text type="submit">
+                            Submit
+                        </v-btn>
+                    </v-card-actions>
+                </form>
+            </v-card>
+        </v-dialog>
+
 
 
     </div>
@@ -223,6 +260,7 @@
 
 
 <script>
+import Form from 'vform';
     export default {
 
         data() {
@@ -232,6 +270,7 @@
                 // dialog
                 driverModal: false,
                 bookbyModal: false,
+                ratingDialog: false,
 
                 // driverData
                 driverData: '',
@@ -289,6 +328,16 @@
                 remarksDialog: false,
                 allRemarks: [],
                 docPath: '/images/application/',
+
+                form: new Form({
+
+                    id:'',
+                    feedback: '',
+                    rating: null,
+
+                })
+
+                
 
             }
 
@@ -376,6 +425,34 @@
             },
 
 
+            feedback(data) {
+                
+                this.form.id =  data.id;
+                this.ratingDialog = true;
+            },
+
+            feedbackStore(){
+                this.form.post(this.currentUrl + '/feedback').then(response=>{
+
+                    if (response.status == 200) 
+                    {
+                        Toast.fire({
+                            icon: response.data.icon,
+                            title: response.data.msg
+                        });
+                        this.ratingDialog = false;
+                    } 
+                }).catch(error=>{
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Somthing Going Wrong<br>'+data.message,
+                        customClass: 'text-danger'
+                    });
+                })
+            }
+
+
 
 
         },
@@ -429,6 +506,26 @@
 
     .bg_card {
         background: linear-gradient(120deg, rgb(249, 168, 37) 60%, rgba(0, 0, 0, 1) 40%);
+    }
+
+
+    .shake {
+        animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+        transform: translate3d(0, 0, 0);
+    }
+    @keyframes shake {
+        10%, 90% {
+            transform: translate3d(-1px, 0, 0);
+        }
+        20%, 80% {
+            transform: translate3d(2px, 0, 0);
+        }
+        30%, 50%, 70% {
+            transform: translate3d(-4px, 0, 0);
+        }
+        40%, 60% {
+            transform: translate3d(4px, 0, 0);
+        }
     }
 
 </style>

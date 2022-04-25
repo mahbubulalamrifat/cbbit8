@@ -563,6 +563,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::get('/category', 'ApplicationController@category');
                 Route::get('/history', 'ApplicationController@history');
                 Route::post('/complain_cancel', 'ApplicationController@complain_cancel');
+                Route::post('/feedback', 'ApplicationController@feedback');
                 
             });
 
