@@ -56,7 +56,7 @@
                                         <div class="small text-danger" v-if="form.errors.has('office')"
                                             v-html="form.errors.get('office')" />
                                         <v-autocomplete :items="allOffice" v-model="form.office"
-                                            label="Select Office Name" :rules="[v => !!v || 'Office is required!']"
+                                            label="Select Department Name" :rules="[v => !!v || 'Department is required!']"
                                             dense  required></v-autocomplete>
                                     </v-col>
                                 </v-row>
@@ -177,15 +177,15 @@ export default {
 
     
     methods:{
-        // getOffice
+        // getOffice 
         getOffice() {
             axios.get(this.currentUrl+'/office').then(response => {
                 console.log(response.data);
-                // zone_office
+                // department
                 response.data.office.forEach(element => {
                     this.allOffice.push({
-                        value: element.zone_office,
-                        text: element.zone_office
+                        value: element.department,
+                        text: element.department
                     }) ;
                     //console.log('getOffice',  this.allOffice, element);
                 });
@@ -226,7 +226,9 @@ export default {
                     'success'
                 );
                 // Refresh Tbl Data with current page
-                this.getResults(this.currentPageNumber);
+                //this.getResults(this.currentPageNumber);
+                // Parent to child
+                this.$emit('childToParent');
                 this.deliverModal = false;
                 this.$Progress.finish();
 

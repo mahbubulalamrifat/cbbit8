@@ -6,7 +6,7 @@
             </v-card-title>
             <v-card-text v-if="complainDeta" class="table-responsive">
 
-                <!-- Complain and user Details -->
+                <!-- Start Complain and user Details -->
                 <table class="table mb-0">
                     <tr>
                         <th>Complain No:</th>
@@ -16,14 +16,16 @@
                         </td>
                         <th>Category:</th>
                         <td>
-                            <v-btn v-if="complainDeta.category" @click="modifyDialogShow()" color="info" small elevation="20">
+                            <v-btn v-if="complainDeta.category" @click="modifyDialogShow()" color="info" small
+                                elevation="20">
                                 <v-icon left>mdi-playlist-edit</v-icon> {{ complainDeta.category.name }}
                             </v-btn>
                             <v-btn @click="modifyDialogShow()" v-else class="error">N/A</v-btn>
                         </td>
                         <th>Subcategory:</th>
                         <td>
-                            <v-btn v-if="complainDeta.subcategory" @click="modifyDialogShow()" color="info" small elevation="20">
+                            <v-btn v-if="complainDeta.subcategory" @click="modifyDialogShow()" color="info" small
+                                elevation="20">
                                 <v-icon left>mdi-playlist-edit</v-icon> {{ complainDeta.subcategory.name }}
                             </v-btn>
                             <v-btn @click="modifyDialogShow()" v-else class="error">N/A</v-btn>
@@ -33,13 +35,13 @@
                     <tr>
                         <th>Complain By:</th>
                         <td>
-                            <v-btn x-small color="secondary" v-if="complainDeta.makby"
+                            <button class="btn btn-secondary btn-sm" v-if="complainDeta.makby"
                                 @click="currentUserView(complainDeta.makby)">
                                 <v-avatar size="20" @click="currentUserView(complainDeta.makby)">
                                     <img v-if="complainDeta.makby.image"
                                         :src="'/images/users/small/' + complainDeta.makby.image" alt="image">
                                 </v-avatar> {{ complainDeta.makby.name }}
-                            </v-btn>
+                            </button>
                         </td>
                         <th>Department:</th>
                         <td><span v-if="complainDeta.makby">{{ complainDeta.makby.department }}</span></td>
@@ -68,12 +70,10 @@
                         <td>
                             <a v-if="complainDeta.document" :href="docPath+complainDeta.document"
                                 class="btn btn-info btn-sm text-white" download>
-                                <v-icon color="white">mdi-download-network-outline</v-icon> Doc-1
+                                <v-icon color="white">mdi-paperclip</v-icon> Doc-1
                             </a>
                             <span v-else class="text-danger">Not Attached</span>
                         </td>
-
-
                     </tr>
                 </table>
 
@@ -85,9 +85,18 @@
                     </tr>
                     <tr>
                         <th>Details:</th>
-                        <td>{{ complainDeta.details }}</td>
+                        <td v-html="complainDeta.details"></td>
                     </tr>
                 </table>
+                <!-- End Complain and user Details -->
+
+
+
+
+
+
+
+
 
                 <!-- All Remarks -->
                 <div v-if="complainDeta.remarks" class="mb-2">
@@ -96,7 +105,7 @@
                         <table class="table mb-1 bg-secondary text-white rounded border-bottom border-danger">
                             <!-- remarks -->
                             <tr>
-                                <th>Process: ({{ index+1 }})</th>
+                                <th>Process: ({{ index + 1 }})</th>
                                 <td>
                                     <span v-if="(item.process == 'Damaged')"
                                         class="text-danger bg-white rounded">Damaged</span>
@@ -109,7 +118,7 @@
                                     <span v-if="item.document">
                                         <a v-if="item.document" :href="docPath+item.document"
                                             class="btn btn-info btn-sm text-white" download>
-                                            <v-icon color="white" small>mdi-download-network-outline</v-icon> Document
+                                            <v-icon color="white" small>mdi-paperclip</v-icon> Document
                                         </a>
                                     </span>
                                     <span v-else class="text-warning">No Document's Send</span>
@@ -118,13 +127,13 @@
                             <tr>
                                 <th>By:</th>
                                 <td>
-                                    <v-btn x-small color="secondary" v-if="item.makby"
+                                    <button class="btn btn-secondary btn-sm" v-if="item.makby"
                                         @click="currentUserView(item.makby)">
                                         <v-avatar size="20">
                                             <img v-if="item.makby.image"
                                                 :src="'/images/users/small/' + item.makby.image" alt="image">
                                         </v-avatar> {{ item.makby.name }}
-                                    </v-btn>
+                                    </button>
                                 </td>
                                 <th>Action At:</th>
                                 <td><span
@@ -132,15 +141,15 @@
                                 </td>
                             </tr>
 
-                            <!-- dam_apply -->
-                            <!-- {{ complainDeta.dam_apply }} -->
-                            <tr v-if="(item.process == 'Damaged') && complainDeta.dam_apply && complainDeta.dam_apply.apply_by"
+                            <!-- Damage Apply by User -->
+                            <!-- {{ complainDeta.damage }} -->
+                            <tr v-if="(item.process == 'Damaged' ||  item.process == 'Partial Damaged') && complainDeta.damage && complainDeta.damage.apply_by"
                                 class="bg-info">
-                                <th>Damage Apply:</th>
+                                <th>Replace Applied:</th>
                                 <td>Successfully </td>
                                 <th>Apply At:</th>
-                                <td><span v-if="complainDeta.dam_apply.apply_at"
-                                        class="text-warning">{{ complainDeta.dam_apply.apply_at | moment("MMMM Do YYYY, h:mm a") }}</span>
+                                <td><span v-if="complainDeta.damage.apply_at"
+                                        class="text-warning">{{ complainDeta.damage.apply_at | moment("MMMM Do YYYY, h:mm a") }}</span>
                                 </td>
                             </tr>
                             <!-- Start Email send  -->
@@ -149,8 +158,9 @@
                                 <td>
                                     <span v-if="item.mail.status" class="text-success">Successfully Sent</span>
                                     <span v-else class="text-warning">Sending</span>
-                                    <v-btn @click="mailSendManual(item.mail.id)" small class="float-right" elevation="20">
-                                        <v-icon>mdi-email-send</v-icon> 
+                                    <v-btn @click="mailSendManual(item.mail.id)" small class="float-right"
+                                        elevation="20">
+                                        <v-icon>mdi-email-send</v-icon>
                                     </v-btn>
                                 </td>
                                 <th>Send At:</th>
@@ -168,6 +178,9 @@
 
                         </table>
                         <!--End remarks -->
+
+
+
 
                         <!--Start ho_remarks -->
                         <div v-if="(item.process == 'HO Service')">
@@ -189,7 +202,7 @@
                                             <span v-if="item.document">
                                                 <a v-if="item.document" :href="docPath+item.document"
                                                     class="btn btn-info btn-sm text-white" download>
-                                                    <v-icon color="white" small>mdi-download-network-outline</v-icon>
+                                                    <v-icon color="white" small>mdi-paperclip</v-icon>
                                                     Document
                                                 </a>
                                             </span>
@@ -199,27 +212,28 @@
                                     <tr>
                                         <th>By:</th>
                                         <td>
-                                            <v-btn x-small color="secondary" v-if="item.makby"
+                                            <button class="btn btn-secondary btn-sm" v-if="item.makby"
                                                 @click="currentUserView(item.makby)">
                                                 <v-avatar size="20">
                                                     <img v-if="item.makby.image"
                                                         :src="'/images/users/small/' + item.makby.image" alt="image">
                                                 </v-avatar> {{ item.makby.name }}
-                                            </v-btn>
+                                            </button>
                                         </td>
                                         <th>Action At:</th>
                                         <td><span
                                                 v-if="item.created_at">{{ item.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
                                         </td>
                                     </tr>
-                                     <!-- Email send  -->
+                                    <!-- Email send  -->
                                     <tr v-if="item.mail">
                                         <th>E-Mail:</th>
                                         <td colspan="1">
                                             <span v-if="item.mail.status">Successfully Sent</span>
                                             <span v-else class="text-warning">Sending</span>
-                                            <v-btn @click="mailSendManual(item.mail.id)" small class="float-right" elevation="20">
-                                                <v-icon>mdi-email-send</v-icon> 
+                                            <v-btn @click="mailSendManual(item.mail.id)" small class="float-right"
+                                                elevation="20">
+                                                <v-icon>mdi-email-send</v-icon>
                                             </v-btn>
                                         </td>
                                         <th>Send At:</th>
@@ -233,35 +247,58 @@
                                         <td colspan="3" v-html="item.details"></td>
                                     </tr>
                                 </table>
-                                
+
                             </div>
                         </div>
                         <!--End ho_remarks -->
+
                     </div>
                 </div>
 
+
+
+
+
                 <!-- Start Damaged Replaced received -->
                 <table class="table mb-1 bg-secondary text-white rounded border-bottom border-danger"
-                    v-if="complainDeta.dam_apply && complainDeta.dam_apply.rep_pro_id ">
-                    <!-- {{ complainDeta.dam_apply }} -->
+                    v-if="complainDeta.damage && complainDeta.damage.rep_pro_id ">
+                    <!-- {{ complainDeta.damage }} -->
 
                     <tr>
                         <td colspan="8" class="text-center h3 text-success">Damaged Replaced</td>
                     </tr>
+                    <tr>
+                        <th>By:</th>
+                        <td colspan="3">
+                            <button class="btn btn-secondary btn-sm" v-if="complainDeta.damage.makby"
+                                @click="currentUserView(complainDeta.damage.makby)">
+                                <v-avatar size="20">
+                                    <img v-if="complainDeta.damage.makby.image"
+                                        :src="'/images/users/small/' + complainDeta.damage.makby.image" alt="image">
+                                </v-avatar> {{ complainDeta.damage.makby.name }}
+                            </button>
+                        </td>
+                        <th>Action At:</th>
+                        <td colspan="3"><span
+                                v-if="complainDeta.damage.created_at">{{ complainDeta.damage.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
+                        </td>
+                    </tr>
                     <tr class="bg-info">
                         <th>Receiver Name:</th>
-                        <td> {{ complainDeta.dam_apply.rec_name }} </td>
+                        <td> {{ complainDeta.damage.rec_name }} </td>
                         <th>Receiver Contact:</th>
-                        <td> {{ complainDeta.dam_apply.rec_contact }} </td>
+                        <td> {{ complainDeta.damage.rec_contact }} </td>
                         <th>Receiver Position:</th>
-                        <td> {{ complainDeta.dam_apply.rec_position }} </td>
+                        <td> {{ complainDeta.damage.rec_position }} </td>
                         <th>Received At:</th>
-                        <td><span v-if="complainDeta.dam_apply.updated_at"
-                                class="text-warning">{{ complainDeta.dam_apply.updated_at | moment("MMMM Do YYYY, h:mm a") }}</span>
+                        <td><span v-if="complainDeta.damage.updated_at"
+                                class="text-warning">{{ complainDeta.damage.updated_at | moment("MMMM Do YYYY, h:mm a") }}</span>
                         </td>
                     </tr>
                 </table>
                 <!-- Start Damaged Replaced received -->
+
+
 
 
 
@@ -274,14 +311,32 @@
                     <tr>
                         <td colspan="8" class="text-center h3">----- Delivered -----</td>
                     </tr>
-                    <!-- Start Email send  -->
+                    <tr>
+                        <th>By:</th>
+                        <td colspan="3">
+                            <button class="btn btn-secondary btn-sm" v-if="complainDeta.delivery.makby"
+                                @click="currentUserView(complainDeta.delivery.makby)">
+                                <v-avatar size="20">
+                                    <img v-if="complainDeta.delivery.makby.image"
+                                        :src="'/images/users/small/' + complainDeta.delivery.makby.image" alt="image">
+                                </v-avatar> {{ complainDeta.delivery.makby.name }}
+                            </button>
+                        </td>
+                        <th>Action At:</th>
+                        <td colspan="3"><span
+                                v-if="complainDeta.delivery.created_at">{{ complainDeta.delivery.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
+                        </td>
+                    </tr>
+
+                    <!-- End Email send  -->
                     <tr v-if="complainDeta.delivery.mail">
                         <th>E-Mail:</th>
-                        <td colspan="3">  
-                            <span v-if="complainDeta.delivery.mail.status" >Successfully Sent</span>
+                        <td colspan="3">
+                            <span v-if="complainDeta.delivery.mail.status">Successfully Sent</span>
                             <span v-else class="text-warning">Sending</span>
-                            <v-btn @click="mailSendManual(complainDeta.delivery.mail.id)" small class="float-right" elevation="20">
-                                <v-icon>mdi-email-send</v-icon> 
+                            <v-btn @click="mailSendManual(complainDeta.delivery.mail.id)" small class="float-right"
+                                elevation="20">
+                                <v-icon>mdi-email-send</v-icon>
                             </v-btn>
                         </td>
                         <th>Send At:</th>
@@ -290,7 +345,7 @@
                             <span v-else class="text-warning">Sending</span>
                         </td>
                     </tr>
-                            <!-- End Email send  -->
+                    <!-- End Email send  -->
                     <tr>
                         <th>Receiver Name:</th>
                         <td> {{ complainDeta.delivery.rec_name }} </td>
@@ -312,10 +367,20 @@
 
 
 
-                <!-- Action Btn -->
+                <!-- Action Btn  -->
                 <div>
-                    <v-btn v-if="checkActionBtnAccess()" :loading="actionBtnLoading" block :class="actionBtnColor"
+                    <!-- <v-btn v-if="checkActionBtnAccess()" :loading="actionBtnLoading" block :class="actionBtnColor"
                         @click="actionDialogShow()" elevation="20">
+                        <v-icon left>mdi-gesture-tap-button</v-icon> {{ actionBtnText }}
+                    </v-btn> -->
+
+                    <v-btn v-if="actionAccess" :loading="actionBtnLoading" block :class="actionBtnColor"
+                        @click="actionDialogShow()" elevation="20">
+                        <v-icon left>mdi-gesture-tap-button</v-icon> {{ actionBtnText }}
+                    </v-btn>
+
+                    <v-btn v-else block :class="actionBtnColor"
+                        elevation="20">
                         <v-icon left>mdi-gesture-tap-button</v-icon> {{ actionBtnText }}
                     </v-btn>
                 </div>
@@ -433,6 +498,7 @@
 
                 actionBtnText: 'Action',
                 actionBtnColor: 'success',
+                actionAccess: true,
 
 
                 // Current User Show By Dilog
@@ -448,6 +514,8 @@
                 //console.log('child') // someValue
                 // refresh data
                 this.getComplainData();
+
+                // For sidebar counter
                 this.countAll();
             },
 
@@ -528,12 +596,13 @@
 
                 if (currPro == 'Not Process') {
                     this.actionVal = true
-                    // this.actionVal2 = false
+                    //this.actionVal2 = false
                 }
 
                 // Processing
                 if (currPro == 'Processing' || currPro == 'Send Service' || currPro == 'Back Service' || currPro ==
-                    'Again Send Service') {
+                    'Again Send Service' || currPro ==
+                    'Service Quotation') {
                     // this.actionVal = false
                     this.actionVal2 = true
                 }
@@ -547,7 +616,7 @@
 
                 // Damaged
                 if (currPro == 'Damaged' || currPro == 'Partial Damaged') {
-                    let damagedData = this.complainDeta.dam_apply
+                    let damagedData = this.complainDeta.damage
                     // Check Applicable
                     if (damagedData.applicable_type == 'Applicable' && !damagedData.apply_quotation) {
                         // Check user applied
@@ -589,9 +658,33 @@
                 //console.log('Process ', val)
                 let currPro = this.complainDeta.process
                 // For Action BTN
-                if (currPro == 'HO Service' && !this.isHardwareHoService()) {
-                    this.actionBtnText = 'Sorry! You have no access'
+
+                // HO access
+                if ( !this.isHardwareHoService() && currPro == 'HO Service' ) {
+                    this.actionBtnText = 'Sorry! You have no HO access'
                     this.actionBtnColor = 'error'
+                    this.actionAccess = false
+                }
+
+                // Delivery access
+                if ( !this.isHardwareDelivery() && currPro == 'Deliverable' ) {
+                    this.actionBtnText = 'Sorry! You have no Delivery access'
+                    this.actionBtnColor = 'error'
+                    this.actionAccess = false
+                }
+
+                // Damaged access
+                if ( !this.isHardwareDamaged() &&  (currPro == 'Damaged' || currPro == 'Partial Damaged') ) {
+                    this.actionBtnText = 'Sorry! You have no Damage access'
+                    this.actionBtnColor = 'error'
+                    this.actionAccess = false
+                }
+
+                // Closed
+                if ( currPro == 'Closed' ) {
+                    this.actionBtnText = 'Sorry! Complain already closed'
+                    this.actionBtnColor = 'error'
+                    this.actionAccess = false
                 }
 
             }

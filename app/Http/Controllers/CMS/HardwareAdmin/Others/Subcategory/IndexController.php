@@ -9,11 +9,8 @@ use App\Models\Cms\Hardware\HardwareSubcategory;
 use App\Models\Cms\Hardware\HardwareCategory;
 use Auth;
 
-use App\Http\Controllers\CMS\HardwareAdmin\CommonFunctions;
-
 class IndexController extends Controller
 {
-    use CommonFunctions;
     
     //index
     public function index(){
@@ -52,17 +49,6 @@ class IndexController extends Controller
 
         $data = new HardwareSubcategory();
 
-
-        $checksubcat = $this->checksubCat($request->cat_id, $request->name);
-
-
-        if($checksubcat){
-            return response()->json([
-                'msg'=>'Subcategory Already Exist in this Category !! &#128530;', 
-                'icon'=>'warning'
-            ], 208);
-        }
-
     
         //$data->name    = ucwords(strtolower($request->name));
         $data->name       = $request->name;
@@ -91,17 +77,6 @@ class IndexController extends Controller
         ]);
 
         $data = HardwareSubcategory::find($id);
-
-
-        $checksubcat = $this->checksubCat($request->cat_id, $request->name);
-
-
-        if($checksubcat){
-            return response()->json([
-                'msg'=>'Subcategory Already Exist in this Category !! &#128530;', 
-                'icon'=>'warning'
-            ], 208);
-        }
 
       
         $data->name       = $request->name;

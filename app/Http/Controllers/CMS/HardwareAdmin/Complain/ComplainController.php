@@ -8,11 +8,15 @@ use Illuminate\Http\Request;
 use App\Models\Cms\Hardware\HardwareComplain;
 use App\Models\SuperAdmin\ZoneOffice;
 use Auth;
+// Form email
+use App\Http\Controllers\CMS\Email\Hardware\EmailStore;
 use App\Http\Controllers\CMS\HardwareAdmin\CommonController;
+use App\Models\Cms\Hardware\HardwareDelivery;
+
 
 class ComplainController extends Controller
 {
-    //not_process
+    //not_process 
     public function not_process(){
 
         // Check access offices
@@ -26,6 +30,7 @@ class ComplainController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $allData = HardwareComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1)
             ->whereHas('makby', function($q) use($accessZoneOffices){
                 //dd($accessZoneOffices[0]);
                 $q->whereIn('zone_office', $accessZoneOffices);
@@ -55,6 +60,7 @@ class ComplainController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $allData = HardwareComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1)
             ->whereHas('makby', function($q) use($accessZoneOffices){
                 //dd($accessZoneOffices);
                 $q->whereIn('zone_office', $accessZoneOffices);
@@ -77,6 +83,7 @@ class ComplainController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $allData = HardwareComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1)
             ->where('process', 'Closed')
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
@@ -87,18 +94,85 @@ class ComplainController extends Controller
     } 
 
 
-    // deliverable
+    // deliverable complain list
     public function deliverable(){
+
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
 
         $paginate       = Request('paginate', 10);
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
 
-        $allData = HardwareComplain::with('makby', 'category', 'subcategory')
-            ->where('process', 'Deliverable')
-            ->orderBy($sort_field, $sort_direction)
+        $allDataQuery = HardwareComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1)
+            ->where('process', 'Deliverable');
+
+        // Check Zone Access
+        $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+            //dd($accessZoneOffices);
+            $q->whereIn('zone_office', $accessZoneOffices);
+        });
+
+        $allData = $allDataQuery->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
+            ->paginate($paginate);
+
+        return response()->json($allData, 200);
+    }
+
+    // delivered complain list
+    public function delivered(){
+
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
+
+        $paginate       = Request('paginate', 10);
+        $search         = Request('search', '');
+        $sort_direction = Request('sort_direction', 'desc');
+        $sort_field     = Request('sort_field', 'id');
+        $search_field   = Request('search_field', '');
+
+        $start          = Request('start', '');
+        $end            = Request('end', '');
+        $zone_office    = Request('zone_office', '');
+        $department     = Request('department', '');
+
+        $allDataQuery = HardwareDelivery::with('makby', 'complain', 'complain.category', 'complain.subcategory', 'complain.makby')
+            ->orderBy($sort_field, $sort_direction);
+
+        // Check Zone Access
+        $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+            //dd($accessZoneOffices);
+            $q->whereIn('zone_office', $accessZoneOffices);
+        });
+
+
+         // Department Selected
+         if( !empty($start) && !empty($end) ){
+            $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
+        }
+
+        // user Zone Selected
+        if( !empty($zone_office) && $zone_office != 'All'){
+            $allDataQuery->whereHas('complain.makby', function($q) use($zone_office){
+                //dd($department);
+                $q->whereIn('zone_office', explode(",",$zone_office));
+                //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }
+
+        // user department Selected
+        if( !empty($department) && $department != 'All'){
+            $allDataQuery->whereHas('complain.makby', function($q) use($department){
+                //dd($department);
+                $q->where('department', $department);
+            });
+        }
+
+
+        $allData = $allDataQuery->search( trim(preg_replace('/\s+/' ,' ', $search)) )
             ->paginate($paginate);
 
         return response()->json($allData, 200);
@@ -106,7 +180,7 @@ class ComplainController extends Controller
 
 
     // service
-    public function service(){
+    public function service(){ 
 
         // Check access offices
         $accessZoneOffices = CommonController::ZoneOfficesByAuth();
@@ -119,11 +193,12 @@ class ComplainController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $allData = HardwareComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1)
             ->whereHas('makby', function($q) use($accessZoneOffices){
                 //dd($accessZoneOffices);
                 $q->whereIn('zone_office', $accessZoneOffices);
             })
-            ->whereIn('process', ['Send Service', 'Back Service', 'Again Send Service'])
+            ->whereIn('process', ['Send Service', 'Back Service', 'Again Send Service', 'Service Quotation'])
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
             ->paginate($paginate);

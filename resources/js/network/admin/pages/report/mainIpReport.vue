@@ -91,20 +91,7 @@
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
-                    <v-data-table
-                        :headers="headers"
-                        :items="allData"
-                        :items-per-page="5"
-                        class="elevation-1"
-                    >
-                    <template v-slot:item.duration="{ item }">
-                         <span v-for="(item, index) in item.duration" :key="index" class="small">
-                                {{ item | moment("h:mm a") }}, 
-                            </span>
-                    </template>
-                    </v-data-table>
-
-                    <!-- <table class="table table-bordered text-center">
+                    <table class="table table-bordered text-center">
                         <thead>
                             <tr>
                                 <th>IP</th>
@@ -143,7 +130,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table> -->
+                    </table>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -174,15 +161,6 @@
         data() {
 
             return {
-                // table
-                headers: [
-                    { text: 'IP', value: 'ip' },
-                    { text: 'Name', value: 'name' },
-                    { text: 'Date', value: 'date' },
-                    { text: 'Office Time', value: 'off' },
-                    { text: 'Offline Details 10 minutes Interval', value: 'duration' },
-                ],
-
                 // overlay
                 overlay: false,
 

@@ -55,9 +55,16 @@ class IndexController extends Controller
         $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)
                     ->paginate($paginate);
 
-
         return response()->json($allData, 200);
 
+    }
+
+    // full_list
+    public function full_list(){
+        $allData = User::select('id', 'name')
+            ->where('delete_temp', '!=', '1')
+            ->get();
+        return response()->json($allData, 200);
     }
 
     // zoneoffices
@@ -81,6 +88,7 @@ class IndexController extends Controller
 
         $allData = User::where('status', 1)
             ->whereNotNull('department')
+            ->Where('department','<>','')
             ->select('department')
             ->orderBy('department')
             ->distinct()

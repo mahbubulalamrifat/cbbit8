@@ -85,7 +85,7 @@
         }
         @else
         <tr>
-            <td colspan="7" rowspan="9" style="color: red; font-size: 50px">Sorry !! Don't use this month</td>
+            <td colspan="7" rowspan="9" style="color: red; font-size: 50px">Don't use this month</td>
         </tr>
         <tr></tr>
         <tr></tr>
@@ -101,17 +101,31 @@
         </tr>
  
         <tr>
-            <td style="background-color: #009688; color:white" colspan="2">TOTAL USAGE</td>
-            <td style="background-color: #009688; color:white">Unit Price</td>
-            <td style="background-color: #009688; color:white">AMOUNT</td>
+            <td colspan="2">TOTAL USAGE</td>
+            <td>Unit Price</td>
+            <td>AMOUNT</td>
             <td rowspan="6" colspan="3"></td>
         </tr>
 
         <tr>
-            <td>B/F</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
+            <td style="background-color: #009688; color:white">B/F</td>
+            @if($product->totalBroughtForward)
+            <td style="background-color: #009688; color:white">{{ $product->totalBroughtForward }}</td>
+            @else
+            <td style="background-color: #009688; color:white">-</td>
+            @endif
+
+            @if($product->broughtForwardAmmountUnit)
+            <td style="background-color: #009688; color:white">{{ number_format($product->broughtForwardAmmountUnit) }}</td>
+            @else
+            <td style="background-color: #009688; color:white">-</td>
+            @endif
+
+            @if($product->totalBroughtForwardAmmount)
+            <td style="background-color: #009688; color:white">{{ number_format($product->totalBroughtForwardAmmount) }}</td>
+            @else
+            <td style="background-color: #009688; color:white">-</td>
+            @endif
         </tr>
         
         <tr>
@@ -185,16 +199,10 @@
         </tr>
 
         <tr>
-            <td style="background-color: #009688; color:white">C\F</td>
+            <td style="background-color: #009688; color:white">C/F</td>
             
             @if($product->totalRemaining)
             <td style="background-color: #009688; color:white">{{ $product->totalRemaining }}</td>
-            @else
-            <td style="background-color: #009688; color:white">-</td>
-            @endif
-
-            @if($product->totalRemainingAmmount)
-            <td style="background-color: #009688; color:white">{{ number_format($product->totalRemainingAmmount) }}</td>
             @else
             <td style="background-color: #009688; color:white">-</td>
             @endif
@@ -205,7 +213,11 @@
             <td style="background-color: #009688; color:white">-</td>
             @endif
 
-
+            @if($product->totalRemainingAmmount)
+            <td style="background-color: #009688; color:white">{{ number_format($product->totalRemainingAmmount) }}</td>
+            @else
+            <td style="background-color: #009688; color:white">-</td>
+            @endif
         </tr>
 
         <tr>
@@ -223,10 +235,6 @@
                 <br>Mr Surachai Praneerachlerd 
                 </td>
             <td></td>
-        </tr>
-
-        <tr>
-            <td style="color: #dddddd">{{date('d-m-y h:i:s')}}</td>
         </tr>
     </tbody>
 </table>

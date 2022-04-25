@@ -505,6 +505,17 @@
     </tr>
     <tr></tr>
     <tr>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td style="font-weight: bold">Group Image</td>
+        <td>
+            @if($auditData->group_image)
+                {{URL::asset($auditData->imglgpath.$auditData->group_image)}}
+            @endif
+        </td>
+    </tr>
+    <tr>
         <td colspan="3">REC/QC-041 (REV 2: 24-1-17)</td>
     </tr>
     

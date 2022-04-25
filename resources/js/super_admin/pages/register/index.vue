@@ -3,136 +3,138 @@
 
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">All Registered Users List</h3>   
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="card-title">All Registered Users List</h3>
+                    </div>
+
+                </div>
             </div>
 
             <div class="card-body table-responsive">
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="6" lg="2">
+                        <v-col cols="2">
                             <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
+                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
 
-                        <v-col cols="6" lg="2">
+                        <v-col cols="2">
                             <!-- zone_office -->
                             <v-select v-model="zone_office" label="Zones:" :items="allZoneOffices" item-text="name"
-                                item-value="offices" outlined dense>
+                                item-value="offices" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="6" lg="3">
+                        <v-col cols="3">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
-                                item-text="department" item-value="department" outlined dense>
+                                item-text="department" item-value="department" small>
                             </v-select>
                         </v-col>
 
 
-                        <v-col cols="6" lg="2">
+                        <v-col cols="2">
                             <!-- search_field -->
                             <v-select v-model="search_field" label="Search By:" :items="searchByFields" item-text="name"
-                                item-value="value" outlined dense>
+                                item-value="value" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="12" lg="3">
-                            <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..." outlined dense></v-text-field>
+                        <v-col cols="3">
+                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
+                                placeholder="Search Input..."></v-text-field>
                         </v-col>
 
 
                     </v-row>
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Action</th>
-                                    <th>
-                                        <a href="#" @click.prevent="change_sort('verify')">Verify</a>
-                                        <span v-if="sort_direction == 'desc' && sort_field == 'verify'">&uarr;</span>
-                                        <span v-if="sort_direction == 'asc' && sort_field == 'verify'">&darr;</span>
-                                    </th>
-                                    <th>
-                                        <a href="#" @click.prevent="change_sort('login')">Login</a>
-                                        <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
-                                        <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
-                                    </th>
-                                    <th>
-                                        <a href="#" @click.prevent="change_sort('name')">Name</a>
-                                        <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                        <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                                    </th>
-                                    <th>
-                                        <a href="#" @click.prevent="change_sort('department')">Department</a>
-                                        <span v-if="sort_direction == 'desc' && sort_field == 'department'">&uarr;</span>
-                                        <span v-if="sort_direction == 'asc' && sort_field == 'department'">&darr;</span>
-                                    </th>
-                                    <th>
-                                        <a href="#" @click.prevent="change_sort('business_unit')">Business Unit</a>
-                                        <span v-if="sort_direction == 'desc' && sort_field == 'business_unit'">&uarr;</span>
-                                        <span v-if="sort_direction == 'asc' && sort_field == 'business_unit'">&darr;</span>
-                                    </th>
-                                    <th>
-                                        <a href="#" @click.prevent="change_sort('office_id')">Office ID</a>
-                                        <span v-if="sort_direction == 'desc' && sort_field == 'office_id'">&uarr;</span>
-                                        <span v-if="sort_direction == 'asc' && sort_field == 'office_id'">&darr;</span>
-                                    </th>
-                                    <th>
-                                        <a href="#" @click.prevent="change_sort('updated_at')">Completed</a>
-                                        <span v-if="sort_direction == 'desc' && sort_field == 'updated_at'">&uarr;</span>
-                                        <span v-if="sort_direction == 'asc' && sort_field == 'updated_at'">&darr;</span>
-                                    </th>
-                                    <th>
-                                        <a href="#" @click.prevent="change_sort('created_at')">Applied</a>
-                                        <span v-if="sort_direction == 'desc' && sort_field == 'created_at'">&uarr;</span>
-                                        <span v-if="sort_direction == 'asc' && sort_field == 'created_at'">&darr;</span>
-                                    </th>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('verify')">Verify</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'verify'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'verify'">&darr;</span>
+                                </th>
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('login')">Login</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
+                                </th>
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('name')">Name</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                </th>
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('department')">Department</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'department'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'department'">&darr;</span>
+                                </th>
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('business_unit')">Business Unit</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'business_unit'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'business_unit'">&darr;</span>
+                                </th>
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('office_id')">Office ID</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'office_id'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'office_id'">&darr;</span>
+                                </th>
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('updated_at')">Completed</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'updated_at'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'updated_at'">&darr;</span>
+                                </th>
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('created_at')">Applied</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'created_at'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'created_at'">&darr;</span>
+                                </th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                                    <td class="text-center">
-                                        <!-- <button v-if="singleData.verify != 1" @click="editDataModelDirect(singleData)" class="btn btn-warning btn-sm"> 
-                                            <i class="fa fa-edit blue"></i>Create
-                                        </button>   -->
+                                <td class="text-center">
+                                    <!-- <button v-if="singleData.verify != 1" @click="editDataModelDirect(singleData)" class="btn btn-warning btn-sm"> 
+                                        <i class="fa fa-edit blue"></i>Create
+                                    </button>   -->
 
 
-                                        <v-btn v-if="singleData.verify != 1" @click="editDataModelDirect(singleData)"
-                                            elevation="10" small class="float-right" color="primary" outlined>
-                                            <v-icon small>mdi-card-plus</v-icon> Create
-                                        </v-btn>
+                                    <v-btn v-if="singleData.verify != 1" @click="editDataModelDirect(singleData)"
+                                        elevation="10" small class="float-right" color="primary" outlined>
+                                        <v-icon small>mdi-card-plus</v-icon> Create
+                                    </v-btn>
 
-                                        <span v-else class="text-success">Created</span>
+                                    <span v-else class="text-success">Created</span>
 
-                                    </td>
-                                    <td>
-                                        <span v-if="singleData.verify == 1" class="text-success">Verified</span> <span
-                                            v-else class="text-danger">Not Verified</span>
-                                        <span class="text-muted small float-right"
-                                            v-if="singleData.verified">--{{ singleData.verified.name }}</span>
-                                    </td>
-                                    <td>{{ singleData.login  }}
-                                        <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image"
-                                            class="img-fluid" height="50" width="80">
-                                    </td>
-                                    <td>{{ singleData.name }} </td>
-                                    <td>{{ singleData.department }} </td>
-                                    <td>{{ singleData.business_unit }} </td>
-                                    <td>{{ singleData.office_id }} </td>
-                                    <td>{{ singleData.updated_at | moment("MMM Do YYYY, h:mm a") }} </td>
-                                    <td>{{ singleData.created_at | moment("MMM Do YYYY, h:mm a") }} </td>
+                                </td>
+                                <td>
+                                    <span v-if="singleData.verify == 1" class="text-success">Verified</span> <span
+                                        v-else class="text-danger">Not Verified</span>
+                                    <span class="text-muted small float-right"
+                                        v-if="singleData.verified">--{{ singleData.verified.name }}</span>
+                                </td>
+                                <td>{{ singleData.login  }}
+                                    <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image"
+                                        class="img-fluid" height="50" width="80">
+                                </td>
+                                <td>{{ singleData.name }} </td>
+                                <td>{{ singleData.department }} </td>
+                                <td>{{ singleData.business_unit }} </td>
+                                <td>{{ singleData.office_id }} </td>
+                                <td>{{ singleData.updated_at | moment("MMM Do YYYY, h:mm a") }} </td>
+                                <td>{{ singleData.created_at | moment("MMM Do YYYY, h:mm a") }} </td>
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
+                            </tr>
+                        </tbody>
+                    </table>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

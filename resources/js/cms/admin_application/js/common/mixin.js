@@ -3,7 +3,6 @@ import store from './../store'
 import { mapGetters } from 'vuex'
 
 
-
 import paginateMethods from './paginate_methods'
 import imageMethods from './image_methods'
 import createUpdate from './crud'
@@ -46,11 +45,14 @@ export default {
 
         // Tbl number of data show
         tblItemNumberShow:[5,10,15,25,50,100],
-        // v-form
-          valid: false,
-        
 
-          // For Report search
+        // v-form
+        valid: false,
+        
+        // overlay
+        overlay:false,
+
+        // For Report search
         allZoneOffices:[],
         allDepartments:[],
       }
@@ -74,7 +76,6 @@ export default {
 
 
 
-    
         // get Zone Offices
         getZoneOffices(){
             axios.get('/super_admin/user/zoneoffices').then(response=>{
@@ -96,6 +97,7 @@ export default {
         },
 
 
+
         // countNotProcess
         countAll() {
 
@@ -111,9 +113,6 @@ export default {
             
         },
 
-
-
-       
         
      
 
@@ -167,7 +166,7 @@ export default {
         // map this.count to store.state.count getLoading 
         ...mapGetters({
             'auth'      : 'getAuth',
-            'roles': 'getRoles',
+            'roles'     : 'getRoles',
             'sidebar_notprocess_counter'  : 'getCountNotProcess',
             'sidebar_process_counter'     : 'getCountProcess',
         }),

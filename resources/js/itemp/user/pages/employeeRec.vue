@@ -11,21 +11,21 @@
         <div v-if="allData.data">
 
             <v-row>
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <!-- Show -->
                     <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
                     </v-select>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-autocomplete :items="userData" label="All Users" item-text="name" item-value="name" v-model="sort_by_user" outlined dense></v-autocomplete>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-select :items="reportType" label="Select Type" v-model="sort_by_day" outlined dense></v-select>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-menu v-model="menu" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-inner-icon="mdi-calendar"
@@ -41,7 +41,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-menu v-model="menu2" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_endDate" label="End Date" prepend-inner-icon="mdi-calendar"
@@ -57,7 +57,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                         placeholder="Search Input..." outlined dense></v-text-field>
                 </v-col>

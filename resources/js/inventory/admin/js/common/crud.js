@@ -238,20 +238,20 @@ export default{
     damageChange(data){
         // console.log('status', data.status)
         if(data.damage_st == 1){
-            var text = "Are you want to mark this as Damage ?"
-            var btnText = "Damage"
+            var text = "Are you want to mark this as Running ?"
+            var btnText = "Running"
            
         }else{
-            var text = "Are you want to mark this as Good ?"
-            var btnText = "Good"
+            var text = "Are you want to mark this as Damage ?"
+            var btnText = "Damage"
         }
 
         Swal.fire({
             title: 'Are you sure?',
             text: text,
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
             confirmButtonText: btnText,
         }).then((result) => {
 
@@ -263,7 +263,7 @@ export default{
                     //console.log(response);
                     Swal.fire(
                         'Changed!',
-                        'Product has been Changed.',
+                        'Product status has been changed.',
                         'success'
                     );
                     // Refresh Tbl Data with current page
@@ -292,7 +292,7 @@ export default{
     // Edit Data Modal
     editDataModel(singleData){
         this.editmode = true;
-        this.dataModelTitle = 'Update Data'
+        this.dataModelTitle = 'Update Product'
         this.form.reset();
         this.form.fill(singleData);
         //this.$refs['data-modal'].show();

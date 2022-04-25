@@ -14,6 +14,8 @@ use App\Models\Cms\Hardware\HardwareDamaged;
 use Carbon\Carbon;
 use Auth;
 
+use App\Http\Controllers\CMS\Email\Hardware\EmailStore;
+
 
 class HardwareController extends Controller
 {
@@ -65,6 +67,9 @@ class HardwareController extends Controller
 
         $success = $data->save();
 
+        // Save for Email
+        EmailStore::StorMailUserComplain($data->id);
+
         if($success){
             return response()->json(['msg'=>'Submited Successfully &#128513;', 'icon'=>'success'], 200);
         }else{
@@ -89,7 +94,7 @@ class HardwareController extends Controller
         $sort_by_startDate    = Request('sort_by_startDate', '');
         $sort_by_endDate    = Request('sort_by_endDate', '');
 
-        $allQuery =  HardwareComplain::with('makby', 'category', 'subcategory', 'remarks', 'remarks.makby', 'dam_apply' )
+        $allQuery =  HardwareComplain::with('makby', 'category', 'subcategory', 'remarks', 'remarks.makby', 'dam_apply', 'dam_apply.makby', 'ho_remarks', 'ho_remarks.makby', 'damage', 'damage.makby',  'delivery', 'delivery.makby' )
         ->where('user_id', Auth::user()->id);
 
         
@@ -143,6 +148,26 @@ class HardwareController extends Controller
             return response()->json(['msg'=>'Damage replacement already applied. &#128513;', 'icon'=>'warning'], 200);
         }
 
+    }
+
+
+    // complain_cancel
+    public function complain_cancel(){
+        //dd(Request('id'));
+
+        $id = Request('id');
+
+        if($id){
+            $data = HardwareComplain::find($id);
+            if($data){
+                if($data->status == 1 && $data->process == 'Not Process'){
+                    $data->status = 0;
+                    $data->save();
+                }
+            }
+        }
+
+        return response()->json('Status Changed', 200);
     }
 
 

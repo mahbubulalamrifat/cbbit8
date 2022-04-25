@@ -7,15 +7,6 @@
     <title>CPB-IT Carpool</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/carpool/user/app.css') }}">
-
-    <!-- leaflet css  -->
-    
-    {{-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script> --}}
-
-    {{-- forsearch --}}
-    {{-- <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script> --}}
 </head>
 <body>
     <div id="app">

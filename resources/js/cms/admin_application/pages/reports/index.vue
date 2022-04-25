@@ -41,11 +41,11 @@
                             </v-menu>
                         </v-col>
                         <v-col lg="3" cols="4">
-                            <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" outlined dense></v-text-field> -->
-                        
+                            <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" ></v-text-field> -->
+                            
                             <v-menu v-model="menu2" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field v-model="end_date" label="Start" prepend-inner-icon="mdi-calendar"
+                                    <v-text-field v-model="end_date" label="End" prepend-inner-icon="mdi-calendar"
                                         readonly v-bind="attrs" v-on="on" outlined dense clearable></v-text-field>
                                 </template>
 
@@ -61,7 +61,7 @@
                         <v-col lg="3" cols="6">
                             <!-- {{ zone_office }} -->
                             <v-select v-model="zone_office" label="Zones:" :items="allZoneOffices" item-text="name"
-                                item-value="offices" outlined dense>
+                                item-value="offices" outlined dense >
                             </v-select>
                         </v-col>
 
@@ -69,7 +69,7 @@
                         <v-col lg="4" cols="6">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
-                                item-text="department" item-value="department" outlined dense>
+                                item-text="department" item-value="department" outlined dense >
                             </v-select>
                         </v-col>
 
@@ -408,4 +408,3 @@ import axios from 'axios'
     }
 
 </script>
-

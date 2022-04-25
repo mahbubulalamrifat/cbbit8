@@ -61,10 +61,10 @@
                                     <span v-if="singleData.ip">
                                         {{singleData.ip}}
                                     </span>
-                                    <div class="text-center">
+                                    <!-- <div class="text-center">
                                         <v-btn v-if="(singleData.id != checkID)" @click="clipboard(singleData)" x-small color="orange">Copy</v-btn>
                                         <v-btn v-else-if="(singleData.id == checkID)" x-small color="teal">Copied</v-btn>
-                                    </div>
+                                    </div> -->
                                     
                                 </td>
                                 <td>
@@ -313,20 +313,6 @@
         },
 
         methods: {
-
-            clipboard(data) {
-
-                alert(data.ip)
-                
-                try{
-                    navigator.clipboard.writeText(data.ip)
-                }catch(e){
-                    throw e
-                }
-                this.checkID = data.id;
-
-                
-            }
 
         },
 

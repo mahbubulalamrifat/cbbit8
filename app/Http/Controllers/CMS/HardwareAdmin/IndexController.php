@@ -45,8 +45,8 @@ class IndexController extends Controller
         ->where('process', 'Processing')
         ->count();
 
-        // deliverable
-        $deliverable = HardwareComplain::with('makby', 'category', 'subcategory')
+        // deliverable 
+        $deliverable = HardwareComplain::with('makby')
         ->whereHas('makby', function($q) use($accessZoneOffices){
             $q->whereIn('zone_office', $accessZoneOffices);
         })
@@ -54,14 +54,30 @@ class IndexController extends Controller
         ->count();
 
         
-        $service = HardwareComplain::with('makby', 'category', 'subcategory')
+        $service = HardwareComplain::with('makby')
         ->whereHas('makby', function($q) use($accessZoneOffices){
             $q->whereIn('zone_office', $accessZoneOffices);
         })
         ->where('process', ['Send Service', 'Back Service', 'Again Send Service'])
         ->count();
 
-        return response()->json(['notprocess'=>$notprocess,'process'=>$process, 'deliverable'=>$deliverable, 'service'=>$service]);
+        $serviceAccess = HardwareComplain::with('makby')
+        ->where('process', ['Send Service', 'Back Service', 'Again Send Service'])
+        ->count();
+
+        // HO Service 
+        $hoServiceAccess = HardwareComplain::with('makby')
+        ->where('process', 'HO Service')
+        ->count();
+
+        $hoService = HardwareComplain::with('makby')
+        ->whereHas('makby', function($q) use($accessZoneOffices){
+            $q->whereIn('zone_office', $accessZoneOffices);
+        })
+        ->where('process', 'HO Service')
+        ->count();
+
+        return response()->json(['notprocess'=>$notprocess,'process'=>$process, 'deliverable'=>$deliverable, 'service'=>$service , 'serviceAccess'=>$serviceAccess, 'hoService'=>$hoService, 'hoServiceAccess'=>$hoServiceAccess]);
 
     }
 
@@ -71,6 +87,8 @@ class IndexController extends Controller
     public function dashboard_data(){
 
         $allComplain = HardwareComplain::count();
+        $allProcessingComplain = HardwareComplain::where('process', 'Processing')->count();
+        $allClosedComplain = HardwareComplain::where('process', 'Closed')->count();
 
         $productWiseComplain = HardwareComplain::with('category')
             ->groupBy('cat_id')
@@ -86,6 +104,15 @@ class IndexController extends Controller
             ->get()
             ->toArray();
 
-        return response()->json(['productWiseComplain'=>$productWiseComplain,'allComplain'=>$allComplain, 'damageWiseComplain'=>$damageWiseComplain]);
+
+         $alldata = ['productWiseComplain'=>$productWiseComplain,
+            'allComplain'           => $allComplain, 
+            'damageWiseComplain'    => $damageWiseComplain,
+            'allProcessingComplain' => $allProcessingComplain,
+            'allClosedComplain'     => $allClosedComplain,
+
+            ];
+
+        return response()->json($alldata, 200);
     }
 }

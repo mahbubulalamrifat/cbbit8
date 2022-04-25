@@ -7,10 +7,10 @@
                         All Software List
                     </v-col>
                     <v-col cols="2">
-                        <v-btn @click="addDataModel()" color="primary" small outlined class="float-right">
-                            <v-icon left dark>mdi-plus-circle-outline </v-icon> Add
+                        <v-btn @click="addDataModel()" color="primary" elevation="10" small outlined
+                            class="float-right">
+                            <v-icon left>mdi-card-plus</v-icon> Add
                         </v-btn>
-
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -33,28 +33,26 @@
                     <table class="table table-bordered">
                         <thead class="text-center">
                             <tr>
-                             
                                 <th>
                                     <a href="#" @click.prevent="change_sort('name')">Name</a>
                                     <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
                                     <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
                                 </th>
-                               
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="singleData in allData.data" :key="singleData.id">
-                               
+
                                 <td>{{ singleData.name }}</td>
-                               
+
                                 <td class="text-center">
                                     <v-btn @click="editDataModel(singleData)" color="info" depressed small>
-                                        <v-icon small>mdi-pencil-box-multiple-outline</v-icon> Edit
+                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
                                     </v-btn>
 
                                     <v-btn @click="deleteData(singleData.id)" color="error" depressed small>
-                                        <v-icon small>mdi-delete-empty</v-icon> Delete
+                                        <v-icon left>mdi-delete-empty</v-icon> Delete
                                     </v-btn>
                                     <br>
                                     <span v-if="singleData.makby" class="small text-muted">Create By--
@@ -74,7 +72,9 @@
                 </div>
                 <div v-else>
                     <div v-if="dataLoading" class="p-5 my-5">
-                        <p class="text-center h1">Loading.. <v-icon color="success" size="100">mdi mdi-loading mdi-spin</v-icon></p>
+                        <p class="text-center h1">Loading.. <v-icon color="success" size="100">mdi mdi-loading mdi-spin
+                            </v-icon>
+                        </p>
                     </div>
                 </div>
                 <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
@@ -107,11 +107,12 @@
                                 <v-col md="12">
                                     <v-text-field v-model="form.name" label="Enter Software Name" :rules="reqRules"
                                         required></v-text-field>
-                                        <div class="text-danger" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
+                                    <div class="text-danger" v-if="form.errors.has('name')"
+                                        v-html="form.errors.get('name')" />
                                 </v-col>
                             </v-row>
 
-                           
+
                             <v-btn v-show="editmode" type="submit" block depressed :loading="dataModalLoading"
                                 color="primary">
                                 <v-icon left dark>mdi-circle-edit-outline</v-icon> Update
@@ -146,12 +147,12 @@
 
             return {
 
-                reqRules:[v => !!v || 'This field is required!'],
+                reqRules: [v => !!v || 'This field is required!'],
                 codeRules: [v => !!v || 'This field is required!',
-                            v => (v && v.length == 2) || 'Code must be less than 2 numbers'
-                            ],
+                    v => (v && v.length == 2) || 'Code must be less than 2 numbers'
+                ],
 
-               
+
                 //current page url
                 currentUrl: '/cms/a_admin/category',
 
@@ -186,5 +187,3 @@
     }
 
 </script>
-
-

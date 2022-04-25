@@ -162,7 +162,7 @@
     }
 
     .logo_div:hover {
-        // box-shadow: -5px 10px 12px rgba(0, 0, 0, 0.5);
+        box-shadow: -5px 10px 12px rgba(0, 0, 0, 0.5);
         transform: scale(1.2);
     }
 

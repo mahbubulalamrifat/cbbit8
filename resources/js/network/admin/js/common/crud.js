@@ -246,8 +246,22 @@ export default{
 
 
 
-    // clipboard(data) {
-    //     navigator.clipboard.writeText(data.ip);
-    //     this.checkID = data.id;
-    // }
+    clipboard(data) {
+        //navigator.clipboard.writeText(data.ip);
+        // var selectedIp = data.ip
+        // selectedIp.select();
+        // document.execCommand("copy");
+
+        const clipboardData =
+        event.clipboardData ||
+        window.clipboardData ||
+        event.originalEvent?.clipboardData ||
+        navigator.clipboard;
+
+        clipboardData.writeText(data.ip);
+
+        this.checkID = data.id;
+
+      
+    }
 }

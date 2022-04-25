@@ -1,93 +1,32 @@
 <template>
     <div>
-        <v-toolbar flat dense dark class="nav-color" >
+        <v-app-bar app flat dense dark class="nav-color">
 
             <v-app-bar-nav-icon href="/">
-                <v-img  src="/all-assets/common/logo/cpb/cpbit.png" alt="room" max-height="40" max-width="40" contain class="nav-logo-bg"></v-img>
+                <v-img  src="/all-assets/common/icon/room.png" alt="room" max-height="40" max-width="40" contain class="nav-logo-bg"></v-img>
             </v-app-bar-nav-icon>
 
             <v-spacer></v-spacer>
 
-            <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn text link route :to="{ name: 'Dashboard'}" small exact>
+                Dashboard
+            </v-btn>
 
-                <v-btn text link route :to="{ name: 'Dashboard'}" small exact>
-                    Dashboard
-                </v-btn>
+            <v-btn text link route :to="{ name: 'Booked'}" small>
+                My Booked
+            </v-btn>
 
-                <v-btn text link route :to="{ name: 'Booked'}" small>
-                    My Booked
-                </v-btn>
+            <v-btn text link route :to="{ name: 'Canceled'}" small>
+                My Cancelled
+            </v-btn>
 
-                <v-btn text link route :to="{ name: 'Canceled'}" small>
-                    My Cancelled
-                </v-btn>
+            <v-btn text link route href="/logout" small>
+                Logout
+            </v-btn>
 
-                <v-btn text link route href="/logout" small>
-                    Logout
-                </v-btn>
-
-            </v-toolbar-items>
-
-            <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
-        </v-toolbar>
-
-
-
-        <v-navigation-drawer v-model="drawer" absolute temporary right style="height:100vh;">
-            <v-list-item>
-                <v-list-item-content>
-                    <v-list-item-title>Room User</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-
-            <v-divider></v-divider>
-
-            <v-list dense>
-
-                <v-list-item link route :to="{ name: 'Dashboard'}" exact>
-                    <v-list-item-content>
-                        <v-list-item-title>Dashboard</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item link route :to="{ name: 'Booked'}">
-                    <v-list-item-content>
-                        <v-list-item-title>My Booked</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item link route :to="{ name: 'Canceled'}">
-                    <v-list-item-content>
-                        <v-list-item-title>My Cancelled</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item link route href="/logout">
-                    <v-list-item-content>
-                        <v-list-item-title>Logout</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-        </v-navigation-drawer>
+        </v-app-bar>
     </div>
 </template>
-
-
-<script>
-
-    export default {
-       
-        data(){
-            return{
-                drawer: null,
-            }
-        },
-
-       
-    }
-
-</script>
 
 <style scoped>
     .v-btn--active{

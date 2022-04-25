@@ -29,7 +29,7 @@
             </v-menu>
         </v-app-bar>
 
-
+ 
         <!-- sidebar -->
         <v-navigation-drawer app dark v-model="drawer" class="bg_gradient">
             <v-list-item class="px-2" link href="/">
@@ -51,7 +51,7 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item link router :to="{name: 'NotProcess'}">
+                 <v-list-item link router :to="{name: 'NotProcess'}">
                     <v-list-item-icon>
                         <v-icon color="pink lighten-3">mdi-car-brake-hold</v-icon>
                     </v-list-item-icon>

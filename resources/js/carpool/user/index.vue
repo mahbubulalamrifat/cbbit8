@@ -3,7 +3,7 @@
         <nav-bar></nav-bar>
 
         <v-main>
-            <div class="pa-5">
+            <div class="ma-3">
                 <router-view></router-view>
                 <vue-progress-bar></vue-progress-bar>
             </div>

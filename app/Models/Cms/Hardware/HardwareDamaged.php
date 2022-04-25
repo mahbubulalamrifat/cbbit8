@@ -4,6 +4,7 @@ namespace App\Models\Cms\Hardware;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 use App\Models\Inventory\InventoryNewProduct;
 
 class HardwareDamaged extends Model
@@ -18,24 +19,47 @@ class HardwareDamaged extends Model
         return $this->hasOne('App\Models\Cms\Hardware\HardwareComplain', 'id', 'comp_id');
     }
 
-    // public function product(){
-    //     //return $this->hasOne('App\Models\Inventory\InventoryNewProduct', 'id', 'rep_pro_id');
-    //     return $this->hasMany('App\Models\Inventory\InventoryNewProduct', 'id', 'rep_pro_id');
-    // }
-
-
-    public function product()
-    {
-        $take_devs = explode(',', $this->rep_pro_id);
-        $list_dev = array();
-        foreach($take_devs as $value)
-        {
-            $list_dev[] = InventoryNewProduct::where('id', $value)->first();
-        }
-
+    public function sing_product(){
+        return $this->hasOne('App\Models\Inventory\InventoryNewProduct', 'id', 'rep_pro_id');
     }
 
-  
+    //public function product(){
+
+        //return InventoryNewProduct::where('id', [231, 232]);
+
+        // return $this->hasMany('App\Models\Inventory\InventoryNewProduct')->wherePivotIn('id', [231, 232]);
+
+        // dd('model ok', $this->id);
+
+        // $data = Parent::has('sing_product')->with(['sing_product' => function($query){
+        //     $query->where(); //you may use any condition here or manual select operation
+        //     $query->select(); //select operation
+        // }])
+        // ->get();
+
+        // return $query
+        //       ->when($this->type === 'agents',function($q){
+        //           return $q->with('agentProfile');
+        //      })
+        //      ->when($this->type === 'school',function($q){
+        //           return $q->with('schoolProfile');
+        //      })
+        //      ->when($this->type === 'academy',function($q){
+        //           return $q->with('academyProfile');
+        //      },function($q){
+        //          return $q->with('institutionProfile');
+        //      });
+    //}
+
+
+    //Relation user to role
+    public function replace_product()
+    {
+        return $this->belongsToMany('App\Models\Inventory\InventoryNewProduct', 'hardware_damaged_rep_pro');
+    }
+ 
+
+
 
     public function scopeSearch($query, $val='')
     {
@@ -61,12 +85,12 @@ class HardwareDamaged extends Model
         })
         ->orWhereHas('complain.subcategory', function($query) use ($val){
             $query->WhereRaw('name LIKE ?', '%'.$val.'%');
-        })
-        ->orWhereHas('product', function($query) use ($val){
-            $query->WhereRaw('name LIKE ?', '%'.$val.'%')
-            ->WhereRaw('serial LIKE ?', '%'.$val.'%')
-            ->WhereRaw('invoice_num LIKE ?', '%'.$val.'%')
-            ->WhereRaw('po_number LIKE ?', '%'.$val.'%');
-        }); 
+        });
+        // ->orWhereHas('product', function($query) use ($val){
+        //     $query->WhereRaw('name LIKE ?', '%'.$val.'%')
+        //     ->WhereRaw('serial LIKE ?', '%'.$val.'%')
+        //     ->WhereRaw('invoice_num LIKE ?', '%'.$val.'%')
+        //     ->WhereRaw('po_number LIKE ?', '%'.$val.'%');
+        // }); 
     }
 }

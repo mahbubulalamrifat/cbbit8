@@ -78,9 +78,9 @@
 
                     </v-card-text>
 
-                    <div class="text-center">Not register yet ? <router-link :to="{ name: 'Register' }"
-                            class="text_color"> <v-btn class="teal--text ml-2">Create an account <v-icon size="16">
-                                    mdi-account-plus</v-icon></v-btn> </router-link>
+                    <div class="text-center">Not registered yet ? <router-link :to="{ name: 'Register' }"
+                            class="text_color"> <button class="teal--text ml-2">Create an account <v-icon size="16">
+                                    mdi-account-plus</v-icon></button> </router-link>
                     </div>
                 </v-card>
 
@@ -108,8 +108,8 @@
 
                 // Form
                 form: new Form({
-                    login: 'syful.isl',
-                    password: 'Saif5683@5'
+                    login: '',
+                    password: ''
                 }),
             }
         },

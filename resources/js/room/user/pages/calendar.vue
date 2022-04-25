@@ -194,7 +194,7 @@
 
 
         <!-- Room Details for Booking -->
-        <v-dialog v-model="roomStatusShow">
+        <v-dialog v-model="roomStatusShow" scrollable>
             <v-card>
                 <!-- Dilog Title -->
                 <v-card-title class="justify-center">

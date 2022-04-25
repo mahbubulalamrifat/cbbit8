@@ -7,11 +7,10 @@
                         Carpool Car's Table
                     </v-col>
                     <v-col cols="2">
-                        <v-btn @click="addDataModel()" color="primary" small outlined
+                        <v-btn @click="addDataModel()" color="primary" elevation="10"  small outlined
                             class="float-right">
-                            <v-icon left dark>mdi-plus-circle-outline </v-icon> Add
+                            <v-icon small>mdi-card-plus</v-icon> Add
                         </v-btn>
-                        
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -19,107 +18,105 @@
             <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="6" lg="2">
+                        <v-col cols="2">
                             <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
+                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="6" lg="10">
-                            <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..." outlined dense></v-text-field>
+                        <v-col cols="10">
+                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
+                                placeholder="Search Input..."></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead class="text-center">
-                                <tr>
-                                    <th>
-                                        Images
-                                    </th>
-                                    <th>
-                                        Car Details
-                                    </th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="singleData in allData.data" :key="singleData.id">
-                                    <td>
-                                        <img v-if="singleData.image"
-                                        :src="imagePathSm + singleData.image" alt="image" class="m-1" height="100" width="100">
-                                        <img v-if="singleData.image2"
-                                        :src="imagePathSm + singleData.image2" alt="image" class="m-1" height="100" width="100">
-                                        <img v-if="singleData.image3"
-                                        :src="imagePathSm + singleData.image3" alt="image" class="m-1" height="100" width="100">
+                    <table class="table table-bordered">
+                        <thead class="text-center">
+                            <tr>
+                                <th>
+                                    Images
+                                </th>
+                                <th>
+                                    Car Details
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                                <td>
+                                    <img v-if="singleData.image"
+                                    :src="imagePathSm + singleData.image" alt="image" class="m-1" height="100" width="100">
+                                    <img v-if="singleData.image2"
+                                    :src="imagePathSm + singleData.image2" alt="image" class="m-1" height="100" width="100">
+                                    <img v-if="singleData.image3"
+                                    :src="imagePathSm + singleData.image3" alt="image" class="m-1" height="100" width="100">
 
-                                    </td>
-                                    <td>
-                                        <div v-if="singleData.name">
-                                            <b>Car Name:</b> {{ singleData.name}}
-                                        </div>
-                                        <div v-if="singleData.number">
-                                            <b>Car Number:</b> {{ singleData.number}}
-                                        </div>
-                                        <div v-if="singleData.capacity">
-                                            <b>Capacity:</b> {{ singleData.capacity}}
-                                        </div>
-                                        <div v-if="singleData.temporary==1">
-                                            <b>Car Type:</b> Temporary
+                                </td>
+                                <td>
+                                    <div v-if="singleData.name">
+                                        <b>Car Name:</b> {{ singleData.name}}
+                                    </div>
+                                    <div v-if="singleData.number">
+                                        <b>Car Number:</b> {{ singleData.number}}
+                                    </div>
+                                    <div v-if="singleData.capacity">
+                                        <b>Capacity:</b> {{ singleData.capacity}}
+                                    </div>
+                                    <div v-if="singleData.temporary==1">
+                                        <b>Car Type:</b> Temporary
 
-                                            <v-btn depressed small color="indigo white--text" class="d-flex flex-end" @click="temporaryChange(singleData)">
-                                                <v-icon small>mdi-check</v-icon> Temporary
-                                            </v-btn>
-
-                                        </div>
-                                        <div v-if="singleData.temporary==0">
-                                            <b>Car Type:</b> Regular
-
-                                            <v-btn depressed small color="cyan white--text" class="d-flex flex-end" @click="temporaryChange(singleData)">
-                                                <v-icon small>mdi-check</v-icon> Regular
-                                            </v-btn>
-                                        </div>
-                                        <div v-if="singleData.remarks">
-                                            <b>Remarks</b> {{ singleData.remarks}}
-                                        </div>
-                                        <div v-if="singleData.last_use">
-                                            <b>Use Deadline:</b> {{ singleData.last_use}}
-                                            <v-btn depressed small color="blue-grey white--text" class="d-flex flex-end" @click="deadlineClear(singleData.id)">
-                                                <v-icon small>mdi-close</v-icon> Clear Deadline
-                                            </v-btn>
-                                        </div>
-                                    </td>
-                                
-                            
-                                    <td class="text-center">
-                                        
-                                        <v-btn v-if="singleData.status" @click="statusChange(singleData)" color="success" depressed small class="m-1">
-                                            <v-icon small>mdi-check-circle-outline</v-icon> Active
-                                        </v-btn>
-                                        <v-btn v-else @click="statusChange(singleData)" color="warning" depressed small class="m-1">
-                                            <v-icon small>mdi-alert-circle-outline </v-icon> Inactive
-                                        </v-btn>
-                                        
-                                        <v-btn @click="editDataModel(singleData)" color="info" depressed small class="m-1">
-                                            <v-icon small>mdi-pencil-box-multiple-outline</v-icon> Edit
+                                        <v-btn depressed small color="indigo white--text" class="d-flex flex-end" @click="temporaryChange(singleData)">
+                                            <v-icon small>mdi-check</v-icon> Temporary
                                         </v-btn>
 
-                                        <v-btn @click="deleteDataTemp(singleData.id)" color="error" depressed small class="m-1">
-                                            <v-icon small>mdi-delete-empty</v-icon> Delete
-                                        </v-btn>
+                                    </div>
+                                    <div v-if="singleData.temporary==0">
+                                        <b>Car Type:</b> Regular
 
-                                        <v-btn depressed small color="grey white--text" @click="deadlineModal(singleData)" class="m-1">
-                                            <v-icon small>mdi-plus-circle-outline</v-icon> Deadline
+                                        <v-btn depressed small color="cyan white--text" class="d-flex flex-end" @click="temporaryChange(singleData)">
+                                            <v-icon small>mdi-check</v-icon> Regular
                                         </v-btn>
+                                    </div>
+                                    <div v-if="singleData.remarks">
+                                        <b>Remarks</b> {{ singleData.remarks}}
+                                    </div>
+                                    <div v-if="singleData.last_use">
+                                        <b>Use Deadline:</b> {{ singleData.last_use}}
+                                        <v-btn depressed small color="blue-grey white--text" class="d-flex flex-end" @click="deadlineClear(singleData.id)">
+                                            <v-icon small>mdi-close</v-icon> Clear Deadline
+                                        </v-btn>
+                                    </div>
+                                </td>
+                               
+                        
+                                <td class="text-center">
+                                    
+                                    <v-btn v-if="singleData.status" @click="statusChange(singleData)" color="success" depressed small class="m-1">
+                                        <v-icon left>mdi-check-circle-outline</v-icon> Active
+                                    </v-btn>
+                                    <v-btn v-else @click="statusChange(singleData)" color="warning" depressed small class="m-1">
+                                        <v-icon left>mdi-alert-circle-outline </v-icon> Inactive
+                                    </v-btn>
+                                    
+                                    <v-btn @click="editDataModel(singleData)" color="info" depressed small class="m-1">
+                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
+                                    </v-btn>
 
-                                        <br>
-                                        <span v-if="singleData.makby" class="small text-muted">Create By-- {{ singleData.makby.name }}</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                    <v-btn @click="deleteDataTemp(singleData.id)" color="error" depressed small class="m-1">
+                                        <v-icon left>mdi-delete-empty</v-icon> Delete
+                                    </v-btn>
+
+                                    <v-btn depressed small color="grey white--text" @click="deadlineModal(singleData)" class="m-1">
+                                        <v-icon left>mdi-plus-circle-outline</v-icon> Deadline
+                                    </v-btn>
+
+                                    <br>
+                                    <span v-if="singleData.makby" class="small text-muted">Create By-- {{ singleData.makby.name }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

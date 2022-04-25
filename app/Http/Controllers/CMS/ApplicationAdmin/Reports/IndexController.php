@@ -40,8 +40,6 @@ class IndexController extends Controller
 
         // Department Selected
         if( !empty($start) && !empty($end) ){
-            // $allDataQuery ->whereDate('created_at', '>=', $start)
-            //           ->whereDate('created_at', '<=', $end);
             $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
         }
 
@@ -55,7 +53,7 @@ class IndexController extends Controller
         }
 
         // user department Selected
-        if( !empty($department) ){
+        if( !empty($department) && $department != 'All'){
             $allDataQuery->whereHas('makby', function($q) use($department){
                 $q->where('department', $department);
             });
@@ -107,6 +105,7 @@ class IndexController extends Controller
 
     }
 
+
     // canceled
     public function canceled(){
 
@@ -130,7 +129,7 @@ class IndexController extends Controller
 
         // Department Selected
         if( !empty($start) && !empty($end) ){
-            $allDataQuery->whereBetween('created_at', [$start, $end]);
+            $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
         }
 
 
@@ -144,7 +143,7 @@ class IndexController extends Controller
         }
 
         // user department Selected
-        if( !empty($department) ){
+        if( !empty($department) && $department != 'All'){
             $allDataQuery->whereHas('makby', function($q) use($department){
                 //dd($department);
                 $q->where('department', $department);
@@ -207,8 +206,8 @@ class IndexController extends Controller
         $sort_field     = Request('sort_field', 'id');
         $search_field   = Request('search_field', '');
 
-        $start    = Request('start', '');
-        $end     = Request('end', '');
+        $start          = Request('start', '');
+        $end            = Request('end', '');
 
         $zone_office    = Request('zone_office', '');
         $department     = Request('department', '');
@@ -220,9 +219,9 @@ class IndexController extends Controller
         ->where('process', '!=', 'Not Process');
         
 
-        // date Selected
+        // date Selected 
         if( !empty($start) && !empty($end) ){
-            $allDataQuery->whereBetween('created_at', [$start, $end]);
+            $allDataQuery->whereBetween('created_at', [$start ." 00:00:00", $end." 23:59:59"]);
         }
 
         // user Zone Selected
@@ -235,7 +234,7 @@ class IndexController extends Controller
         }
 
         // user department Selected
-        if( !empty($department) ){
+        if( !empty($department) && $department != 'All'){
             $allDataQuery->whereHas('makby', function($q) use($department){
                 $q->where('department', $department);
             });
@@ -286,7 +285,7 @@ class IndexController extends Controller
 
         // return response()->json($allData, 200);
 
-        //return (new allcomplain($allData))->download('complain.xlsx');
+        //return (new allcomplain($allData))->download('complain.xlsx'); 
 
         return Excel::download(new allcomplain($allData), 'complain-' . time() . '.xlsx');
     }
@@ -313,7 +312,7 @@ class IndexController extends Controller
 
         // date Selected
         if( !empty($start) && !empty($end) ){
-            $allDataQuery->whereBetween('created_at', [$start, $end]);
+            $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
         }
 
         // user Zone Selected
@@ -326,7 +325,7 @@ class IndexController extends Controller
         }
 
         // user department Selected
-        if( !empty($department) ){
+        if( !empty($department) && $department != 'All'){
             $allDataQuery->whereHas('makby', function($q) use($department){
                 $q->where('department', $department);
             });

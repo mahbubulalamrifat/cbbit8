@@ -3,9 +3,9 @@
         <div class="area">
             <nav-bar></nav-bar>
 
-            <v-row class="d-flex flex-wrap justify-content-around my-5" >
+            <v-row class="d-flex flex-wrap justify-content-around my-5" style="min-height: 100vh;">
                 <v-col cols="6" lg="6" class="text-center">
-                    <a @click="$emit('showTemp', 'user')"  class="text-decoration-none text-dark">
+                    <a @click="$emit('showTemp', 'user')" class="text-decoration-none text-dark">
                         <v-avatar size="150">
                             <v-img src="/all-assets/common/icon/user-section.png"></v-img>
                         </v-avatar>
@@ -33,50 +33,52 @@
 
             </v-row>
 
-                
+
             <footer-bar></footer-bar>
         </div>
     </div>
 </template>
 
 <script>
-import navbar from "./navbar.vue"
-import footer from "./footer.vue"
-export default {
-    components:{
-        "nav-bar":navbar,
-        "footer-bar":footer
-    },
-    methods:{
-        redirectToHome(){
-            window.location.href = '/';
+    import navbar from "./navbar.vue"
+    import footer from "./footer.vue"
+    export default {
+        components: {
+            "nav-bar": navbar,
+            "footer-bar": footer
+        },
+        methods: {
+            redirectToHome() {
+                window.location.href = '/';
+            }
         }
     }
-}
+
 </script>
 
 <style scoped>
-.v-avatar{
-    box-shadow: 0px 10px 7px rgb(0 0 0 / 42%);
-    transition: .5s;
-    border: 3px solid black;
-}
-
-.v-avatar:hover{
-    transform: scale(1.2);
-}
-
-@media all and (max-width:800px) {
     .v-avatar {
-
-        height: 100px !important;
-        min-width: 100px !important;
-        width: 100px !important;
-
+        box-shadow: 0px 10px 7px rgb(0 0 0 / 42%);
+        transition: .5s;
+        border: 3px solid black;
     }
-    .v-avatar + div{
-        font-size: 1.2rem !important;
 
+    .v-avatar:hover {
+        transform: scale(1.2);
     }
-}
+
+    @media all and (max-width:800px) {
+        .v-avatar {
+
+            height: 100px !important;
+            min-width: 100px !important;
+            width: 100px !important;
+
+        }
+        .v-avatar + div{
+            font-size: 1.2rem !important;
+
+        }
+    }
+
 </style>

@@ -14,10 +14,15 @@ use App\Exports\h_admin\alldamage;
 use App\Exports\h_admin\damagereplace;
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Http\Controllers\CMS\HardwareAdmin\CommonController;
+
 class IndexController extends Controller
 {
     //index
     public function index(){
+
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
 
         $paginate       = Request('paginate', 10);
         $search         = Request('search', '');
@@ -39,7 +44,7 @@ class IndexController extends Controller
 
         // Department Selected
         if( !empty($start) && !empty($end) ){
-            $allDataQuery->whereBetween('created_at', [$start, $end]);
+            $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
         }
 
         // user Zone Selected
@@ -48,6 +53,11 @@ class IndexController extends Controller
                 //dd($department);
                 $q->whereIn('zone_office', explode(",",$zone_office));
                 //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
             });
         }
 
@@ -78,6 +88,9 @@ class IndexController extends Controller
 
     // damaged
     public function damaged(){
+
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
 
         $paginate       = Request('paginate', 10);
         $search         = Request('search', '');
@@ -113,6 +126,11 @@ class IndexController extends Controller
                 $q->whereIn('zone_office', explode(",",$zone_office));
                 //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
             });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
+            });
         }
 
         // user department Selected
@@ -155,8 +173,14 @@ class IndexController extends Controller
 
     }
 
+
+
+
     // damaged replace
     public function damaged_replace(){
+
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
 
         $paginate       = Request('paginate', 10);
         $search         = Request('search', '');
@@ -177,11 +201,7 @@ class IndexController extends Controller
         
 
         // Query
-        $allDataQuery =  HardwareDamaged::with('makby', 'complain', 'complain.category', 'complain.subcategory', 'complain.makby', 'product')
-                // ->whereHas('product', function ($q){
-                //     $q->whereIn('id', explode(",",'rep_pro_id'));
-                // })
-                ->whereNotNull('rep_pro_id');
+        $allDataQuery =  HardwareDamaged::with('makby', 'complain', 'complain.category', 'complain.subcategory', 'complain.makby', 'replace_product', 'replace_product.category')->whereNotNull('rep_pro_id');
         
         
         // start, end Selected
@@ -195,6 +215,11 @@ class IndexController extends Controller
                 //dd($department);
                 $q->whereIn('zone_office', explode(",",$zone_office));
                 //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
             });
         }
 
@@ -234,6 +259,8 @@ class IndexController extends Controller
         $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)
                     ->paginate($paginate);
 
+        //dd($allData);
+
         return response()->json($allData, 200);
 
     }
@@ -244,6 +271,9 @@ class IndexController extends Controller
 
     public function export_data(Request $request) 
     {
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
+        
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
@@ -263,7 +293,7 @@ class IndexController extends Controller
 
         // Department Selected
         if( !empty($start) && !empty($end) ){
-            $allDataQuery->whereBetween('created_at', [$start, $end]);
+            $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
         }
 
         // user Zone Selected
@@ -272,6 +302,11 @@ class IndexController extends Controller
                 //dd($department);
                 $q->whereIn('zone_office', explode(",",$zone_office));
                 //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
             });
         }
 
@@ -306,6 +341,9 @@ class IndexController extends Controller
 
     public function export_data_damage(Request $request) 
     {
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
+
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
@@ -338,6 +376,11 @@ class IndexController extends Controller
                 //dd($department);
                 $q->whereIn('zone_office', explode(",",$zone_office));
                 //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
             });
         }
 
@@ -385,7 +428,12 @@ class IndexController extends Controller
 
     // damage replace
 
-    public function export_data_damagereplace(Request $request){
+    public function export_data_damagereplace(Request $request) 
+    {
+
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
+
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
@@ -404,7 +452,7 @@ class IndexController extends Controller
         
 
         // Query
-        $allDataQuery =  HardwareDamaged::with('makby', 'complain', 'complain.category', 'complain.subcategory', 'complain.makby', 'product')->whereNotNull('rep_pro_id');
+        $allDataQuery =  HardwareDamaged::with('makby', 'complain', 'complain.category', 'complain.subcategory', 'complain.makby', 'replace_product')->whereNotNull('rep_pro_id');
         
         
         // start, end Selected
@@ -418,6 +466,11 @@ class IndexController extends Controller
                 //dd($department);
                 $q->whereIn('zone_office', explode(",",$zone_office));
                 //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
             });
         }
 
@@ -455,8 +508,6 @@ class IndexController extends Controller
             
         // Final Data
         $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)->get();
-
-        //dd($allData);
             
 
         //dd($allData);

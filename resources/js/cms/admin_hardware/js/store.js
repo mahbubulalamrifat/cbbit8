@@ -13,6 +13,10 @@ export default new Vuex.Store({
         CountProcess: null,
         CountDeliverable: null,
         CountService: null,
+        CountServiceAccess: null,
+
+        ConuntHOService: null,
+        ConuntHOServiceAccess: null,
     },
 
     getters : {
@@ -42,6 +46,16 @@ export default new Vuex.Store({
 
         getCountService(state){
             return state.CountService;
+        },
+        getCountServiceAccess(state){
+            return state.CountServiceAccess;
+        },
+
+        getConuntHOService(state){
+            return state.ConuntHOService;
+        },
+        getConuntHOServiceAccess(state){
+            return state.ConuntHOServiceAccess;
         },
 
     },
@@ -79,6 +93,16 @@ export default new Vuex.Store({
 
         setCountService(state, data){
             state.CountService = data;
+        },
+        setCountServiceAccess(state, data){
+            state.CountServiceAccess = data;
+        },
+
+        setConuntHOService(state, data){
+            state.ConuntHOService = data;
+        },
+        setConuntHOServiceAccess(state, data){
+            state.ConuntHOServiceAccess = data;
         },
     
     },

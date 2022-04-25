@@ -21,35 +21,35 @@
                         <v-col cols="4">
                             <!-- {{ applicable_type }} -->
                             <v-select v-model="applicable_type" label="Applicable Type:" :items="applicableTypeList" item-text="text"
-                                item-value="value" outlined dense>
+                                item-value="value"  dense>
                             </v-select>
                         </v-col>
 
                         <v-col cols="4">
                             <!-- {{ damaged_type }} -->
                             <v-select v-model="damaged_type" label="Damages Type:" :items="damageTypeList" item-text="text"
-                                item-value="value" outlined dense>
+                                item-value="value"  dense>
                             </v-select>
                         </v-col>
 
                         <v-col cols="4">
                             <!-- {{ damaged_reason }} -->
                             <v-select v-model="damaged_reason" label="Damaged Reason:" :items="damagedReasons" item-text="text"
-                                item-value="value" outlined dense>
+                                item-value="value"  dense>
                             </v-select>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="2">
                             <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
+                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow"  dense>
                             </v-select>
                         </v-col>
 
                          <v-col cols="2">
                             <!-- {{ zone_office }} -->
-                            <v-select v-model="zone_office" label="Zones:" :items="allZoneOffices" item-text="name"
-                                item-value="offices" outlined dense>
+                            <v-select v-model="zone_office" label="Zones:" :items="allZoneOfficesAssign" item-text="name"
+                                item-value="offices"  dense>
                             </v-select>
                         </v-col>
 
@@ -57,7 +57,7 @@
                         <v-col cols="2">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
-                                item-text="department" item-value="department" outlined dense>
+                                item-text="department" item-value="department"  dense>
                             </v-select>
                         </v-col>
 
@@ -66,7 +66,7 @@
                             <v-menu v-model="menu" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-text-field v-model="start_date" label="Start Date" prepend-inner-icon="mdi-calendar"
-                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                        readonly v-bind="attrs" v-on="on"  dense></v-text-field>
                                 </template>
 
                                 <v-date-picker v-model="start_date" no-title scrollable>
@@ -82,7 +82,7 @@
                             <v-menu v-model="menu2" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-text-field v-model="end_date" label="End Date" prepend-inner-icon="mdi-calendar"
-                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                        readonly v-bind="attrs" v-on="on"  dense></v-text-field>
                                 </template>
 
                                 <v-date-picker v-model="end_date" no-title scrollable>
@@ -96,14 +96,14 @@
 
                         <v-col cols="2">
                             <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..." outlined dense></v-text-field>
+                                placeholder="Search Input..."  dense></v-text-field>
                         </v-col>
                     </v-row>
 
                     <table class="table table-bordered responsive">
                         <thead class="text-center">
                             <tr>
-                                <th>View</th>
+                                
                                 <th>
                                     <a href="#" @click.prevent="change_sort('id')">Num.</a>
                                     <span v-if="sort_direction == 'desc' && sort_field == 'id'">&uarr;</span>
@@ -124,17 +124,13 @@
                                     <span v-if="sort_direction == 'desc' && sort_field == 'updated_at'">&uarr;</span>
                                     <span v-if="sort_direction == 'asc' && sort_field == 'updated_at'">&darr;</span>
                                 </th>
-
+                                <th>View</th>
                             </tr>
                         </thead>
                         <tbody class="text-center">
                             <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                                <td class="text-center">
-                                    <v-btn @click="action(singleData.comp_id)" color="error" depressed small elevation="20">
-                                        <v-icon small>mdi-arch</v-icon> View
-                                    </v-btn>
-                                </td>
+                                
                                 <td>
                                     <div class="pa-1 info rounded-pill h4 text-white text-center">
                                         {{ singleData.comp_id }}
@@ -176,7 +172,11 @@
                                 </td>
                                 <td><span v-if="singleData.updated_at">{{ singleData.updated_at | moment("MMM Do YYYY") }}</span>
                                 </td>
-
+                                <td class="text-center">
+                                    <v-btn @click="action(singleData.comp_id)" color="error" depressed small elevation="20">
+                                        <v-icon small>mdi-arch</v-icon> View
+                                    </v-btn>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -425,7 +425,7 @@
       
 
         mounted(){
-            this.getZoneOffices();
+            this.getZoneOfficesAssign();
             this.getDepartments();
             this.merge();
         },

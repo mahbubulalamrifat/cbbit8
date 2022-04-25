@@ -15,7 +15,7 @@ use App\Models\Cms\Hardware\HardwareDamaged;
 
 use App\Http\Controllers\Common\ImageUpload;
 use App\Http\Controllers\CMS\HardwareAdmin\CommonController;
-use App\Http\Controllers\Common\Email\ScheduleEmailCmsHardware;
+use App\Http\Controllers\CMS\Email\Hardware\EmailStore;
 
 
 class HoController extends Controller
@@ -28,29 +28,53 @@ class HoController extends Controller
         // Check access offices
         $accessZoneOffices = CommonController::ZoneOfficesByAuth();
 
+        // All Zone Access Name 
+        //$userZoneAccessName = CommonController::UserZoneAccessName();
+
+        $HOServiceAccess = CommonController::HOServiceUserAccess();
+
+        //dd($HOServiceAccess);
+
         // dd($size, $finalArrOffices, $zoneAccessName, $zoneOfficeName, $zoneOffices, $zoneAccess ); 
 
         $paginate       = Request('paginate', 10);
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id'); 
-        $selected_zone  = Request('selected_zone', 'All');
+        $zone_office    = Request('zone_office', 'All');
 
 
 
         $allDataQuery = HardwareComplain::with('makby', 'category', 'subcategory');
 
-        if($selected_zone == 'All'){
+        // user Zone Selected
+        // if( !empty($zone_office) && $zone_office != 'All'){
+        //     $allDataQuery->whereHas('makby', function($q) use($zone_office){
+        //         //dd($department);
+        //         $q->whereIn('zone_office', explode(",",$zone_office));
+        //         //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+        //     });
+        // }else{
+        //     $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+        //         //dd($accessZoneOffices);
+        //         $q->whereIn('zone_office', $accessZoneOffices);
+        //     });
+        // }
 
-            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
-                //dd($accessZoneOffices);
-                $q->whereIn('zone_office', $accessZoneOffices);
-            });
+        if($zone_office == 'All'){
+
+             if( ! $HOServiceAccess ){
+                // Dhaka Zone Access Not have
+                $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                    //dd($accessZoneOffices);
+                    $q->whereIn('zone_office', $accessZoneOffices);
+                });
+             }
 
         }else{
 
             // Check access offices
-            $accessZoneOfficesQuery = ZoneOffice::where('name', $selected_zone)->select('offices')->first();
+            $accessZoneOfficesQuery = ZoneOffice::where('name', $zone_office)->select('offices')->first();
            
             if(!empty($accessZoneOfficesQuery)){
                 $offices = $accessZoneOfficesQuery->offices;
@@ -61,7 +85,7 @@ class HoController extends Controller
             }
            
 
-            //dd($selected_zone,  $accessZoneOffices,  $accessZoneOfficesQuery);
+            //dd($zone_office,  $accessZoneOffices,  $accessZoneOfficesQuery);
             $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
                 //dd($accessZoneOffices);
                 $q->whereIn('zone_office', $accessZoneOffices);
@@ -85,11 +109,13 @@ class HoController extends Controller
         // $allData = User::with('zons')->find(Auth::user()->id);
         // $allData = $allData->zons()->select('name')->get()->toArray();
 
-        $allData = Zone::where('name', '!=', 'Dhaka')->where('status', 1)->select('name')->get();
+        //$allData = Zone::where('name', '!=', 'Dhaka')->where('status', 1)->select('name')->get();
+
+        $allData = Zone::where('status', 1)->select('name')->get();
       
         // Custom Field Data Add
-        $custom = collect( [['name' => 'All']] );
-        $allData = $custom->merge($allData);
+        // $custom = collect( [['name' => 'All']] );
+        // $allData = $custom->merge($allData);
 
         //dd($allData);
 
@@ -110,6 +136,9 @@ class HoController extends Controller
 
         $comp_id = $request->comp_id;
         $process = $request->process;
+        if($request->delivery == 'Deliverable'){
+            $process = 'Deliverable';
+        }
 
         $remarks_data = new HardwareHORemark();
 
@@ -131,14 +160,12 @@ class HoController extends Controller
        
 
         // Main Complain tbl data update 
-        if($process == 'Damaged' || $process == 'Partial Damaged' || $process == 'Closed'){
+        if($process == 'Damaged' || $process == 'Partial Damaged' || $process == 'Closed' || $process == 'Deliverable' ){
 
             $complain_data           = HardwareComplain::find($comp_id);
             $complain_data->process  = $process;
             $complain_data->save();
-
-            // For email
-            ScheduleEmailCmsHardware::STORE_DAMAGED_HO($complain_data, $remarks_data);
+            
         }
 
 
@@ -153,6 +180,12 @@ class HoController extends Controller
             $damaged_data->created_by      = Auth::user()->id;
             $damaged_data->save();
 
+        }
+
+        // For email
+        if($process == 'Damaged' || $process == 'Partial Damaged' || $process == 'Closed' || $process == 'Deliverable' || $process == 'Service Quotation'){
+            //ScheduleEmailCmsHardware::STORE($complain_data, $remarks_data);
+            EmailStore::StorMailAdminHOAction($comp_id, $remarks_data->id, $damaged_data->id ?? null);
         }
 
 

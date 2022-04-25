@@ -13,7 +13,7 @@
     </tr>
 
     <tr>
-        <td colspan="4" rowspan="4">
+        <td rowspan="4">
             Name of the company : {{ $finalResult->allData[0]->vendor->suppier_name ?? ''}}
             <br>
             Description of the company : {{ $finalResult->allData[0]->vendor->address ?? ''}}
@@ -21,6 +21,11 @@
             Name of Owner/Manager : {{ $finalResult->allData[0]->vendor->contact_name ?? ''}}
             <br>
             Vendor Code : {{ $finalResult->allData[0]->vendor->vendor_number ?? ''}}
+        </td>
+        <td colspan="3" rowspan="4">
+            @if($finalResult->allData[0]->vendor_image)
+                {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->vendor_image)}}
+            @endif
         </td>
     </tr>
     <tr></tr>
@@ -32,13 +37,18 @@
     </tr>
 
     <tr>
-        <th colspan="4" rowspan="10">
+        <td rowspan="10">
             @foreach ($finalResult->allData as $key=>$item)
             {{ $key+1 }}. Surveyor: {{ $item->auditordata->name }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Position:
             {{ $item->auditordata->designation }} <br>
             @endforeach
-        </th>
+        </td>
+        <td colspan="3" rowspan="10">
+            @if($finalResult->allData[0]->group_image)
+                {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->group_image)}}
+            @endif
+        </td>
     </tr>
     <tr></tr>
     <tr></tr>
@@ -99,34 +109,33 @@
     <tr>
         <td style="font-weight: bold">COMMENTS</td>
     </tr>
-
     <tr>
         <td style="font-weight: bold">1. Place of Production / storage location :</td>
     </tr>
     <tr>
-        <td>
+        <td rowspan="4">
             @foreach ($finalResult->allData as $item)
 
             @if($item->storage_1_remarks)
             <span><span class="text-muted">QR-1:</span>
                 {{ $item->storage_1_remarks }},</span>
             @endif
-
+            <br>
             @if($item->storage_2_remarks)
             <span><span class="text-muted">QR-2:</span>
                 {{ $item->storage_2_remarks }},</span>
             @endif
-
+            <br>
             @if($item->storage_3_remarks)
             <span><span class="text-muted">QR-3:</span>
                 {{ $item->storage_3_remarks }},</span>
             @endif
-
+            <br>
             @if($item->storage_4_remarks)
             <span><span class="text-muted">QR-4:</span>
                 {{ $item->storage_4_remarks }}</span>
             @endif
-
+            <br>
             @if( $item->storage_1_remarks || $item->storage_2_remarks || $item->storage_3_remarks ||
             $item->storage_4_remarks )
             <div>
@@ -134,15 +143,23 @@
                     {{ $item->auditordata->name }}</span>
             </div>
             @endif
-
             @endforeach
+            
+        </td>
+        <td colspan="3" rowspan="4">
+            @if($finalResult->allData[0]->storage_image)
+                {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->storage_image)}}
+            @endif
         </td>
     </tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
     <tr>
         <td style="font-weight: bold">2. Production planning / control product quality and service :</td>
     </tr>
     <tr>
-        <td>
+        <td rowspan="4">
             @foreach ($finalResult->allData as $item)
 
             @if($item->production_qs_1_remarks)
@@ -174,13 +191,22 @@
             @endif
 
             @endforeach
+
+        </td>
+        <td colspan="3" rowspan="4">
+            @if($finalResult->allData[0]->production_qs_image)
+                {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->production_qs_image)}}
+            @endif
         </td>
     </tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
     <tr>
         <td style="font-weight: bold">3. Safety :</td>
     </tr>
     <tr>
-        <td>
+        <td rowspan="4">
             @foreach ($finalResult->allData as $item)
 
             @if($item->safety_1_remarks)
@@ -212,13 +238,22 @@
             @endif
 
             @endforeach
+            
+        </td>
+        <td colspan="3" rowspan="4">
+            @if($finalResult->allData[0]->safety_image)
+                {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->safety_image)}}
+            @endif
         </td>
     </tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
     <tr>
         <td style="font-weight: bold">4. Environment and Surrounding condition :</td>
     </tr>
     <tr>
-        <td>
+        <td rowspan="4">
             @foreach ($finalResult->allData as $item)
 
             @if($item->env_sur_con_1_remarks)
@@ -250,13 +285,22 @@
             @endif
 
             @endforeach
+            
+        </td>
+        <td colspan="3" rowspan="4">
+            @if($finalResult->allData[0]->env_sur_con_image)
+                {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->env_sur_con_image)}}
+            @endif
         </td>
     </tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
     <tr>
         <td style="font-weight: bold">5. To cooperate with the company :</td>
     </tr>
     <tr>
-        <td>
+        <td rowspan="4">
             @foreach ($finalResult->allData as $item)
 
             @if($item->cooperate_1_remarks)
@@ -283,6 +327,15 @@
             @endif
 
             @endforeach
+            
+        </td>
+        <td colspan="3" rowspan="4">
+            @if($finalResult->allData[0]->cooperate_image)
+                {{URL::asset($finalResult->allData[0]->imglgpath . $finalResult->allData[0]->cooperate_image)}}
+            @endif
         </td>
     </tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
 </table>

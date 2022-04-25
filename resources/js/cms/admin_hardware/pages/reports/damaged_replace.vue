@@ -7,7 +7,8 @@
                         All Damaged Replace Reports
                     </v-col>
                     <v-col cols="2">
-                        <v-btn outlined elevation="5" class="float-right" small @click="exportExcel()" :loading="exportLoading">
+                        <v-btn outlined elevation="5" class="float-right" small @click="exportExcel()"
+                            :loading="exportLoading">
                             <v-icon left color="success">mdi-file-excel</v-icon>
                             Export
                         </v-btn>
@@ -20,36 +21,36 @@
                     <v-row>
                         <v-col cols="4">
                             <!-- {{ applicable_type }} -->
-                            <v-select v-model="applicable_type" label="Applicable Type:" :items="applicableTypeList" item-text="text"
-                                item-value="value" outlined dense>
+                            <v-select v-model="applicable_type" label="Applicable Type:" :items="applicableTypeList"
+                                item-text="text" item-value="value"  dense>
                             </v-select>
                         </v-col>
 
                         <v-col cols="4">
                             <!-- {{ damaged_type }} -->
-                            <v-select v-model="damaged_type" label="Damages Type:" :items="damageTypeList" item-text="text"
-                                item-value="value" outlined dense>
+                            <v-select v-model="damaged_type" label="Damages Type:" :items="damageTypeList"
+                                item-text="text" item-value="value"  dense>
                             </v-select>
                         </v-col>
 
                         <v-col cols="4">
                             <!-- {{ damaged_reason }} -->
-                            <v-select v-model="damaged_reason" label="Damaged Reason:" :items="damagedReasons" item-text="text"
-                                item-value="value" outlined dense>
+                            <v-select v-model="damaged_reason" label="Damaged Reason:" :items="damagedReasons"
+                                item-text="text" item-value="value"  dense>
                             </v-select>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="2">
                             <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
+                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow"  dense>
                             </v-select>
                         </v-col>
 
-                         <v-col cols="2">
+                        <v-col cols="2">
                             <!-- {{ zone_office }} -->
-                            <v-select v-model="zone_office" label="Zones:" :items="allZoneOffices" item-text="name"
-                                item-value="offices" outlined dense>
+                            <v-select v-model="zone_office" label="Zones:" :items="allZoneOfficesAssign" item-text="name"
+                                item-value="offices"  dense>
                             </v-select>
                         </v-col>
 
@@ -57,7 +58,7 @@
                         <v-col cols="2">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
-                                item-text="department" item-value="department" outlined dense>
+                                item-text="department" item-value="department"  dense>
                             </v-select>
                         </v-col>
 
@@ -65,8 +66,8 @@
                             <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="Start:" type="date" v-model="start_date" ></v-text-field> -->
                             <v-menu v-model="menu" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field v-model="start_date" label="Start Date" prepend-inner-icon="mdi-calendar"
-                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                    <v-text-field v-model="start_date" label="Start" prepend-inner-icon="mdi-calendar"
+                                        readonly v-bind="attrs" v-on="on"  dense></v-text-field>
                                 </template>
 
                                 <v-date-picker v-model="start_date" no-title scrollable>
@@ -81,8 +82,8 @@
                             <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" ></v-text-field> -->
                             <v-menu v-model="menu2" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field v-model="end_date" label="End Date:" prepend-inner-icon="mdi-calendar"
-                                        readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                    <v-text-field v-model="end_date" label="Start" prepend-inner-icon="mdi-calendar"
+                                        readonly v-bind="attrs" v-on="on"  dense></v-text-field>
                                 </template>
 
                                 <v-date-picker v-model="end_date" no-title scrollable>
@@ -95,64 +96,60 @@
                         </v-col>
 
                         <v-col cols="2">
-                            <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..." outlined dense></v-text-field>
+                            <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search"
+                                label="Search:" placeholder="Search Input..."  dense></v-text-field>
                         </v-col>
                     </v-row>
 
                     <table class="table table-bordered responsive">
                         <thead class="text-center">
                             <tr>
-                                <th>View</th>
+                               
                                 <th>Product Details</th>
                                 <th>Delivery Details</th>
-
+                                <th>View</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(singleData, index) in allData.data" :key="index">
+                            <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                                <td class="text-center">
-                                    <v-btn @click="action(singleData.comp_id)" color="error" depressed small elevation="20">
-                                        <v-icon small>mdi-arch</v-icon> View
-                                    </v-btn>
-
-                                    <hr>
-
-                                    <div class="pa-1 info rounded-pill h5 text-white text-center mt-2">
-                                        {{ singleData.comp_id }}
-                                    </div>
-                                </td>
+                               
                                 <td>
                                     <v-row>
                                         <v-col cols="4">
                                             <div>
-                                                <b>Category:</b> <span v-if="singleData.complain.category">{{ singleData.complain.category.name }}</span>
+                                                <b>Category:</b> <span
+                                                    v-if="singleData.complain.category">{{ singleData.complain.category.name }}</span>
                                             </div>
 
                                             <div>
-                                                <b>Subcategory:</b> <span v-if="singleData.complain.subcategory">{{ singleData.complain.subcategory.name }}</span>
+                                                <b>Subcategory:</b> <span
+                                                    v-if="singleData.complain.subcategory">{{ singleData.complain.subcategory.name }}</span>
                                             </div>
 
                                             <div>
-                                                <b>Damaged Reason:</b> <span v-if="singleData.damaged_reason">{{ singleData.damaged_reason }}</span>
+                                                <b>Damaged Reason:</b> <span
+                                                    v-if="singleData.damaged_reason">{{ singleData.damaged_reason }}</span>
                                             </div>
-                                            
+
                                         </v-col>
                                         <v-col cols="4">
                                             <div>
-                                                <b>Complain By</b> 
+                                                <b>Complain By</b>
                                                 <v-btn x-small color="secondary" v-if="singleData.complain.makby"
                                                     @click="currentUserView(singleData.complain.makby)">
-                                                    <v-avatar size="20" @click="currentUserView(singleData.complain.makby)">
+                                                    <v-avatar size="20"
+                                                        @click="currentUserView(singleData.complain.makby)">
                                                         <img v-if="singleData.complain.makby.image"
-                                                            :src="'/images/users/small/' + singleData.complain.makby.image" alt="image">
+                                                            :src="'/images/users/small/' + singleData.complain.makby.image"
+                                                            alt="image">
                                                     </v-avatar> {{ singleData.complain.makby.name }}
                                                 </v-btn>
                                             </div>
 
                                             <div>
-                                                <b>Department</b> <span v-if="singleData.makby">{{ singleData.makby.department }}</span>
+                                                <b>Department</b> <span
+                                                    v-if="singleData.makby">{{ singleData.makby.department }}</span>
                                             </div>
 
                                             <div>
@@ -161,22 +158,26 @@
                                                     @click="currentUserView(singleData.makby)">
                                                     <v-avatar size="20" @click="currentUserView(singleData.makby)">
                                                         <img v-if="singleData.makby.image"
-                                                            :src="'/images/users/small/' + singleData.makby.image" alt="image">
+                                                            :src="'/images/users/small/' + singleData.makby.image"
+                                                            alt="image">
                                                     </v-avatar> {{ singleData.makby.name }}
                                                 </v-btn>
                                             </div>
                                         </v-col>
                                         <v-col cols="4">
                                             <div>
-                                                <b>Receiver Name</b> <span v-if="singleData.rec_name">{{ singleData.rec_name }}</span>
+                                                <b>Receiver Name</b> <span
+                                                    v-if="singleData.rec_name">{{ singleData.rec_name }}</span>
                                             </div>
 
                                             <div>
-                                                <b>Receiver Contact</b> <span v-if="singleData.rec_contact">{{ singleData.rec_contact }}</span>
+                                                <b>Receiver Contact</b> <span
+                                                    v-if="singleData.rec_contact">{{ singleData.rec_contact }}</span>
                                             </div>
 
                                             <div>
-                                                <b>Receiver Position</b> <span v-if="singleData.rec_position">{{ singleData.rec_position }}</span>
+                                                <b>Receiver Position</b> <span
+                                                    v-if="singleData.rec_position">{{ singleData.rec_position }}</span>
                                             </div>
                                         </v-col>
                                     </v-row>
@@ -185,60 +186,119 @@
                                 <td>
                                     <v-row>
                                         <v-col cols="4">
-                                            <div v-for="(newData,index) in singleData.product" :key="index">
-                                                <b>Prouct Name</b> <span v-if="newData.name">{{ newData.name }}</span>
+                                            <div>
+                                                <b>Prouct Name</b> <span v-if="singleData.replace_product.length > 0">
+                                                    <span v-for="(item, index) in singleData.replace_product "
+                                                        :key="index">
+                                                        <small v-if="item.name"><b>{{index+1}}:</b> {{ item.name }}, </small>
+                                                    </span>
+                                                </span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div v-for="newData in singleData.product" :key="newData.id">
-                                                <b>Prouct Serial</b> <span v-if="newData.serial">{{ newData.serial }}</span>
+                                            <div>
+                                                <b>Prouct Serial</b> <span v-if="singleData.replace_product.length > 0">
+                                                    <span v-for="(item, index) in singleData.replace_product "
+                                                        :key="index">
+                                                       <small v-if="item.serial"><b>{{index+1}}:</b> {{ item.serial }}, </small>
+                                                    </span>
+                                                </span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div v-for="newData in singleData.product" :key="newData.id">
-                                                <b>Purchase Date</b> <span v-if="newData.purchase">{{ newData.purchase }}</span>
+                                            <div>
+                                                <b>Purchase Date</b> <span v-if="singleData.replace_product.length > 0">
+                                                    <span v-for="(item, index) in singleData.replace_product "
+                                                        :key="index">
+                                                       <small v-if="item.purchase"><b>{{index+1}}:</b> {{ item.purchase }}, </small>
+                                                    </span>
+                                                </span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
                                         </v-col>
                                         <v-col cols="4">
-                                            <div v-for="newData in singleData.product" :key="newData.id">
-                                                <b>PO Number</b> <span v-if="newData.po_number">{{ newData.po_number }}</span>
+                                            <div>
+                                                <b>PO Number</b> <span v-if="singleData.replace_product.length > 0">
+                                                    <span v-for="(item, index) in singleData.replace_product "
+                                                        :key="index">
+                                                       <small v-if="item.po_number"><b>{{index+1}}:</b> {{ item.po_number }}, </small>
+                                                    </span>
+                                                </span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div v-for="newData in singleData.product" :key="newData.id">
-                                                <b>Request Payment Number</b> <span v-if="newData.req_payment_num">{{ newData.req_payment_num }}</span>
+                                            <div>
+                                                <b>Request Payment Number</b> <span v-if="singleData.replace_product.length > 0">
+                                                    <span v-for="(item, index) in singleData.replace_product "
+                                                        :key="index">
+                                                       <small v-if="item.req_payment_num"><b>{{index+1}}:</b> {{ item.req_payment_num }}, </small>
+                                                    </span>
+                                                </span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div v-for="newData in singleData.product" :key="newData.id">
-                                                <b>Bill submit Date</b> <span v-if="newData.bill_submit">{{ newData.bill_submit }}</span>
+                                            <div>
+                                                <b>Bill submit Date</b> <span v-if="singleData.replace_product.length > 0">
+                                                    <span v-for="(item, index) in singleData.replace_product "
+                                                        :key="index">
+                                                       <small v-if="item.bill_submit"><b>{{index+1}}:</b> {{ item.bill_submit }}, </small>
+                                                    </span>
+                                                </span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
                                         </v-col>
                                         <v-col cols="4">
 
-                                            <div v-for="newData in singleData.product" :key="newData.id">
-                                                <b>Invoice Number</b> <span v-if="newData.invoice_num">{{ newData.invoice_num }}</span>
+                                            <div>
+                                                <b>Invoice Number</b> <span v-if="singleData.replace_product.length > 0">
+                                                    <span v-for="(item, index) in singleData.replace_product "
+                                                        :key="index">
+                                                       <small v-if="item.invoice_num"><b>{{index+1}}:</b> {{ item.invoice_num }}, </small>
+                                                    </span>
+                                                </span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div v-for="newData in singleData.product" :key="newData.id">
-                                                <b>Warranty</b> <span v-if="newData.warranty">{{ newData.warranty | moment("from", newData.warranty ) }}</span>
+                                            <div>
+                                                <!-- {{ $moment(new Date()).format('YYYY-MM-DD') }} -->
+                                                <b>Warranty</b> <span v-if="singleData.replace_product.length > 0">
+                                                    <span v-for="(item, index) in singleData.replace_product "
+                                                        :key="index">
+                                                       <small v-if="item.warranty > $moment(new Date()).format('YYYY-MM-DD')"><b>{{index+1}}:</b> {{ item.warranty | moment("from") }}, </small>
+                                                       <small v-else><b>{{index+1}}:</b> <span class="error--text">Expired </span>, </small>
+                                                    </span>
+                                                </span>
                                                 <span v-else class="error--text">N/A</span>
                                             </div>
 
-                                            <div v-for="newData in singleData.product" :key="newData.id">
+                                            <div>
                                                 <b>Document</b>
-                                                <a v-if="newData.document" :href="'/images/inventory/'+newData.document"
-                                                    class="btn btn-info btn-sm text-white" download>
-                                                    <v-icon color="white">mdi-download-network-outline</v-icon> Document
-                                                </a>
+                                                <span v-if="singleData.replace_product.length > 0">
+                                                    <span v-for="(item, index) in singleData.replace_product "
+                                                        :key="index">
+                                                       <span v-if="item.document">
+                                                       <v-btn :href="'/images/inventory/'+item.document" color="info" x-small download><v-icon left>mdi-download-network-outline</v-icon> File- {{index+1}}</v-btn>,</span>
+                                                
+                                                    </span>
+                                                </span>
                                                 <span v-else class="text-danger">Not Attached</span>
                                             </div>
                                         </v-col>
                                     </v-row>
+                                </td>
+
+                                <td class="text-center">
+                                    <v-btn @click="action(singleData.comp_id)" color="error" depressed small
+                                        elevation="20">
+                                        <v-icon small>mdi-arch</v-icon> View
+                                    </v-btn>
+
+                                    <hr>
+
+                                    <div class="pa-1 info rounded-pill h5 text-white text-center mt-2">
+                                        {{ singleData.comp_id }}
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -301,8 +361,7 @@
                 // damaged reason list
                 ...damagedReasonList,
 
-                applicableTypeList:[
-                    {
+                applicableTypeList: [{
                         text: 'All',
                         value: 'All'
                     },
@@ -316,8 +375,7 @@
                     }
                 ],
 
-                damageTypeList:[
-                    {
+                damageTypeList: [{
                         text: 'All',
                         value: 'All'
                     },
@@ -352,21 +410,21 @@
             // Get table data
             getResults(page = 1) {
                 this.dataLoading = true;
-                axios.get(this.currentUrl+'/damaged_replace?page=' + page +
+                axios.get(this.currentUrl + '/damaged_replace?page=' + page +
                         '&paginate=' + this.paginate +
                         '&search=' + this.search +
                         '&sort_direction=' + this.sort_direction +
                         '&sort_field=' + this.sort_field +
-                        '&search_field=' + this.search_field + 
-                        '&start='+ this.start_date +
-                        '&end='+ this.end_date +
-                        '&zone_office='+ this.zone_office +
-                        '&department='+ this.department +
-                        '&zone_office='+ this.zone_office +
-                        '&department='+ this.department +
-                        '&damaged_reason='+ this.damaged_reason +
-                        '&applicable_type='+ this.applicable_type +
-                        '&damaged_type='+ this.damaged_type
+                        '&search_field=' + this.search_field +
+                        '&start=' + this.start_date +
+                        '&end=' + this.end_date +
+                        '&zone_office=' + this.zone_office +
+                        '&department=' + this.department +
+                        '&zone_office=' + this.zone_office +
+                        '&department=' + this.department +
+                        '&damaged_reason=' + this.damaged_reason +
+                        '&applicable_type=' + this.applicable_type +
+                        '&damaged_type=' + this.damaged_type
 
                     )
                     .then(response => {
@@ -376,7 +434,7 @@
                         this.totalValue = response.data.total;
                         this.dataShowFrom = response.data.from;
                         this.dataShowTo = response.data.to;
-                        this.currentPageNumber  = response.data.current_page
+                        this.currentPageNumber = response.data.current_page
                         // Loading Animation
                         this.dataLoading = false;
 
@@ -397,29 +455,29 @@
 
 
             // exportExcel
-            exportExcel(){
+            exportExcel() {
                 this.exportLoading = true;
 
                 axios({
                     method: 'get',
-                    url: this.currentUrl+'/export_data_damagereplace?search=' + this.search +
+                    url: this.currentUrl + '/export_data_damagereplace?search=' + this.search +
                         '&sort_direction=' + this.sort_direction +
                         '&sort_field=' + this.sort_field +
-                        '&search_field=' + this.search_field + 
-                        '&start='+ this.start_date +
-                        '&end='+ this.end_date +
-                        '&zone_office='+ this.zone_office +
-                        '&department='+ this.department +
-                        '&zone_office='+ this.zone_office +
-                        '&department='+ this.department +
-                        '&damaged_reason='+ this.damaged_reason +
-                        '&applicable_type='+ this.applicable_type +
-                        '&damaged_type='+ this.damaged_type,
+                        '&search_field=' + this.search_field +
+                        '&start=' + this.start_date +
+                        '&end=' + this.end_date +
+                        '&zone_office=' + this.zone_office +
+                        '&department=' + this.department +
+                        '&zone_office=' + this.zone_office +
+                        '&department=' + this.department +
+                        '&damaged_reason=' + this.damaged_reason +
+                        '&applicable_type=' + this.applicable_type +
+                        '&damaged_type=' + this.damaged_type,
 
                     responseType: 'blob', // important
                 }).then((response) => {
 
-                    
+
 
                     let repName = new Date();
 
@@ -446,17 +504,17 @@
 
             },
 
-            merge(){
-                
-                 
-                let json2 = {
-                        text: 'All',
-                        value: 'All'
-                    };
-                this.damagedReasons.unshift(json2);
-                
+            merge() {
 
-                
+
+                let json2 = {
+                    text: 'All',
+                    value: 'All'
+                };
+                this.damagedReasons.unshift(json2);
+
+
+
             }
 
         },
@@ -467,28 +525,28 @@
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
-                
+
             },
 
             applicable_type: function (value) {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
-                
+
             },
 
             damaged_type: function (value) {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
-                
+
             },
         },
 
-      
 
-        mounted(){
-            this.getZoneOffices();
+
+        mounted() {
+            this.getZoneOfficesAssign();
             this.getDepartments();
             this.merge();
         },

@@ -17,21 +17,21 @@
         <div v-if="allData.data">
 
             <v-row>
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <!-- Show -->
                     <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                     </v-select>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-select :items="carData" label="All Cars Data" v-model="sort_by_car"></v-select>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-select :items="reportType" label="Select Type" v-model="sort_by_day"></v-select>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-menu v-model="menu" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-icon="mdi-calendar"
@@ -47,7 +47,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-menu v-model="menu2" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_endDate" label="End Date" prepend-icon="mdi-calendar"
@@ -63,7 +63,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="6" lg="2">
+                <v-col cols="2">
                     <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                         placeholder="Search Input..."></v-text-field>
                 </v-col>

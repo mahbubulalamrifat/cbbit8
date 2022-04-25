@@ -5,9 +5,11 @@ namespace App\Http\Controllers\CMS\HardwareAdmin\Complain;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\Common\Email\ScheduleEmailCmsHardware;
+use App\Http\Controllers\CMS\Email\Hardware\EmailSend;
+
 use Auth;
 use App\Models\User;
+use App\Models\SuperAdmin\ZoneOffice;
 
 class IndexController extends Controller
 {
@@ -16,7 +18,7 @@ class IndexController extends Controller
         //dd( Request('id') );
         $id = Request('id');
         if( !empty($id) ){
-           $success = ScheduleEmailCmsHardware::SendById($id);
+           $success = EmailSend::SendById($id);
 
             if($success){
                 return response()->json(['msg'=>'Email Send Successfully &#128513;', 'icon'=>'success'], 200);
@@ -30,11 +32,44 @@ class IndexController extends Controller
     }
 
 
-    // get_user_zone
-    public function get_user_zone(){
+    // get_user_assign_zone_offices
+    public function get_user_assign_zone_offices(){
+
+        $data = User::with('zons', 'zons.zonoffice')->where('id', Auth::user()->id)->get()->pluck('zons');
+
+        $allData = [];
+        // Zone Name
+        foreach($data[0] as $item){
+            // $allData[] = $item['zonoffice'];
+            $allData[] = [
+                'name' => $item['zonoffice']['name'],
+                'offices' => $item['zonoffice']['offices'],
+            ];
+        }
+
+        // Custom Field Data Add
+        $custom = collect( [['name' => 'All', 'offices' => 'All']] );
+        $allData = $custom->merge($allData);
+
+        //dd( $allData,  $allData[0] );
+        return response()->json($allData, 200);
+    }
+
+
+    // get_user_zone_name
+    public function get_user_zone_name(){
 
         $data = User::with('zons')->where('id', Auth::user()->id)->get()->pluck('zons')->toArray();
-        return response()->json($data[0], 200);
+        //$data = User::with('zons')->where('id', Auth::user()->id)->get();
+
+        $zoneName = [];
+        // Zone Name
+        foreach($data[0] as $item){
+            $zoneName[] = $item['name'];
+        }
+
+        //dd($zoneName, $data, $data[0]);
+        return response()->json($zoneName, 200);
     }
 
 

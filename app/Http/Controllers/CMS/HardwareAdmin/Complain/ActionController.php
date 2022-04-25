@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\Cms\Hardware\HardwareComplain;
 use App\Models\Cms\Hardware\HardwareRemarks;
 use App\Http\Controllers\Common\ImageUpload;
-use App\Http\Controllers\Common\Email\ScheduleEmailCmsHardware;
 use App\Models\Cms\Hardware\HardwareDamaged;
 use App\Models\Cms\Hardware\HardwareDelivery;
 
@@ -17,6 +16,7 @@ use App\Models\Inventory\InventoryOperation;
 use App\Models\Inventory\InventoryOldProduct;
 use App\Models\User;
 use Auth;
+use App\Http\Controllers\CMS\Email\Hardware\EmailStore;
 
 class ActionController extends Controller
 {
@@ -24,7 +24,7 @@ class ActionController extends Controller
 
     //action
     public function action($id){
-        $allData = HardwareComplain::with('makby', 'category', 'subcategory', 'remarks', 'remarks.makby', 'remarks.mail', 'dam_apply', 'ho_remarks', 'ho_remarks.makby', 'ho_remarks.mail', 'delivery', 'delivery.mail')  
+        $allData = HardwareComplain::with('makby', 'category', 'subcategory', 'remarks', 'remarks.makby', 'remarks.mail', 'damage', 'damage.makby', 'ho_remarks', 'ho_remarks.makby', 'ho_remarks.mail', 'delivery', 'delivery.mail', 'delivery.makby')  
         ->where('id', $id)
         ->first();
 
@@ -71,7 +71,7 @@ class ActionController extends Controller
         $remarks_data->created_by   = Auth::user()->id;
        
         $success = $remarks_data->save();
-        // Store in Application Complain tbl 
+        // Store in Application Complain tbl  
         $success2 = $complain_data->save();
 
 
@@ -91,10 +91,10 @@ class ActionController extends Controller
 
         // For email
         if($process == 'Damaged' || $process == 'Partial Damaged' || $process == 'Closed' || $process == 'Deliverable'){
-            ScheduleEmailCmsHardware::STORE($complain_data, $remarks_data);
+            //ScheduleEmailCmsHardware::STORE($complain_data, $remarks_data);
+            EmailStore::StorMailAdminAction($comp_id, $remarks_data->id, $damaged_data->id ?? null);
         }
 
-        
 
         if($success){
             return response()->json(['msg'=>'Submited Successfully &#128513;', 'icon'=>'success'], 200);
@@ -123,7 +123,17 @@ class ActionController extends Controller
 
         $comp_id = $request->comp_id;
         $process = 'Closed';
-        $product_id = $request->product_id;
+
+       
+        $product_id_arr = $request->product_id;
+        if($product_id_arr){
+            $product_id_text = implode(",", $product_id_arr);
+        }
+
+        
+
+        //dd($product_id_arr, $product_id_text, $request->product_id); 
+
 
         $rec_name       = $request->rec_name;
         $rec_contact    = $request->rec_contact;
@@ -157,45 +167,54 @@ class ActionController extends Controller
         // Damageded or partial damaged_data
         $damaged_data  = HardwareDamaged::where('comp_id', $comp_id)->first();
 
-        $damaged_data->rep_pro_id      = $product_id;
+        $damaged_data->rep_pro_id      = $product_id_text;
         $damaged_data->rec_name        = $rec_name;
         $damaged_data->rec_contact     = $rec_contact;
         $damaged_data->rec_position    = $rec_position;
         $damaged_data->created_by      = Auth::user()->id;
         $damaged_data->save();
 
+        // sync damaged replaced product record
+        if($product_id_arr){
+            $damaged_data->replace_product()->sync($product_id_arr);
+        }
+        
         // Complain User 
         $user_data = User::find($complain_data->user_id);
 
 
-        // Update inventory New Product table 
-        $inventory_new_data = InventoryNewProduct::find($product_id);
-        $inventory_new_data->give_st = 1;
-        $inventory_new_data->save();
+        foreach($product_id_arr as $product_id){
+            // Update inventory New Product table 
+            $inventory_new_data = InventoryNewProduct::find($product_id);
+            $inventory_new_data->give_st = 1;
+            $inventory_new_data->save();
 
-        // Update inventory Old Product table 
-        $inventory_old_data = new InventoryOldProduct();
-        $inventory_old_data->new_pro_id        = $product_id;
-         $inventory_old_data->comp_id          = $request->comp_id; //add complain id
-        $inventory_old_data->cat_id            = $inventory_new_data->cat_id;
-        $inventory_old_data->subcat_id         = $inventory_new_data->subcat_id;
-        $inventory_old_data->name              = $inventory_new_data->name;
-        $inventory_old_data->serial            = $inventory_new_data->serial;
-        $inventory_old_data->operation_id      = $request->operation_id;
-        //  from user tbl
-        $inventory_old_data->business_unit     = $user_data->business_unit;
-        $inventory_old_data->office            = $user_data->zone_office;
+            // Update inventory Old Product table 
+            $inventory_old_data = new InventoryOldProduct();
+            $inventory_old_data->new_pro_id        = $product_id;
+            $inventory_old_data->comp_id           = $request->comp_id; //add complain id
+            $inventory_old_data->cat_id            = $inventory_new_data->cat_id;
+            $inventory_old_data->subcat_id         = $inventory_new_data->subcat_id;
+            $inventory_old_data->name              = $inventory_new_data->name;
+            $inventory_old_data->serial            = $inventory_new_data->serial;
+            $inventory_old_data->operation_id      = $request->operation_id;
+            //  from user tbl
+            $inventory_old_data->business_unit     = $user_data->business_unit;
+            $inventory_old_data->office            = $user_data->zone_office;
 
-        $inventory_old_data->rec_name          = $rec_name;
-        $inventory_old_data->rec_contact       = $rec_contact;
-        $inventory_old_data->rec_position      = $rec_position;
+            $inventory_old_data->rec_name          = $rec_name;
+            $inventory_old_data->rec_contact       = $rec_contact;
+            $inventory_old_data->rec_position      = $rec_position;
+            
+            $inventory_old_data->created_by = Auth::user()->id;
+            //$inventory_old_data->save();
+        }
+
         
-        $inventory_old_data->created_by = Auth::user()->id;
-        $inventory_old_data->save();
-
+        EmailStore::StorMailAdminAction($comp_id, $remarks_data->id, $damaged_data->id ?? null);
 
         // For email
-        ScheduleEmailCmsHardware::STORE_DAMAGED_REPLACE($complain_data, $remarks_data, $damaged_data);
+        //ScheduleEmailCmsHardware::STORE_DAMAGED_REPLACE($complain_data, $remarks_data, $damaged_data);
 
         if($success){
             return response()->json(['msg'=>'Submited Successfully &#128513;', 'icon'=>'success'], 200);
@@ -246,7 +265,7 @@ class ActionController extends Controller
         $success = $data2->save();
 
         // For email
-        ScheduleEmailCmsHardware::STORE_QUOTATION($comp_id, $remarks_data);
+        EmailStore::DamageQuotationAdminAction($comp_id, $remarks_data->id, $damaged_data->id ?? null);
 
         if($success){
             return response()->json(['msg'=>'Submited Successfully &#128513;', 'icon'=>'success'], 200);
@@ -259,8 +278,8 @@ class ActionController extends Controller
     }
 
 
-   // action_delivery
-   public function action_delivery(Request $request){
+    // action_delivery
+    public function action_delivery(Request $request){
 
         //dd($request->all());
 
@@ -287,7 +306,6 @@ class ActionController extends Controller
         // Direct any file store
         if ($document) {
             $document_full_name = $this->documentUpload($document, $documentPath);
-            $remarks_data->document     = $document_full_name;
             // For Damaged Tbl
             $delivery_data->document     = $document_full_name;
         }
@@ -305,7 +323,7 @@ class ActionController extends Controller
         $success = $complain_data->save();
 
         // For email
-        ScheduleEmailCmsHardware::STORE_DELIVERY($complain_data, $delivery_data);
+        EmailStore::DeliveryAdminAction($comp_id, $delivery_data->id, $damaged_data->id ?? null);
 
         if($success){
             return response()->json(['msg'=>'Submited Successfully &#128513;', 'icon'=>'success'], 200);

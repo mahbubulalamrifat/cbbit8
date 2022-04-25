@@ -11,7 +11,7 @@ import store from './../store'
 
 import globalRolePermissions from './../../../../role_permissions'
 
-
+import {debounce} from './../../../../helpers'
 
 
 
@@ -58,6 +58,8 @@ export default {
         // For Report search
         allZoneOffices:[],
         allDepartments:[],
+        allZoneOfficesAssign:[],
+
         
         department:'',
         start_date:'',
@@ -110,6 +112,16 @@ export default {
             })
         },
 
+        // get Zone Offices
+        getZoneOfficesAssign(){
+            axios.get('/cms/h_admin/complain/get_user_assign_zone_offices').then(response=>{
+                 console.log(response.data)
+                this.allZoneOfficesAssign = response.data
+            }).catch(error=>{
+                console.log(error)
+            })
+        },
+
         // get Departments
         getDepartments(){
             axios.get('/super_admin/user/departments').then(response=>{
@@ -120,7 +132,7 @@ export default {
             })
         },
 
-        // countNotProcess
+        // countNotProcess 
         countAll() {
 
             axios.get('/cms/h_admin/count/sidebar_count_data').then(response=>{
@@ -130,6 +142,10 @@ export default {
                 store.commit('setCountProcess', response.data.process)
                 store.commit('setCountDeliverable', response.data.deliverable)
                 store.commit('setCountService', response.data.service )
+                store.commit('setCountServiceAccess', response.data.serviceAccess )
+                store.commit('setConuntHOService', response.data.hoService )
+                store.commit('setConuntHOServiceAccess', response.data.hoServiceAccess )
+                
             }).
             catch(error=>{
                 console.log(error)
@@ -152,18 +168,18 @@ export default {
         },
 
         //Excuted When make change value 
-        search: function (value) {
+        search: debounce(function (value) {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        },
+        }, 500),
 
         //Excuted When make change value 
         search_field: function (value) {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        },
+        }, 
 
         // selectDraft
         selectDraft: function(value){
@@ -172,7 +188,7 @@ export default {
             }else{
                 this.form.details = value 
             }
-        },
+        }, 
 
         start_date: function (value) {
             if(this.end_date){
@@ -180,7 +196,7 @@ export default {
                 this.getResults();
                 this.$Progress.finish();
             }
-        },
+        }, 
 
         end_date: function (value) {
             if(this.start_date){
@@ -188,20 +204,20 @@ export default {
                 this.getResults();
                 this.$Progress.finish();
             }
-        },
+        }, 
 
        
         department: function (value) {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        },
+        }, 
 
         zone_office: function (value) {  
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        },
+        }, 
 
 
        
@@ -231,10 +247,13 @@ export default {
             'auth'        : 'getAuth',
             'roles'       : 'getRoles',
             'drafts'      : 'getDraft',
-            'notprocess'  : 'getCountNotProcess',
-            'process'     : 'getCountProcess',
-            'deliverable' : 'getCountDeliverable',
-            'service'     : 'getCountService',
+            'CountNotprocess'  : 'getCountNotProcess',
+            'CountProcess'     : 'getCountProcess',
+            'CountDeliverable' : 'getCountDeliverable',
+            'CountService'     : 'getCountService',
+            'CountServiceAccess'     : 'getCountServiceAccess',
+            'CountHOService'     : 'getConuntHOService',
+            'CountHOServiceAccess'     : 'getConuntHOServiceAccess',
         }),
 
     },

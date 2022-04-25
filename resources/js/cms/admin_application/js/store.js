@@ -7,7 +7,7 @@ export default new Vuex.Store({
 
     state : {
         auth  : null,
-        roles: null,
+        roles : null, 
         CountNotProcess: null,
         CountProcess: null,
     },
@@ -20,6 +20,7 @@ export default new Vuex.Store({
         getRoles(state){
             return state.roles;
         },
+
         // count
         getCountNotProcess(state){
             return state.CountNotProcess;

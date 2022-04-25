@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Auth
+// Auth 
 Route::namespace('App\Http\Controllers\Auth')->group(function(){
 
     // Route::get('/login', 'IndexController@login')->name('login');
@@ -12,7 +12,7 @@ Route::namespace('App\Http\Controllers\Auth')->group(function(){
     Route::post('/register_check', 'RegisterController@check');
     Route::post('/register_store', 'RegisterController@store');
 
-    //Route::get('/test', 'ADLogin@Data'); 
+    Route::get('/test', 'ADLogin@Data'); 
     Route::get('login/{any?}', 'IndexController@index')->name('login');
     Route::get('register/{any?}', 'IndexController@index')->name('register');
 
@@ -24,8 +24,13 @@ Route::namespace('App\Http\Controllers\Auth')->group(function(){
 // Auth Route Start
 Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
+   
+
     // SuperAdmin Start
     Route::middleware(['can:superadmin'])->namespace('SuperAdmin')->prefix('super_admin')->group(function(){
+
+
+        Route::get('/dashboard_data', 'IndexController@dashboard_data');
 
         // User Management
         Route::namespace('User')->prefix('user')->group(function(){
@@ -34,6 +39,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
             Route::put('/update/{id}', 'IndexController@update');
             Route::delete('/destroy/{id}', 'IndexController@destroy');
             Route::post('/status/{id}', 'IndexController@status');
+
+            Route::get('/full_list', 'IndexController@full_list');
 
             Route::post('/status_admin/{id}', 'IndexController@status_admin');
             Route::post('/status_user/{id}', 'IndexController@status_user');
@@ -333,6 +340,419 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
 
 
+    // CMS Start
+    Route::namespace('CMS')->prefix('cms')->group(function(){
+
+        // Application Admin
+        Route::middleware(['can:appAdmin'])->namespace('ApplicationAdmin')->prefix('a_admin')->group(function(){
+
+            Route::get('/dashboard_data', 'IndexController@dashboard_data');
+
+            // index
+            Route::prefix('count')->group(function(){
+                Route::get('/sidebar_count_data', 'IndexController@sidebar_count_data');
+            });
+
+
+            //Category 
+            Route::namespace('Category')->prefix('category')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update/{id}', 'IndexController@update');
+                Route::delete('/destroy/{id}', 'IndexController@destroy');
+            });
+
+            //Subcategory 
+            Route::namespace('Subcategory')->prefix('subcategory')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update/{id}', 'IndexController@update');
+                Route::delete('/destroy/{id}', 'IndexController@destroy');
+
+                Route::get('/category', 'IndexController@category');
+            });
+
+            //Complain 
+            Route::namespace('Complain')->prefix('complain')->group(function(){
+                Route::get('/not_process', 'ComplainController@not_process');
+                Route::get('/processing', 'ComplainController@processing');
+                Route::get('/closed', 'ComplainController@closed');
+
+                Route::get('/action/{id}', 'ActionController@action');
+                Route::post('/action_remarks', 'ActionController@action_remarks');
+
+                // Send mail
+                Route::get('/send_rem_email', 'IndexController@send_rem_email');
+            });
+
+            //Reports 
+            Route::namespace('Reports')->prefix('reports')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::get('/canceled', 'IndexController@canceled');
+                Route::get('/export_data', 'IndexController@export_data');
+                Route::get('/export_data_cancel', 'IndexController@export_data_cancel');
+            });
+        
+            Route::get('{any?}', 'IndexController@index');
+        });
+
+
+
+        //Hardware Admin 
+        Route::middleware(['can:hardAdmin'])->namespace('HardwareAdmin')->prefix('h_admin')->group(function(){
+
+            Route::get('/dashboard_data', 'IndexController@dashboard_data');
+            Route::get('/zone_access', 'Complain\ComplainController@zone_access');
+
+            // index
+            Route::prefix('count')->group(function(){
+                Route::get('/sidebar_count_data', 'IndexController@sidebar_count_data');
+            });
+            
+
+            // Others
+            Route::namespace('Others')->group(function(){
+
+                //Category 
+                Route::namespace('Category')->prefix('category')->group(function(){
+                    Route::get('/index', 'IndexController@index');
+                    Route::post('/store', 'IndexController@store');
+                    Route::put('/update/{id}', 'IndexController@update');
+                    Route::delete('/destroy/{id}', 'IndexController@destroy');
+
+                    Route::get('/acsosoris', 'IndexController@acsosoris');
+                });
+
+                //Subcategory 
+                Route::namespace('Subcategory')->prefix('subcategory')->group(function(){
+                    Route::get('/index', 'IndexController@index');
+                    Route::post('/store', 'IndexController@store');
+                    Route::put('/update/{id}', 'IndexController@update');
+                    Route::delete('/destroy/{id}', 'IndexController@destroy');
+
+                    Route::get('/category', 'IndexController@category');
+                });
+
+                //Acsosoris 
+                Route::namespace('Acsosoris')->prefix('acsosoris')->group(function(){
+                    Route::get('/index', 'IndexController@index');
+                    Route::post('/store', 'IndexController@store');
+                    Route::put('/update/{id}', 'IndexController@update');
+                    Route::delete('/destroy/{id}', 'IndexController@destroy');
+                });
+
+            });
+
+            // User 
+            Route::middleware(['can:superadmin'])->namespace('User')->prefix('user')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/roles_update', 'IndexController@roles_update');
+            
+                Route::get('/allZoneOfficesAssign', 'IndexController@allZoneOfficesAssign');
+                Route::get('/zone_data', 'IndexController@zone_data');
+
+                //Draft 
+                Route::prefix('role')->group(function(){
+                    Route::get('/index', 'RoleController@index');
+                    Route::post('/store', 'RoleController@store');
+                    Route::put('/update/{id}', 'RoleController@update');
+                    Route::delete('/destroy/{id}', 'RoleController@destroy');
+                    Route::post('/status/{id}', 'RoleController@status');
+                    Route::get('/all_data', 'RoleController@all_data');
+                });
+            });
+
+            // Complain 
+            Route::namespace('Complain')->prefix('complain')->group(function(){
+                Route::get('/not_process', 'ComplainController@not_process');
+                Route::get('/processing', 'ComplainController@processing');
+                Route::get('/closed', 'ComplainController@closed');
+                
+                Route::get('/service', 'ComplainController@service');
+
+                // delivery
+                Route::get('/deliverable', 'ComplainController@deliverable');
+                Route::get('/delivered', 'ComplainController@delivered');
+
+               
+
+                // Damaged
+                Route::prefix('damaged')->group(function(){
+
+                    Route::get('/all', 'DamagedController@all');
+                    Route::get('/applicable', 'DamagedController@applicable');
+                    Route::get('/applicable_partial', 'DamagedController@applicable_partial');
+                    Route::get('/not_applicable', 'DamagedController@not_applicable');
+                    Route::get('/not_applicable_partial', 'DamagedController@not_applicable_partial');
+
+                    Route::get('/remaining_stock', 'DamagedController@remaining_stock');
+                    Route::get('/inv_operations', 'DamagedController@inv_operations');
+
+                });
+            
+
+                // HO Controller
+                Route::prefix('ho_service')->group(function(){
+                    Route::get('/index', 'HoController@index');
+                    Route::get('/allZoneOfficesAssign', 'HoController@allZoneOfficesAssign');
+                    // action_remarks
+                    Route::post('/action_remarks', 'HoController@action_remarks');
+                    Route::get('/action_remarks_data/{id}', 'HoController@action_remarks_data');
+                    Route::get('/zone_data', 'HoController@zone_data');
+                    
+                });
+                
+                
+
+                // Complain modify
+                Route::get('/category', 'ModifyController@category');
+                Route::post('/category_modify', 'ModifyController@category_modify');
+
+                Route::get('/action/{id}', 'ActionController@action');
+                Route::post('/action_remarks', 'ActionController@action_remarks');
+                Route::post('/action_damaged', 'ActionController@action_damaged');
+                Route::post('/action_quotation', 'ActionController@action_quotation');
+                Route::post('/action_delivery', 'ActionController@action_delivery');
+
+                // Send mail
+                Route::get('/send_rem_email', 'IndexController@send_rem_email');
+                // get_user_zone
+                Route::get('/get_user_assign_zone_offices', 'IndexController@get_user_assign_zone_offices');
+                Route::get('/get_user_zone_name', 'IndexController@get_user_zone_name');
+            });
+
+            //Draft 
+            Route::namespace('Draft')->prefix('draft')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update/{id}', 'IndexController@update');
+                Route::delete('/destroy/{id}', 'IndexController@destroy');
+                Route::post('/status/{id}', 'IndexController@status');
+                Route::get('/all_data', 'IndexController@all_data');
+            });
+
+            // Reports
+            Route::namespace('Reports')->prefix('reports')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::get('/damaged', 'IndexController@damaged');
+                Route::get('/damaged_replace', 'IndexController@damaged_replace');
+                
+                // report
+                Route::get('/export_data', 'IndexController@export_data');
+                Route::get('/export_data_damage', 'IndexController@export_data_damage');
+                Route::get('/export_data_damagereplace', 'IndexController@export_data_damagereplace');
+                
+            
+            });
+
+            
+            Route::get('{any?}', 'IndexController@index');
+        });
+        // End Admin
+
+
+
+
+        // User
+        Route::middleware(['can:cms'])->namespace('User')->group(function(){
+
+            //Application 
+            Route::prefix('app')->group(function(){
+            
+                Route::post('/complain', 'ApplicationController@complain');
+                Route::get('/category', 'ApplicationController@category');
+                Route::get('/history', 'ApplicationController@history');
+                Route::post('/complain_cancel', 'ApplicationController@complain_cancel');
+                
+            });
+
+            //Hardware 
+            Route::prefix('hard')->group(function(){
+            
+                Route::post('/complain', 'HardwareController@complain');
+                Route::get('/category', 'HardwareController@category');
+                Route::get('/history', 'HardwareController@history');
+                Route::get('/damage_apply', 'HardwareController@damage_apply');
+                Route::post('/complain_cancel', 'HardwareController@complain_cancel');
+
+            });
+
+
+            Route::get('{any?}', 'IndexController@index');
+        });
+    });
+    // CMS End
+
+
+
+    // Inventory Start
+    Route::namespace('Inventory')->prefix('inventory')->group(function(){
+
+        // Admin
+        Route::middleware(['can:inventory'])->namespace('Admin')->prefix('admin')->group(function(){
+
+            Route::get('/dashboard_data', 'IndexController@dashboard_data');
+
+            Route::get('/category', 'IndexController@category');
+
+            // NewProduct Management
+            Route::namespace('NewProduct')->prefix('new_product')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::post('/update', 'IndexController@update');
+                Route::delete('/destroy_temp', 'IndexController@destroy_temp');
+
+                Route::post('/damage_status/{id}', 'IndexController@damage_status');
+                
+
+                // office
+                Route::get('/office', 'IndexController@office');
+                // deliver
+                Route::post('/deliver', 'IndexController@deliver');
+
+            });
+
+
+            // OldProduct Management
+            Route::namespace('OldProduct')->prefix('old_product')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update', 'IndexController@update');
+                Route::delete('/destroy_temp', 'IndexController@destroy_temp');
+
+                // office
+                Route::get('/office', 'IndexController@office');
+                Route::get('/business_unit', 'IndexController@businessUnit');
+                
+            });
+
+            //Operation 
+            Route::namespace('Operation')->prefix('operation')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update', 'IndexController@update');
+                Route::delete('/destroy', 'IndexController@destroy');
+            });
+
+
+            //product section 
+            Route::namespace('Productsection')->prefix('product')->group(function(){
+
+                Route::prefix('given-product')->group(function(){
+                    Route::get('/index', 'IndexController@given_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_given');                    
+                });
+
+                Route::prefix('running-product')->group(function(){
+                    Route::get('/index', 'IndexController@running_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_running');                    
+                });
+
+                Route::prefix('damaged-product')->group(function(){
+                    Route::get('/index', 'IndexController@damaged_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_damage');
+                });
+            });
+
+            //Warranty section 
+            Route::namespace('Warrantysection')->prefix('w-product')->group(function(){
+
+                Route::prefix('warranty-product')->group(function(){
+                    Route::get('/index', 'IndexController@warranty_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_warranty');
+                });
+
+                Route::prefix('expire-product')->group(function(){
+                    Route::get('/index', 'IndexController@expire_product');
+
+                    Route::get('/export_data', 'IndexController@export_data_expire');
+                });
+            });
+
+            //Report section 
+            Route::namespace('Reportsection')->prefix('report')->group(function(){
+               
+                Route::prefix('stock')->group(function(){
+                    Route::get('/', 'StockController@index');
+                    Route::get('/export_data', 'StockController@export_data');
+                    Route::get('/export_view', 'StockController@export_view');
+                });
+
+            });
+
+            //Deleted section 
+            Route::namespace('Deletedsection')->prefix('delete')->group(function(){
+                Route::prefix('new-product')->group(function(){
+                    Route::get('/index', 'IndexController@new_product');    
+                    Route::delete('/destroy', 'IndexController@destroy');
+                    Route::put('/restore', 'IndexController@restore');
+                });
+                Route::prefix('old-product')->group(function(){
+                    Route::get('/index', 'IndexController@old_product');
+                    Route::delete('/destroy', 'IndexController@destroy');
+                    Route::put('/restore', 'IndexController@restore');
+                });
+            });
+
+           
+            Route::get('{any?}', 'IndexController@index');
+        });
+
+        
+    });
+    // Inventory End
+
+
+
+
+    // PBI Start
+    Route::namespace('PBI')->prefix('pbi')->group(function(){
+
+        // Admin
+        Route::middleware(['can:powerbiAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+
+            // User
+            Route::namespace('User')->prefix('user')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/roles_update', 'IndexController@roles_update');
+             
+                Route::get('/allZoneOfficesAssign', 'IndexController@allZoneOfficesAssign');
+
+                //Draft 
+                Route::prefix('role')->group(function(){
+                    Route::get('/index', 'RoleController@index');
+                    Route::post('/store', 'RoleController@store');
+                    Route::put('/update/{id}', 'RoleController@update');
+                    Route::delete('/destroy/{id}', 'RoleController@destroy');
+                    Route::post('/status/{id}', 'RoleController@status');
+                    Route::get('/all_data', 'RoleController@all_data');
+                });
+            });
+
+            // API
+            Route::namespace('API')->prefix('api')->group(function(){
+                Route::post('/action', 'IndexController@action');
+            });
+
+           
+            Route::get('{any?}', 'IndexController@index');
+        });
+
+        // User
+        Route::middleware(['can:powerbi'])->namespace('User')->group(function(){
+
+            Route::post('/report', 'ReportController@report');
+
+            Route::get('{any?}', 'IndexController@index');
+        });
+    });
+    // PBI End
+
+
     //iVCA 
     Route::namespace('iVCA')->prefix('ivca')->group(function(){
 
@@ -434,7 +854,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
             });
 
         
-            // Reports
+            // Reports 
             Route::namespace('Reports')->prefix('reports')->group(function(){
                 // manufacturer
                 Route::prefix('manufacturer')->group(function(){
@@ -626,365 +1046,11 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
     //End iVCA 
 
 
-    // CMS Start
-    Route::namespace('CMS')->prefix('cms')->group(function(){
-
-        // Application Admin
-        Route::middleware(['can:appAdmin'])->namespace('ApplicationAdmin')->prefix('a_admin')->group(function(){
-
-            Route::get('/dashboard_data', 'IndexController@dashboard_data');
-            
-            // index
-            Route::prefix('count')->group(function(){
-                Route::get('/sidebar_count_data', 'IndexController@sidebar_count_data');
-            });
-
-            //Category 
-            Route::namespace('Category')->prefix('category')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::post('/store', 'IndexController@store');
-                Route::put('/update/{id}', 'IndexController@update');
-                Route::delete('/destroy/{id}', 'IndexController@destroy');
-            });
-
-            //Subcategory 
-            Route::namespace('Subcategory')->prefix('subcategory')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::post('/store', 'IndexController@store');
-                Route::put('/update/{id}', 'IndexController@update');
-                Route::delete('/destroy/{id}', 'IndexController@destroy');
-
-                Route::get('/category', 'IndexController@category');
-            });
-
-            //Complain 
-            Route::namespace('Complain')->prefix('complain')->group(function(){
-                Route::get('/not_process', 'ComplainController@not_process');
-                Route::get('/processing', 'ComplainController@processing');
-                Route::get('/closed', 'ComplainController@closed');
-
-                Route::get('/action/{id}', 'ActionController@action');
-                Route::post('/action_remarks', 'ActionController@action_remarks');
-            });
-
-            //Reports 
-            Route::namespace('Reports')->prefix('reports')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::get('/canceled', 'IndexController@canceled');
-                Route::get('/export_data', 'IndexController@export_data');
-                Route::get('/export_data_cancel', 'IndexController@export_data_cancel');
-            });
-           
-            Route::get('{any?}', 'IndexController@index');
-        });
-
-
-
-        //Hardware Admin 
-        Route::middleware(['can:hardAdmin'])->namespace('HardwareAdmin')->prefix('h_admin')->group(function(){
-
-            Route::get('/dashboard_data', 'IndexController@dashboard_data');
-
-            Route::get('/zone_access', 'Complain\ComplainController@zone_access');
-
-            // index
-            Route::prefix('count')->group(function(){
-                Route::get('/sidebar_count_data', 'IndexController@sidebar_count_data');
-            });
-            
-
-            // Others
-            Route::namespace('Others')->group(function(){
-
-                //Category 
-                Route::namespace('Category')->prefix('category')->group(function(){
-                    Route::get('/index', 'IndexController@index');
-                    Route::post('/store', 'IndexController@store');
-                    Route::put('/update/{id}', 'IndexController@update');
-                    Route::delete('/destroy/{id}', 'IndexController@destroy');
-
-                    Route::get('/acsosoris', 'IndexController@acsosoris');
-                });
-
-                //Subcategory 
-                Route::namespace('Subcategory')->prefix('subcategory')->group(function(){
-                    Route::get('/index', 'IndexController@index');
-                    Route::post('/store', 'IndexController@store');
-                    Route::put('/update/{id}', 'IndexController@update');
-                    Route::delete('/destroy/{id}', 'IndexController@destroy');
-
-                    Route::get('/category', 'IndexController@category');
-                });
-
-                //Acsosoris 
-                Route::namespace('Acsosoris')->prefix('acsosoris')->group(function(){
-                    Route::get('/index', 'IndexController@index');
-                    Route::post('/store', 'IndexController@store');
-                    Route::put('/update/{id}', 'IndexController@update');
-                    Route::delete('/destroy/{id}', 'IndexController@destroy');
-                });
-
-            });
-
-            // User
-            Route::namespace('User')->prefix('user')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::post('/roles_update', 'IndexController@roles_update');
-             
-                Route::get('/zone_data', 'IndexController@zone_data');
-
-                //Draft 
-                Route::prefix('role')->group(function(){
-                    Route::get('/index', 'RoleController@index');
-                    Route::post('/store', 'RoleController@store');
-                    Route::put('/update/{id}', 'RoleController@update');
-                    Route::delete('/destroy/{id}', 'RoleController@destroy');
-                    Route::post('/status/{id}', 'RoleController@status');
-                    Route::get('/all_data', 'RoleController@all_data');
-                });
-            });
-
-            // Complain 
-            Route::namespace('Complain')->prefix('complain')->group(function(){
-                Route::get('/not_process', 'ComplainController@not_process');
-                Route::get('/processing', 'ComplainController@processing');
-                Route::get('/closed', 'ComplainController@closed');
-                Route::get('/deliverable', 'ComplainController@deliverable');
-                Route::get('/service', 'ComplainController@service');
-
-                // Damaged
-                Route::prefix('damaged')->group(function(){
-
-                    Route::get('/all', 'DamagedController@all');
-                    Route::get('/applicable', 'DamagedController@applicable');
-                    Route::get('/applicable_partial', 'DamagedController@applicable_partial');
-                    Route::get('/not_applicable', 'DamagedController@not_applicable');
-                    Route::get('/not_applicable_partial', 'DamagedController@not_applicable_partial');
-    
-                    Route::get('/remaining_stock', 'DamagedController@remaining_stock');
-                    Route::get('/inv_operations', 'DamagedController@inv_operations');
-
-                });
-               
-
-                // HO Controller
-                Route::prefix('ho_service')->group(function(){
-                    Route::get('/index', 'HoController@index');
-                    Route::get('/zone_data', 'HoController@zone_data');
-                    // action_remarks
-                    Route::post('/action_remarks', 'HoController@action_remarks');
-                    Route::get('/action_remarks_data/{id}', 'HoController@action_remarks_data');
-                });
-                
-                
-
-                // Complain modify
-                Route::get('/category', 'ModifyController@category');
-                Route::post('/category_modify', 'ModifyController@category_modify');
-
-                Route::get('/action/{id}', 'ActionController@action');
-                Route::post('/action_remarks', 'ActionController@action_remarks');
-                Route::post('/action_damaged', 'ActionController@action_damaged');
-                Route::post('/action_quotation', 'ActionController@action_quotation');
-                Route::post('/action_delivery', 'ActionController@action_delivery');
-
-                // Send mail
-                Route::get('/send_rem_email', 'IndexController@send_rem_email');
-                Route::get('/get_user_zone', 'IndexController@get_user_zone');
-            });
-
-            //Draft 
-            Route::namespace('Draft')->prefix('draft')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::post('/store', 'IndexController@store');
-                Route::put('/update/{id}', 'IndexController@update');
-                Route::delete('/destroy/{id}', 'IndexController@destroy');
-                Route::post('/status/{id}', 'IndexController@status');
-                Route::get('/all_data', 'IndexController@all_data');
-            });
-
-            // Reports
-            Route::namespace('Reports')->prefix('reports')->group(function(){
-                Route::get('/index', 'IndexController@index');
-                Route::get('/damaged', 'IndexController@damaged');
-                Route::get('/damaged_replace', 'IndexController@damaged_replace');
-                
-                // report
-                Route::get('/export_data', 'IndexController@export_data');
-                Route::get('/export_data_damage', 'IndexController@export_data_damage');
-                Route::get('/export_data_damagereplace', 'IndexController@export_data_damagereplace');
-                
-               
-            });
-
-            
-            Route::get('{any?}', 'IndexController@index');
-        });
-        // End Admin
-
-
-
-
-        // User
-        Route::middleware(['can:cms'])->namespace('User')->group(function(){
-
-            //Application 
-            Route::prefix('app')->group(function(){
-               
-                Route::post('/complain', 'ApplicationController@complain');
-                Route::get('/category', 'ApplicationController@category');
-                Route::get('/history', 'ApplicationController@history');
-                
-            });
-
-            //Hardware 
-            Route::prefix('hard')->group(function(){
-               
-                Route::post('/complain', 'HardwareController@complain');
-                Route::get('/category', 'HardwareController@category');
-                Route::get('/history', 'HardwareController@history');
-                Route::get('/damage_apply', 'HardwareController@damage_apply');
-
-            });
-
-
-            Route::get('{any?}', 'IndexController@index');
-        });
-    });
-    // CMS End
-
-
-
-    // Inventory Start
-        Route::namespace('Inventory')->prefix('inventory')->group(function(){
-
-            // Admin
-            Route::middleware(['can:roomAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
-    
-                Route::get('/dashboard_data', 'IndexController@dashboard_data');
-    
-                Route::get('/category', 'IndexController@category');
-    
-                // NewProduct Management
-                Route::namespace('NewProduct')->prefix('new_product')->group(function(){
-                    Route::get('/index', 'IndexController@index');
-                    Route::post('/store', 'IndexController@store');
-                    Route::post('/update', 'IndexController@update');
-                    Route::delete('/destroy_temp', 'IndexController@destroy_temp');
-    
-                    Route::post('/damage_status/{id}', 'IndexController@damage_status');
-                    
-    
-                    // office
-                    Route::get('/office', 'IndexController@office');
-                    // deliver
-                    Route::post('/deliver', 'IndexController@deliver');
-    
-                });
-    
-    
-                // OldProduct Management
-                Route::namespace('OldProduct')->prefix('old_product')->group(function(){
-                    Route::get('/index', 'IndexController@index');
-                    Route::post('/store', 'IndexController@store');
-                    Route::put('/update', 'IndexController@update');
-                    Route::delete('/destroy_temp', 'IndexController@destroy_temp');
-    
-                    // office
-                    Route::get('/office', 'IndexController@office');
-                    Route::get('/business_unit', 'IndexController@businessUnit');
-                    
-                });
-    
-                //Operation 
-                Route::namespace('Operation')->prefix('operation')->group(function(){
-                    Route::get('/index', 'IndexController@index');
-                    Route::post('/store', 'IndexController@store');
-                    Route::put('/update', 'IndexController@update');
-                    Route::delete('/destroy', 'IndexController@destroy');
-                });
-    
-    
-                //product section 
-                Route::namespace('Productsection')->prefix('product')->group(function(){
-    
-                    Route::prefix('given-product')->group(function(){
-                        Route::get('/index', 'IndexController@given_product');
-    
-                        Route::get('/export_data', 'IndexController@export_data_given');                    
-                    });
-    
-                    Route::prefix('running-product')->group(function(){
-                        Route::get('/index', 'IndexController@running_product');
-    
-                        Route::get('/export_data', 'IndexController@export_data_running');                    
-                    });
-    
-                    Route::prefix('damaged-product')->group(function(){
-                        Route::get('/index', 'IndexController@damaged_product');
-    
-                        Route::get('/export_data', 'IndexController@export_data_damage');
-                    });
-                });
-    
-                //Warranty section 
-                Route::namespace('Warrantysection')->prefix('w-product')->group(function(){
-    
-                    Route::prefix('warranty-product')->group(function(){
-                        Route::get('/index', 'IndexController@warranty_product');
-    
-                        Route::get('/export_data', 'IndexController@export_data_warranty');
-                    });
-    
-                    Route::prefix('expire-product')->group(function(){
-                        Route::get('/index', 'IndexController@expire_product');
-    
-                        Route::get('/export_data', 'IndexController@export_data_expire');
-                    });
-                });
-    
-                //Report section 
-                Route::namespace('Reportsection')->prefix('report')->group(function(){
-                    // Route::get('/index', 'IndexController@index');
-                    // Route::get('/sort_by_product', 'IndexController@sort_by_product');
-                    // Route::get('/export_data', 'IndexController@export_data');
-    
-                    Route::prefix('stock')->group(function(){
-                        Route::get('/', 'StockController@index');
-                        Route::get('/export_data', 'StockController@export_data');
-                    });
-    
-                });
-    
-                //Deleted section 
-                Route::namespace('Deletedsection')->prefix('delete')->group(function(){
-                    Route::prefix('new-product')->group(function(){
-                        Route::get('/index', 'IndexController@new_product');    
-                        Route::delete('/destroy', 'IndexController@destroy');
-                        Route::put('/restore', 'IndexController@restore');
-                    });
-                    Route::prefix('old-product')->group(function(){
-                        Route::get('/index', 'IndexController@old_product');
-                        Route::delete('/destroy', 'IndexController@destroy');
-                        Route::put('/restore', 'IndexController@restore');
-                    });
-                });
-    
-               
-                Route::get('{any?}', 'IndexController@index');
-            });
-    
-            
-        });
-        // Inventory End
-
-
-
     // iTemp Start
     Route::namespace('iTemp')->prefix('itemp')->group(function(){
 
         // Admin
-        Route::middleware(['can:SMSAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+        Route::middleware(['can:itempAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
 
             Route::get('/dashboard_data', 'IndexController@dashboard_data');
 
@@ -1028,7 +1094,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         });
 
         // User
-        Route::middleware(['can:SMS'])->namespace('User')->group(function(){
+        Route::middleware(['can:itemp'])->namespace('User')->group(function(){
 
             // allemployee Management
             Route::namespace('Allemployee')->prefix('all-employee')->group(function(){
@@ -1058,7 +1124,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
     Route::namespace('Network')->prefix('network')->group(function(){
 
         // Admin
-        Route::middleware(['can:roomAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+        Route::middleware(['can:networkMonitor'])->namespace('Admin')->prefix('admin')->group(function(){
             Route::get('/dashboard_all', 'IndexController@dashboardData');
 
             Route::namespace('Allgroup')->prefix('all-group')->group(function(){
@@ -1107,16 +1173,30 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
             Route::get('{any?}', 'IndexController@index');
         });
     });
-
-
     // network end
-
-
 
 
 
     // iaccess Start
     Route::namespace('iAccess')->prefix('iaccess')->group(function(){
+
+        // Admin
+        Route::middleware(['can:itempAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+
+            Route::get('/dashboard_data', 'IndexController@dashboard_data');
+
+
+            Route::namespace('Allcheckpoint')->prefix('all-checkpoints')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update', 'IndexController@update');
+                Route::delete('/destroy/{id}', 'IndexController@deleteDataDirict');
+            });
+
+           
+            Route::get('{any?}', 'IndexController@index');
+        });
+
 
         // user
         Route::namespace('User')->group(function(){
@@ -1160,12 +1240,57 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
     });
     // iaccess End
 
+    
+
+    // mobile_app Start
+    Route::namespace('MobileApp')->prefix('mobile_app')->group(function(){
+
+              
+        Route::prefix('guest')->group(function(){
+            Route::post('/store', 'IndexController@guest_store');
+            Route::get('/guest_status/{id}', 'IndexController@guest_status');
+        });
+
+        // User Management
+        Route::namespace('User')->prefix('user')->group(function(){
+            Route::get('/index', 'IndexController@index');
+           
+            Route::post('/status_admin/{id}', 'IndexController@status_admin');
+            Route::post('/status_user/{id}', 'IndexController@status_user');
+
+            Route::get('/roles_data', 'IndexController@roles_data');
+            Route::post('/roles_update', 'IndexController@roles_update');  
+            
+            Route::get('/zoneoffices', 'IndexController@zoneoffices');
+            Route::get('/departments', 'IndexController@departments');
+
+        });
+
+        // Version Management
+        Route::namespace('Version')->prefix('version')->group(function(){
+            Route::get('/index', 'IndexController@index');
+            Route::post('/store', 'IndexController@store');
+            Route::put('/update/{id}', 'IndexController@update');
+            Route::delete('/destroy/{id}', 'IndexController@destroy');
+            Route::post('/status/{id}', 'IndexController@status');
+        });
+
+        // Role 
+        Route::namespace('Role')->prefix('role')->group(function(){
+            Route::get('/index', 'IndexController@index');
+            Route::post('/store', 'IndexController@store');
+            Route::put('/update/{id}', 'IndexController@update');
+            Route::delete('/destroy/{id}', 'IndexController@destroy');
+            Route::post('/status/{id}', 'IndexController@status');
+        });
 
 
+        Route::get('{any?}', 'IndexController@index');
+    });
+    // mobile_app End
 
 
-
-
+    
 
     // Email
     Route::namespace('Common\Email')->prefix('email')->group(function(){
@@ -1184,9 +1309,6 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
     
 
 });
-
-
-
 
 
 

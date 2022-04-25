@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Cell\Hyperlink;
 
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
@@ -82,6 +83,22 @@ class summuryRetailer implements FromView, ShouldAutoSize, WithEvents, WithStyle
 
                 $event->sheet->getDelegate()->getStyle('A27')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
+                foreach ($event->sheet->getColumnIterator('B') as $row) {
+                    foreach ($row->getCellIterator() as $cell) {
+                        if (str_contains($cell->getValue(), '://')) {
+                            $cell->setHyperlink(new Hyperlink($cell->getValue(), 'Read'));
+
+                            // Upd: Link styling added
+                            $event->sheet->getStyle($cell->getCoordinate())->applyFromArray([
+                                'font' => [
+                                    'color' => ['rgb' => '0000FF'],
+                                    'underline' => 'single'
+                                ]
+                            ]);
+                        }
+                    }
+                }
                
             },
         ];
