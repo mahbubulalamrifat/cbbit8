@@ -32,6 +32,26 @@
         <!-- application-complain -->
         <application-complain v-if="applicationDialogShow" :key="applicationComKey" ></application-complain>
 
+
+
+        <!-- not ratings component modal -->
+        <v-dialog persistent v-model="counterDialogShow" max-width="600">
+            <v-card>
+                <v-card-title class="justify-space-between">
+                    <span class="text-danger"> Notification!!</span> 
+                    <v-btn color="error" @click="counterDialogShow = false" small>
+                        <v-icon left>mdi-close-circle</v-icon>Close
+                    </v-btn> 
+                </v-card-title>
+                
+                <v-card-text @click="redirect()">
+                    <div class="rounded-lg px-3 text-center font-weight-bold py-2 indigo lighten-2" > Your have <span class="h3 error--text"> {{ selectedCount }} {{selectedComp}} </span> pending ratings &nbsp; </div>
+                    <div class="rounded-lg px-3 text-center font-weight-bold py-2 deep-purple lighten-1 my-3">Please Fulfill Rating section. </div>
+                    <div class="rounded-lg px-3 text-center font-weight-bold py-2 cyan darken-1">Otherwise you can't place any complain in future. </div>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
     </div>
 </template>
 
@@ -60,6 +80,11 @@
                 applicationDialogShow: false,
                 applicationComKey: 0,
 
+
+                // selected component
+                selectedComp: '',
+                selectedCount: '',
+
             }
         },
 
@@ -67,22 +92,59 @@
 
             // hardwareComplainDialog
             hardwareComplainDialog(){
+                this.selectedCount = this.hardRating;
+                if(this.hardRating > 2){
+                    this.counterDialogShow=true;
+                }
+
                 this.hardwareDialogShow = true
-                this.hardwareComKey++
+                this.hardwareComKey++;
+                
             },
 
             // applicationComplainDialog
             applicationComplainDialog(){
+                this.selectedCount = this.appRating;
+                if(this.appRating > 2){
+                    this.counterDialogShow=true;
+                }
+
                 this.applicationDialogShow = true
-                this.applicationComKey++
+                this.applicationComKey++;
+                
             },
 
+            // redirect
+            redirect(){
+                if(this.selectedComp == "Application"){
+
+                    this.$router.push({ name: 'ApplicationHistory' });
+                }else{
+                    this.$router.push({ name: 'HardwareHistory' });
+                }
+            }
+
         },
 
+        watch:{
+            applicationDialogShow: function(e){
+                if(e){
+                    this.applicationDialogShow = false;
+                    this.selectedComp = 'Application';
+                }
+            },
 
-        created() {
-            console.log('I am CMS user dashboard')
+            hardwareComplainDialog: function(e){
+                if(e){
+                    this.hardwareComplainDialog = false;
+                    this.selectedComp = 'Hardware';
+                }
+            }
         },
+
+        mounted(){
+            this.closeComplainForRating();
+        }
 
 
     }

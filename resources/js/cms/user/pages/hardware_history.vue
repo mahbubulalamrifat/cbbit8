@@ -124,7 +124,7 @@
                                         v-if="singleData.created_at">{{ singleData.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
                                 </td>
                                 <td class="text-center">
-                                   
+
                                     <span v-if="singleData.process == 'Not Process' && !singleData.remarks.length">
                                         <v-btn v-if="singleData.process == 'Not Process' && singleData.status == 1"
                                             @click="complainCancel(singleData.id)" color="error" depressed
@@ -133,10 +133,10 @@
                                         </v-btn>
                                         <span v-else class="error--text">Canceled</span>
                                     </span>
-                                   
-                                   
-                                    <v-btn v-if="singleData.remarks.length" @click="remarksDetailsShow(singleData)" color="success" depressed
-                                         elevation="20">
+
+
+                                    <v-btn v-if="singleData.remarks.length" @click="remarksDetailsShow(singleData)"
+                                        color="success" depressed elevation="20">
                                         <v-icon left>mdi-eye-arrow-left </v-icon> View
                                     </v-btn>
 
@@ -165,6 +165,13 @@
                                             <v-icon left>mdi-eye-arrow-left </v-icon> Damaged Quotation
                                         </v-btn>
                                     </div>
+
+
+                                    <v-btn v-if=" singleData.process == 'Closed' && singleData.rating == null"
+                                        @click="feedback(singleData)" color="teal white--text" depressed small
+                                        elevation="20">
+                                        <v-icon left>mdi-star-half-full </v-icon> Rating
+                                    </v-btn>
 
                                 </td>
 
@@ -530,14 +537,27 @@
         </v-dialog>
 
 
+        <!-- hard rating -->
+        <hard-rating @childToParent="childToParentCall" v-if="hardratingDialogShow" :key="hardratingKey"
+            :currentDataId="currentDataId"></hard-rating>
+
+
+
+
+
+
     </div>
 
 </template>
 
 
 <script>
-    import axios from 'axios';
+    import hardRating from '../pages/hardRating.vue'
     export default {
+
+        components: {
+            'hard-rating': hardRating
+        },
 
         data() {
 
@@ -611,12 +631,32 @@
                 currentDamagedReplaceData: '',
                 damagedQuotationDialog: false,
 
+
+
+                // rating component
+                hardratingDialogShow: false,
+                hardratingKey: 0,
+
+                // currentDataId
+                currentDataId: '',
+
             }
 
 
         },
 
         methods: {
+
+            childToParentCall() {
+                this.getResults();
+            },
+
+            // feedback
+            feedback(data) {
+                this.currentDataId = data.id;
+                this.hardratingDialogShow = true;
+                this.hardratingKey++
+            },
 
             // Get table data
             getResults(page = 1) {
@@ -769,8 +809,7 @@
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
-            }
-
+            },
         },
 
 

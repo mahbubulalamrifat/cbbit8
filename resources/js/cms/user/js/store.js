@@ -6,8 +6,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
     state : {
-        auth  : null,
-        roles : null,
+        auth : null,
+        roles: null,
+        hardCounter: null,
+        appCounter: null,
     },
 
     getters : {
@@ -17,6 +19,14 @@ export default new Vuex.Store({
         },
         getRoles(state){
             return state.roles;
+        },
+
+        getHardCounter(state){
+            return state.hardCounter;
+        },
+
+        getAppCounter(state){
+            return state.appCounter;
         },
     
  
@@ -32,6 +42,14 @@ export default new Vuex.Store({
         // Roles User
         setRoles(state, data){
             state.roles = data;
+        },
+
+        setHardCounter(state, data){
+            state.hardCounter = data;
+        },
+
+        setAppCounter(state, data){
+            state.appCounter = data;
         },
     
     },

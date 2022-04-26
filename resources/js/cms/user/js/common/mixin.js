@@ -1,5 +1,9 @@
 import axios from "axios";
-import { mapGetters } from 'vuex'
+import {
+    mapGetters
+} from 'vuex'
+
+import store from '../store';
 
 
 import paginateMethods from './paginate_methods'
@@ -15,40 +19,46 @@ import globalRolePermissions from '../../../../role_permissions'
 
 export default {
     data() {
-      return {
-      
-        // DataTbl Common Featurs 
-        paginate: 10,
-        search: '',
-        search_field: '',
-        sort_direction: 'desc',
-        sort_field: 'id',
-        currentPageNumber: null,
-        // Our data object that holds the Laravel paginator data
-        allData: {},
-        totalValue: '',
-        dataShowFrom: '',
-        dataShowTo: '',
-        editmode: false,
-        dataModelTitle: 'Store Data',
-        // Loading Animation
-        dataLoading: false,
+        return {
 
-        imageMaxSize: '2111775',
-        fileMaxSize: '5111775',
-        overlayshow: false,
+            // DataTbl Common Featurs 
+            paginate: 10,
+            search: '',
+            search_field: '',
+            sort_direction: 'desc',
+            sort_field: 'id',
+            currentPageNumber: null,
+            // Our data object that holds the Laravel paginator data
+            allData: {},
+            totalValue: '',
+            dataShowFrom: '',
+            dataShowTo: '',
+            editmode: false,
+            dataModelTitle: 'Store Data',
+            // Loading Animation
+            dataLoading: false,
 
-        // Tbl number of data show
-        tblItemNumberShow:[5,10,15,25,50,100],
-      }
+            imageMaxSize: '2111775',
+            fileMaxSize: '5111775',
+            overlayshow: false,
+
+            // Tbl number of data show
+            tblItemNumberShow: [5, 10, 15, 25, 50, 100],
+
+            hardRating: null,
+            appRating: null,
+
+
+            counterDialogShow: false,
+        }
     },
 
     methods: {
 
-        
+
         // Permission Role check
         ...globalRolePermissions,
-      
+
         // Paginate Methods
         ...paginateMethods,
 
@@ -61,13 +71,13 @@ export default {
 
 
 
-    
+
         handleResize() {
             this.window.width = window.innerWidth;
             this.window.height = window.innerHeight;
         },
 
-       
+
         // Add model show
         newModal() {
             this.editmode = false;
@@ -84,28 +94,16 @@ export default {
         },
 
 
+        closeComplainForRating() {
+            axios.get('/cms/ratings').then(response => {
 
-        testMethod(){
-            return ' Come form common';
-        },
-
-
-       
-        
-        async callApi(method, url, dataObj) {
-
-            try {
-
-                return await axios({
-                    method: method,
-                    url: url,
-                    data: dataObj
-                })
-
-            } catch (e) {
-                return e.response
-            }
-
+                store.commit('setHardCounter', response.data.hardRating);
+                this.hardRating = response.data.hardRating;
+                store.commit('setAppCounter', response.data.appRating);
+                this.appRating = response.data.appRating
+                
+               
+            });
         }
 
         // End Methods
@@ -133,18 +131,20 @@ export default {
             this.getResults();
             this.$Progress.finish();
         }
-       
+
     },
 
     created() {
         // window.addEventListener('resize', this.handleResize);
         // this.handleResize();
 
+        
+
     },
 
 
     mounted() {
- 
+
     },
 
 
@@ -153,16 +153,20 @@ export default {
     },
 
 
-    computed : {
+    computed: {
 
         // map this.count to store.state.count getLoading 
         ...mapGetters({
-            'auth'      : 'getAuth',
-            'roles'     : 'getRoles',
+            'auth': 'getAuth',
+            'roles': 'getRoles',
+
+            'hardCounter': 'getHardCounter',
+            'appCounter': 'getAppCounter',
+
         }),
 
     },
 
 
 
-  }
+}

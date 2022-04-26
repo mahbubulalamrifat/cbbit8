@@ -12,6 +12,7 @@
                <span v-if="auth" class="m-1">{{ auth.name }} ({{ auth.login }})</span>
             <v-spacer></v-spacer>
 
+
             <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn text link route :to="{ name: 'Dashboard'}" small exact>
                     Dashboard
@@ -19,10 +20,12 @@
 
                 <v-btn text link route :to="{ name: 'HardwareHistory'}" small>
                     Hardware History
+                    <v-badge v-if="hardCounter" color="error ml-2" :content="hardCounter"></v-badge>
                 </v-btn>
 
                 <v-btn text link route :to="{ name: 'ApplicationHistory'}" small>
                     Application History
+                    <v-badge v-if="appCounter" color="error ml-2" :content="appCounter"></v-badge>
                 </v-btn>
 
             
@@ -55,13 +58,18 @@
 
                 <v-list-item link route :to="{ name: 'HardwareHistory'}">
                     <v-list-item-content>
-                        <v-list-item-title>Hardware History</v-list-item-title>
+                        <v-list-item-title>Hardware History
+                            <v-badge v-if="hardCounter" color="error ml-2" :content="hardCounter"></v-badge>
+                        </v-list-item-title>
+                        
                     </v-list-item-content>
                 </v-list-item>
 
                 <v-list-item link route :to="{ name: 'ApplicationHistory'}">
                     <v-list-item-content>
-                        <v-list-item-title>Application History</v-list-item-title>
+                        <v-list-item-title :content="appCounter">Application History
+                            <v-badge v-if="appCounter" color="error ml-2" :content="appCounter"></v-badge>
+                        </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
 
@@ -86,6 +94,10 @@
                 drawer: null,
             }
         },
+
+        // mounted(){
+        //     this.closeComplainForRating();
+        // }
 
        
     }

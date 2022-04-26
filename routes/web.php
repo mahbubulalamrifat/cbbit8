@@ -556,6 +556,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         // User
         Route::middleware(['can:cms'])->namespace('User')->group(function(){
 
+            Route::get('/ratings', 'IndexController@ratings');
+
             //Application 
             Route::prefix('app')->group(function(){
             
@@ -575,6 +577,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::get('/history', 'HardwareController@history');
                 Route::get('/damage_apply', 'HardwareController@damage_apply');
                 Route::post('/complain_cancel', 'HardwareController@complain_cancel');
+                Route::post('/feedback', 'HardwareController@feedback');
 
             });
 
