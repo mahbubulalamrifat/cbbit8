@@ -106,8 +106,8 @@ class ApplicationController extends Controller
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id'); 
         $sort_by_day    = Request('sort_by_day', '');
-        $sort_by_startDate    = Request('sort_by_startDate', '');
-        $sort_by_endDate    = Request('sort_by_endDate', '');
+        $start          = Request('sort_by_startDate', '');
+        $end            = Request('sort_by_endDate', '');
 
         $allQuery =  ApplicationComplain::with('makby', 'category', 'subcategory', 'remarks', 'remarks.makby' )
         ->where('user_id', Auth::user()->id);
@@ -116,15 +116,13 @@ class ApplicationController extends Controller
         // sort_by_day
         if(!empty($sort_by_day)){
             $date = Carbon::today()->subDays($sort_by_day);
-            $allQuery->where('created_at', '>=', $date );
+            $allQuery->whereDate('created_at', '>=', $date );
         }
         
         
-        // sort_by_startDate
-        if(!empty($sort_by_startDate) && !empty($sort_by_endDate) ){
-            
-            $allQuery ->where('created_at', '>=', $sort_by_startDate)
-                      ->where('created_at', '<=', $sort_by_endDate);
+         // sort_by_start
+        if(!empty($start) && !empty($end) ){  
+            $allQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
         }
 
         $allData =  $allQuery->orderBy($sort_field, $sort_direction)

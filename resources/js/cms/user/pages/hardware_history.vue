@@ -30,7 +30,7 @@
                             <v-menu v-model="menu" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-text-field v-model="sort_by_startDate" label="Start Date"
-                                        prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                        prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" clearable></v-text-field>
                                 </template>
 
                                 <v-date-picker v-model="sort_by_startDate" no-title scrollable>
@@ -46,7 +46,7 @@
                             <v-menu v-model="menu2" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-text-field v-model="sort_by_endDate" label="End Date" prepend-icon="mdi-calendar"
-                                        readonly v-bind="attrs" v-on="on"></v-text-field>
+                                        readonly v-bind="attrs" v-on="on" clearable></v-text-field>
                                 </template>
 
                                 <v-date-picker v-model="sort_by_endDate" no-title scrollable>
@@ -792,20 +792,22 @@
 
         watch: {
 
-            sort_by_day: function (value) {
+            sort_by_day: function () {
+                this.sort_by_startDate = ''
+                this.sort_by_endDate = ''
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
             },
 
 
-            sort_by_startDate: function (value) {
+            sort_by_startDate: function () {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
             },
 
-            sort_by_endDate: function (value) {
+            sort_by_endDate: function () {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();

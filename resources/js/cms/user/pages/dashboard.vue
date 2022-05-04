@@ -142,9 +142,7 @@
             }
         },
 
-        mounted(){
-            this.closeComplainForRating();
-        }
+        
 
 
     }
