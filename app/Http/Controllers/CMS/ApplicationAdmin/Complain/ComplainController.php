@@ -19,6 +19,7 @@ class ComplainController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $allData = ApplicationComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1)
             ->where('process', 'Not Process')
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
@@ -38,6 +39,7 @@ class ComplainController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $allData = ApplicationComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1)
             ->where('process', 'Processing')
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
@@ -57,6 +59,7 @@ class ComplainController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $allData = ApplicationComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1)
             ->where('process', 'Closed')
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )

@@ -14,12 +14,12 @@ class InventoryNewProduct extends Model
     }
 
     public function category(){
-        return $this->belongsTo('App\Models\Cms\Hardware\HardwareCategory', 'cat_id', 'id');
+        return $this->belongsTo('App\Models\Inventory\inventoryCategory', 'cat_id', 'id');
     }
 
-    public function subcategory(){
-        return $this->belongsTo('App\Models\Cms\Hardware\HardwareSubcategory', 'subcat_id', 'id');
-    }
+    // public function subcategory(){
+    //     return $this->belongsTo('App\Models\Cms\Hardware\HardwareSubcategory', 'subcat_id', 'id');
+    // }
 
     public function business(){
         return $this->belongsTo('App\Models\User', 'business_unit_id', 'id');
@@ -49,9 +49,6 @@ class InventoryNewProduct extends Model
                 ->WhereRaw('name LIKE ?', '%'.$val.'%');
         })
         ->orWhereHas('category', function($query) use ($val){
-            $query->WhereRaw('name LIKE ?', '%'.$val.'%');
-        })
-        ->orWhereHas('subcategory', function($query) use ($val){
             $query->WhereRaw('name LIKE ?', '%'.$val.'%');
         }); 
     }

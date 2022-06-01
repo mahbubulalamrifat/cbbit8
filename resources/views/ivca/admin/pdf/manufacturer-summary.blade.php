@@ -94,7 +94,7 @@
         </div>
         <div class="d-flex flex-column text-center">
             <div class="font-weight-bold">C.P Bangladesh Co., Ltd.</div>
-            <div>E-236, Ward- 07, Chandra, Kaliakor, Gazipur - 1750</div>
+            <div>E-236, Ward- 07, Chandra, Kaliakoir, Gazipur - 1750</div>
         </div>
         <div>
             <img src="{{ asset('all-assets/common/logo/cpb/food.png') }}" alt="watermark" class="img-fluid food_logo" />
@@ -144,7 +144,7 @@
                         @foreach ($finalResult->allData as $key=>$item)
 
                         <tr>
-                            <th>{{ $key+1 }}. Surveyor</th>
+                            <th>{{ $key+1 }}. {{ $item->auditordata->name }}</th>
                             <td>{{ $item->auditordata->name }}</td>
                             <th>Position</th>
                             <td>{{ $item->auditordata->designation }}</td>

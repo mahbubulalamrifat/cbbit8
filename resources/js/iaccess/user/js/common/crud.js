@@ -2,7 +2,8 @@ export default{
 
     // Create Data
     createData() {
-        this.dataModalLoading = true;
+        this.overlayshow = true
+        this.dataModalLoading = true
         this.$Progress.start()
         // request send and get response
         this.form.post(this.currentUrl + '/store' + '').then(response => {
@@ -10,11 +11,11 @@ export default{
             this.form.reset();
             this.form.errors.clear();
             this.resetForm();
-            this.dataModalLoading = false;
+            this.dataModalLoading = false
             // Hide model
-            this.dataModalDialog = false;
-            
-            this.$Progress.finish();
+            this.dataModalDialog = false
+            this.overlayshow = false
+            this.$Progress.finish()
 
             Toast.fire({
                 icon: response.data.icon,
@@ -22,13 +23,14 @@ export default{
             });
 
         }).catch(error=>{
-            this.dataModalLoading = false;
+            this.dataModalLoading = false
+            this.overlayshow = false
             Swal.fire({
                 icon: 'error',
                 title: 'Somthing Going Wrong',
                 customClass: 'text-danger'
             });
-            console.log(response);
+            console.log(error);
         });
 
     },

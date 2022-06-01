@@ -1,7 +1,8 @@
 <template>
     <div>
         <v-card class="mt-8">
-            <v-card-title class="justify-center h2">
+            <!-- change -->
+            <v-card-title class="justify-center">
                 SMS Reports of C.P. Bangladesh
             </v-card-title>
             <v-card-text>
@@ -10,14 +11,16 @@
                     <form @submit.prevent="downloadReports()">
 
                         <v-row>
-                            <v-col>
+                            <!-- change -->
+                            <v-col cols="6" lg="4">
                                 <v-autocomplete solo :items="allOperations" v-model="form.code" label="Operation"
                                     placeholder="Select One Operation" :rules="[v => !!v || 'Operation is required!']"
                                     required></v-autocomplete>
                                 <div class="small text-danger" v-if="form.errors.has('code')"
                                     v-html="form.errors.get('code')" />
                             </v-col>
-                            <v-col>
+                            <!-- change -->
+                            <v-col cols="6" lg="4">
                                 <v-autocomplete solo :items="reportTypes" item-text="name" item-value="value"
                                     v-model="form.type" label="SMS Type" placeholder="Choose SMS Type"
                                     :rules="[v => !!v || 'Type is required!']" required></v-autocomplete>
@@ -25,13 +28,14 @@
                                     v-html="form.errors.get('type')" />
                             </v-col>
 
+                            <!-- change -->
                             <!-- Date Picker -->
-                            <v-col>
+                            <v-col cols="12" lg="4">
                                 <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
                                     :return-value.sync="date" offset-y min-width="auto" outlined dense>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field v-model="form.date" label="Report Date"
-                                            prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" required
+                                            prepend-icon="mdi-calendar" v-bind="attrs" v-on="on" required
                                             :rules="[v => !!v || 'Report Date is required!']"></v-text-field>
                                     </template>
                                     <v-date-picker v-model="form.date" scrollable outlined dense>
@@ -103,9 +107,12 @@
                     }
                 ],
 
-                // Form
+                
+
+                // Form 
+                //'2022-05-11'
                 form: new Form({
-                    date: '',
+                    date: this.$moment().format('YYYY-MM-DD'),
                     code: '',
                     type: '',
                 }),
@@ -182,7 +189,7 @@
 
         created() {
             //this.$Progress.start()
-            console.log('I am demo dashboard')
+            console.log('I am demo dashboard', this.$moment())
             this.getOperations()
             //this.$Progress.finish()
         }

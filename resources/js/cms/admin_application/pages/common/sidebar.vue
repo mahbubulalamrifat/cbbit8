@@ -53,11 +53,11 @@
 
                  <v-list-item link router :to="{name: 'NotProcess'}">
                     <v-list-item-icon>
-                        <v-icon color="pink lighten-3">mdi-car-brake-hold</v-icon>
+                        <v-icon>mdi-car-brake-hold</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Not Process
-                            <v-badge v-if="sidebar_notprocess_counter" color="error ml-2" :content="sidebar_notprocess_counter"></v-badge>
+                            <v-badge v-if="sidebar_notprocess_counter" color="orange ml-2" :content="sidebar_notprocess_counter"></v-badge>
                         </v-list-item-title>
                         
                     </v-list-item-content>
@@ -65,18 +65,18 @@
 
                 <v-list-item link router :to="{name: 'Processing'}">
                     <v-list-item-icon>
-                        <v-icon color="yellow lighten-2">mdi-run-fast</v-icon>
+                        <v-icon>mdi-run-fast</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Processing
-                            <v-badge v-if="sidebar_process_counter" color="error ml-2" :content="sidebar_process_counter"></v-badge>
+                            <v-badge v-if="sidebar_process_counter" color="success ml-2" :content="sidebar_process_counter"></v-badge>
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
 
                 <v-list-item link router :to="{name: 'Closed'}">
                     <v-list-item-icon>
-                        <v-icon color="green darken-2">mdi-close-circle</v-icon>
+                        <v-icon>mdi-close-circle</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Closed</v-list-item-title>
@@ -85,7 +85,7 @@
 
 
                 <!--Reports Multi level Item -->
-                <v-list-group prepend-icon="mdi-file-multiple-outline" active-class="dark--text" no-action>
+                <v-list-group prepend-icon="mdi-file-multiple-outline" active-class="indigo white--text" no-action>
                     <template v-slot:activator>
                         <v-list-item-title>Reports</v-list-item-title>
                     </template>
@@ -112,9 +112,9 @@
 
 
                 <!-- Sidebar Multi level Item -->
-                <v-list-group prepend-icon="mdi-format-list-group" active-class="dark--text" no-action>
+                <v-list-group prepend-icon="mdi-format-list-group" active-class="indigo white--text" no-action>
                     <template v-slot:activator>
-                        <v-list-item-title>Others</v-list-item-title>
+                        <v-list-item-title>Settings</v-list-item-title>
                     </template>
 
                     <v-list-item link router :to="{name: 'Category'}">
@@ -204,8 +204,11 @@
         text-decoration: none;
     }
 
-    .v-list-item--active {
-        color: #29292b !important;
+
+    .v-list-group__items .v-list-item--active {
+        background-color: #3f51b5;
+        border-color: #3f51b5;
+        color: white !important;
     }
 
 </style>

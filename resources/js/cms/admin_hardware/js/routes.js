@@ -5,9 +5,9 @@ Vue.use(VueRouter);
 import Dashboard from '../pages/dashboard.vue'
 import er404 from '../pages/common/404.vue'
 
-import Category from './../pages/others/category/index.vue'
-import Subcategory from './../pages/others/subcategory/index.vue'
-import Acsosoris from './../pages/others/acsosoris/index.vue'
+import Category from './../pages/settings/category/index.vue'
+import Subcategory from './../pages/settings/subcategory/index.vue'
+import Acsosoris from './../pages/settings/acsosoris/index.vue'
 
 import User from './../pages/user/index.vue'
 import Role from './../pages/user/role.vue'
@@ -39,6 +39,9 @@ import HOServiceIndex from './../pages/complain/h_o_service/index.vue'
 import ReportIndex from './../pages/reports/index.vue'
 import ReportDamaged from './../pages/reports/damaged.vue'
 import ReportDamagedReplace from './../pages/reports/damaged_replace.vue'
+import ReportCanceled from './../pages/reports/canceled.vue'
+import ReportClosed from './../pages/reports/closed.vue'
+
 
 
 const router = new VueRouter({
@@ -234,6 +237,22 @@ const router = new VueRouter({
             name: 'ReportDamagedReplace',
             meta:{
                 title: 'Hardware Report Index Admin',
+            },   
+        },
+        { 
+            path: '/cms/h_admin/canceled_reports', 
+            component: ReportCanceled,
+            name: 'ReportCanceled',
+            meta:{
+                title: 'Hardware Report Canceled Admin',
+            },   
+        },
+        { 
+            path: '/cms/h_admin/closed_reports', 
+            component: ReportClosed,
+            name: 'ReportClosed',
+            meta:{
+                title: 'Hardware Report Closed Admin',
             },   
         },
         

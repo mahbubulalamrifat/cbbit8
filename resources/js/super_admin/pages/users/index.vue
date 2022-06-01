@@ -16,17 +16,18 @@
                 </div>
             </div>
 
-            <div class="card-body table-responsive">
+            <div class="card-body">
                 <div v-if="allData.data">
+                    <!-- change -->
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
 
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- zone_office -->
                             <v-select v-model="zone_office" label="Zones:" :items="allZoneOffices" item-text="name"
                                 item-value="offices" small>
@@ -34,7 +35,7 @@
                         </v-col>
 
 
-                        <v-col cols="3">
+                        <v-col cols="6" lg="3">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
                                 item-text="department" item-value="department" small>
@@ -42,148 +43,169 @@
                         </v-col>
 
 
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- search_field -->
                             <v-select v-model="search_field" label="Search By:" :items="searchByFields" item-text="name"
                                 item-value="value" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="3">
+                        <v-col cols="12" lg="3">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..."></v-text-field>
+                                placeholder="Search Input..."  ></v-text-field>
                         </v-col>
 
 
                     </v-row>
-
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('login')">login</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
-                                </th>
-                                <th>Details</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td class="text-center">
-                                    {{ singleData.login  }}<br>
-                                    <v-avatar size="100" @click="currentUserView(singleData)">
-                                            <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image">
-                                    </v-avatar>
-                                </td>
-                                <td>
-                                    <b>Name: </b> {{ singleData.name }} <br>
-                                    <b>Department: </b> {{ singleData.department }} <br>
-                                    <b>Office ID: </b> {{ singleData.office_id }} <br>
-                                    <b>Office: </b> {{ singleData.office }} <br>
-                                    <b>Business Unit: </b> {{ singleData.business_unit }} <br>
-                                    <!-- Manager ID Selected -->
-                                    <span v-if="singleData.manager_id">
-                                        <b>Manager: </b>
-                                        <!-- {{ singleData.manager_id }}  -->
-                                        <span>
-                                            <span v-for="item in manegerData(singleData.manager_id)" :key="item.id">
-                                                <v-btn @click="currentUserView(item)" small outlined class="mx-1">
-                                                    {{ item.name }}</v-btn>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('login')">login</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
+                                    </th>
+                                    <th>Details <span class="float-right"><a href="#" @click.prevent="change_sort('status')">Active/Inactive User</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'status'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'status'">&darr;</span></span></th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>
+                                        {{ singleData.login  }}<br>
+                                        <v-avatar size="100" @click="currentUserView(singleData)">
+                                                <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image">
+                                        </v-avatar>
+                                    </td>
+                                    <td>
+                                        <b>Name: </b> {{ singleData.name }} <br>
+                                        <b>Department: </b> {{ singleData.department }} <br>
+                                        <b>Office ID: </b> {{ singleData.office_id }} <br>
+                                        <b>Office: </b> {{ singleData.office }} <br>
+                                        <b>Business Unit: </b> {{ singleData.business_unit }} <br>
+                                        <!-- Manager ID Selected -->
+                                        <span v-if="singleData.manager_id">
+                                            <b>Manager: </b>
+                                            <!-- {{ singleData.manager_id }}  -->
+                                            <span>
+                                                <span v-for="item in manegerData(singleData.manager_id)" :key="item.id">
+                                                    <v-btn @click="currentUserView(item)" small outlined class="mx-1">
+                                                        {{ item.name }}</v-btn>
+                                                </span>
                                             </span>
                                         </span>
-                                    </span>
-                                    <!-- Manager Email have -->
-                                    <span v-else-if="singleData.manager_emails">
-                                        <b>Manager Emails: </b> {{ singleData.manager_emails }}
-                                    </span>
-                                    <!-- Manager Not selected -->
-                                    <span v-else>
-                                        <b>Manager:</b> <span class="text-danger">Not Selected</span>
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <span v-if="singleData.roles.length">
-                                        <span v-for="(role, index) in singleData.roles" :key="index">
-                                            <span class="pa-1 m-1 rounded-pill small">{{ role.name }}, </span>
+                                        <!-- Manager Email have -->
+                                        <span v-else-if="singleData.manager_emails">
+                                            <b>Manager Emails: </b> {{ singleData.manager_emails }}
                                         </span>
-                                    </span>
-                                    <span v-else>
-                                        <span class="text-danger">You have no roles</span>
-                                    </span>
-                                </td>
+                                        <!-- Manager Not selected -->
+                                        <span v-else>
+                                            <b>Manager:</b> <span class="text-danger">Not Selected</span>
+                                        </span>
 
-                                <td>
-                                    <!-- Admin Access -->
-                                    <div class="m-1">
-                                        <v-btn v-if="singleData.admin == 1" @click="statusChangeAdmin(singleData)"
-                                            outlined elevation="10" color="green darken-2">
-                                            <v-icon left>mdi-check-decagram</v-icon> Admin
+                                        <div>
+                                            <b>Last Login:</b> <span
+                                                v-if="singleData.last_login" class="success--text">{{ singleData.last_login.created_at | moment("MMM Do, YYYY , h:mm:ss a") }}</span>
+                                            <span v-else class="error--text">N/A</span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span v-if="singleData.roles.length">
+                                            <span v-for="(role, index) in singleData.roles" :key="index">
+                                                <span class="pa-1 m-1 rounded-pill small">{{ role.name }}, </span>
+                                            </span>
+                                        </span>
+                                        <span v-else>
+                                            <span class="text-danger">You have no roles</span>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <!-- Admin Access -->
+                                        <div class="m-1">
+                                            <v-btn v-if="singleData.admin == 1" @click="statusChangeAdmin(singleData)"
+                                                outlined elevation="10" color="green darken-2">
+                                                <v-icon left>mdi-check-decagram</v-icon> Admin
+                                            </v-btn>
+                                            <v-btn v-else @click="statusChangeAdmin(singleData)" outlined elevation="10"
+                                                color="red accent-2">
+                                                <v-icon left>mdi-close-octagon</v-icon> Admin
+                                            </v-btn>
+                                        </div>
+                                        <!-- User Access -->
+                                        <div class="m-1">
+                                            <v-btn v-if="singleData.user == 1" @click="statusChangeUser(singleData)"
+                                                outlined elevation="10" color="green darken-2">
+                                                <v-icon left>mdi-check-decagram</v-icon> User
+                                            </v-btn>
+                                            <v-btn v-else @click="statusChangeUser(singleData)" outlined elevation="10"
+                                                color="red accent-2">
+                                                <v-icon left>mdi-close-octagon</v-icon> User
+                                            </v-btn>
+                                        </div>
+
+
+                                        <hr>
+                                        <div>
+                                            <span v-if="singleData.status == 1" class="text-success">Active</span> <span
+                                                v-else class="text-danger">Blocked</span>
+                                            <span class="text-muted small float-right"
+                                                v-if="singleData.status_by">--{{ userNameByID(singleData.status_by) }}</span>
+                                        </div>
+
+                                        <div>
+                                            <span v-if="singleData.verify == 1" class="text-success">Verified</span> <span
+                                                v-else class="text-danger">Not Verified</span>
+                                            <span class="text-muted small float-right"
+                                                v-if="singleData.verify_by">--{{ userNameByID(singleData.verify_by) }}</span>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+                                        <v-btn v-if="singleData.status" @click="statusChange(singleData)" small
+                                            color="primary" elevation="10" class="mb-1">
+                                            <v-icon left>mdi-check-decagram</v-icon> Active
                                         </v-btn>
-                                        <v-btn v-else @click="statusChangeAdmin(singleData)" outlined elevation="10"
-                                            color="red accent-2">
-                                            <v-icon left>mdi-close-octagon</v-icon> Admin
+                                        <v-btn v-else @click="statusChange(singleData)" small color="warning" elevation="10"
+                                            class="mb-1">
+                                            <v-icon left>mdi-close-octagon</v-icon> Inactive
                                         </v-btn>
-                                    </div>
-                                    <!-- User Access -->
-                                    <div class="m-1">
-                                        <v-btn v-if="singleData.user == 1" @click="statusChangeUser(singleData)"
-                                            outlined elevation="10" color="green darken-2">
-                                            <v-icon left>mdi-check-decagram</v-icon> User
+
+                                        <v-btn @click="editDataModel(singleData)" small color="info" elevation="10"
+                                            class="mb-1">
+                                            <v-icon left>mdi-circle-edit-outline</v-icon> Edit
                                         </v-btn>
-                                        <v-btn v-else @click="statusChangeUser(singleData)" outlined elevation="10"
-                                            color="red accent-2">
-                                            <v-icon left>mdi-close-octagon</v-icon> User
+
+
+
+                                        <v-btn @click="editRoleModel(singleData)" small elevation="10" class="mb-1">
+                                            <v-icon>mdi-alpha-r-circle-outline</v-icon> Role
                                         </v-btn>
-                                    </div>
 
+                                         <div class="small text-muted mt-3">
+                                            <b>Updated At:</b> <span
+                                                v-if="singleData.updated_at">{{ singleData.updated_at | moment("MMMM Do, YYYY") }}</span>
+                                            <span v-else class="error--text">N/A</span>
+                                        </div>
+                                        <div class="small text-muted">
+                                            <b>Created At:</b> <span
+                                                v-if="singleData.created_at">{{ singleData.created_at | moment("MMMM Do, YYYY") }}</span>
+                                            <span v-else class="error--text">N/A</span>
+                                        </div>
 
-                                    <hr>
-                                    <div>
-                                        <span v-if="singleData.status == 1" class="text-success">Active</span> <span
-                                            v-else class="text-danger">Blocked</span>
-                                        <span class="text-muted small float-right"
-                                            v-if="singleData.status_by">--{{ userNameByID(singleData.status_by) }}</span>
-                                    </div>
-
-                                    <div>
-                                        <span v-if="singleData.verify == 1" class="text-success">Verified</span> <span
-                                            v-else class="text-danger">Not Verified</span>
-                                        <span class="text-muted small float-right"
-                                            v-if="singleData.verify_by">--{{ userNameByID(singleData.verify_by) }}</span>
-                                    </div>
-
-                                </td>
-
-                                <td class="text-center">
-                                    <v-btn v-if="singleData.status" @click="statusChange(singleData)" small
-                                        color="primary" elevation="10" class="mb-1">
-                                        <v-icon left>mdi-check-decagram</v-icon> Active
-                                    </v-btn>
-                                    <v-btn v-else @click="statusChange(singleData)" small color="warning" elevation="10"
-                                        class="mb-1">
-                                        <v-icon left>mdi-close-octagon</v-icon> Inactive
-                                    </v-btn>
-
-                                    <v-btn @click="editDataModel(singleData)" small color="info" elevation="10"
-                                        class="mb-1">
-                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
-                                    </v-btn>
-
-
-
-                                    <v-btn @click="editRoleModel(singleData)" small elevation="10" class="mb-1">
-                                        <v-icon>mdi-alpha-r-circle-outline</v-icon> Role
-                                    </v-btn>
-
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -241,7 +263,6 @@
                             color="primary mt-10">
                             <v-icon left dark>mdi-circle-edit-outline</v-icon> Update
                         </v-btn>
-
                     </v-row>
                 </v-card-text>
             </v-card>
@@ -294,7 +315,7 @@
 
                             <v-col cols="12" md="4">
                                 <v-text-field type="text" label="User Department"
-                                    :rules="[v => !!v || 'Department is required!']" v-model="form.department">
+                                    :rules="[v => !!v || 'Department is Missing!']" v-model="form.department">
                                 </v-text-field>
                                 <div class="text-danger" v-if="form.errors.has('department')"
                                     v-html="form.errors.get('department')" />
@@ -335,23 +356,23 @@
                             <v-col cols="12" md="4">
                                 <v-text-field type="email" label="User Personal Email"
                                     :rules="[v => /.+@.+/.test(v) || 'E-mail must be valid',]"
-                                    v-model="form.personal_email" required></v-text-field>
+                                    v-model="form.personal_email" ></v-text-field>
                                 <div class="text-danger" v-if="form.errors.has('personal_email')"
                                     v-html="form.errors.get('personal_email')" />
                             </v-col>
 
                             <v-col cols="12" md="4">
                                 <v-text-field type="text" label="User Office Location"
-                                    :rules="[v => !!v || 'Office Location is required!']" v-model="form.office"
-                                    required></v-text-field>
+                                    :rules="[v => !!v || 'Office Location is Missing!']" v-model="form.office"
+                                    ></v-text-field>
                                 <div class="text-danger" v-if="form.errors.has('office')"
                                     v-html="form.errors.get('office')" />
                             </v-col>
 
                             <v-col cols="12" md="4">
                                 <v-text-field type="text" label="User Business Unit"
-                                    :rules="[v => !!v || 'Business Unit is required!']" v-model="form.business_unit"
-                                    required></v-text-field>
+                                    :rules="[v => !!v || 'Business Unit is Missing!']" v-model="form.business_unit"
+                                    ></v-text-field>
                                 <div class="text-danger" v-if="form.errors.has('business_unit')"
                                     v-html="form.errors.get('business_unit')" />
                             </v-col>

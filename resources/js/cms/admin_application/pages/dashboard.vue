@@ -11,17 +11,6 @@
                                 {{ allDashboardData.totalCategory }}
                             </span>
                         </div>
-                        <v-progress-linear
-                        class="mt-7"
-                        v-model="value"
-                        color="indigo"
-                        height="25"
-                        rounded
-                        >
-                        <template v-slot:default="{ value }">
-                            <strong class="white--text">{{ Math.ceil(value) }}%</strong>
-                        </template>
-                        </v-progress-linear>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -36,17 +25,6 @@
                                 {{ allDashboardData.totalSubcategory }}
                             </span>
                         </div>
-                        <v-progress-linear
-                        class="mt-7"
-                        v-model="value"
-                        color="indigo"
-                        height="25"
-                        rounded
-                        >
-                        <template v-slot:default="{ value }">
-                            <strong class="white--text">{{ Math.ceil(value) }}%</strong>
-                        </template>
-                        </v-progress-linear>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -61,17 +39,6 @@
                                 {{ allDashboardData.totalRoleUser }}/ {{ allDashboardData.totalUser}}
                             </span>
                         </div>
-                        <v-progress-linear
-                        class="mt-7"
-                        v-model="allDashboardData.userPercent"
-                        color="info"
-                        height="25"
-                        rounded
-                        >
-                        <template v-slot>
-                            <strong class="white--text">{{ Math.ceil(allDashboardData.userPercent) }}%</strong>
-                        </template>
-                        </v-progress-linear>
                     </v-card-text>
                 </v-card>
             </v-col>

@@ -22,8 +22,8 @@ class ApplicationSubcategory extends Model
     {
         return $query
         ->where('name', 'LIKE', '%'.$val.'%')
-        ->orWhereHas('category', function($q) use ($val){
-            $q->WhereRaw('name LIKE ?', '%'.$val.'%');
+        ->orWhereHas('category', function($query) use ($val){
+            $query->WhereRaw('name LIKE ?', '%'.$val.'%');
         }); 
     }
 }

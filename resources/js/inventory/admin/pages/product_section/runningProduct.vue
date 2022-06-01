@@ -46,14 +46,17 @@
                     <div class="table-responsive">
                         <table class="table table-bordered text-center">
                             <thead>
-
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('id')">ID</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'id'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'id'">&darr;</span>
+                                </th>
                                 <th>
                                     <a href="#" @click.prevent="change_sort('name')">Product Model</a>
                                     <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
                                     <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
                                 </th>
                                 <th>Category</th>
-                                <th>Subcategory</th>
                                 <th>
                                     <a href="#" @click.prevent="change_sort('office')">Office</a>
                                     <span v-if="sort_direction == 'desc' && sort_field == 'office'">&uarr;</span>
@@ -74,17 +77,13 @@
                             </thead>
                             <tbody>
                                 <tr v-for="singleData in allData.data" :key="singleData.id">
-
+                                    <td>{{ singleData.id }}</td>
                                     <td>
                                         <span v-if="singleData.name">{{singleData.name}}</span>
                                         <span v-else class="error--text">N/A</span>
                                     </td>
                                     <td>
                                         <span v-if="singleData.category">{{ singleData.category.name }}</span>
-                                        <span v-else class="error--text">N/A</span>
-                                    </td>
-                                    <td>
-                                        <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
                                         <span v-else class="error--text">N/A</span>
                                     </td>
                                     <td>
@@ -105,7 +104,7 @@
                                     </td>
                                     <td class="text-center">
                                         <v-btn @click="view(singleData)" color="teal white--text" depressed small>
-                                            <v-icon small>mdi-eye</v-icon> View
+                                            <v-icon left>mdi-eye</v-icon> View
                                         </v-btn>
                                     </td>
                                 </tr>
@@ -128,7 +127,7 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h2 class="error--text text-center" v-if="!totalValue && !dataLoading" >Running Product Data Not Available <v-icon large color="error">mdi-alert-octagon-outline</v-icon></h2>
 
             </v-card-text>
         </v-card>
@@ -136,7 +135,7 @@
 
         <!-- view product -->
         <view-product v-if="currentData" :currentData="currentData" :category="currentCategory"
-            :subcategory="currentSubcategory" :operation="currentOperation" :key="leaveActionKey"></view-product>
+             :operation="currentOperation" :key="leaveActionKey"></view-product>
 
 
     </div>
@@ -161,7 +160,7 @@
 
 
                 //current page url
-                currentUrl: '/inventory/admin/product/given-product',
+                currentUrl: '/inventory/admin/product/running-product',
 
 
                 // view details
@@ -230,9 +229,6 @@
                 if (data.category) {
                     this.currentCategory = data.category.name
                 }
-                if (data.subcategory) {
-                    this.currentSubcategory = data.subcategory.name
-                }
                 if (data.operation) {
                     this.currentOperation = data.operation.name
                 }
@@ -295,7 +291,7 @@
 
                 axios({
                     method: 'get',
-                    url: this.currentUrl + '/export_data_running?search=' + this.search +
+                    url: this.currentUrl + '/export_data?search=' + this.search +
                         '&sort_direction=' + this.sort_direction +
                         '&sort_field=' + this.sort_field +
                         '&search_field=' + this.search_field +
@@ -303,9 +299,7 @@
 
                     responseType: 'blob', // important
                 }).then((response) => {
-
-
-
+                    
                     let repName = new Date();
 
                     const url = URL.createObjectURL(new Blob([response.data]))

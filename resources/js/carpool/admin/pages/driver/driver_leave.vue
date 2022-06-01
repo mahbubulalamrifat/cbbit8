@@ -8,8 +8,8 @@
                             Diver Leave Action
                         </v-col>
                         <v-col cols="2">
-                            <v-btn @click="driverLeaveDilog = false, resetForm()" elevation="20" color="error white--text" small
-                                class="float-right">
+                            <v-btn @click="driverLeaveDilog = false, resetForm()" elevation="20"
+                                color="error white--text" small class="float-right">
                                 <v-icon left dark>mdi-close-octagon</v-icon> Close
                             </v-btn>
                         </v-col>
@@ -40,12 +40,13 @@
                                 <b>Type:</b> Regular
                             </span>
                         </v-col>
-                       
+
                         <v-col cols="3">
-                            <v-img v-if="currentCarDriver.image" :src="imagePathSmDriver + currentCarDriver.image" alt="image" max-height="100px" class="rounded-lg"></v-img> 
+                            <v-img v-if="currentCarDriver.image" :src="imagePathSmDriver + currentCarDriver.image"
+                                alt="image" max-height="100px" class="rounded-lg"></v-img>
                         </v-col>
                         <v-col cols="3" class="small">
-                             <span v-if="currentCarDriver.name">
+                            <span v-if="currentCarDriver.name">
                                 <b>Name:</b> {{ currentCarDriver.name}}
                             </span><br>
                             <span v-if="currentCarDriver.contact">
@@ -58,7 +59,7 @@
                                 <b>NID:</b> {{ currentCarDriver.nid}}
                             </span>
                         </v-col>
-                       
+
                     </v-row>
 
                     <v-form v-model="valid">
@@ -66,11 +67,13 @@
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <!-- start_date -->
-                                    <div class="text-danger" v-if="form.errors.has('start_date')" v-html="form.errors.get('start_date')" />
+                                    <div class="text-danger" v-if="form.errors.has('start_date')"
+                                        v-html="form.errors.get('start_date')" />
                                     <v-menu v-model="menu" min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="form.start_date" label="Start Date"
-                                                prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :rules="[v => !!v || 'Start date is required!']" required >
+                                                prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"
+                                                :rules="[v => !!v || 'Start date is required!']" required>
                                             </v-text-field>
                                             <div class="small text-danger" v-if="form.errors.has('start_date')"
                                                 v-html="form.errors.get('start_date')" />
@@ -86,12 +89,13 @@
 
                                 <v-col cols="12" md="6">
                                     <!-- end_date -->
-                                    <div class="text-danger" v-if="form.errors.has('end_date')" v-html="form.errors.get('end_date')" />
+                                    <div class="text-danger" v-if="form.errors.has('end_date')"
+                                        v-html="form.errors.get('end_date')" />
                                     <v-menu v-model="menu2" min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="form.end_date" :rules="[v => !!v || 'End date is required!']" label="End Date"
-                                                prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"
-                                                required>
+                                            <v-text-field v-model="form.end_date"
+                                                :rules="[v => !!v || 'End date is required!']" label="End Date"
+                                                prepend-icon="mdi-calendar" v-bind="attrs" v-on="on" required>
                                             </v-text-field>
                                             <div class="small text-danger" v-if="form.errors.has('end_date')"
                                                 v-html="form.errors.get('end_date')" />
@@ -100,7 +104,7 @@
                                         <v-date-picker v-model="form.end_date" no-title scrollable>
                                             <v-spacer></v-spacer>
                                             <v-btn text color="primary" @click="menu2 = false"> Cancel</v-btn>
-                                            <v-btn text color="success">  Set Today </v-btn>
+                                            <v-btn text color="success"> Set Today </v-btn>
                                         </v-date-picker>
                                     </v-menu>
                                 </v-col>
@@ -112,9 +116,8 @@
                                         :return-value.sync="time" max-width="290px" min-width="290px">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="form.start_time" label="Start Time"
-                                                prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs" v-on="on"
-                                                id="Start_Time" 
-                                                required></v-text-field>
+                                                prepend-icon="mdi-clock-time-four-outline" v-bind="attrs" v-on="on"
+                                                id="Start_Time" required></v-text-field>
                                             <div class="small text-danger" v-if="form.errors.has('start_time')"
                                                 v-html="form.errors.get('start_time')" />
                                         </template>
@@ -128,7 +131,8 @@
                                         :return-value.sync="time" max-width="290px" min-width="290px">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="form.end_time" label="End Time"
-                                                prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs" v-on="on" required></v-text-field>
+                                                prepend-icon="mdi-clock-time-four-outline" v-bind="attrs" v-on="on"
+                                                required></v-text-field>
                                             <div class="small text-danger" v-if="form.errors.has('end_time')"
                                                 v-html="form.errors.get('end_time')" />
                                         </template>
@@ -138,8 +142,11 @@
                                 </v-col>
 
                                 <v-col cols="12">
-                                    <div class="text-danger" v-if="form.errors.has('type')" v-html="form.errors.get('type')" />
-                                    <v-select v-model="form.type" :items="leaveTypes" item-text="name" item-value="value" placeholder="Please, Select types" :rules="[v => !!v || 'Leave Type is required!']" required></v-select>
+                                    <div class="text-danger" v-if="form.errors.has('type')"
+                                        v-html="form.errors.get('type')" />
+                                    <v-select v-model="form.type" :items="leaveTypes" item-text="name"
+                                        item-value="value" placeholder="Please, Select types"
+                                        :rules="[v => !!v || 'Leave Type is required!']" required></v-select>
                                 </v-col>
                             </v-row>
 
@@ -151,7 +158,7 @@
                         </form>
                     </v-form>
 
-                
+
                 </v-card-text>
             </v-card>
 
@@ -163,113 +170,137 @@
 
 
 <script>
-// vform
-import Form from 'vform';
+    // vform
+    import Form from 'vform';
 
-export default {
+    export default {
 
-    props:['currentCarDriver'],
+        props: ['currentCarDriver'],
 
-    data(){
-        return{
-            driverLeaveDilog: true,
+        data() {
+            return {
+                driverLeaveDilog: true,
 
-            currentUrl: '/carpool/admin/driver',
+                currentUrl: '/carpool/admin/driver',
 
-            // time and date picker
-            menu:  false,
-            menu2: false,
-            menu3: false,
-            menu4: false,
-            time: '',
+                // time and date picker
+                menu: false,
+                menu2: false,
+                menu3: false,
+                menu4: false,
+                time: '',
 
-            valid: false,
+                valid: false,
 
-            loadingLeaveAction: false,
+                loadingLeaveAction: false,
 
-            datePickerHeader: true,
+                datePickerHeader: true,
 
-            imageMaxSize: '5111775',
-            imagePath: '/images/carpool/car/',
-            imagePathSm: '/images/carpool/car/small/',
+                imageMaxSize: '5111775',
+                imagePath: '/images/carpool/car/',
+                imagePathSm: '/images/carpool/car/small/',
 
-            imagePathDriver: '/images/carpool/driver/',
-            imagePathSmDriver: '/images/carpool/driver/small/',
+                imagePathDriver: '/images/carpool/driver/',
+                imagePathSmDriver: '/images/carpool/driver/small/',
 
-            leaveTypes:[
-                {
-                    name: 'Select Leave Type',
-                    value: null
-                },
-                {
-                    name: 'Personal Leave',
-                    value: 'lev'
-                },
-                {
-                    name: 'Police Requisition',
-                    value: 'req'
-                },
-                {
-                    name: 'Car Maintenances',
-                    value: 'mant'
-                },
-            ],
+                leaveTypes: [{
+                        name: 'Select Leave Type',
+                        value: null
+                    },
+                    {
+                        name: 'Personal Leave',
+                        value: 'lev'
+                    },
+                    {
+                        name: 'Police Requisition',
+                        value: 'req'
+                    },
+                    {
+                        name: 'Car Maintenances',
+                        value: 'mant'
+                    },
+                ],
 
-            
 
-            // Form
-            form: new Form({
-                start_date: '',
-                start_time: '00:01:00',
-                end_date: '',
-                end_time: '23:59:00',
-                car_id: '',
-                driver_id: '',
-                type: '',
-            }),
-        }
-    },
 
-    methods:{
-
-        check(){
-            this.form.car_id = this.currentCarDriver.car_id;
-            this.form.driver_id = this.currentCarDriver.id;
+                // Form
+                form: new Form({
+                    start_date: '',
+                    start_time: '00:01:00',
+                    end_date: '',
+                    end_time: '23:59:00',
+                    car_id: '',
+                    driver_id: '',
+                    type: '',
+                }),
+            }
         },
 
-        storeData(){
-            this.dataModalLoading = true
+        methods: {
 
-            this.form.post( this.currentUrl + '/store_leave').then(response=>{
-                this.$Progress.start();
-                this.dataModalLoading = false;
-                this.driverLeaveDilog = false;
-                
-                // Parent to child
-                this.$emit('childToParent')
+            check() {
+                this.form.car_id = this.currentCarDriver.car_id;
+                this.form.driver_id = this.currentCarDriver.id;
+            },
 
-                this.$Progress.finish()
-                Swal.fire({
-                    icon: response.data.icon,
-                    title: response.data.msg,
-                });
-               
+            storeData() {
+                let startDateTime = this.form.start_date + " " + this.form.start_time
+                let endDateTime = this.form.end_date + " " + this.form.end_time
 
-            }).catch(error=>{
-                this.dataModalLoading = false;
-                console.log(error)
-            })
+                // Check Start DateTime After End DateTime
+                let dateTimeIsAfter = this.$moment(startDateTime).isAfter(endDateTime)
+
+                // Check Start DateTime End DateTime Same 
+                let dateTimeIsSame = this.$moment(startDateTime).isSame(endDateTime)
+                //console.log(dateTimeIsAfter, dateTimeIsSame, startDateTime, endDateTime )
+
+                if (dateTimeIsAfter) {
+                    // Start Date Grater
+                    Swal.fire({
+                        icon: "error",
+                        title: "Sorry! Start time can't be greater than the end time",
+                    });
+                } else if (dateTimeIsSame) {
+                    // Same Date Time
+                    Swal.fire({
+                        icon: "error",
+                        title: "Sorry! Start time can't be the same as the end time",
+                    });
+                } else {
+
+                    this.dataModalLoading = true
+
+                    this.form.post(this.currentUrl + '/store_leave').then(response => {
+                        this.$Progress.start();
+                        this.dataModalLoading = false;
+                        this.driverLeaveDilog = false;
+
+                        // Parent to child
+                        this.$emit('childToParent')
+
+                        this.$Progress.finish()
+                        Swal.fire({
+                            icon: response.data.icon,
+                            title: response.data.msg,
+                        });
 
 
+                    }).catch(error => {
+                        this.dataModalLoading = false;
+                        console.log(error)
+                    })
 
+                }
+
+            }
+
+        },
+
+        mounted() {
+            this.check();
         }
 
-    }, 
 
-    mounted(){
-        this.check();
     }
 
-
-}
 </script>

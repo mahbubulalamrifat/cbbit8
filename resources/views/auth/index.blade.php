@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @include('common.cpbd-icon')
     <title>CPB-IT Login</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/auth/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/auth/app.css') }}">
 </head>
 <body>
     <div id="app">
@@ -16,7 +16,7 @@
         <index-component></index-component>
         @if(config('values.app_debug')) <p>You Are Running In Local</p> @endif
     </div>
-    <script src="{{ asset('js/auth/app.js') }}"></script>
+    <script src="{{ mix('js/auth/app.js') }}"></script>
 </body>
 
 </html>

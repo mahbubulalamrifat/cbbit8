@@ -25,6 +25,10 @@
                             <v-row class="text-white">
                                 <v-col cols="6">
                                     <div>
+                                        AD ID: <span v-if="userData">{{ userData.login }}</span>
+                                    </div>
+                                    <hr>
+                                    <div>
                                         Name: <span v-if="userData">{{ userData.name }}</span>
                                     </div>
                                     <hr>
@@ -39,11 +43,7 @@
                                             v-else class="error--text">Not Available !</span>
                                     </div>
                                     <hr>
-                                    <div>
-                                        Office ID: <span v-if="userData.office_id">{{ userData.office_id }}</span> <span
-                                            v-else class="error--text">Not Available !</span>
-                                    </div>
-                                    <hr>
+                                    
                                     <div>
                                         Office Email: <span
                                             v-if="userData.office_email">{{ userData.office_email }}</span> <span v-else
@@ -58,6 +58,11 @@
                                 </v-col>
 
                                 <v-col cols="6">
+                                    <div>
+                                        Office ID: <span v-if="userData.office_id">{{ userData.office_id }}</span> <span
+                                            v-else class="error--text">Not Available !</span>
+                                    </div>
+                                    <hr>
                                     <div>
                                         Office: <span v-if="userData.office">{{ userData.office }}</span> <span v-else
                                             class="error--text">Not Available !</span>

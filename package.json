@@ -10,6 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@mdi/font": "^6.6.96",
         "@mdi/js": "^6.5.95",
         "axios": "^0.21.4",
         "bootstrap": "^4.6.1",
@@ -28,12 +29,20 @@
         "vuetify-loader": "^1.7.3"
     },
     "dependencies": {
-        "bootstrap-vue": "^2.21.2",
+        "@fontsource/roboto": "^4.5.7",
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "@fullcalendar/core": "^5.10.1",
+        "@fullcalendar/daygrid": "^5.10.1",
+        "@fullcalendar/interaction": "^5.10.1",
+        "@fullcalendar/timegrid": "^5.10.1",
+        "@fullcalendar/vue": "^5.10.1",
         "chart.js": "^2.7.1",
         "laravel-vue-pagination": "^2.3.1",
         "vform": "^2.1.2",
         "vue-chartjs": "^3.4.0",
+        "vue-confetti": "^2.3.0",
         "vue-moment": "^4.1.0",
+        "vue-pdf-app": "^2.1.0",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.5.3",
         "vue-sweetalert2": "^5.0.2",

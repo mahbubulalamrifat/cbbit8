@@ -35,6 +35,8 @@ export default {
         this.$Progress.start();
 
         //checkUserRole
+
+        this.allReplayDraft();
       
         // console.log('Super Admin Index, auth user', JSON.parse(this.authuser));
 

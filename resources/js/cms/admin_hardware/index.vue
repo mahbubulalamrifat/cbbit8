@@ -41,6 +41,7 @@ export default {
 
     mounted(){
         this.countAll();
+        this.getZoneOfficesAssign();
     },
 
     created(){
@@ -50,6 +51,7 @@ export default {
         this.$store.commit('setRoles', JSON.parse(this.permission) )
        
         this.$Progress.start();
+        
 
         //checkUserZone Access
         // this.zoneAccess()

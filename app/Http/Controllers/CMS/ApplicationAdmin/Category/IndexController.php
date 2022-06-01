@@ -97,21 +97,17 @@ class IndexController extends Controller
 
     // status
     public function status($id){
-
         $data       =  ApplicationCategory::find($id);
         if($data){
-
            $status = $data->status;
-           
             if($status == 1){
                 $data->status = null;
             }else{
                 $data->status = 1;
             }
+            $data->created_by   =  Auth::user()->id;
             $success    =  $data->save();
             return response()->json('success', 200);
-
         }
-
     }
 }

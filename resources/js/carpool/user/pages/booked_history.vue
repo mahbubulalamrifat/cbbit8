@@ -6,25 +6,25 @@
         <div v-if="allData.data">
 
             <v-row>
-                <v-col cols="2">
+                <v-col cols="6" lg="2">
                     <!-- Show -->
                     <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                     </v-select>
                 </v-col>
 
-                <v-col cols="2">
-                    <v-select :items="carData" label="All Cars Data" v-model="sort_by_car"></v-select>
+                <v-col cols="6" lg="2">
+                    <v-select v-if="carData" :items="carData" label="All Cars Data" v-model="sort_by_car"></v-select>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-select :items="reportType" label="Select Type" v-model="sort_by_day"></v-select>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-menu v-model="menu" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-icon="mdi-calendar"
-                                readonly v-bind="attrs" v-on="on"></v-text-field>
+                                readonly v-bind="attrs" v-on="on" clearable></v-text-field>
                         </template>
 
                         <v-date-picker v-model="sort_by_startDate" no-title scrollable>
@@ -36,11 +36,11 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-menu v-model="menu2" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_endDate" label="End Date" prepend-icon="mdi-calendar"
-                                readonly v-bind="attrs" v-on="on"></v-text-field>
+                                readonly v-bind="attrs" v-on="on" clearable></v-text-field>
                         </template>
 
                         <v-date-picker v-model="sort_by_endDate" no-title scrollable>
@@ -52,44 +52,43 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                         placeholder="Search Input..."></v-text-field>
                 </v-col>
             </v-row>
 
 
-            <v-card v-for="singleData in allData.data" :key="singleData.id" class="mb-3">
-                <v-card-title class="justify-center">
-                    <v-row>
-                        <v-col cols="8">
-                            {{ singleData.car.name }} || {{ singleData.car.number }} <v-badge
-                                v-if="singleData.status == 1" color="teal" content="Booked" bordered></v-badge>
-                            <v-badge v-else color="error" content="Cancelled" bordered></v-badge>
-                        </v-col>
-                        <v-col cols="4" class="text-right">
-                           
-                        </v-col>
-                    </v-row>
+            <v-card v-for="singleData in allData.data" :key="singleData.id" class="mb-1">
+                <v-card-title class="justify-center pb-0 pt-0">
+                    <div class="mr-5">
+                        <span v-if="singleData.car">{{ singleData.car.name }} || {{ singleData.car.number }}</span>
+                        <span v-else class="text-danger">N/A</span>
+                    </div>
+
+                    <div>
+                        <v-badge v-if="singleData.status == 1" color="teal" content="Booked" bordered></v-badge>
+                        <v-badge v-else color="error" content="Cancelled" bordered></v-badge>
+                    </div>
                 </v-card-title>
                 <v-card-text>
+
                     <v-row>
                         <v-col>
-                            <div>
-                                Driver: <v-btn color="indigo white--text" small depressed
+                            <div v-if="singleData.driver">Driver: <v-btn color="indigo white--text" x-small depressed
                                     @click="showDriverDialog(singleData.driver)">
-                                    {{ singleData.driver.name }}
+                                    <v-icon left>mdi-eye-outline</v-icon> {{ singleData.driver.name }}
                                 </v-btn>
                             </div>
-
-                            <div>
-                                Purpose: {{ singleData.purpose }}
+                            <div v-else class="text-danger">N/A</div>
+                            <div>Purpose: {{ singleData.purpose }}</div>
+                            <div>Destination: {{ singleData.destination }}</div>
+                            <div>Booking Duration: <span
+                                    class="orange--text">{{ singleData.start  | moment("MMMM Do YYYY, h:mm a") }}
+                                </span> to
+                                <span class="orange--text"> {{ singleData.end  | moment("MMMM Do YYYY, h:mm a") }}
+                                </span>
                             </div>
-
-                            <div>
-                                Destination: {{ singleData.destination }}
-                            </div>
-
 
                         </v-col>
                         <v-col class="text-right">
@@ -101,18 +100,19 @@
                                             Found !!</span>
                                     </div>
                                     <div>
-                                        Gasoline: <span v-if="singleData.gasoline !== null">{{ singleData.gasoline }}</span>
+                                        Gasoline: <span
+                                            v-if="singleData.gasoline !== null">{{ singleData.gasoline }}</span>
                                         <span v-else class="error--text">N/A</span>
                                     </div>
                                     <div>
-                                        Octane: <span v-if="singleData.octane !== null">{{ singleData.octane }}</span> <span
-                                            v-else class="error--text">N/A</span>
+                                        Octane: <span v-if="singleData.octane !== null">{{ singleData.octane }}</span>
+                                        <span v-else class="error--text">N/A</span>
                                     </div>
                                     <div>
-                                        Toll: <span v-if="singleData.toll !== null">{{ singleData.toll }}</span> <span v-else
-                                            class="error--text">N/A</span>
+                                        Toll: <span v-if="singleData.toll !== null">{{ singleData.toll }}</span> <span
+                                            v-else class="error--text">N/A</span>
                                     </div>
-                                   
+
                                 </v-col>
                                 <v-col>
                                     <div>
@@ -120,8 +120,8 @@
                                             class="error--text">N/A</span>
                                     </div>
                                     <div>
-                                        Total: <span v-if="singleData.cost !== null">{{ singleData.cost }}</span> <span v-else
-                                            class="error--text">N/A</span>
+                                        Total: <span v-if="singleData.cost !== null">{{ singleData.cost }}</span> <span
+                                            v-else class="error--text">N/A</span>
                                     </div>
                                     <div>
                                         Rating: <span
@@ -133,11 +133,7 @@
                         </v-col>
 
                     </v-row>
-                    <div>
-                        Booking Duration: <span
-                            class="orange--text">{{ singleData.start  | moment("MMMM Do YYYY, h:mm a") }} </span> to
-                        <span class="orange--text"> {{ singleData.end  | moment("MMMM Do YYYY, h:mm a") }} </span>
-                    </div>
+
 
                 </v-card-text>
 
@@ -156,7 +152,8 @@
                 </p>
             </div>
         </div>
-        <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+        <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! You have no booking in this time
+            interval.</h1>
 
 
 
@@ -199,8 +196,8 @@
                         </v-list-item-content>
 
                         <v-list-item-avatar tile size="150">
-                            <v-img v-if="driverData.image" :src="imagePath + driverData.image" alt="image"
-                                contain></v-img>
+                            <v-img v-if="driverData.image" :src="imagePathSm + driverData.image" alt="image" contain>
+                            </v-img>
                         </v-list-item-avatar>
                     </v-list-item>
                 </v-card-text>
@@ -238,11 +235,10 @@
                 //current page url
                 currentUrl: '/carpool/history',
 
-                // all car data
-                carData: [],
-
+                 
                 // sort by car value
                 sort_by_car: '',
+                carData: [],
 
                 // sort by day
                 sort_by_day: '',
@@ -330,28 +326,6 @@
             },
 
 
-
-            // get all car data
-            getCarData() {
-                axios.get(this.currentUrl + '/car-data').then(response => {
-
-                    for (let i = 0; i < response.data.length; i++) {
-                        this.carData.push(response.data[i]);
-                        this.carData[i] = {
-                            value: response.data[i].id,
-                            text: response.data[i].name + ' || ' + response.data[i].number
-                        };
-
-                    }
-
-                }).catch(error => {
-                    console.log(error)
-                })
-            },
-
-
-
-
             // bookby data modal information
             getBookbyModalData(id) {
 
@@ -366,45 +340,48 @@
             },
 
             // showDriverDialog
-            showDriverDialog(val){
+            showDriverDialog(val) {
                 //console.log('Driver', val)
                 this.driverData = val
                 this.driverModal = true
-            },
+            }
 
-
-
+         
         },
 
 
         watch: {
 
+           
+            sort_by_day: function () {
+                this.sort_by_startDate = ''
+                this.sort_by_endDate = ''
+                this.$Progress.start();
+                this.getResults();
+                this.$Progress.finish();
+            },
+
+
+            sort_by_startDate: function () {
+                this.sort_by_day = ''
+                this.$Progress.start();
+                this.getResults();
+                this.$Progress.finish();
+            },
+
+            sort_by_endDate: function () {
+                this.sort_by_day = ''
+                this.$Progress.start();
+                this.getResults();
+                this.$Progress.finish();
+            },
+
             //Excuted When make change value 
-            sort_by_car: function (value) {
+            sort_by_car: function () {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
             },
-
-
-            sort_by_day: function (value) {
-                this.$Progress.start();
-                this.getResults();
-                this.$Progress.finish();
-            },
-
-
-            sort_by_startDate: function (value) {
-                this.$Progress.start();
-                this.getResults();
-                this.$Progress.finish();
-            },
-
-            sort_by_endDate: function (value) {
-                this.$Progress.start();
-                this.getResults();
-                this.$Progress.finish();
-            }
 
         },
 

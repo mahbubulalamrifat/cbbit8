@@ -204,7 +204,7 @@
                 this.form.comp_id = this.comData.id
 
                 this.form.post( this.currentUrl + '/action_delivery' ).then(response=>{
-                    console.log(response.data)
+                    //console.log(response.data)
 
                     // Loading
                     this.dataModalLoading = false

@@ -66,5 +66,18 @@ export default{
         }
         return "/all-assets/common/img/no-image.png";
     },
+
+
+     // Document By Name
+     uploadDocumentByName: function (event, currentFieldName) {
+        let file = event;
+        //let reader = new FileReader();
+        console.log('upload: ', currentFieldName, file, file['size'] )
+        if (file['size'] < this.fileMaxSize ) {
+            this.form[currentFieldName] = file;
+        } else {
+            alert('File size can not be bigger than 5 MB')
+        }
+    },
     
 }

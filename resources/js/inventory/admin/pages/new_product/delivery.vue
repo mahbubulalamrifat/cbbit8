@@ -24,9 +24,9 @@
                                     <v-col cols="12" lg="3">
                                         <v-text-field disabled label="Category" :value="category" dense></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" lg="3">
+                                    <!-- <v-col cols="12" lg="3">
                                         <v-text-field disabled label="Subcategory" :value="subcategory" dense></v-text-field>
-                                    </v-col>
+                                    </v-col> -->
 
                                     <v-col cols="12" lg="3">
                                         <v-text-field disabled v-model="form.name" label="Product Name or Model" dense></v-text-field>
@@ -93,7 +93,7 @@
                                         <v-col cols="12">
                                             <div class="small text-danger" v-if="form.errors.has('rec_contact')"
                                             v-html="form.errors.get('rec_contact')" />
-                                            <v-text-field v-model="form.rec_contact" :rules="[v => !!v || 'Reciver Contact is required!']" label="Receiver Contact" dense required></v-text-field>
+                                            <v-text-field v-model="form.rec_contact" :rules="numberRules" label="Receiver Contact" dense required></v-text-field>
                                         </v-col>
 
                                         <v-col cols="12" >
@@ -134,7 +134,7 @@ import {VueEditor} from "vue2-editor";
 import vue2EditorToolbar from "./../../pages/common/js/vue2_editor_toolbar"
 export default {
 
-    props:['currentData','category', 'subcategory'],
+    props:['currentData','category'],
 
     data(){
         return{
@@ -144,13 +144,20 @@ export default {
             business_unit: [],
             operation: [],
 
+            // numberRules
+            numberRules: [
+                v => !!v || 'Phone Number is required',
+                v => v.length == 11 || 'Phone Number must be 11 characters',
+                v => /01+/.test(v) || 'Phone Number must be valid',
+            ],
+
 
 
             // deliver Form
             form: new Form({
                 id: '',
                 cat_id: '',
-                subcat_id: '',
+                //subcat_id: '',
                 serial: '',
                 name: '',
                 remarks: '',
@@ -250,7 +257,7 @@ export default {
 
         this.form.id = this.currentData.id
         this.form.cat_id =  this.currentData.cat_id
-        this.form.subcat_id =  this.currentData.subcat_id
+        //this.form.subcat_id =  this.currentData.subcat_id
         this.form.name =  this.currentData.name
         this.form.serial =  this.currentData.serial
     },

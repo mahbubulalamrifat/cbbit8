@@ -65,8 +65,8 @@ class HardwareDamaged extends Model
     {
         return $query
         ->where('comp_id', 'LIKE', '%'.$val.'%')
-        ->where('damaged_type', 'LIKE', '%'.$val.'%')
-        ->where('applicable_type', 'LIKE', '%'.$val.'%')
+        ->orWhere('damaged_type', 'LIKE', '%'.$val.'%')
+        ->orWhere('applicable_type', 'LIKE', '%'.$val.'%')
         ->orWhere('damaged_reason', 'LIKE', '%'.$val.'%')
         ->orWhere('rec_name', 'LIKE', '%'.$val.'%')
         ->orWhere('rec_contact', 'LIKE', '%'.$val.'%')

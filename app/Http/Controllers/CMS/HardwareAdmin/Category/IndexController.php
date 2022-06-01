@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Cms\Hardware\HardwareCategory;
-use Auth;
+use Auth; 
  
 class IndexController extends Controller
 {
@@ -108,6 +108,23 @@ class IndexController extends Controller
             return response()->json(['success' => 'Successfully Deleted', 'icon' => 'success']);
         }else{
             return response()->json(['success' => 'Something going wrong !!', 'icon' => 'error']);
+        }
+    }
+
+
+    // status
+    public function status($id){
+        $data       =  HardwareCategory::find($id);
+        if($data){
+           $status = $data->status;
+            if($status == 1){
+                $data->status = null;
+            }else{
+                $data->status = 1;
+            }
+            $data->created_by   =  Auth::user()->id;
+            $success    =  $data->save();
+            return response()->json('success', 200);
         }
     }
 

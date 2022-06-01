@@ -5,12 +5,9 @@ import { mapGetters } from 'vuex'
 import paginateMethods from './paginate_methods'
 import imageMethods from './image_methods'
 import createUpdate from './crud'
-
-
 import globalRolePermissions from './../../../../role_permissions'
-
 import {debounce} from './../../../../helpers'
-
+import store from './../store'
 
 
 export default {
@@ -46,6 +43,8 @@ export default {
         tblItemNumberShow:[5,10,15,25,50,100],
         // v-form
         valid: false,
+
+        selectDraft:'',
       }
     },
 
@@ -67,7 +66,18 @@ export default {
 
 
 
-    
+        // all Replay Draft
+        allReplayDraft(){
+            axios.get('/inventory/admin/draft/all_data').then(response=>{
+                console.log(response.data)
+                //this.allRepDrafts = response.data;
+                // Store
+                store.commit('setDraft', response.data )
+
+            }).catch(error=>{
+                console.log(error)
+            })
+        },
 
 
        
@@ -97,6 +107,15 @@ export default {
             this.getResults();
             this.$Progress.finish();
         }, 
+
+        // selectDraft
+        selectDraft: function(value){
+            if(this.form.remarks){
+                this.form.remarks = this.form.remarks + value 
+            }else{
+                this.form.remarks = value 
+            }
+        }, 
        
     },
 
@@ -123,6 +142,7 @@ export default {
         ...mapGetters({
             'auth'      : 'getAuth',
             'roles'     : 'getRoles',
+            'drafts'    : 'getDraft',
         }),
 
     },

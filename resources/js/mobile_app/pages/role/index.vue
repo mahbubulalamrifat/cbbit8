@@ -13,85 +13,84 @@
                     </div>
 
                 </div>
-                
+
             </div>
 
             <div class="card-body">
                 <div v-if="allData.data">
                     <v-row>
-                        
+
                         <v-col cols="3">
                             <!-- Show -->
-                            <v-select v-model="paginate" 
-                            label="Show:"   
-                            :items="tblItemNumberShow"
-                            small>
+                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
 
-                      
+
 
                         <v-col cols="9">
-                        <v-text-field
-                            prepend-icon="mdi-clipboard-text-search"
-                            label="Search:"
-                            v-model="search"
-                            placeholder="Search by any data at the table..."
-                        ></v-text-field>
+                            <v-text-field prepend-icon="mdi-clipboard-text-search" label="Search:" v-model="search"
+                                placeholder="Search by any data at the table..."></v-text-field>
                         </v-col>
 
-                      
+
                     </v-row>
-                   
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('id')">ID</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'id'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'id'">&darr;</span>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('id')">ID</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'id'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'id'">&darr;</span>
 
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('name')">Name</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                                </th>
-                                <th>Created By</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>{{ singleData.id }}</td>
-                                <td>{{ singleData.name }}</td>
-                                <td><span v-if="singleData.makby">{{ singleData.makby.name }}</span></td>
-                        
-                                <td class="text-center">
-                                    <v-btn v-if="singleData.status" @click="statusChange(singleData)" small color="primary" elevation="10" class="mb-1">
-                                        <v-icon left>mdi-check-decagram</v-icon> Active
-                                    </v-btn>
-                                    <v-btn v-else @click="statusChange(singleData)" small color="warning" elevation="10" class="mb-1">
-                                        <v-icon left>mdi-close-octagon</v-icon> Inactive
-                                    </v-btn>
-                                    
-                                    <v-btn @click="editDataModel(singleData)" small color="info"  elevation="10" class="mb-1">
-                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
-                                    </v-btn>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('name')">Name</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                    </th>
+                                    <th>Created By</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>{{ singleData.id }}</td>
+                                    <td>{{ singleData.name }}</td>
+                                    <td><span v-if="singleData.makby">{{ singleData.makby.name }}</span></td>
 
-                                    <v-btn @click="deleteData(singleData.id)" small color="error" elevation="10" class="mb-1">
-                                       <v-icon left>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>    
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td class="text-center">
+                                        <v-btn v-if="singleData.status" @click="statusChange(singleData)" small
+                                            color="primary" elevation="10" class="mb-1">
+                                            <v-icon left>mdi-check-decagram</v-icon> Active
+                                        </v-btn>
+                                        <v-btn v-else @click="statusChange(singleData)" small color="warning"
+                                            elevation="10" class="mb-1">
+                                            <v-icon left>mdi-close-octagon</v-icon> Inactive
+                                        </v-btn>
+
+                                        <v-btn @click="editDataModel(singleData)" small color="info" elevation="10"
+                                            class="mb-1">
+                                            <v-icon left>mdi-circle-edit-outline</v-icon> Edit
+                                        </v-btn>
+
+                                        <v-btn @click="deleteData(singleData.id)" small color="error" elevation="10"
+                                            class="mb-1">
+                                            <v-icon left>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
-                    <pagination :data="allData" :limit="3" @pagination-change-page="getResults" class="justify-content-end">
+                    <pagination :data="allData" :limit="3" @pagination-change-page="getResults"
+                        class="justify-content-end">
                         <span slot="prev-nav">&lt; Previous</span>
                         <span slot="next-nav">Next &gt;</span>
                     </pagination>
@@ -118,13 +117,14 @@
                             {{ dataModelTitle }}
                         </v-col>
                         <v-col cols="2">
-                            <v-btn @click="dataModalDialog = false" color="red lighten-1" small text class="float-right">
+                            <v-btn @click="dataModalDialog = false" color="red lighten-1" small text
+                                class="float-right">
                                 <v-icon left dark>mdi-close-octagon</v-icon> Close
                             </v-btn>
                         </v-col>
                     </v-row>
                 </v-card-title>
-            
+
                 <v-card-text>
                     <v-form v-model="valid">
                         <form @submit.prevent="editmode ? updateData() : createData()">
@@ -132,7 +132,8 @@
                             <v-row>
                                 <v-col cols="12">
                                     <v-text-field type="text" label="App Role:"
-                                        :rules="[v => !!v || 'App role name is required!']" v-model="form.name" required>
+                                        :rules="[v => !!v || 'App role name is required!']" v-model="form.name"
+                                        required>
                                     </v-text-field>
                                     <div v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
                                 </v-col>
@@ -166,10 +167,10 @@
 <script>
     // vform
     import Form from 'vform';
-   
+
 
     export default {
-      
+
         data() {
 
             return {
@@ -177,7 +178,7 @@
                 //current page url
                 currentUrl: '/mobile_app/role',
 
-              
+
                 // Form
                 form: new Form({
                     id: '',
@@ -191,7 +192,7 @@
 
         methods: {
 
-           
+
 
         },
 

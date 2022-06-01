@@ -1,34 +1,27 @@
 <template>
     <div>
+        <v-card>
+            <v-card-title>All Registered Users List</v-card-title>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-6">
-                        <h3 class="card-title">All Registered Users List</h3>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="card-body table-responsive">
+            <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+
+                        <v-col cols="6" lg="2">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
 
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- zone_office -->
                             <v-select v-model="zone_office" label="Zones:" :items="allZoneOffices" item-text="name"
                                 item-value="offices" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="3">
+                        <v-col cols="6" lg="3">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
                                 item-text="department" item-value="department" small>
@@ -36,105 +29,107 @@
                         </v-col>
 
 
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- search_field -->
                             <v-select v-model="search_field" label="Search By:" :items="searchByFields" item-text="name"
                                 item-value="value" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="3">
-                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
+                        <v-col cols="12" lg="3">
+                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search"  label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
 
 
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('verify')">Verify</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'verify'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'verify'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('login')">Login</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('name')">Name</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('department')">Department</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'department'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'department'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('business_unit')">Business Unit</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'business_unit'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'business_unit'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('office_id')">Office ID</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'office_id'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'office_id'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('updated_at')">Completed</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'updated_at'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'updated_at'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('created_at')">Applied</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'created_at'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'created_at'">&darr;</span>
-                                </th>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('verify')">Verify</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'verify'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'verify'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('login')">Login</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('name')">Name</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('department')">Department</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'department'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'department'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('business_unit')">Business Unit</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'business_unit'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'business_unit'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('office_id')">Office ID</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'office_id'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'office_id'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('updated_at')">Completed</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'updated_at'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'updated_at'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('created_at')">Applied</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'created_at'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'created_at'">&darr;</span>
+                                    </th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                                <td class="text-center">
-                                    <!-- <button v-if="singleData.verify != 1" @click="editDataModelDirect(singleData)" class="btn btn-warning btn-sm"> 
-                                        <i class="fa fa-edit blue"></i>Create
-                                    </button>   -->
+                                    <td class="text-center">
+                                        <!-- <button v-if="singleData.verify != 1" @click="editDataModelDirect(singleData)" class="btn btn-warning btn-sm"> 
+                                            <i class="fa fa-edit blue"></i>Create
+                                        </button>   -->
 
 
-                                    <v-btn v-if="singleData.verify != 1" @click="editDataModelDirect(singleData)"
-                                        elevation="10" small class="float-right" color="primary" outlined>
-                                        <v-icon small>mdi-card-plus</v-icon> Create
-                                    </v-btn>
+                                        <v-btn v-if="singleData.verify != 1" @click="editDataModelDirect(singleData)"
+                                            elevation="10" small class="float-right" color="primary" outlined>
+                                            <v-icon small>mdi-card-plus</v-icon> Create
+                                        </v-btn>
 
-                                    <span v-else class="text-success">Created</span>
+                                        <span v-else class="text-success">Created</span>
 
-                                </td>
-                                <td>
-                                    <span v-if="singleData.verify == 1" class="text-success">Verified</span> <span
-                                        v-else class="text-danger">Not Verified</span>
-                                    <span class="text-muted small float-right"
-                                        v-if="singleData.verified">--{{ singleData.verified.name }}</span>
-                                </td>
-                                <td>{{ singleData.login  }}
-                                    <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image"
-                                        class="img-fluid" height="50" width="80">
-                                </td>
-                                <td>{{ singleData.name }} </td>
-                                <td>{{ singleData.department }} </td>
-                                <td>{{ singleData.business_unit }} </td>
-                                <td>{{ singleData.office_id }} </td>
-                                <td>{{ singleData.updated_at | moment("MMM Do YYYY, h:mm a") }} </td>
-                                <td>{{ singleData.created_at | moment("MMM Do YYYY, h:mm a") }} </td>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.verify == 1" class="text-success">Verified</span> <span
+                                            v-else class="text-danger">Not Verified</span>
+                                        <span class="text-muted small float-right"
+                                            v-if="singleData.verified">--{{ singleData.verified.name }}</span>
+                                    </td>
+                                    <td>{{ singleData.login  }}
+                                        <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image"
+                                            class="img-fluid" height="50" width="80">
+                                    </td>
+                                    <td>{{ singleData.name }} </td>
+                                    <td>{{ singleData.department }} </td>
+                                    <td>{{ singleData.business_unit }} </td>
+                                    <td>{{ singleData.office_id }} </td>
+                                    <td>{{ singleData.updated_at | moment("MMM Do YYYY, h:mm a") }} </td>
+                                    <td>{{ singleData.created_at | moment("MMM Do YYYY, h:mm a") }} </td>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -144,17 +139,10 @@
                         <span slot="next-nav">Next &gt;</span>
                     </pagination>
                 </div>
-                <div v-else>
-                    <div v-if="dataLoading" class="p-5 my-5">
-                        <p class="text-center h1">Loading.. <v-icon color="success" size="100">mdi mdi-loading mdi-spin
-                            </v-icon>
-                        </p>
-                    </div>
-                </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
 
-            </div>
-        </div>
+
+            </v-card-text>
+        </v-card>
 
 
 
@@ -179,18 +167,21 @@
 
                         <v-row>
                             <v-col cols="12" md="4">
-                                 
-                                <v-text-field type="text" label="User AD ID" :rules="[v => !!v || 'AD ID is required!']" v-model="form.login" required>
+
+                                <v-text-field type="text" label="User AD ID" :rules="[v => !!v || 'AD ID is required!']"
+                                    v-model="form.login" required>
                                 </v-text-field>
-                                <div class="text-danger" v-if="form.errors.has('login')" v-html="form.errors.get('login')" />
-                               
+                                <div class="text-danger" v-if="form.errors.has('login')"
+                                    v-html="form.errors.get('login')" />
+
                             </v-col>
 
                             <v-col cols="12" md="4">
                                 <v-text-field type="text" label="User Name"
                                     :rules="[v => !!v || 'User Name is required!']" v-model="form.name" required>
                                 </v-text-field>
-                                <div class="text-danger" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
+                                <div class="text-danger" v-if="form.errors.has('name')"
+                                    v-html="form.errors.get('name')" />
                             </v-col>
 
 
@@ -198,7 +189,8 @@
                                 <v-text-field type="text" label="User Department"
                                     :rules="[v => !!v || 'Department is required!']" v-model="form.department" required>
                                 </v-text-field>
-                                <div class="text-danger" v-if="form.errors.has('department')" v-html="form.errors.get('department')" />
+                                <div class="text-danger" v-if="form.errors.has('department')"
+                                    v-html="form.errors.get('department')" />
                             </v-col>
 
 
@@ -206,7 +198,8 @@
                                 <v-text-field type="text" label="User Office ID"
                                     :rules="[v => !!v || 'Office ID is required!']" v-model="form.office_id" required>
                                 </v-text-field>
-                                <div class="text-danger" v-if="form.errors.has('office_id')" v-html="form.errors.get('office_id')" />
+                                <div class="text-danger" v-if="form.errors.has('office_id')"
+                                    v-html="form.errors.get('office_id')" />
                             </v-col>
 
 
@@ -229,7 +222,8 @@
                                 <v-text-field type="email" label="User Office Email"
                                     :rules="[v => /.+@.+/.test(v) || 'E-mail must be valid',]"
                                     v-model="form.office_email"></v-text-field>
-                                <div class="text-danger" v-if="form.errors.has('office_email')" v-html="form.errors.get('office_email')" />
+                                <div class="text-danger" v-if="form.errors.has('office_email')"
+                                    v-html="form.errors.get('office_email')" />
                             </v-col>
 
                             <v-col cols="12" md="4">
@@ -244,7 +238,8 @@
                                 <v-text-field type="text" label="User Office Location"
                                     :rules="[v => !!v || 'Office Location is required!']" v-model="form.office"
                                     required></v-text-field>
-                                <div class="text-danger" v-if="form.errors.has('office')" v-html="form.errors.get('office')" />
+                                <div class="text-danger" v-if="form.errors.has('office')"
+                                    v-html="form.errors.get('office')" />
                             </v-col>
 
                             <v-col cols="12" md="4">
@@ -347,7 +342,8 @@
                         <!-- End Manager Selection -->
                         <v-row>
                             <v-col class="pa-0" cols="3" v-for="(role, index) in allRoles" :key="index">
-                                <v-checkbox v-model="currentRoles" :label="role.name" color="indigo" :value="role.id" hide-details></v-checkbox>
+                                <v-checkbox v-model="currentRoles" :label="role.name" color="indigo" :value="role.id"
+                                    hide-details></v-checkbox>
                             </v-col>
                         </v-row>
                         <hr>
@@ -422,7 +418,7 @@
 
                 allRoles: {},
                 currentRoles: [],
-               
+
                 singleUserModalShow: false,
                 singleUserModalData: {},
 
@@ -514,7 +510,7 @@
             this.$Progress.start();
             // Fetch initial results
             this.getResults();
-           
+
             this.$Progress.finish();
         },
 

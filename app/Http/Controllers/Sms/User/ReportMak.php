@@ -8,8 +8,8 @@ trait ReportMak{
     // SmsSalesOrder
     public function SmsSalesOrder($operationCode = null,  $orderDate = null ){
 
-        // $orderDate = '2022-02-01';
-        // $operationCode = '11';
+        // $orderDate = '2022-05-11';
+        // $operationCode = '01';
 
         $groupObjData = DB::connection('oracle_db')->table('IT_SMS_SALES_ORDER')
                 ->where('OPERATION_CODE', $operationCode)

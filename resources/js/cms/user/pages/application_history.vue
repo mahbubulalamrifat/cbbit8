@@ -13,59 +13,60 @@
                 </v-row>
             </v-card-title>
 
-            <v-card-text class="table-responsive">
-                <div v-if="allData.data">
-                    <v-row>
-                        <v-col cols="2">
-                            <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
-                            </v-select>
-                        </v-col>
+            <v-card-text>
+                <v-row>
+                    <v-col cols="6" lg="2">
+                        <!-- Show -->
+                        <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
+                        </v-select>
+                    </v-col>
 
-                        <v-col cols="2">
-                            <v-select :items="reportType" label="Select Type" v-model="sort_by_day"></v-select>
-                        </v-col>
+                    <v-col cols="6" lg="2">
+                        <v-select :items="reportType" label="Select Type" v-model="sort_by_day"></v-select>
+                    </v-col>
 
-                        <v-col cols="2">
-                            <v-menu v-model="menu" min-width="auto">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field v-model="sort_by_startDate" label="Start Date"
-                                        prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" clearable></v-text-field>
-                                </template>
+                    <v-col cols="12" lg="2">
+                        <v-menu v-model="menu" min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-icon="mdi-calendar"
+                                    readonly v-bind="attrs" v-on="on" clearable>
+                                </v-text-field>
+                            </template>
 
-                                <v-date-picker v-model="sort_by_startDate" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="menu = false">
-                                        Cancel
-                                    </v-btn>
-                                </v-date-picker>
-                            </v-menu>
-                        </v-col>
+                            <v-date-picker v-model="sort_by_startDate" no-title scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu = false">
+                                    Cancel
+                                </v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-col>
 
-                        <v-col cols="2">
-                            <v-menu v-model="menu2" min-width="auto">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field v-model="sort_by_endDate" label="End Date" prepend-icon="mdi-calendar"
-                                        readonly v-bind="attrs" v-on="on" clearable></v-text-field>
-                                </template>
+                    <v-col cols="12" lg="2">
+                        <v-menu v-model="menu2" min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="sort_by_endDate" label="End Date" prepend-icon="mdi-calendar"
+                                    readonly v-bind="attrs" v-on="on" clearable></v-text-field>
+                            </template>
 
-                                <v-date-picker v-model="sort_by_endDate" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="menu2 = false">
-                                        Cancel
-                                    </v-btn>
-                                </v-date-picker>
-                            </v-menu>
-                        </v-col>
+                            <v-date-picker v-model="sort_by_endDate" no-title scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu2 = false">
+                                    Cancel
+                                </v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-col>
 
-                        <v-col>
-                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..."></v-text-field>
-                        </v-col>
-                    </v-row>
+                    <v-col>
+                        <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
+                            placeholder="Search Input..."></v-text-field>
+                    </v-col>
+                </v-row>
+                <div v-if="allData.data" class="table-responsive">
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
+                    <table class="table table-bordered text-center">
+                        <thead>
                             <tr>
                                 <th>
                                     <a href="#" @click.prevent="change_sort('id')">Num.</a>
@@ -77,59 +78,101 @@
                                     <span v-if="sort_direction == 'desc' && sort_field == 'process'">&uarr;</span>
                                     <span v-if="sort_direction == 'asc' && sort_field == 'process'">&darr;</span>
                                 </th>
-                                <th>Category</th>
-                                <th>Subcategory</th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('created_at')">Complain At</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'created_at'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'created_at'">&darr;</span>
-                                </th>
+                                <th>Type</th>
+                                <th>Details</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                            <tr v-for="item in allData.data" :key="item.id">
 
                                 <td>
                                     <div class="pa-1 info rounded-pill h4 text-white text-center">
-                                        {{ singleData.id }}
+                                        {{ item.id }} (A)
+                                    </div>
+                                    <div v-if="item.document || item.document2 || item.document3 || item.document4">
+                                        <span v-if="item.document">
+                                            <a v-if="item.document" :href="docPath+item.document"
+                                                class="btn btn-info btn-sm text-white" download>
+                                                <v-icon color="white" dense>mdi-paperclip</v-icon> 1
+                                            </a>
+                                        </span>
+                                        <span v-if="item.document2">
+                                            <a v-if="item.document2" :href="docPath+item.document2"
+                                                class="btn btn-info btn-sm text-white" download>
+                                                <v-icon color="white" dense>mdi-paperclip</v-icon> 2
+                                            </a>
+                                        </span>
+                                        <span v-if="item.document3">
+                                            <a v-if="item.document3" :href="docPath+item.document3"
+                                                class="btn btn-info btn-sm text-white" download>
+                                                <v-icon color="white" dense>mdi-paperclip</v-icon> 3
+                                            </a>
+                                        </span>
+                                        <span v-if="item.document4">
+                                            <a v-if="item.document4" :href="docPath+item.document4"
+                                                class="btn btn-info btn-sm text-white" download>
+                                                <v-icon color="white" dense>mdi-paperclip</v-icon> 4
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <div v-else class="text-danger text-center">No Document's Send</div>
+
+                                </td>
+
+                                <td>
+                                    {{ item.process }}
+                                </td>
+
+                                <td>
+                                    <b>Category:</b> <span v-if="item.category">{{ item.category.name }}</span><br>
+                                    <b>Subcategory:</b> <span v-if="item.subcategory">{{ item.subcategory.name }}</span>
+                                </td>
+
+                                <td>
+                                    <b>Complain At:</b> <span
+                                        v-if="item.created_at">{{ item.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
+                                    <br>
+                                    <b>Last Update:</b> <span
+                                        v-if="item.updated_at">{{ item.updated_at | moment("MMMM Do YYYY, h:mm a") }}</span>
+
+                                    <div v-if="item.details">
+                                        <b>Details:</b>
+                                        <div v-if="item.details.length<100" v-html="item.details"></div>
+                                        <div v-else><span v-html="item.details.substring(0,100)+' .....'"></span> <v-btn small text plain
+                                                color="primary" @click="longTextHTML(item)"><u>See More </u>
+                                            </v-btn>
+                                        </div>
                                     </div>
                                 </td>
 
-                                <td class="text-center">
-                                    {{ singleData.process }}
-                                </td>
-
-                                <td class="text-center">
-                                    <span v-if="singleData.category">{{ singleData.category.name }}</span>
-                                </td>
-
-                                <td class="text-center">
-                                    <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
-                                </td>
-
-                                <td class="text-center">
-                                    <span
-                                        v-if="singleData.created_at">{{ singleData.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
-                                </td>
-                                <td class="text-center">
-                                    <span v-if="singleData.process == 'Not Process'">
-                                        <v-btn v-if="singleData.process == 'Not Process' && singleData.status == 1"
-                                            @click="complainCancel(singleData.id)" color="error" depressed
-                                            elevation="20">
+                                <td>
+                                    <span v-if="item.process == 'Not Process'">
+                                        <v-btn v-if="item.process == 'Not Process' && item.status == 1"
+                                            @click="complainCancel(item.id)" color="error" depressed elevation="20">
                                             <v-icon left>mdi-close-octagon-outline</v-icon> Cancel
                                         </v-btn>
                                         <span v-else class="error--text">Canceled</span>
                                     </span>
-                                    <v-btn v-else @click="remarksDetailsShow(singleData)" color="success" depressed
-                                        small elevation="20">
+                                    <v-btn v-else @click="remarksDetailsShow(item)" color="success" depressed small
+                                        elevation="20">
                                         <v-icon left>mdi-eye-arrow-left </v-icon> View
                                     </v-btn>
 
-                                    <v-btn v-if=" singleData.process == 'Closed' && singleData.rating == null" @click="feedback(singleData)"
-                                        color="teal white--text" depressed small elevation="20">
+                                    <v-btn v-if=" item.process == 'Closed' && item.rating == null"
+                                        @click="feedback(item)" color="teal white--text" depressed small elevation="20">
                                         <v-icon left>mdi-star-half-full </v-icon> Rating
                                     </v-btn>
+
+                                    <v-rating v-if="item.rating" :value="item.rating" color="yellow darken-3"
+                                        background-color="grey darken-1" empty-icon="$ratingFull" readonly></v-rating>
+                                    <div v-if="item.feedback">
+                                        <div v-if="item.feedback.length<100">{{ item.feedback }}</div>
+                                        <div v-else>{{ item.feedback.substring(0,100)+"..."}} <v-btn small text plain
+                                                color="primary" @click="longText(item.feedback)"><u> See More </u>
+                                            </v-btn>
+                                        </div>
+                                    </div>
                                 </td>
 
                             </tr>
@@ -151,7 +194,7 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! You have no complain in <b class="text-success">Application</b> section.</h1>
 
             </v-card-text>
         </v-card>
@@ -219,21 +262,75 @@
 
 
         <!-- app rating -->
-        <app-rating @childToParent="childToParentCall" v-if="appratingDialogShow" :key="appratingKey" :currentDataId="currentDataId"></app-rating>
+        <app-rating @childToParent="childToParentCall" v-if="appratingDialogShow" :key="appratingKey"
+            :currentDataId="currentDataId"></app-rating>
 
 
+        <!-- longtextDialog -->
+        <v-dialog v-model="longtextDialog" max-width="300">
+            <v-card>
+                <v-card-text>
+                    {{ currentText }}
+                </v-card-text>
+            </v-card>
+        </v-dialog>
 
+        <!-- longtextDialog -->
+        <!-- <v-dialog v-model="longtextDialogHTML" max-width="500">
+            <v-card class="p-2">
+                <v-card-text v-html="currentTextHTML" class="p-0 m-0"></v-card-text>
+            </v-card>
+        </v-dialog> -->
+        <v-dialog v-model="longtextDialogHTML">
+            <v-card>
+                <v-card-title class="justify-center">
+                    <v-row>
+                        <v-col cols="10">
+                            Details
+                        </v-col>
+                        <v-col cols="2">
+                            <v-btn @click="longtextDialogHTML = false" color="red lighten-1 white--text" small
+                                class="float-right">
+                                <v-icon left dark>mdi-close-octagon</v-icon> Close
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-title>
+                <v-card-text>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr class="text-center">
+                                <td>
+                                    <b>Process: </b> {{ currentTextHTML.process }}
+                                </td>
+                                <td>
+                                    <b>Complain At: </b> <span v-if="currentTextHTML.created_at">{{ currentTextHTML.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
+                                </td>
+                                <td>
+                                    <b>Last Update: </b> <span v-if="currentTextHTML.updated_at">{{ currentTextHTML.updated_at | moment("MMMM Do YYYY, h:mm a") }}</span>
+                                </td>
+                            <tr>
+                                
+                            <tr>
+                                <td colspan="3" v-html="currentTextHTML.details"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+        
     </div>
 
 </template>
 
 
 <script>
-import appRating from '../pages/appRating.vue'
+    import appRating from '../pages/appRating.vue'
     export default {
 
-        components:{
-            'app-rating':appRating
+        components: {
+            'app-rating': appRating
         },
 
         data() {
@@ -301,15 +398,19 @@ import appRating from '../pages/appRating.vue'
                 allRemarks: [],
                 docPath: '/images/application/',
 
-                
+
                 // rating component
                 appratingDialogShow: false,
                 appratingKey: 0,
 
                 // currentDataId
-                currentDataId:'',
+                currentDataId: '',
 
-                
+                // longtextDialog
+                longtextDialog: false,
+                currentText: '',
+                longtextDialogHTML: false,
+                currentTextHTML: '',
 
             }
 
@@ -317,8 +418,20 @@ import appRating from '../pages/appRating.vue'
         },
 
         methods: {
-            childToParentCall(){
+            childToParentCall() {
                 this.getResults();
+            },
+
+            // longtextDialog
+            longText(value) {
+                this.currentText = value;
+                this.longtextDialog = true;
+            },
+
+            // longtextDialogHTML
+            longTextHTML(value) {
+                this.currentTextHTML = value;
+                this.longtextDialogHTML = true;
             },
 
             // feedback
@@ -407,7 +520,7 @@ import appRating from '../pages/appRating.vue'
             },
 
 
-            
+
 
 
 

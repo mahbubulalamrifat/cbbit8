@@ -48,6 +48,11 @@ export default {
             value: 'PbiExpense',
         },
 
+        {
+            text: 'BI_MAP_UNIT_LEVEL',
+            value: 'PbiMapUnitLevel',
+        },
+
 
         
     ]

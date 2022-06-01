@@ -6,10 +6,8 @@ import paginateMethods from './paginate_methods'
 import imageMethods from './image_methods'
 import createUpdate from './crud'
 
-
 import globalRolePermissions from './../../../../role_permissions'
-
-
+import {debounce} from './../../../../helpers'
 
 
 
@@ -118,11 +116,11 @@ export default {
         },
 
         //Excuted When make change value 
-        search: function (value) {
+        search: debounce(function (value) {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        },
+        }, 500),
 
         //Excuted When make change value 
         search_field: function (value) {

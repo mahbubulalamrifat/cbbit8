@@ -30,7 +30,7 @@ class IndexController extends Controller
         
 
         // Query
-        $allDataQuery = User::with('roles')
+        $allDataQuery = User::with('roles', 'last_login')
             ->where('delete_temp', '!=', '1');
         
         // Zone Selected
@@ -155,7 +155,7 @@ class IndexController extends Controller
             'personal_contact'  => 'nullable|min:11|max:15',
             // 'office_contact'    => 'nullable|regex:/(01)[0-9]{9}/|max:15',
             // 'personal_contact'  => 'nullable|regex:/(01)[0-9]{9}/|max:15',
-            'personal_email'    => 'required|email',
+            'personal_email'    => 'nullable|email',
             'office_email'      => 'nullable|email',
             'office'            => 'nullable',
             'business_unit'     => 'nullable',
@@ -243,7 +243,7 @@ class IndexController extends Controller
             'personal_contact'  => 'nullable|min:11|max:15',
             // 'office_contact'    => 'nullable|regex:/(01)[0-9]{9}/|max:15',
             // 'personal_contact'  => 'nullable|regex:/(01)[0-9]{9}/|max:15',
-            'personal_email'    => 'required|email',
+            'personal_email'    => 'nullable|email',
             'office_email'      => 'nullable|email',
             'office'            => 'nullable',
             'business_unit'     => 'nullable',

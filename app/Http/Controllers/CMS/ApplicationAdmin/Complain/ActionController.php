@@ -42,7 +42,17 @@ class ActionController extends Controller
 
         // Store in Application Complain tbl
         $comp_data = ApplicationComplain::find($com_id);
-        $comp_data->process      = $request->process;
+       
+        if($comp_data->status == 0){
+            // Canceled
+            return response()->json(['msg'=>'Complain already canceled &#128558;', 'icon'=>'warning'], 200);
+        }
+
+        if($comp_data->process == 'Closed'){
+            // Check closed
+            return response()->json(['msg'=>'Complain already Closed &#128558;', 'icon'=>'warning'], 200);
+        }
+
 
         $documentPath = 'images/application/';
         $document     = $request->file('document');
@@ -59,6 +69,7 @@ class ActionController extends Controller
        
         $success = $remark_data->save();
         // Store in Application Complain tbl 
+        $comp_data->process      = $request->process;
         $success2 = $comp_data->save();
 
         

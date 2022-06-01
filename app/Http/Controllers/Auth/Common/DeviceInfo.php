@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth\Common;
 use Illuminate\Support\Facades\Http;
+use Ipify\Ip;
 
 class DeviceInfo {
 
@@ -9,6 +10,10 @@ class DeviceInfo {
     private static function get_user_agent()
     {
         return  $_SERVER['HTTP_USER_AGENT'];
+    }
+
+    public static function get_api_ip(){
+        return Ip::get();
     }
 
     public static function get_ip()

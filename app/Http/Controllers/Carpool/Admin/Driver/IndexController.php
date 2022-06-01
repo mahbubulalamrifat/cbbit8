@@ -17,16 +17,13 @@ use Carbon\Carbon;
 use Auth;
 use App\Http\Controllers\Common\ImageUpload;
 use DB;
+use App\Http\Controllers\Carpool\CommonFunctions;
 
 class IndexController extends Controller
 {
-    use ImageUpload;
+    use ImageUpload, CommonFunctions;
 
-    public function __construct(){
-        $this->middleware('auth');
-    }
-
-
+   
     public function index(){
 
         $paginate       = Request('paginate', 10);
@@ -290,19 +287,27 @@ class IndexController extends Controller
         $data = new CarpoolLeaves();
 
         $start = $request->start_date ." ". $request->start_time;
-        $end = $request->end_date ." ". $request->end_time;
+        $end   = $request->end_date ." ". $request->end_time;
+        $driver_id = $request->driver_id;
+        $car_id = $request->car_id;
 
-       // Check
-       $check = $this->leaveHave($start, $end, $request->driver_id);
+       // Check Leave
+       $check = $this->DriverLeaveHaveOrNot( $car_id, $start, $end );
        if($check){
-        return response()->json(['msg'=>'Sorry! Date not avaiable &#128527;', 'icon'=>'error'], 201);
+        return response()->json(['msg'=>'Sorry! Already Leave have at this date&#128527;', 'icon'=>'error'], 201);
        }
+
+        // Check booking
+        $check = $this->CheckBookingHaveOrNotByDriver( $car_id, $start, $end );
+        if($check){
+         return response()->json(['msg'=>'Sorry! Already Booking have at this date&#128527;', 'icon'=>'error'], 201);
+        }
 
     
         $data->start       = $start;
         $data->end         = $end;
         $data->car_id      = $request->car_id;
-        $data->driver_id   = $request->driver_id;
+        $data->driver_id   = $driver_id;
         $data->type        = $request->type;
         $data->status      = 1;
         $data->created_by  =  Auth::user()->id;
@@ -326,6 +331,8 @@ class IndexController extends Controller
         ->whereRaw("( `start` BETWEEN '$start' AND '$end' OR `end` BETWEEN '$start' AND '$end' OR '$start' BETWEEN `start` AND `end` OR '$end' BETWEEN `start` AND `end` )")
         ->count();
 
+        //dd($data);
+
         if($data > 0){
             return true;
         }else{
@@ -333,5 +340,6 @@ class IndexController extends Controller
         }
     }
 
+  
 }
 

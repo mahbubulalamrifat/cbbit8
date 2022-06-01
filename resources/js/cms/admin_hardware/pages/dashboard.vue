@@ -79,28 +79,30 @@
         </v-row>
 
         <h3 class="my-5">Category Wise Complain</h3>
-
-        
         <div v-if="productWiseComplain.length > 0">
             <v-row>
-                    <v-col cols="12" lg="3" v-for="(item, index) in productWiseComplain" :key="index">
-                <v-card>
-                    <v-img class="white--text align-end indigo" height="50px">
-                        <div class="d-flex justify-content-between">
-                            <v-card-title v-text="item.category.name"></v-card-title>
+                <v-col cols="12" lg="3" v-for="(item, index) in productWiseComplain" :key="index">
+                    <v-card>
+                        <v-img class="white--text align-end indigo" height="50px">
+                            <div class="d-flex justify-content-between">
 
-                            <v-card-title v-text="item.total" class="align-end"></v-card-title>
-                        </div>
-                    </v-img>
-                </v-card>
-            </v-col>
+                                <v-card-title v-if="item.category" class="small">
+                                    <span v-if="item.category.name.length < 15">{{ item.category.name }}</span>
+                                    <span v-else>{{ item.category.name.substring(0,15) + '...' }}</span>
+                                </v-card-title>
+                                <v-card-title v-text="item.total" class="align-end"></v-card-title>
+                                
+                            </div>
+                        </v-img>
+                    </v-card>
+                </v-col>
             </v-row>
-            
+
         </div>
         <div v-if="!overlay && productWiseComplain.length <= 0" class="m-auto">
             <p class="text-center h3 text-danger"> Complain Data Not Available </p>
         </div>
-        
+
 
         <h3 class="my-5">Damage Wise Complain</h3>
         <div v-if="damageWiseComplain.length > 0">

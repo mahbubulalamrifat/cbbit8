@@ -7,7 +7,8 @@
                         All Software Module List
                     </v-col>
                     <v-col cols="2">
-                        <v-btn @click="addDataModel()" color="primary" elevation="10" small outlined class="float-right">
+                        <v-btn @click="addDataModel()" color="primary" elevation="10" small outlined
+                            class="float-right">
                             <v-icon left>mdi-card-plus</v-icon> Add
                         </v-btn>
                     </v-col>
@@ -17,52 +18,69 @@
             <v-card-text class="table-responsive">
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
+                        <v-col cols="9">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th>Software</th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('name')">Module</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                                </th>
-                               
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th>Software</th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('name')">Module</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('created_at')">Created At</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'created_at'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'created_at'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('updated_at')">Updated At</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'updated_at'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'updated_at'">&darr;</span>
+                                    </th>
 
-                                <td><span v-if="singleData.category">{{ singleData.category.name }}</span></td>
-                                <td>{{ singleData.name }}</td>
-                               
-                                <td class="text-center">
-                                    <v-btn @click="editDataModel(singleData)" color="info" depressed small>
-                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
-                                    </v-btn>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                                    <v-btn @click="deleteData(singleData.id)" color="error" depressed small>
-                                        <v-icon left>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>
-                                    <br>
-                                    <span v-if="singleData.makby" class="small text-muted">Create By--
-                                        {{ singleData.makby.name }}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td><span v-if="singleData.category">{{ singleData.category.name }}</span></td>
+                                    <td>{{ singleData.name }}</td>
+                                    <td><span
+                                            v-if="singleData.created_at">{{ singleData.created_at | moment("MMM Do YYYY, h:mm a") }}</span>
+                                    </td>
+                                    <td><span
+                                            v-if="singleData.updated_at">{{ singleData.updated_at | moment("MMM Do YYYY, h:mm a") }}</span>
+                                    </td>
+                                    <td>
+                                        <v-btn @click="editDataModel(singleData)" color="info" depressed small>
+                                            <v-icon left>mdi-circle-edit-outline</v-icon> Edit
+                                        </v-btn>
+
+                                        <!-- <v-btn @click="deleteData(singleData.id)" color="error" depressed small>
+                                            <v-icon left>mdi-delete-empty</v-icon> Delete
+                                        </v-btn> -->
+                                        <br>
+                                        <span v-if="singleData.makby" class="small text-muted">Create By--
+                                            {{ singleData.makby.name }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -74,7 +92,9 @@
                 </div>
                 <div v-else>
                     <div v-if="dataLoading" class="p-5 my-5">
-                        <p class="text-center h1">Loading.. <v-icon color="success" size="100">mdi mdi-loading mdi-spin</v-icon></p>
+                        <p class="text-center h1">Loading.. <v-icon color="success" size="100">mdi mdi-loading mdi-spin
+                            </v-icon>
+                        </p>
                     </div>
                 </div>
                 <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
@@ -105,17 +125,21 @@
 
                             <v-row align-content="center">
                                 <v-col md="12">
-                                    <div class="small text-danger" v-if="form.errors.has('cat_id')" v-html="form.errors.get('cat_id')" />
-                                    <v-autocomplete dense solo :items="allCategory" v-model="form.cat_id" label="Select Software" :rules="[v => !!v || 'Software name is required!']" required></v-autocomplete>
+                                    <div class="small text-danger" v-if="form.errors.has('cat_id')"
+                                        v-html="form.errors.get('cat_id')" />
+                                    <v-autocomplete dense solo :items="allCategory" v-model="form.cat_id"
+                                        label="Select Software" :rules="[v => !!v || 'Software name is required!']"
+                                        required></v-autocomplete>
                                 </v-col>
                                 <v-col md="12">
-                                    <div class="text-danger" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
-                                    <v-text-field v-model="form.name" label="Enter Module Name" :rules="[ v=> !!v || 'Module name is required!']"
-                                        required></v-text-field>
+                                    <div class="text-danger" v-if="form.errors.has('name')"
+                                        v-html="form.errors.get('name')" />
+                                    <v-text-field v-model="form.name" label="Enter Module Name"
+                                        :rules="[ v=> !!v || 'Module name is required!']" required></v-text-field>
                                 </v-col>
                             </v-row>
 
-                           
+
                             <v-btn v-show="editmode" type="submit" block depressed :loading="dataModalLoading"
                                 color="primary">
                                 <v-icon left dark>mdi-circle-edit-outline</v-icon> Update
@@ -150,16 +174,16 @@
 
             return {
 
-                reqRules:[v => !!v || 'This field is required!'],
+                reqRules: [v => !!v || 'This field is required!'],
                 codeRules: [v => !!v || 'This field is required!',
-                            v => (v && v.length == 2) || 'Code must be less than 2 numbers'
-                            ],
+                    v => (v && v.length == 2) || 'Code must be less than 2 numbers'
+                ],
 
-               
+
                 //current page url
                 currentUrl: '/cms/a_admin/subcategory',
 
-                allCategory:[],
+                allCategory: [],
 
 
                 // Form
@@ -176,15 +200,18 @@
 
         methods: {
 
-            getAllCategory(){
-                axios.get( this.currentUrl + '/category').then( response=>{
+            getAllCategory() {
+                axios.get(this.currentUrl + '/category').then(response => {
                     //this.allCategory = response.data
                     //console.log(response.data)
                     for (let i = 0; i < response.data.length; i++) {
                         this.allCategory.push(response.data[i]);
-                        this.allCategory[i] = {value: response.data[i].id, text: response.data[i].name };
+                        this.allCategory[i] = {
+                            value: response.data[i].id,
+                            text: response.data[i].name
+                        };
                     }
-                }).catch(error=>{
+                }).catch(error => {
                     console.log(error)
                 })
             }
@@ -208,5 +235,3 @@
     }
 
 </script>
-
-

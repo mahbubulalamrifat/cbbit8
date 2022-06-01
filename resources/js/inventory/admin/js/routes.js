@@ -23,6 +23,8 @@ import reportStock from './../pages/report/stock.vue'
 import deletedNewProduct from './../pages/deleted_section/new_product.vue'
 import deletedOldProduct from './../pages/deleted_section/old_product.vue'
 
+import Category from './../pages/category/index.vue'
+import Draft from './../pages/draft/index.vue'
 
 
 const router = new VueRouter({
@@ -34,7 +36,7 @@ const router = new VueRouter({
             component: Dashboard,
             name: 'Dashboard',
             meta:{
-                title: 'Admin Demo Dashboard',
+                title: 'Admin Inventory Dashboard',
             },   
         },
         { 
@@ -133,6 +135,26 @@ const router = new VueRouter({
             name: 'deletedOldProduct',
             meta:{
                 title: 'Admin Deleted Old Product',
+            },   
+        },
+
+        // Category
+        { 
+            path: '/inventory/admin/inv-category', 
+            component: Category,
+            name: 'Category',
+            meta:{
+                title: 'Admin Inventory Category',
+            },   
+        },
+
+        // draft
+        { 
+            path: '/inventory/admin/draft', 
+            component: Draft,
+            name: 'Draft',
+            meta:{
+                title: 'Hardware Draft Admin',
             },   
         },
 

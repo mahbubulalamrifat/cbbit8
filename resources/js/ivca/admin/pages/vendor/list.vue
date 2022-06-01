@@ -34,79 +34,81 @@
                         </div>
                     </div>
 
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('vendor_number')">Vendor number</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'Vendor Number'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'vendor_number'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('suppier_name')">Vendor Name</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'suppier_name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'suppier_name'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('address')">Address</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'address'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'address'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('contact_name')">Contact Name</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'contact_name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'contact_name'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('email')">Email</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'email'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'email'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('telephone')">Telephone</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'telephone'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'telephone'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('blocked')">Status</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'blocked'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'blocked'">&darr;</span>
-                                </th>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('vendor_number')">Vendor number</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'Vendor Number'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'vendor_number'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('suppier_name')">Vendor Name</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'suppier_name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'suppier_name'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('address')">Address</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'address'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'address'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('contact_name')">Contact Name</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'contact_name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'contact_name'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('email')">Email</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'email'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'email'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('telephone')">Telephone</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'telephone'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'telephone'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('blocked')">Status</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'blocked'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'blocked'">&darr;</span>
+                                    </th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td class="text-center">
-                                    <!-- v-if="isAdmin()" -->
-                                    <div >
-                                        <v-btn v-if="singleData.status" @click="statusChange(singleData)" small
-                                            color="success" elevation="10" class="mb-1">
-                                            <v-icon left>mdi-check-decagram</v-icon> Activated
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td class="text-center">
+                                        <!-- v-if="isAdmin()" -->
+                                        <div >
+                                            <v-btn v-if="singleData.status" @click="statusChange(singleData)" small
+                                                color="success" elevation="10" class="mb-1">
+                                                <v-icon left>mdi-check-decagram</v-icon> Activated
+                                            </v-btn>
+                                            <v-btn v-else @click="statusChange(singleData)" small color="warning"
+                                                elevation="10" class="mb-1">
+                                                <v-icon left>mdi-close-octagon</v-icon> Inactive
+                                            </v-btn>
+                                        </div>
+                                        <v-btn @click="editDataModel(singleData)" small color="info" elevation="10"
+                                            class="mb-1">
+                                            <v-icon left>mdi-circle-edit-outline</v-icon> Modify
                                         </v-btn>
-                                        <v-btn v-else @click="statusChange(singleData)" small color="warning"
-                                            elevation="10" class="mb-1">
-                                            <v-icon left>mdi-close-octagon</v-icon> Inactive
-                                        </v-btn>
-                                    </div>
-                                    <v-btn @click="editDataModel(singleData)" small color="info" elevation="10"
-                                        class="mb-1">
-                                        <v-icon left>mdi-circle-edit-outline</v-icon> Modify
-                                    </v-btn>
-                                </td>
-                                <td>{{ singleData.vendor_number }}</td>
-                                <td>{{ singleData.suppier_name }}</td>
-                                <td>{{ singleData.address }}</td>
-                                <td>{{ singleData.contact_name }}</td>
-                                <td>{{ singleData.email }}</td>
-                                <td>{{ singleData.telephone }}</td>
-                                <td><span v-if="singleData.blocked == 1" class="text-danger">Blocked</span> <span v-else
-                                        class="text-success">Active</span></td>
+                                    </td>
+                                    <td>{{ singleData.vendor_number }}</td>
+                                    <td>{{ singleData.suppier_name }}</td>
+                                    <td>{{ singleData.address }}</td>
+                                    <td>{{ singleData.contact_name }}</td>
+                                    <td>{{ singleData.email }}</td>
+                                    <td>{{ singleData.telephone }}</td>
+                                    <td><span v-if="singleData.blocked == 1" class="text-danger">Blocked</span> <span v-else
+                                            class="text-success">Active</span></td>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

@@ -7,8 +7,7 @@
     </v-app>
 </template>
 
-<script> 
-
+<script>
     import chooseDashboard from './pages/choose.vue'
     import userDashboard from './pages/user.vue'
     import adminDashboard from './pages/admin.vue'
@@ -31,7 +30,7 @@
                 dashboard: false,
                 userDashboard: false,
                 adminDashboard: false,
-                noAccess: false
+                noAccess: false,
             }
         },
 
@@ -95,13 +94,13 @@
         },
 
 
-        
+
 
         created() {
 
             // Set Auth and Role data in Store
-            this.$store.commit('setAuth', JSON.parse(this.authuser) )
-            this.$store.commit('setRoles', JSON.parse(this.permission) )
+            this.$store.commit('setAuth', JSON.parse(this.authuser))
+            this.$store.commit('setRoles', JSON.parse(this.permission))
 
             this.$Progress.start();
 
@@ -109,7 +108,7 @@
             this.checkUserRoleForDashboard();
             // console.log('auth user', this.auth, this.auth.roles );
 
-           console.log('Role: ', JSON.parse(this.authuser), this.isAdministrator(), this.isAnyRole(['Administrator', 'Ivca']), this.isRole('Administrator') )
+            // console.log('Role: ', JSON.parse(this.authuser), this.isAdministrator(), this.isAnyRole(['Administrator', 'Ivca']), this.isRole('Administrator') )
 
             this.$Progress.finish();
         }

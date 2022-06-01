@@ -19,10 +19,11 @@
                                 v-html="form.errors.get('rating')" />
                         </div>
 
-                        <v-textarea label="Feedback" placeholder="Give Your Feedback" outlined v-model="form.feedback"
-                            sm="1"></v-textarea>
                         <div class="small text-danger" v-if="form.errors.has('feedback')"
                             v-html="form.errors.get('feedback')" />
+                        <v-textarea label="Feedback" placeholder="Give Your Feedback" outlined v-model="form.feedback"
+                            sm="1" :rules="remRules" ></v-textarea>
+                        
 
 
 
@@ -51,6 +52,11 @@
             return {
 
                 ratingDialog: true,
+
+                remRules: [
+                    v => (v || '').length <= 20000 || 'Feedback must be 20,000 characters or less',
+                    v => (v || '').length >= 10 || '10 chars minimum or more',
+                ],
 
                 form: new Form({
 

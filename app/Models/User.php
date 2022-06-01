@@ -48,9 +48,15 @@ class User extends Authenticatable
         return $query
         ->where('login', 'LIKE', '%'.$val.'%')
         ->Orwhere('name', 'LIKE', '%'.$val.'%')
-        ->Orwhere('office_id', 'LIKE', '%'.$val.'%')
         ->Orwhere('department', 'LIKE', '%'.$val.'%')
-        ->Orwhere('business_unit', 'LIKE', '%'.$val.'%'); 
+        ->Orwhere('office_id', 'LIKE', '%'.$val.'%')
+        ->Orwhere('office_contact', 'LIKE', '%'.$val.'%')
+        ->Orwhere('personal_contact', 'LIKE', '%'.$val.'%')
+        ->Orwhere('office_email', 'LIKE', '%'.$val.'%')
+        ->Orwhere('personal_email', 'LIKE', '%'.$val.'%')
+        ->Orwhere('office', 'LIKE', '%'.$val.'%')
+        ->Orwhere('business_unit', 'LIKE', '%'.$val.'%')
+        ->Orwhere('nid', 'LIKE', '%'.$val.'%'); 
     }
 
 
@@ -125,7 +131,7 @@ class User extends Authenticatable
 
     // pbi_roles
     public function pbi_roles(){
-        return $this->belongsToMany('App\Models\Pbi\PbiRole', 'pbi_user_role', 'user_id', 'pbi_role_id');
+        return $this->belongsToMany('App\Models\Pbi\PbiRole', 'pbi_user_role', 'user_id', 'pbi_role_id')->orderBy('name');
     }
 
     public function pbi_hasRole($role)
@@ -150,6 +156,12 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+
+    //Log
+    public function last_login(){
+        return $this->hasOne('App\Models\UserLoginLog', 'login_id', 'login')->where('status', 1)->latest();
     }
 
     

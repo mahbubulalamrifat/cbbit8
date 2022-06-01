@@ -15,6 +15,8 @@ import BookedHistory from '../pages/booked_history.vue'
 import NotCommented from '../pages/not_commented.vue'
 //import CarDetails from '../pages/car_details.vue'
 
+import UserManual from './../pages/user_manual.vue'
+
 const router = new VueRouter({
     mode: 'history',
     routes : [
@@ -52,11 +54,19 @@ const router = new VueRouter({
             },   
         },
         { 
-            path: '/carpool/booked_history', 
+            path: '/carpool/booked-history', 
             component: BookedHistory,
             name: 'BookedHistory',
             meta:{
                 title: 'Car Booked History',
+            },   
+        },
+        { 
+            path: '/carpool/user-manual', 
+            component: UserManual,
+            name: 'UserManual',
+            meta:{
+                title: 'Car User Manual',
             },   
         },
         

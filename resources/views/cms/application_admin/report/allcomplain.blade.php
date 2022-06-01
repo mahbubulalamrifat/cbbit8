@@ -16,6 +16,7 @@
             <td style="font-weight:bold; background-color: khaki">Module</td>
             <td style="font-weight:bold; background-color: khaki">User</td>
             <td style="font-weight:bold; background-color: khaki">Department</td>
+            <td style="font-weight:bold; background-color: khaki">Office</td>
             <td style="font-weight:bold; background-color: khaki">Register</td>
             <td style="font-weight:bold; background-color: khaki">Last Update</td>
         </tr>
@@ -46,6 +47,12 @@
 
             @if($item->makby)
             <td>{{ $item->makby->department }}</td>
+            @else
+            <td style="color:red">N/A</td>
+            @endif
+
+            @if($item->makby)
+            <td>{{ $item->makby->office }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif

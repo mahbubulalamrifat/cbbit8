@@ -16,30 +16,55 @@ use App\Models\Cms\Hardware\HardwareDelivery;
 
 class ComplainController extends Controller
 {
-    //not_process 
+    //not_process  
     public function not_process(){
 
         // Check access offices
         $accessZoneOffices = CommonController::ZoneOfficesByAuth();
 
-        // dd($size, $finalArrOffices, $zoneAccessName, $zoneOfficeName, $zoneOffices, $zoneAccess );
+        // dd($size, $finalArrOffices,  $zoneAccessName, $zoneOfficeName, $zoneOffices, $zoneAccess );
 
         $paginate       = Request('paginate', 10);
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
+        $zone_office    = Request('zone_office', 'All');
 
-        $allData = HardwareComplain::with('makby', 'category', 'subcategory')
+        $allDataQuery = HardwareComplain::with('makby', 'category', 'subcategory')
             ->where('status', 1)
-            ->whereHas('makby', function($q) use($accessZoneOffices){
-                //dd($accessZoneOffices[0]);
-                $q->whereIn('zone_office', $accessZoneOffices);
-                //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
-            })
-            ->where('process', 'Not Process')
-            ->orderBy($sort_field, $sort_direction)
-            ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
-            ->paginate($paginate);
+            ->where('process', 'Not Process');
+
+            if( !empty($zone_office) && $zone_office != 'All'){
+
+                // Check access offices
+                $accessZoneOfficesQuery = ZoneOffice::where('name', $zone_office)->select('offices')->first();
+            
+                if(!empty($accessZoneOfficesQuery)){
+                    $offices = $accessZoneOfficesQuery->offices;
+                    // string to array
+                    $accessZoneOffices = explode(',', $offices);
+                }else{
+                    $accessZoneOffices = [];
+                }
+            
+                //dd($zone_office,  $accessZoneOffices,  $accessZoneOfficesQuery);
+                $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                    //dd($accessZoneOffices);
+                    $q->whereIn('zone_office', $accessZoneOffices);
+                }); 
+                
+            }else{
+                $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                    //dd($accessZoneOffices[0]);
+                    $q->whereIn('zone_office', $accessZoneOffices);
+                    //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+                });
+            }
+
+
+            $allData = $allDataQuery->orderBy($sort_field, $sort_direction)
+                ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
+                ->paginate($paginate);
 
         return response()->json($allData, 200);
 
@@ -58,15 +83,40 @@ class ComplainController extends Controller
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
+        $zone_office    = Request('zone_office', 'All');
 
-        $allData = HardwareComplain::with('makby', 'category', 'subcategory')
-            ->where('status', 1)
-            ->whereHas('makby', function($q) use($accessZoneOffices){
-                //dd($accessZoneOffices);
-                $q->whereIn('zone_office', $accessZoneOffices);
-            })
-            ->where('process', 'Processing')
-            ->orderBy($sort_field, $sort_direction)
+        $allDataQuery = HardwareComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1) 
+            ->where('process', 'Processing');
+
+
+            if( !empty($zone_office) && $zone_office != 'All'){
+                // Check access offices
+                $accessZoneOfficesQuery = ZoneOffice::where('name', $zone_office)->select('offices')->first();
+            
+                if(!empty($accessZoneOfficesQuery)){
+                    $offices = $accessZoneOfficesQuery->offices;
+                    // string to array
+                    $accessZoneOffices = explode(',', $offices);
+                }else{
+                    $accessZoneOffices = [];
+                }
+            
+                //dd($zone_office,  $accessZoneOffices,  $accessZoneOfficesQuery);
+                $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                    //dd($accessZoneOffices);
+                    $q->whereIn('zone_office', $accessZoneOffices);
+                }); 
+                
+            }else{
+                $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                    //dd($accessZoneOffices[0]);
+                    $q->whereIn('zone_office', $accessZoneOffices);
+                });
+            }
+
+
+        $allData = $allDataQuery->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
             ->paginate($paginate);
 
@@ -77,15 +127,48 @@ class ComplainController extends Controller
     // closed
     public function closed(){
 
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
+
         $paginate       = Request('paginate', 10);
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
+        $zone_office    = Request('zone_office', 'All');
 
-        $allData = HardwareComplain::with('makby', 'category', 'subcategory')
+        $allDataQuery = HardwareComplain::with('makby', 'category', 'subcategory')
             ->where('status', 1)
-            ->where('process', 'Closed')
-            ->orderBy($sort_field, $sort_direction)
+            ->where('process', 'Closed');
+
+            if( !empty($zone_office) && $zone_office != 'All'){
+                // Check access offices
+                $accessZoneOfficesQuery = ZoneOffice::where('name', $zone_office)->select('offices')->first();
+            
+                if(!empty($accessZoneOfficesQuery)){
+                    $offices = $accessZoneOfficesQuery->offices;
+                    // string to array
+                    $accessZoneOffices = explode(',', $offices);
+                }else{
+                    $accessZoneOffices = [];
+                }
+            
+                //dd($zone_office,  $accessZoneOffices,  $accessZoneOfficesQuery);
+                $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                    //dd($accessZoneOffices);
+                    $q->whereIn('zone_office', $accessZoneOffices);
+                }); 
+                
+            }else{
+                $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                    //dd($accessZoneOffices[0]);
+                    $q->whereIn('zone_office', $accessZoneOffices);
+                });
+            }
+
+
+
+
+        $allData = $allDataQuery->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
             ->paginate($paginate);
 
@@ -104,16 +187,36 @@ class ComplainController extends Controller
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
+        $zone_office    = Request('zone_office', 'All');
 
         $allDataQuery = HardwareComplain::with('makby', 'category', 'subcategory')
             ->where('status', 1)
             ->where('process', 'Deliverable');
 
-        // Check Zone Access
-        $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
-            //dd($accessZoneOffices);
-            $q->whereIn('zone_office', $accessZoneOffices);
-        });
+        if( !empty($zone_office) && $zone_office != 'All'){
+            // Check access offices
+            $accessZoneOfficesQuery = ZoneOffice::where('name', $zone_office)->select('offices')->first();
+        
+            if(!empty($accessZoneOfficesQuery)){
+                $offices = $accessZoneOfficesQuery->offices;
+                // string to array
+                $accessZoneOffices = explode(',', $offices);
+            }else{
+                $accessZoneOffices = [];
+            }
+        
+            //dd($zone_office,  $accessZoneOffices,  $accessZoneOfficesQuery);
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
+            }); 
+            
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices[0]);
+                $q->whereIn('zone_office', $accessZoneOffices);
+            });
+        }
 
         $allData = $allDataQuery->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
@@ -191,15 +294,38 @@ class ComplainController extends Controller
         $search         = Request('search', '');
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
+        $zone_office    = Request('zone_office', 'All');
 
-        $allData = HardwareComplain::with('makby', 'category', 'subcategory')
+        $allDataQuery = HardwareComplain::with('makby', 'category', 'subcategory')
             ->where('status', 1)
-            ->whereHas('makby', function($q) use($accessZoneOffices){
-                //dd($accessZoneOffices);
-                $q->whereIn('zone_office', $accessZoneOffices);
-            })
-            ->whereIn('process', ['Send Service', 'Back Service', 'Again Send Service', 'Service Quotation'])
-            ->orderBy($sort_field, $sort_direction)
+            ->whereIn('process', ['Send Service', 'Back Service', 'Again Send Service', 'Service Quotation']);
+
+            if( !empty($zone_office) && $zone_office != 'All'){
+                // Check access offices
+                $accessZoneOfficesQuery = ZoneOffice::where('name', $zone_office)->select('offices')->first();
+            
+                if(!empty($accessZoneOfficesQuery)){
+                    $offices = $accessZoneOfficesQuery->offices;
+                    // string to array
+                    $accessZoneOffices = explode(',', $offices);
+                }else{
+                    $accessZoneOffices = [];
+                }
+            
+                //dd($zone_office,  $accessZoneOffices,  $accessZoneOfficesQuery);
+                $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                    //dd($accessZoneOffices);
+                    $q->whereIn('zone_office', $accessZoneOffices);
+                }); 
+                
+            }else{
+                $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                    //dd($accessZoneOffices[0]);
+                    $q->whereIn('zone_office', $accessZoneOffices);
+                });
+            }
+            
+            $allData = $allDataQuery->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
             ->paginate($paginate);
 

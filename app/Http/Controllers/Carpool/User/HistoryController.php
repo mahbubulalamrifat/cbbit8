@@ -46,14 +46,13 @@ class HistoryController extends Controller
         
         
         // sort_by_startDate
-
         if(!empty($sort_by_startDate) && !empty($sort_by_endDate) ){
             
-            $allQuery ->whereDate('start', '>=', $sort_by_startDate)
-                      ->whereDate('end', '<=', $sort_by_endDate);
+            $allQuery ->whereDate('start', '>=', $sort_by_startDate." 00:00:00")
+                      ->whereDate('end', '<=', $sort_by_endDate." 23:59:59");
         }
 
-        $allData =  $allQuery->orderBy($sort_field, $sort_direction)
+        $allData =  $allQuery->orderBy('start', 'desc')
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
             ->paginate($paginate);
 
@@ -125,8 +124,7 @@ class HistoryController extends Controller
     // driver info
     public function CarDriver($id){
 
-        $allData = CarpoolDriver::
-            where('id', '=', $id)
+        $allData = CarpoolDriver::where('id', '=', $id)
             ->select('name', 'contact', 'license', 'nid', 'image')
             ->first();
 
@@ -139,8 +137,7 @@ class HistoryController extends Controller
     // bookbyUser info
     public function bookbyUser($id){
 
-        $allData = User::
-            where('id', '=', $id)
+        $allData = User::where('id', '=', $id)
             ->first();
 
         return response()->json($allData, 200);
@@ -155,13 +152,23 @@ class HistoryController extends Controller
 
     public function CarData(){
 
-        $allData = CarpoolCar::
-        where("status", 1)
+        // $allData = CarpoolCar::with('driver')
+        // ->where("status", 1)
+        // ->select('id', 'name', 'number')
+        // ->get(); 
+
+        // // Custom Field Data Add
+        // $custom = collect( [['id' => '', 'name' => 'Car', 'number' => 'All']] );
+        // $allData = $custom->merge($allData);
+
+        // return response()->json($allData, 200);
+
+        $allData = CarpoolCar::with('driver')->where("status", 1)
         ->select('id', 'name', 'number')
         ->get(); 
 
         // Custom Field Data Add
-        $custom = collect( [['id' => '', 'name' => 'Car', 'number' => 'All']] );
+        $custom = collect( [['id' => '', 'name' => 'Car', 'number' => 'All', 'driver'=>['name' => 'Driver']]] );
         $allData = $custom->merge($allData);
 
         return response()->json($allData, 200);

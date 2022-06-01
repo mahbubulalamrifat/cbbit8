@@ -288,9 +288,10 @@
 
 
         },
-
+ 
         created() {
             this.getAllCategory();
+            console.log('Remaining hard rating hard complain', this.hardCounter)
         }
 
     }

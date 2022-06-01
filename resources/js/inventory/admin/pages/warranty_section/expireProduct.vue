@@ -46,7 +46,6 @@
                                     <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
                                 </th>
                                 <th>Category</th>
-                                <th>Subcategory</th>
                                 <th>
                                     <a href="#" @click.prevent="change_sort('serial')">Serial</a>
                                     <span v-if="sort_direction == 'desc' && sort_field == 'serial'">&uarr;</span>
@@ -79,17 +78,13 @@
                                         <span v-else class="error--text">N/A</span>
                                     </td>
                                     <td>
-                                        <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
-                                        <span v-else class="error--text">N/A</span>
-                                    </td>
-                                    <td>
                                         <span v-if="singleData.serial">{{ singleData.serial }}</span>
                                         <span v-else class="error--text">N/A</span>
                                     </td>
                                     <td>
                                         <v-btn v-if="singleData.document"
-                                            :href="'/images/inventory/'+singleData.document" color="info" download>
-                                            <v-icon left>mdi-download-network-outline</v-icon> File
+                                            :href="'/images/inventory/'+singleData.document" color="info" small download>
+                                            <v-icon left>mdi-attachment</v-icon> File
                                         </v-btn>
                                         <span v-else class="text-danger">Not Attached</span>
                                     </td>
@@ -121,7 +116,7 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h2 class="error--text text-center" v-if="!totalValue && !dataLoading" >Expire Product Data Not Available <v-icon large color="error">mdi-alert-octagon-outline</v-icon></h2>
 
             </v-card-text>
         </v-card>
@@ -160,10 +155,7 @@
                         value: 'cat_id',
                         text: 'Category'
                     },
-                    {
-                        value: 'subcat_id',
-                        text: 'Subcategory'
-                    },
+                   
                 ],
 
                 // exportLoading

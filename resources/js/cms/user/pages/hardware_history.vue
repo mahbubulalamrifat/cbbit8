@@ -13,59 +13,62 @@
                 </v-row>
             </v-card-title>
 
-            <v-card-text class="table-responsive">
-                <div v-if="allData.data">
-                    <v-row>
-                        <v-col cols="2">
-                            <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
-                            </v-select>
-                        </v-col>
 
-                        <v-col cols="2">
-                            <v-select :items="reportType" label="Select Type" v-model="sort_by_day"></v-select>
-                        </v-col>
 
-                        <v-col cols="2">
-                            <v-menu v-model="menu" min-width="auto">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field v-model="sort_by_startDate" label="Start Date"
-                                        prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" clearable></v-text-field>
-                                </template>
+            <v-card-text>
+                <v-row>
+                    <v-col cols="6" lg="2" >
+                        <!-- Show -->
+                        <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
+                        </v-select>
+                    </v-col>
 
-                                <v-date-picker v-model="sort_by_startDate" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="menu = false">
-                                        Cancel
-                                    </v-btn>
-                                </v-date-picker>
-                            </v-menu>
-                        </v-col>
+                    <v-col cols="6" lg="2">
+                        <v-select :items="reportType" label="Select Type" v-model="sort_by_day"></v-select>
+                    </v-col>
 
-                        <v-col cols="2">
-                            <v-menu v-model="menu2" min-width="auto">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field v-model="sort_by_endDate" label="End Date" prepend-icon="mdi-calendar"
-                                        readonly v-bind="attrs" v-on="on" clearable></v-text-field>
-                                </template>
+                    <v-col cols="12" lg="2">
+                        <v-menu v-model="menu" min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-icon="mdi-calendar"
+                                    readonly v-bind="attrs" v-on="on" clearable></v-text-field>
+                            </template>
 
-                                <v-date-picker v-model="sort_by_endDate" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="menu2 = false">
-                                        Cancel
-                                    </v-btn>
-                                </v-date-picker>
-                            </v-menu>
-                        </v-col>
+                            <v-date-picker v-model="sort_by_startDate" no-title scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu = false">
+                                    Cancel
+                                </v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-col>
 
-                        <v-col>
-                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..."></v-text-field>
-                        </v-col>
-                    </v-row>
+                    <v-col cols="12" lg="2">
+                        <v-menu v-model="menu2" min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field v-model="sort_by_endDate" label="End Date" prepend-icon="mdi-calendar"
+                                    readonly v-bind="attrs" v-on="on" clearable></v-text-field>
+                            </template>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
+                            <v-date-picker v-model="sort_by_endDate" no-title scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu2 = false">
+                                    Cancel
+                                </v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-col>
+
+                    <v-col>
+                        <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
+                            placeholder="Search Input..."></v-text-field>
+                    </v-col>
+                </v-row>
+                <div v-if="allData.data" class="table-responsive">
+
+
+                    <table class="table table-bordered text-center">
+                        <thead>
                             <tr>
                                 <th>
                                     <a href="#" @click.prevent="change_sort('id')">Number</a>
@@ -77,101 +80,120 @@
                                     <span v-if="sort_direction == 'desc' && sort_field == 'process'">&uarr;</span>
                                     <span v-if="sort_direction == 'asc' && sort_field == 'process'">&darr;</span>
                                 </th>
-                                <th>Category</th>
-                                <th>Subcategory</th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('created_at')">Complain At</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'created_at'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'created_at'">&darr;</span>
-                                </th>
+                                <th>Type</th>
+                                <th>Details</th>
                                 <th>Action</th>
+
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                            <tr v-for="item in allData.data" :key="item.id">
                                 <td>
-                                    <div class="pa-1 info rounded-pill h4 text-white text-center">
-                                        {{ singleData.id }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div v-if="(singleData.process == 'Damaged')"
-                                        class="pa-1 error rounded-pill h6 text-white text-center">
-                                        {{ singleData.process }}
+                                    <div class="pa-1 info rounded-pill h4 text-white">
+                                        {{ item.id }} (H)
                                     </div>
 
-                                    <div v-else class="pa-1 info rounded-pill h6 text-white text-center">
-                                        {{ singleData.process }}
+                                    <span v-if="item.document">
+                                        <a v-if="item.document" :href="docPath+item.document"
+                                            class="btn btn-info btn-sm text-white" download>
+                                            <v-icon color="white" small>mdi-paperclip</v-icon> Document
+                                        </a>
+                                    </span>
+                                    <span v-else class="text-danger">No Document's Send</span>
+                                </td>
+                                <td>
+                                    <div v-if="(item.process == 'Damaged')"
+                                        class="pa-1 error rounded-pill h6 text-white">
+                                        {{ item.process }}
+                                    </div>
+
+                                    <div v-else class="pa-1 info rounded-pill h6 text-white">
+                                        {{ item.process }}
                                     </div>
                                     <!-- damagedReplace -->
-                                    <div v-if="singleData.dam_apply && singleData.dam_apply.rec_name"
-                                        class="text-center">
-                                        <v-btn @click="damagedReplaceMethod(singleData.dam_apply)" color="success"
-                                            x-small>
+                                    <div v-if="item.dam_apply && item.dam_apply.rec_name">
+                                        <v-btn @click="damagedReplaceMethod(item.dam_apply)" color="success" x-small>
                                             <v-icon left>mdi-eye-arrow-left </v-icon> Damaged Replaced
                                         </v-btn>
                                     </div>
 
                                 </td>
-                                <td class="text-center">
-                                    <span v-if="singleData.category">{{ singleData.category.name }}</span>
+                                <td>
+                                    <b>Category:</b> <span v-if="item.category">{{ item.category.name }}</span><br>
+                                    <b>Subcategory:</b> <span v-if="item.subcategory">{{ item.subcategory.name }}</span>
                                 </td>
-                                <td class="text-center">
-                                    <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
-                                </td>
-                                <td class="text-center">
-                                    <span
-                                        v-if="singleData.created_at">{{ singleData.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
-                                </td>
-                                <td class="text-center">
+                                <td>
+                                    <b>Complain At:</b> <span
+                                        v-if="item.created_at">{{ item.created_at | moment("MMMM Do YYYY, h:mm a") }}</span>
+                                    <br>
+                                    <b>Last Update:</b> <span
+                                        v-if="item.updated_at">{{ item.updated_at | moment("MMMM Do YYYY, h:mm a") }}</span>
 
-                                    <span v-if="singleData.process == 'Not Process' && !singleData.remarks.length">
-                                        <v-btn v-if="singleData.process == 'Not Process' && singleData.status == 1"
-                                            @click="complainCancel(singleData.id)" color="error" depressed
-                                            elevation="20">
+                                    <div v-if="item.details">
+                                        <b>Details:</b>
+                                        <div v-if="item.details.length<100" v-html="item.details"></div>
+                                        <div v-else><span v-html="item.details.substring(0,100)+' .....'"></span> <v-btn small text plain
+                                                color="primary" @click="longTextHTML(item.details)"><u> See More </u>
+                                            </v-btn>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+
+                                    <span v-if="item.process == 'Not Process' && !item.remarks.length">
+                                        <v-btn v-if="item.process == 'Not Process' && item.status == 1"
+                                            @click="complainCancel(item.id)" color="error" depressed elevation="20">
                                             <v-icon left>mdi-close-octagon-outline</v-icon> Cancel
                                         </v-btn>
                                         <span v-else class="error--text">Canceled</span>
                                     </span>
 
 
-                                    <v-btn v-if="singleData.remarks.length" @click="remarksDetailsShow(singleData)"
-                                        color="success" depressed elevation="20">
+                                    <v-btn v-if="item.remarks.length" @click="remarksDetailsShow(item)" color="success"
+                                        depressed small elevation="20">
                                         <v-icon left>mdi-eye-arrow-left </v-icon> View
                                     </v-btn>
 
                                     <!-- Damaged Replace -->
-                                    <span v-if="singleData.dam_apply && singleData.dam_apply.apply_by">
+                                    <span v-if="item.dam_apply && item.dam_apply.apply_by">
                                         <div class="m-1 info rounded-pill h6 text-white text-center">
                                             Replace Applied <br>
                                             <span class="small text-warning"
-                                                v-if="singleData.dam_apply.apply_at">{{ singleData.dam_apply.apply_at | moment("MMMM Do YYYY") }}</span>
+                                                v-if="item.dam_apply.apply_at">{{ item.dam_apply.apply_at | moment("MMMM Do YYYY") }}</span>
                                         </div>
                                     </span>
                                     <span v-else>
-                                        <v-btn
-                                            v-if="singleData.dam_apply && (singleData.dam_apply.applicable_type == 'Applicable')"
-                                            @click="damagedReplace(singleData.dam_apply.id)" success depressed small
+                                        <v-btn v-if="item.dam_apply && (item.dam_apply.applicable_type == 'Applicable')"
+                                            @click="damagedReplace(item.dam_apply.id)" success depressed small
                                             elevation="20">
                                             <v-icon small>mdi-file-replace </v-icon> Replace Apply
                                         </v-btn>
                                     </span>
 
                                     <!-- Damaged Quation -->
-                                    <div v-if="singleData.dam_apply && singleData.dam_apply.apply_quotation"
-                                        class="text-center">
-                                        <v-btn @click="damagedQuationMethod(singleData.dam_apply)" color="success"
-                                            small>
+                                    <div v-if="item.dam_apply && item.dam_apply.apply_quotation" class="text-center">
+                                        <v-btn @click="damagedQuationMethod(item.dam_apply)" color="success" small>
                                             <v-icon left>mdi-eye-arrow-left </v-icon> Damaged Quotation
                                         </v-btn>
                                     </div>
 
 
-                                    <v-btn v-if=" singleData.process == 'Closed' && singleData.rating == null"
-                                        @click="feedback(singleData)" color="teal white--text" depressed small
-                                        elevation="20">
+                                    <v-btn v-if="item.process == 'Closed' && item.rating == null"
+                                        @click="feedback(item)" color="teal white--text" depressed small elevation="20">
                                         <v-icon left>mdi-star-half-full </v-icon> Rating
                                     </v-btn>
+
+
+                                    <v-rating v-if="item.rating" :value="item.rating" color="yellow darken-3"
+                                        background-color="grey darken-1" empty-icon="$ratingFull" readonly></v-rating>
+                                    <div v-if="item.feedback">
+                                        <div v-if="item.feedback.length<50">{{ item.feedback }}</div>
+                                        <div v-else>{{ item.feedback.substring(0,50)+"..."}} <v-btn small text plain
+                                                color="primary" @click="longText(item.feedback)"><u> See More </u>
+                                            </v-btn>
+                                        </div>
+                                    </div>
 
                                 </td>
 
@@ -194,7 +216,7 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! You have no complain in <b class="text-success">Hardware</b> section.</h1>
 
             </v-card-text>
         </v-card>
@@ -543,7 +565,21 @@
 
 
 
+        <!-- longtextDialog -->
+        <v-dialog v-model="longtextDialog" max-width="300">
+            <v-card>
+                <v-card-text>
+                    {{ currentText }}
+                </v-card-text>
+            </v-card>
+        </v-dialog>
 
+        <!-- longtextDialog -->
+        <v-dialog v-model="longtextDialogHTML" max-width="500">
+            <v-card class="p-2">
+                <v-card-text v-html="currentTextHTML" class="p-0 m-0"></v-card-text>
+            </v-card>
+        </v-dialog>
 
 
     </div>
@@ -640,6 +676,12 @@
                 // currentDataId
                 currentDataId: '',
 
+                // longtextDialog
+                longtextDialog: false,
+                currentText: '',
+                longtextDialogHTML: false,
+                currentTextHTML: '',
+
             }
 
 
@@ -649,6 +691,18 @@
 
             childToParentCall() {
                 this.getResults();
+            },
+
+            // longtextDialog
+            longText(value) {
+                this.currentText = value;
+                this.longtextDialog = true;
+            },
+
+            // longtextDialogHTML
+            longTextHTML(value) {
+                this.currentTextHTML = value;
+                this.longtextDialogHTML = true;
             },
 
             // feedback

@@ -18,7 +18,7 @@ class IndexController extends Controller
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
 
-        $allData = InventoryNewProduct::with('makby', 'category', 'subcategory')
+        $allData = InventoryNewProduct::with('makby', 'category')
             ->where('delete_temp', '1')
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
@@ -37,7 +37,7 @@ class IndexController extends Controller
         $sort_direction = Request('sort_direction', 'desc');
         $sort_field     = Request('sort_field', 'id');
 
-        $allData = InventoryOldProduct::with('makby', 'category', 'subcategory')
+        $allData = InventoryOldProduct::with('makby', 'category')
             ->where('delete_temp', '1')
             ->orderBy($sort_field, $sort_direction)
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )

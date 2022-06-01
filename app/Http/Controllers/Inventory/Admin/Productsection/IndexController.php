@@ -24,12 +24,15 @@ class IndexController extends Controller
         $search_field  = Request('search_field', '');
         $business_unit  = Request('business_unit', '');
 
-        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'subcategory', 'operation', 'newtbldata')
-            ->whereHas('newtbldata', function($q){
-                $q->select('document');
-            })
-            ->where('delete_temp', '!=', '1')
-            ->where('new_pro_id', '!=', '0');
+        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'operation', 'newtbldata')
+            // ->whereHas('newtbldata', function($q){
+            //     $q->select('document');
+            // })
+            ->where('delete_temp', 0)
+            ->whereNotNull('new_pro_id');
+            
+            // ->where('delete_temp', '!=', '1')
+            // ->where('new_pro_id', '!=', '0');
 
         // business unit
         if(!empty($business_unit) && $business_unit != 'All'){
@@ -37,13 +40,11 @@ class IndexController extends Controller
         }
 
         // Search
-        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id' && $search_field != 'operation'){
-
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'operation'){
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
 
         }elseif($search_field == 'cat_id'){
-
             $val = trim(preg_replace('/\s+/' ,' ', $search));
 
             $allDataQuery->whereHas( 'category', function($query) use($val){
@@ -52,18 +53,7 @@ class IndexController extends Controller
             });
 
         }
-        elseif($search_field == 'subcat_id'){
-
-            $val = trim(preg_replace('/\s+/' ,' ', $search));
-
-            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
-                //$query->where( 'name', $search_field );
-                $query->where('name', 'LIKE', '%'.$val.'%');
-            });
-
-        }
         elseif($search_field == 'operation'){
-
             $val = trim(preg_replace('/\s+/' ,' ', $search));
 
             $allDataQuery->whereHas( 'operation', function($query) use($val){
@@ -77,7 +67,7 @@ class IndexController extends Controller
         }
 
 
-         // Final Data
+        // Final Data
         $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)
                 ->paginate($paginate);
 
@@ -97,8 +87,8 @@ class IndexController extends Controller
         $search_field  = Request('search_field', '');
         $business_unit  = Request('business_unit', '');
 
-        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'subcategory', 'operation')
-            ->where('delete_temp', '!=', '1')
+        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'operation')
+            ->where('delete_temp', 0)
             ->where('type', 'Running');
 
         // business unit
@@ -107,7 +97,7 @@ class IndexController extends Controller
         }
 
         // Search
-        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id' && $search_field != 'operation'){
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'operation'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
@@ -117,16 +107,6 @@ class IndexController extends Controller
             $val = trim(preg_replace('/\s+/' ,' ', $search));
 
             $allDataQuery->whereHas( 'category', function($query) use($val){
-                //$query->where( 'name', $search_field );
-                $query->where('name', 'LIKE', '%'.$val.'%');
-            });
-
-        }
-        elseif($search_field == 'subcat_id'){
-
-            $val = trim(preg_replace('/\s+/' ,' ', $search));
-
-            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
                 //$query->where( 'name', $search_field );
                 $query->where('name', 'LIKE', '%'.$val.'%');
             });
@@ -170,7 +150,7 @@ class IndexController extends Controller
         $search_field  = Request('search_field', '');
         $business_unit  = Request('business_unit', '');
 
-        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'subcategory', 'operation')
+        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'operation')
             ->where('delete_temp', '!=', '1')
             ->where('type', 'Damaged');
 
@@ -181,7 +161,7 @@ class IndexController extends Controller
         }
 
         // Search
-        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id' && $search_field != 'operation'){
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'operation'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
@@ -191,16 +171,6 @@ class IndexController extends Controller
             $val = trim(preg_replace('/\s+/' ,' ', $search));
 
             $allDataQuery->whereHas( 'category', function($query) use($val){
-                //$query->where( 'name', $search_field );
-                $query->where('name', 'LIKE', '%'.$val.'%');
-            });
-
-        }
-        elseif($search_field == 'subcat_id'){
-
-            $val = trim(preg_replace('/\s+/' ,' ', $search));
-
-            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
                 //$query->where( 'name', $search_field );
                 $query->where('name', 'LIKE', '%'.$val.'%');
             });
@@ -244,12 +214,12 @@ class IndexController extends Controller
         $search_field  = Request('search_field', '');
         $business_unit  = Request('business_unit', '');
 
-        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'subcategory', 'operation', 'newtbldata')
-            ->whereHas('newtbldata', function($q){
-                $q->select('document');
-            })
-            ->where('delete_temp', '!=', '1')
-            ->where('new_pro_id', '!=', '0');
+        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'operation', 'newtbldata')
+            // ->whereHas('newtbldata', function($q){
+            //     $q->select('document');
+            // })
+            ->where('delete_temp', 0)
+            ->whereNotNull('new_pro_id');
 
         // business unit
         if(!empty($business_unit) && $business_unit != 'All'){
@@ -257,7 +227,7 @@ class IndexController extends Controller
         }
 
         // Search
-        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id' && $search_field != 'operation'){
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'operation'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
@@ -267,16 +237,6 @@ class IndexController extends Controller
             $val = trim(preg_replace('/\s+/' ,' ', $search));
 
             $allDataQuery->whereHas( 'category', function($query) use($val){
-                //$query->where( 'name', $search_field );
-                $query->where('name', 'LIKE', '%'.$val.'%');
-            });
-
-        }
-        elseif($search_field == 'subcat_id'){
-
-            $val = trim(preg_replace('/\s+/' ,' ', $search));
-
-            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
                 //$query->where( 'name', $search_field );
                 $query->where('name', 'LIKE', '%'.$val.'%');
             });
@@ -316,7 +276,7 @@ class IndexController extends Controller
         $search_field  = Request('search_field', '');
         $business_unit  = Request('business_unit', '');
 
-        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'subcategory', 'operation')
+        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'operation')
             ->where('delete_temp', '!=', '1')
             ->where('type', 'Running');
 
@@ -326,7 +286,7 @@ class IndexController extends Controller
         }
 
         // Search
-        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id' && $search_field != 'operation'){
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'operation'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
@@ -336,16 +296,6 @@ class IndexController extends Controller
             $val = trim(preg_replace('/\s+/' ,' ', $search));
 
             $allDataQuery->whereHas( 'category', function($query) use($val){
-                //$query->where( 'name', $search_field );
-                $query->where('name', 'LIKE', '%'.$val.'%');
-            });
-
-        }
-        elseif($search_field == 'subcat_id'){
-
-            $val = trim(preg_replace('/\s+/' ,' ', $search));
-
-            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
                 //$query->where( 'name', $search_field );
                 $query->where('name', 'LIKE', '%'.$val.'%');
             });
@@ -386,7 +336,7 @@ class IndexController extends Controller
         $search_field  = Request('search_field', '');
         $business_unit  = Request('business_unit', '');
 
-        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'subcategory', 'operation')
+        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'operation')
             ->where('delete_temp', '!=', '1')
             ->where('type', 'Damaged');
 
@@ -397,7 +347,7 @@ class IndexController extends Controller
         }
 
         // Search
-        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id' && $search_field != 'operation'){
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'operation'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
@@ -407,16 +357,6 @@ class IndexController extends Controller
             $val = trim(preg_replace('/\s+/' ,' ', $search));
 
             $allDataQuery->whereHas( 'category', function($query) use($val){
-                //$query->where( 'name', $search_field );
-                $query->where('name', 'LIKE', '%'.$val.'%');
-            });
-
-        }
-        elseif($search_field == 'subcat_id'){
-
-            $val = trim(preg_replace('/\s+/' ,' ', $search));
-
-            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
                 //$query->where( 'name', $search_field );
                 $query->where('name', 'LIKE', '%'.$val.'%');
             });

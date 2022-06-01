@@ -77,18 +77,18 @@
 
                                 <td class="text-center">
                                     <div v-if="isAdmin()">
-                                        <v-btn v-if="singleData.status" @click="statusChange(singleData)"
-                                            class="success m-1" small>
+                                        <button v-if="singleData.status" @click="statusChange(singleData)"
+                                            class="btn btn-success btn-sm m-1">
                                             <i class="far fa-check-circle"></i> Active
-                                        </v-btn>
-                                        <v-btn v-else @click="statusChange(singleData)"
-                                            class="warning m-1" small>
+                                        </button>
+                                        <button v-else @click="statusChange(singleData)"
+                                            class="btn btn-warning btn-sm m-1">
                                             <i class="far fa-times-circle"></i> Inactive
-                                        </v-btn>
+                                        </button>
                                     </div>
-                                    <v-btn @click="editDataModel(singleData)" class="warning" small>
+                                    <button @click="editDataModel(singleData)" class="btn btn-warning btn-sm">
                                         <i class="fa fa-edit blue"></i> Edit
-                                    </v-btn>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>

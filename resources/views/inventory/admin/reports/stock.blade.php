@@ -35,8 +35,8 @@
                 {{-- doc no --}}
                 @if($singleData->newold)
                     <td>
-                        @if ($singleData->newold->new_pro_id)
-                            CMS-{{ $singleData->newold->new_pro_id }}
+                        @if ($singleData->newold->comp_id)
+                            CMS-{{ $singleData->newold->comp_id }}
                         @else
                             <span style="color:red">N/A</span>
                         @endif
@@ -59,12 +59,12 @@
                 <td style="color:red">N/A</td>
                 @endif
 
-                {{-- product type --}}
-                @if($singleData->category)
-                <td>{{ $singleData->category->name }} - {{ $singleData->subcategory->name }}</td>
-                @else
-                <td style="color:red">N/A</td>
-                @endif
+               {{-- product type --}}
+               @if($singleData->category)
+               <td>{{ $singleData->category->name }}</td>
+               @else
+               <td style="color:red">N/A</td>
+               @endif
 
                 {{-- unit_price --}}
                 @if($singleData->unit_price)
@@ -75,7 +75,7 @@
 
                 {{-- remark --}}
                 @if($singleData->remarks)
-                <td>{!! $singleData->remarks !!}</td>
+                <td>{{   strip_tags( str_replace('&', ' and ',$singleData->remarks) ) }}</td>
                 @else
                 <td style="color:red">N/A</td>
                 @endif

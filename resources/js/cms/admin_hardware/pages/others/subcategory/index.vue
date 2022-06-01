@@ -14,55 +14,57 @@
                 </v-row>
             </v-card-title>
 
-            <v-card-text class="table-responsive">
+            <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
+                        <v-col cols="9">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th>Category</th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('name')">Subcategory</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                                </th>
-                               
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('name')">Subcategory</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                    </th>
+                                
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                                <td><span v-if="singleData.category">{{ singleData.category.name }}</span></td>
-                                <td>{{ singleData.name }}</td>
-                               
-                                <td class="text-center">
-                                    <v-btn @click="editDataModel(singleData)" color="info" depressed small>
-                                        <v-icon small>mdi-pencil-box-multiple-outline</v-icon> Edit
-                                    </v-btn>
+                                    <td><span v-if="singleData.category">{{ singleData.category.name }}</span></td>
+                                    <td>{{ singleData.name }}</td>
+                                
+                                    <td class="text-center">
+                                        <v-btn @click="editDataModel(singleData)" color="info" depressed small>
+                                            <v-icon small>mdi-pencil-box-multiple-outline</v-icon> Edit
+                                        </v-btn>
 
-                                    <v-btn @click="deleteData(singleData.id)" color="error" depressed small>
-                                        <v-icon small>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>
-                                    <br>
-                                    <span v-if="singleData.makby" class="small text-muted">Create By--
-                                        {{ singleData.makby.name }}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        <v-btn @click="deleteData(singleData.id)" color="error" depressed small>
+                                            <v-icon small>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
+                                        <br>
+                                        <span v-if="singleData.makby" class="small text-muted">Create By--
+                                            {{ singleData.makby.name }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

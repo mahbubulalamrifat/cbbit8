@@ -1,7 +1,7 @@
 <template>
     <div class="powerbi-view">
 
-        <iframe :key="ifreamIndexKey" :src="currentLink" frameborder="0" allowFullScreen="true"></iframe>
+        <iframe :src="currentLink" frameborder="0" allowFullScreen="true"></iframe>
         <p v-if="!currentLink && !overlay" class="text-danger h1 text-center">Sorry !!!! You have no access. Contact
             with IT team</p>
 
@@ -17,7 +17,8 @@
         data() {
             return {
                 currentLink: '',
-                overlay: false
+                overlay: false,
+                
             }
         },
 
@@ -63,6 +64,7 @@
             left: 0;
             width: 100% !important;
             height: 100% !important;
+            z-index: 5;
         }
         .sitemessage {
                 display: inline-block;
@@ -78,4 +80,5 @@
                 transform: translateX(-100%);
             }
         }
+
 </style>

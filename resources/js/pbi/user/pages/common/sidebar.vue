@@ -1,16 +1,15 @@
 <template>
     <div >
-        <v-app-bar app flat dense dark class="bg_gradient" >
+        <v-app-bar app flat dense class="bg-transparent">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-            <v-spacer></v-spacer>
-            <v-app-bar-title class="yellow--text" small>{{ reportName }}</v-app-bar-title>
-            <v-spacer></v-spacer>
-            <v-app-bar-title v-if="isAdministrator()" class="red--text" small>Administrator</v-app-bar-title>
             <v-btn icon @click="toggle()">
                 <v-icon v-if="fullscreen">mdi-fullscreen</v-icon>
                 <v-icon v-else>mdi-fullscreen-exit</v-icon>
             </v-btn>
+
+            <v-spacer></v-spacer>
+            <v-app-bar-title class="px-3" style="background-color: #ffc107; ">{{ reportName }}</v-app-bar-title>
+            <v-spacer></v-spacer>
 
 
             <v-menu bottom left>
@@ -32,7 +31,7 @@
 
 
         <!-- sidebar -->
-        <v-navigation-drawer app dark v-model="drawer" class="bg_gradient">
+        <v-navigation-drawer app dark v-model="drawer" class="bg_color" src="/all-assets/common/sidebar_powerbi.png">
             <v-list-item class="px-2" link href="/">
                 <v-list-item-icon>
                     <img src="/all-assets/common/icon/powerbi.png" alt="" height="40px" contain>
@@ -41,7 +40,7 @@
             </v-list-item>
             <v-divider></v-divider>
 
-            <v-list dense nav>
+            <v-list dense>
 
                 <v-list-item link router :to="{name: 'Dashboard'}" exact>
                     <v-list-item-icon>
@@ -54,7 +53,7 @@
                 </v-list-item>
 
                  <!-- Sidebar Multi level Item -->
-                <v-list-group prepend-icon="mdi-account-group" active-class="dark--text" no-action>
+                <v-list-group prepend-icon="mdi-account-group" active-class="white--text" no-action>
                     <template v-slot:activator>
                         <v-list-item-title>BI Reports</v-list-item-title>
                     </template>
@@ -139,12 +138,23 @@
 
 
 <style scoped>
-    .bg_gradient {
-       background: linear-gradient(180deg, #a8bfbb, #0cb7bb);
+    .bg_color {
+       background: black;
     }
 
     a:hover {
         text-decoration: none;
+    }
+
+    .v-list-group__items .v-list-item--active, .v-list-item--active {
+        color: #ffc107 !important;
+        color: white;
+        border-left: 2px solid #ffc107;
+        border-radius: 0;
+    }
+
+    .theme--dark.v-list-item--active::before, .theme--dark.v-list-item--active:hover::before, .theme--dark.v-list-item:focus::before {
+        opacity: 0 !important;
     }
 
 </style>

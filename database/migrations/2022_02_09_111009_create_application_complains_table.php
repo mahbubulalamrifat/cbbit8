@@ -25,6 +25,8 @@ class CreateApplicationComplainsTable extends Migration
             $table->string('document3')->nullable();
             $table->string('document4')->nullable();
             $table->integer('status')->default(1);
+            $table->float('rating')->nullable();
+            $table->string('feedback')->nullable();
             $table->timestamps();
         });
     }

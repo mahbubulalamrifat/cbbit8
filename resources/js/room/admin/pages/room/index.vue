@@ -18,82 +18,84 @@
             <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
+                        <v-col cols="9">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th>
-                                    Images
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('name')">Name</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('capacity')">Capacity</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'capacity'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'capacity'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('projector')">Projector</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'projector'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'projector'">&darr;</span>
-                                </th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>
-                                    <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image"
-                                        class="img-fluid m-1" height="50" width="80">
-                                    <img v-if="singleData.image2" :src="imagePathSm + singleData.image2" alt="image"
-                                        class="img-fluid m-1" height="50" width="80">
-                                    <img v-if="singleData.image3" :src="imagePathSm + singleData.image3" alt="image"
-                                        class="img-fluid m-1" height="50" width="80">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>
+                                        Images
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('name')">Name</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('capacity')">Capacity</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'capacity'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'capacity'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('projector')">Projector</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'projector'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'projector'">&darr;</span>
+                                    </th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>
+                                        <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image"
+                                            class="img-fluid m-1" height="50" width="80">
+                                        <img v-if="singleData.image2" :src="imagePathSm + singleData.image2" alt="image"
+                                            class="img-fluid m-1" height="50" width="80">
+                                        <img v-if="singleData.image3" :src="imagePathSm + singleData.image3" alt="image"
+                                            class="img-fluid m-1" height="50" width="80">
 
-                                </td>
-                                <td>{{ singleData.name }}</td>
-                                <td>{{ singleData.capacity }} Persons</td>
-                                <td><span v-if="singleData.projector == 1">Yes</span><span v-else>No</span> </td>
+                                    </td>
+                                    <td>{{ singleData.name }}</td>
+                                    <td>{{ singleData.capacity }} Persons</td>
+                                    <td><span v-if="singleData.projector == 1">Yes</span><span v-else>No</span> </td>
 
 
-                                <td class="text-center">
+                                    <td class="text-center">
 
-                                    <v-btn v-if="singleData.status" @click="statusChange(singleData)" color="success"
-                                        depressed small>
-                                        <v-icon left>mdi-check-circle-outline</v-icon> Active
-                                    </v-btn>
-                                    <v-btn v-else @click="statusChange(singleData)" color="warning" depressed small>
-                                        <v-icon left>mdi-alert-circle-outline </v-icon> Inactive
-                                    </v-btn>
+                                        <v-btn v-if="singleData.status" @click="statusChange(singleData)" color="success"
+                                            depressed small>
+                                            <v-icon left>mdi-check-circle-outline</v-icon> Active
+                                        </v-btn>
+                                        <v-btn v-else @click="statusChange(singleData)" color="warning" depressed small>
+                                            <v-icon left>mdi-alert-circle-outline </v-icon> Inactive
+                                        </v-btn>
 
-                                    <v-btn @click="editDataModel(singleData)" color="info" depressed small>
-                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
-                                    </v-btn>
+                                        <v-btn @click="editDataModel(singleData)" color="info" depressed small>
+                                            <v-icon left>mdi-circle-edit-outline</v-icon> Edit
+                                        </v-btn>
 
-                                    <v-btn @click="deleteDataTemp(singleData.id)" color="error" depressed small>
-                                        <v-icon left>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>
-                                    <br>
-                                    <span v-if="singleData.makby" class="small text-muted">Create By--
-                                        {{ singleData.makby.name }}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        <v-btn @click="deleteDataTemp(singleData.id)" color="error" depressed small>
+                                            <v-icon left>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
+                                        <br>
+                                        <span v-if="singleData.makby" class="small text-muted">Create By--
+                                            {{ singleData.makby.name }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -120,7 +122,7 @@
                 <v-card-title class="justify-center">
                     <v-row>
                         <v-col cols="10">
-                            {{dataModelTitle}}
+                            Add New Room
                         </v-col>
                         <v-col cols="2">
                             <v-btn @click="dataModalDialog = false" color="red lighten-1 white--text" small
@@ -136,17 +138,17 @@
 
                             <v-row align-content="center">
 
-                                <v-col md="4">
+                                <v-col cols="6" lg="4">
                                     <v-text-field v-model="form.name" label="Enter Room Name" :rules="roomRules"
                                         required></v-text-field>
                                 </v-col>
 
-                                <v-col md="4">
+                                <v-col cols="6" lg="4">
                                     <v-text-field type="number" v-model="form.capacity" label="Enter Room capacity"
                                         :rules="roomRules" required></v-text-field>
                                 </v-col>
 
-                                <v-col md="4">
+                                <v-col cols="12" lg="4">
                                     <v-radio-group v-model="form.projector" :rules="roomRulesFeature" required
                                         label="Projector Faciilty" row>
                                         <v-radio v-for="n in activeOptions" :key="n.value" :label="n.text"

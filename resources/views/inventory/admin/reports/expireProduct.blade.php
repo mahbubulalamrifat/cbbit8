@@ -10,7 +10,6 @@
         <tr>
             <td style="font-weight:bold; background-color: khaki">Product Name/Model</td>
             <td style="font-weight:bold; background-color: khaki">Category</td>
-            <td style="font-weight:bold; background-color: khaki">Subcategory</td>
             <td style="font-weight:bold; background-color: khaki">Serial</td>
             <td style="font-weight:bold; background-color: khaki">Invoice</td>
             <td style="font-weight:bold; background-color: khaki">P.O.</td>
@@ -25,12 +24,6 @@
 
             @if($product->category)
             <td>{{ $product->category->name }}</td>
-            @else
-            <td style="color:red">N/A</td>
-            @endif
-
-            @if($product->subcategory)
-            <td>{{ $product->subcategory->name }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
@@ -60,7 +53,7 @@
             @endif
 
             @if($product->remarks)
-            <td>{!! $product->remarks !!}</td>
+            <td>{{ strip_tags($product->remarks) }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif

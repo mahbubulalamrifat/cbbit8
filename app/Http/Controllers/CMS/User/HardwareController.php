@@ -24,7 +24,7 @@ class HardwareController extends Controller
 
     //category
     public function category(){
-        $allData = HardwareCategory::with('acsosoris', 'subcat')->orderBy('name')->get();
+        $allData = HardwareCategory::with('acsosoris', 'subcat')->where('status', 1)->orderBy('name')->get();
         return response()->json($allData);
     }
 

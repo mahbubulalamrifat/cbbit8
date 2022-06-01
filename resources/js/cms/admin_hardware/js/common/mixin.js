@@ -8,9 +8,7 @@ import createUpdate from './crud'
 
 import store from './../store'
 
-
 import globalRolePermissions from './../../../../role_permissions'
-
 import {debounce} from './../../../../helpers'
 
 
@@ -58,13 +56,26 @@ export default {
         // For Report search
         allZoneOffices:[],
         allDepartments:[],
-        allZoneOfficesAssign:[],
+        //allZoneOfficesAssign:[],
 
         
         department:'',
         start_date:'',
         end_date:'',
         zone_office: '',
+        
+
+          // pdf
+        pdfFile: '',
+        viewDocument: false,
+        // for pdf only
+        docPath2: 'images/hardware/',
+          pdfReadyLoading: false,
+        
+        //   imageFile
+          imageFile: '',
+          viewImage: false,
+          imageReadyLoading: false,
         
           
       }
@@ -115,8 +126,9 @@ export default {
         // get Zone Offices
         getZoneOfficesAssign(){
             axios.get('/cms/h_admin/complain/get_user_assign_zone_offices').then(response=>{
-                 console.log(response.data)
-                this.allZoneOfficesAssign = response.data
+                //console.log(response.data)
+                //this.allZoneOfficesAssign = response.data
+                store.commit('setAllZoneOfficesAssign', response.data)
             }).catch(error=>{
                 console.log(error)
             })
@@ -144,7 +156,14 @@ export default {
                 store.commit('setCountService', response.data.service )
                 store.commit('setCountServiceAccess', response.data.serviceAccess )
                 store.commit('setConuntHOService', response.data.hoService )
-                store.commit('setConuntHOServiceAccess', response.data.hoServiceAccess )
+                store.commit('setConuntHOServiceAccess', response.data.hoServiceAccess)
+                
+                // damage applicable
+                store.commit('setConuntAppDamage', response.data.appDamage)
+                store.commit('setConuntAppPartialDamage', response.data.appPartialDamage)
+                // damage not applicable
+                store.commit('setConuntNotAppDamage', response.data.notAppDamage)
+                store.commit('setConuntNotAppPartialDamage', response.data.notAppPartialDamage )
                 
             }).
             catch(error=>{
@@ -152,6 +171,46 @@ export default {
             })
             
         },
+
+        // PDF
+        base64ToArrayBuffer(base64) {
+            var binary_string = window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            this.pdfFile = bytes.buffer
+            this.pdfReadyLoading = false
+            this.appDetailsLodaing = false;
+            this.checkID = '';
+            this.viewDocument = true
+            return bytes.buffer;
+        },
+
+
+        // PDF
+        pdfGetFile(doc) {
+            this.pdfReadyLoading = true
+            axios.post('/cms/h_admin/pdf_get_file', {
+                document: doc
+            }).then((res) => {
+                this.base64ToArrayBuffer(res.data)
+            }).catch(error=>{
+                this.pdfReadyLoading = false
+                console.error(error)
+            });
+        },
+
+        imageGetFile(doc) {
+            //console.log(doc);
+            this.imageReadyLoading = true;
+            this.imageFile = doc;
+            this.viewImage = true;
+            this.imageReadyLoading = false;
+            
+            
+        }
        
        
 
@@ -254,6 +313,12 @@ export default {
             'CountServiceAccess'     : 'getCountServiceAccess',
             'CountHOService'     : 'getConuntHOService',
             'CountHOServiceAccess'     : 'getConuntHOServiceAccess',
+            'allZoneOfficesAssign': 'getAllZoneOfficesAssign',
+            // damage
+            'CountAppDamage' : 'getCountAppDamage',
+            'CountAppPartialDamage' : 'getCountAppPartialDamage',
+            'CountNotAppDamage' : 'getCountNotAppDamage',
+            'CountNotAppPartialDamage' : 'getCountNotAppPartialDamage',
         }),
 
     },

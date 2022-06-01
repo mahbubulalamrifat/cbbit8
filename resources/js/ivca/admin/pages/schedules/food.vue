@@ -4,10 +4,10 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-8">
                         <h3 class="card-title">Food Audit Schedule List</h3>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <v-btn @click="addDataModel" elevation="10" small class="float-right" color="primary" outlined>
                             <v-icon small>mdi-card-plus</v-icon> Add
                         </v-btn>
@@ -97,7 +97,7 @@
                                     </v-btn>
                                     <v-btn v-else @click="statusChange(singleData)" small color="warning"
                                         elevation="10" class="mb-1">
-                                        <v-icon left>mdi-close-octagon</v-icon> Not Approved
+                                        <v-icon left>mdi-close-octagon</v-icon> Approve
                                     </v-btn>
                                     </div>
                                      <v-btn @click="editDataModel(singleData)" small color="info" elevation="10" class="mb-1">

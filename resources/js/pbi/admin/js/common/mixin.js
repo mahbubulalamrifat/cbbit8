@@ -6,11 +6,8 @@ import paginateMethods from './paginate_methods'
 import imageMethods from './image_methods'
 import createUpdate from './crud'
 
-
 import globalRolePermissions from './../../../../role_permissions'
-
 import {debounce} from './../../../../helpers'
-
 
 
 export default {

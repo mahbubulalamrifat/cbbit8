@@ -19,7 +19,7 @@ class warrantyProduct implements FromView, ShouldAutoSize, WithEvents
 
     public function __construct($data){
         $this->data = $data;
-       // dd($this->data);
+       //dd($this->data);
     }
 
 
@@ -31,8 +31,8 @@ class warrantyProduct implements FromView, ShouldAutoSize, WithEvents
         //     //applicationComplain::with('makby', 'category', 'subcategory')->get()
         // ]);
 
-        $product =  $this->data;
-        return view('inventory.admin.reports.warrantyProduct', compact('product'));
+        $products =  $this->data;
+        return view('inventory.admin.reports.warrantyProduct', compact('products'));
     }
 
     public function registerEvents(): array

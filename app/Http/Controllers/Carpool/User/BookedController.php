@@ -196,7 +196,7 @@ class BookedController extends Controller
     // Change Booking Status
     public function status($id){
 
-        $data = CarpoolBooking::find($id);
+        $data = CarpoolBooking::with('car', 'driver')->find($id);
 
         if($data->status == 1){
             $data->status = null;
@@ -204,7 +204,29 @@ class BookedController extends Controller
             $data->status = 1;
         }
 
-       $data->save();
+
+        $driverName      = $data->driver->name ?? 'N/A';
+        $driverContact   = $data->driver->contact ?? 'N/A';
+        $carNumber       = $data->car->number ?? 'N/A';
+        $destination     = $data->destination;
+        $purpose         = $data->purpose;
+
+        //For Line Msg Sending Variable
+        $userName           = Auth::user()->name;
+        $department         = Auth::user()->department;
+        $startLine          = date("j-M-Y, g:i A", strtotime($data->start));
+        $endLine            = date("j-M-Y, g:i A", strtotime($data->end));
+        $purposeLine        = str_replace('&', 'and', $purpose);
+        $destinationLine    = str_replace('&', 'and', $destination);
+
+
+        //Send Line Message
+        $message = "Canceled Status, %0A Canceled By: $userName,%0A Department: $department,%0A Destination: $destinationLine,%0A Purpose: $purposeLine,%0A Driver: $driverName ($driverContact),%0A Car: $carNumber,%0A Start: $startLine,%0A End: $endLine.";
+
+        //Send Line Message
+        $this->lineMsg($message);
+        // Save DB
+        $data->save();
 
         return response()->json('success', 200);
     }

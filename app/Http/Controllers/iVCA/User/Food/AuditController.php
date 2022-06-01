@@ -574,10 +574,6 @@ class AuditController extends Controller
     // final_store
     public function final_store(Request $request, $token){
 
-        $this->validate($request,[
-            'group_image'         => 'required',
-        ]);
-
         //1 building_facilities_store
         $this->building_facilities_store($request, $token);
         //2 equipment_store
@@ -607,6 +603,9 @@ class AuditController extends Controller
             $data->group_image = $imgName;
         }
 
+        $data->status = 1;
+        $data->save();
+ 
         $data->status = 1;
         $data->save();
  

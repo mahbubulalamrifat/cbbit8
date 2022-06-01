@@ -6,9 +6,11 @@
                 <v-img  src="/all-assets/common/icon/cms.png" alt="room" max-height="40" max-width="40" contain class="nav-logo-bg"></v-img>
             </v-app-bar-nav-icon>
 
-           
-
             <v-spacer></v-spacer>
+            <v-avatar v-if="auth.image">
+                <v-img :src="'/images/users/small/'+auth.image" alt="CPB-IT" max-height="40" max-width="40" contain>
+                </v-img>
+            </v-avatar>
                <span v-if="auth" class="m-1">{{ auth.name }} ({{ auth.login }})</span>
             <v-spacer></v-spacer>
 
@@ -20,12 +22,12 @@
 
                 <v-btn text link route :to="{ name: 'HardwareHistory'}" small>
                     Hardware History
-                    <v-badge v-if="hardCounter" color="error ml-2" :content="hardCounter"></v-badge>
+                    <v-badge v-if="hardRating" color="error ml-1" :content="hardRating"></v-badge>
                 </v-btn>
 
                 <v-btn text link route :to="{ name: 'ApplicationHistory'}" small>
                     Application History
-                    <v-badge v-if="appCounter" color="error ml-2" :content="appCounter"></v-badge>
+                    <v-badge v-if="appRating" color="error ml-1" :content="appRating"></v-badge>
                 </v-btn>
 
             
@@ -39,7 +41,8 @@
         </v-toolbar>
 
 
-        <v-navigation-drawer v-model="drawer" absolute temporary right style="height:100vh;">
+        <v-navigation-drawer v-model="drawer" absolute temporary right overlay-opacity=".6" overlay-color="green"
+            src="/all-assets/common/icon/cms.png" style="height:100vh;">
             <v-list-item>
                 <v-list-item-content>
                     <v-list-item-title>CMS User</v-list-item-title>
@@ -48,7 +51,7 @@
 
             <v-divider></v-divider>
 
-            <v-list dense>
+            <v-list dense class="img-opcty">
 
                 <v-list-item link route :to="{ name: 'Dashboard'}" exact>
                     <v-list-item-content>
@@ -59,7 +62,7 @@
                 <v-list-item link route :to="{ name: 'HardwareHistory'}">
                     <v-list-item-content>
                         <v-list-item-title>Hardware History
-                            <v-badge v-if="hardCounter" color="error ml-2" :content="hardCounter"></v-badge>
+                            <v-badge v-if="hardRating" color="error ml-2" :content="hardRating"></v-badge>
                         </v-list-item-title>
                         
                     </v-list-item-content>
@@ -67,8 +70,8 @@
 
                 <v-list-item link route :to="{ name: 'ApplicationHistory'}">
                     <v-list-item-content>
-                        <v-list-item-title :content="appCounter">Application History
-                            <v-badge v-if="appCounter" color="error ml-2" :content="appCounter"></v-badge>
+                        <v-list-item-title :content="appRating">Application History
+                            <v-badge v-if="appRating" color="error ml-2" :content="appRating"></v-badge>
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
@@ -108,6 +111,9 @@
     .v-btn--active{
         color: #fff;
         background: linear-gradient(90deg,#aa4b6b,#6b6b83,#3b8d99);
+        border-radius: 25px;
+        margin-left: 14px;
+        margin-right: 14px;
     }
     
     .nav-color {
@@ -123,6 +129,13 @@
 
     a:hover{
         text-decoration: none;
+    }
+
+    .img-opcty {
+        /* Fallback for web browsers that doesn't support RGBa */
+        background: rgb(244, 241, 241) !important;
+        /* RGBa with 0.6 opacity */
+        background: rgba(244, 241, 241, 0.6) !important;
     }
 
 </style>

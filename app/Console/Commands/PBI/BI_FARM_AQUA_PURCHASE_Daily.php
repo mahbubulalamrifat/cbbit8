@@ -41,6 +41,6 @@ class BI_FARM_AQUA_PURCHASE_Daily extends Command
     {
         $Obj = new ScheduleController();
         $Obj->action('PbiFarmAquaPurchase', 60);
-        return Command::SUCCESS;
+        //return Command::SUCCESS;
     }
 }

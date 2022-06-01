@@ -8,7 +8,9 @@ export default {
                 '&search=' + this.search +
                 '&sort_direction=' + this.sort_direction +
                 '&sort_field=' + this.sort_field +
-                '&search_field=' + this.search_field
+                '&search_field=' + this.search_field +
+                '&sort_by_startDate=' + this.sort_by_startDate +
+                '&sort_by_endDate=' + this.sort_by_endDate
             )
             .then(response => {
                 //console.log(response.data.data);

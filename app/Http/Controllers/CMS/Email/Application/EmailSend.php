@@ -35,7 +35,10 @@ class EmailSend extends Controller
             if ( !empty($item->document) ) {
                 $docArray      = explode(',', $item->document);
                 foreach($docArray as $item){
-                    $message->attach( public_path('/images/application/'.$item) );
+                    $filePath = '/images/application/'.$item;
+                    if (file_exists($filePath)){
+                        $message->attach( public_path($filePath) );
+                    }
                 }
                 
             }

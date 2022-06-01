@@ -36,22 +36,36 @@ class IndexController extends Controller
     public function get_user_assign_zone_offices(){
 
         $data = User::with('zons', 'zons.zonoffice')->where('id', Auth::user()->id)->get()->pluck('zons');
+        //dd( $data[0], $data );
 
         $allData = [];
         // Zone Name
         foreach($data[0] as $item){
             // $allData[] = $item['zonoffice'];
-            $allData[] = [
-                'name' => $item['zonoffice']['name'],
-                'offices' => $item['zonoffice']['offices'],
-            ];
+            //dd($item['zonoffice']['name'], $item['zonoffice']['offices'], $item);
+
+            $zonofficeName = $item['zonoffice']['name'] ?? '';
+            $zonoffices    = $item['zonoffice']['offices'] ?? '';
+            if( !empty($zonofficeName) ){
+                $allData[] = [
+                    'name'      => $zonofficeName,
+                    'offices'   => $zonoffices,
+                ];
+            }
+
+            // $zonoffices = $item['zonoffice']['offices'] ?? '';
+            // if( !empty($zonofficeName) ){
+            //     $allData[] = [
+            //         'offices' => $zonoffices,
+            //     ];
+            // }
         }
 
         // Custom Field Data Add
         $custom = collect( [['name' => 'All', 'offices' => 'All']] );
         $allData = $custom->merge($allData);
 
-        //dd( $allData,  $allData[0] );
+        // dd( $allData );
         return response()->json($allData, 200);
     }
 

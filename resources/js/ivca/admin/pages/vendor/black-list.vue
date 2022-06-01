@@ -4,10 +4,10 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-8">
                         <h3 class="card-title">Vendor Blocked List</h3>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <v-btn @click="showModel" elevation="10" small class="float-right" color="primary" outlined>
                             <v-icon small>mdi-card-plus</v-icon> Add
                         </v-btn>

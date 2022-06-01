@@ -82,15 +82,15 @@ class IndexController extends Controller
 
 
     //Delete
-    public function destroy(Request $request){
+    // public function destroy(Request $request){
 
-        $data       = InventoryOperation::findOrFail($request->id);
-        $success    = $data->delete();
+    //     $data       = InventoryOperation::findOrFail($request->id);
+    //     $success    = $data->delete();
 
-        if($success){
-            return response()->json(['success' => 'Successfully Deleted', 'icon' => 'success']);
-        }else{
-            return response()->json(['success' => 'Something going wrong !!', 'icon' => 'error']);
-        }
-    }
+    //     if($success){
+    //         return response()->json(['success' => 'Successfully Deleted', 'icon' => 'success']);
+    //     }else{
+    //         return response()->json(['success' => 'Something going wrong !!', 'icon' => 'error']);
+    //     }
+    // }
 }

@@ -40,7 +40,7 @@
                                 <v-col cols="12" lg="6">
                                     <div class="small text-danger" v-if="form.errors.has('process')"
                                         v-html="form.errors.get('process')" />
-                                    <v-autocomplete :items="stepOptions" dense v-model="form.process"
+                                    <v-autocomplete @change="changeProcess()" :items="stepOptions" dense v-model="form.process"
                                         label="Select Step" :rules="[v => !!v || 'Step is required!']" outlined
                                         required></v-autocomplete>
                                 </v-col>
@@ -63,6 +63,16 @@
                                                 v-model="checkedAccessories" hide-details></v-checkbox>
                                         </div>
                                     </div>
+                                </v-col>
+
+                                <!-- For Closed dependences -->
+                                <v-col cols="12" v-if="closedoptions.length">
+                                    <!-- {{ form.applicable }} -->
+                                    <v-radio-group label="Closed Status" v-model="form.delivery" row
+                                        :rules="[v => !!v || 'Step is required!']" required>
+                                        <v-radio v-for="(item, k) in closedoptions" :key="k" :label="`${item.label}`"
+                                            :value="`${item.value}`" :color="`${item.color}`"></v-radio>
+                                    </v-radio-group>
                                 </v-col>
 
                                 <!-- Details -->
@@ -124,7 +134,7 @@
         VueEditor
     } from "vue2-editor";
     import vue2EditorToolbar from "../js/vue2_editor_toolbar"
-
+    import changeProcessMethod from './../js/chage_process'
 
     export default {
 
@@ -165,10 +175,10 @@
                         text: 'Processing',
                         value: 'Processing'
                     },
-                    // {
-                    //     text: 'Closed',
-                    //     value: 'Closed'
-                    // },
+                    {
+                        text: 'Closed',
+                        value: 'Closed'
+                    },
                 ],
 
                 dataModalLoading: false,
@@ -180,6 +190,10 @@
 
                 checkedAccessories: [],
 
+                // Closed
+                closedoptions: [],
+                closedVal: '',
+
                 // Form
                 form: new Form({
                     comp_id: '',
@@ -188,7 +202,7 @@
                     document: '',
                     accessories: '',
                     warranty: '',
-                    delivery: '',
+                    delivery: 'Not Deliverable',
                 }),
 
             }
@@ -216,7 +230,7 @@
                 this.form.accessories = this.checkedAccessories
 
                 this.form.post(this.currentUrl + '/action_remarks').then(response => {
-                    console.log(response.data)
+                    //console.log(response.data)
 
                     // Loading
                     this.dataModalLoading = false
@@ -238,6 +252,9 @@
                 })
 
             },
+
+            // changeProcess
+            ...changeProcessMethod,
 
         },
 

@@ -66,13 +66,13 @@
                                         <span v-else>
                                             <!-- Schedule date not matched with current date -->
                                             <span v-if="singleData.date == todayDate">
-                                                <v-btn @click="generateToken(singleData)" small class="success m-1 link-hobar"><i class="far fa-check-circle"></i> Token Generate
-                                                </v-btn>
+                                                <button @click="generateToken(singleData)" class="btn btn-success btn-sm m-1 link-hobar"><i class="far fa-check-circle"></i> Token Generate
+                                                </button>
                                             </span>
                                             <!-- Schedule date matched with current date -->
                                             <span v-else>
-                                                <v-btn small class="success m-1 link-hobar-disabled" disabled><i class="far fa-check-circle"></i> Token Generate
-                                                </v-btn>
+                                                <button class="btn btn-success btn-sm m-1 link-hobar-disabled" disabled><i class="far fa-check-circle"></i> Token Generate
+                                                </button>
                                             </span>
                                            
                                         </span>
@@ -84,17 +84,17 @@
 
                                             
 
-                                            <v-btn @click="showModal(singleData)"
-                                                small class="success m-1 link-hobar">
+                                            <button @click="showModal(singleData)"
+                                                class="btn btn-success btn-sm m-1 link-hobar">
                                             <i class="far fa-clipboard"></i> Put Token
-                                            </v-btn>
+                                            </button>
 
                                         </span>
 
                                         <span v-else>
-                                            <v-btn small class="success m-1 link-hobar-disabled" disabled>
+                                            <button class="btn btn-success btn-sm m-1 link-hobar-disabled" disabled>
                                             <i class="far fa-clipboard"></i> Put Token
-                                            </v-btn>
+                                            </button>
 
                                             <!-- {{ todayDate }} == {{ singleData.date }}  -->
                                         </span>
@@ -147,7 +147,7 @@
                 </b-form-group>
 
                 <b-form-group v-if="!form.progress">
-                    <v-btn type="submit" class="btn-block" variant="primary">Check And Start Audit</v-btn>
+                    <b-button type="submit" class="btn-block" variant="primary">Check And Start Audit</b-button>
                 </b-form-group>
 
 

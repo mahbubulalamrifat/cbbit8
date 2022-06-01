@@ -19,36 +19,39 @@ class CreateIaccessGuestRequestsTable extends Migration
             $table->string('branch')->nullable();
             $table->string('position')->nullable();
             $table->string('department')->nullable();
-            $table->string('mobile')->nullable();
+            $table->string('office_mobile')->nullable();
+            $table->string('personal_mobile')->nullable();
             $table->string('personal_email')->nullable();
+            $table->string('office_email')->nullable();
+            $table->string('internet_id')->nullable();
+
             $table->string('guest_company')->nullable();
             $table->integer('no_of_guest')->nullable();
             $table->string('guest_job')->nullable();
             $table->integer('guest_duration')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-
-            // user
-            $table->string('signature')->nullable();
-            $table->dateTime('date')->nullable();
+            $table->string('document')->nullable();
+            $table->string('document2')->nullable();
 
             // agreed by manager
-            $table->string('manager_name')->nullable();
-            $table->string('manager_signature')->nullable();
-            $table->dateTime('manager_date')->nullable();
+            $table->integer('manager_id')->nullable();
+            $table->string('manager_token')->nullable();
+            $table->dateTime('manager_approved')->nullable();
 
             // approved by bu head
-            $table->string('bu_name')->nullable();
-            $table->string('bu_signature')->nullable();
-            $table->dateTime('bu_date')->nullable();
+            $table->integer('bu_id')->nullable();
+            $table->string('bu_token')->nullable();
+            $table->dateTime('bu_approved')->nullable();
 
             // received by cpb it
-            $table->string('it_name')->nullable();
-            $table->string('it_signature')->nullable();
-            $table->dateTime('it_date')->nullable();
-
-            $table->integer('created_by')->nullable();
-
+            $table->integer('verify_status')->nullable();
+            $table->integer('verify_by')->nullable();
+            $table->dateTime('verify_date')->nullable();
+            $table->string('verify_remarks')->nullable();
+            
+            $table->integer('apply_by')->nullable();
+            $table->dateTime('apply_date')->nullable();
             $table->timestamps();
         });
     }

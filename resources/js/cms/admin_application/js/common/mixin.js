@@ -9,8 +9,7 @@ import createUpdate from './crud'
 
 
 import globalRolePermissions from './../../../../role_permissions'
-
-
+import {debounce} from './../../../../helpers'
 
 
 
@@ -55,6 +54,18 @@ export default {
         // For Report search
         allZoneOffices:[],
         allDepartments:[],
+
+        // pdf
+        pdfFile: '',
+        viewDocument: false,
+        // for pdf only
+        docPath2: 'images/application/',
+          pdfReadyLoading: false,
+        
+        //   imageFile
+          imageFile: '',
+          viewImage: false,
+          imageReadyLoading: false,
       }
     },
 
@@ -113,6 +124,47 @@ export default {
             
         },
 
+        // PDF
+        base64ToArrayBuffer(base64) {
+            var binary_string = window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            this.pdfFile = bytes.buffer
+            this.pdfReadyLoading = false
+            this.appDetailsLodaing = false;
+            this.checkID = '';
+            this.viewDocument = true
+            return bytes.buffer;
+        },
+
+
+        // PDF
+        pdfGetFile(doc) {
+            this.pdfReadyLoading = true
+            axios.post('/cms/a_admin/pdf_get_file', {
+                document: doc
+            }).then((res) => {
+                this.base64ToArrayBuffer(res.data)
+            }).catch(error=>{
+                this.pdfReadyLoading = false
+                console.error(error)
+            });
+        },
+
+
+        imageGetFile(doc) {
+            //console.log(doc);
+            this.imageReadyLoading = true;
+            this.imageFile = doc;
+            this.viewImage = true;
+            this.imageReadyLoading = false;
+            
+            
+        }
+
         
      
 
@@ -121,26 +173,56 @@ export default {
 
     watch: {
 
-        //Excuted When make change value 
-        paginate: function (value) {
+        //Excuted When make change  
+        paginate: function () {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
         },
 
-        //Excuted When make change value 
-        search: function (value) {
+        //Excuted When make change  
+        search: debounce(function () {
+            this.$Progress.start();
+            this.getResults();
+            this.$Progress.finish();
+        }, 500),
+
+        //Excuted When make change  
+        search_field: function () {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
         },
 
-        //Excuted When make change value 
-        search_field: function (value) {
+         //Excuted When make change value 
+         start_date: function (value) {
+            if(this.end_date){
+                this.$Progress.start();
+                this.getResults();
+                this.$Progress.finish();
+            }
+        },
+
+        end_date: function (value) {
+            if(this.start_date){
+                this.$Progress.start();
+                this.getResults();
+                this.$Progress.finish();
+            }
+        },
+
+        
+        zone_office: function (value) {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        }
+        },
+
+        department: function (value) {
+            this.$Progress.start();
+            this.getResults();
+            this.$Progress.finish();
+        },
        
     },
 

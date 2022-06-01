@@ -50,118 +50,122 @@
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th class="col-10">
-                                    Details
-                                </th>
-                                <th class="col-2">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>
-                                    <v-row>
-                                        <v-col>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th class="col-10">
+                                        Details
+                                    </th>
+                                    <th class="col-2">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td class="text-left">
+                                        <v-row>
+                                            <v-col>
 
-                                            <div>
-                                                <b>Product Name or Model: </b> <span
-                                                    v-if="singleData.name">{{ singleData.name }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                            <div>
-                                                <b>Product Category: </b> <span
-                                                    v-if="singleData.category">{{ singleData.category.name }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                            <div>
-                                                <b>Product Subcategory: </b> <span
-                                                    v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                            <div>
-                                                <b>Product Serial: </b> <span
-                                                    v-if="singleData.serial">{{ singleData.serial }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                            <div>
-                                                <b>Invoice Number: </b> <span
-                                                    v-if="singleData.invoice_num">{{ singleData.invoice_num }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                            <div>
-                                                <b>Request Payment Number: </b> <span
-                                                    v-if="singleData.req_payment_num">{{ singleData.req_payment_num }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                <div>
+                                                    <b>Product Name or Model: </b> <span
+                                                        v-if="singleData.name">{{ singleData.name }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                <div>
+                                                    <b>Product Category: </b> <span
+                                                        v-if="singleData.category">{{ singleData.category.name }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                <div>
+                                                    <b>Product Serial: </b> <span
+                                                        v-if="singleData.serial">{{ singleData.serial }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                <div>
+                                                    <b>Invoice Number: </b> <span
+                                                        v-if="singleData.invoice_num">{{ singleData.invoice_num }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                
+                                                <div class="small text-muted">
+                                                    <b>Updated At:</b> <span
+                                                        v-if="singleData.updated_at">{{ singleData.updated_at | moment("MMMM Do, YYYY") }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                <div class="small text-muted">
+                                                    <b>Created At:</b> <span
+                                                        v-if="singleData.created_at">{{ singleData.created_at | moment("MMMM Do, YYYY") }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
 
-                                        </v-col>
-                                        <v-col>
+                                            </v-col>
+                                            <v-col>
 
-                                            <div>
-                                                <b>Business Unit: </b> <span
-                                                    v-if="singleData.business_unit">{{ singleData.business_unit }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                            <div>
-                                                <b>Operation: </b> <span
-                                                    v-if="singleData.operation">{{ singleData.operation.name }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                            <div>
-                                                <b>Office: </b> <span
-                                                    v-if="singleData.office">{{ singleData.office }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                            <div>
-                                                <b>Created Date : </b> <span
-                                                    v-if="singleData.created_at">{{ singleData.created_at | moment("MMM Do YYYY, h:mm a") }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                            <div>
-                                                <b>Bill Submit Date : </b> <span
-                                                    v-if="singleData.bill_submit">{{ singleData.bill_submit | moment("MMMM Do YYYY") }}</span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                <div>
+                                                    <b>Business Unit: </b> <span
+                                                        v-if="singleData.business_unit">{{ singleData.business_unit }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                <div>
+                                                    <b>Operation: </b> <span
+                                                        v-if="singleData.operation">{{ singleData.operation.name }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                <div>
+                                                    <b>Office: </b> <span
+                                                        v-if="singleData.office">{{ singleData.office }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                <div>
+                                                    <b>Request Payment Number: </b> <span
+                                                        v-if="singleData.req_payment_num">{{ singleData.req_payment_num }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                <div>
+                                                    <b>Bill Submit Date : </b> <span
+                                                        v-if="singleData.bill_submit">{{ singleData.bill_submit | moment("MMMM Do YYYY") }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                
 
-                                            <div>
-                                                <b>Remarks : </b> <span v-if="singleData.remarks"
-                                                    v-html="singleData.remarks"></span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                <div>
+                                                    <b>Remarks : </b> <span v-if="singleData.remarks"
+                                                        v-html="singleData.remarks"></span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
 
-                                        </v-col>
-                                    </v-row>
+                                            </v-col>
+                                        </v-row>
 
-                                </td>
+                                    </td>
 
-                                <td class="text-center">
+                                    <td>
 
-                                    <v-btn class="m-1" v-if="isSuperAdmin()" @click="editDataModel(singleData)"
-                                        color="info" elevation="20" small>
-                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
-                                    </v-btn>
+                                        <v-btn class="m-1" v-if="isSuperAdmin()" @click="editDataModel(singleData)"
+                                            color="info" elevation="20" small>
+                                            <v-icon left>mdi-circle-edit-outline</v-icon> Edit
+                                        </v-btn>
 
-                                    <v-btn class="ma-1" v-if="isAdministrator()" @click="deleteDataTemp(singleData.id)"
-                                        color="error" elevation="20" small>
-                                        <v-icon left>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>
+                                        <v-btn class="ma-1" v-if="isAdministrator()" @click="deleteDataTemp(singleData.id)"
+                                            color="error" elevation="20" small>
+                                            <v-icon left>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
 
-                                    <v-btn class="ma-2" @click="view(singleData)" color="success" elevation="20" small>
-                                        <v-icon left>mdi-eye</v-icon> View
-                                    </v-btn>
-                                    <br>
-                                    <span class="text-muted small">Create By-- </span>
-                                    <v-btn x-small dense v-if="singleData.makby"
-                                        @click="currentUserView(singleData.makby)">{{ singleData.makby.name }}</v-btn>
-                                </td>
+                                        <v-btn class="ma-2" @click="view(singleData)" color="success" elevation="20" small>
+                                            <v-icon left>mdi-eye</v-icon> View
+                                        </v-btn>
+                                        <br>
+                                        <span class="text-muted small">Create By-- </span>
+                                        <v-btn x-small dense v-if="singleData.makby"
+                                            @click="currentUserView(singleData.makby)">{{ singleData.makby.name }}</v-btn>
+                                    </td>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -178,7 +182,7 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h2 class="error--text text-center" v-if="!totalValue && !dataLoading" >Old Product Data Not Available <v-icon large color="error">mdi-alert-octagon-outline</v-icon></h2>
 
             </v-card-text>
         </v-card>
@@ -209,19 +213,18 @@
                                 <v-col cols="12" lg="4">
                                     <div class="small text-danger" v-if="form.errors.has('category')"
                                         v-html="form.errors.get('category')" />
-                                    <v-autocomplete :items="allCategory" @change="getSubcategory
-                                    ()" v-model="form.cat_id" label="Select Category"
+                                    <v-autocomplete :items="allCategory" v-model="form.cat_id" label="Select Category"
                                         :rules="[v => !!v || 'Category is required!']" dense required>
                                     </v-autocomplete>
                                 </v-col>
 
-                                <v-col cols="12" lg="4">
+                                <!-- <v-col cols="12" lg="4">
                                     <div class="small text-danger" v-if="form.errors.has('subcategory')"
                                         v-html="form.errors.get('subcategory')" />
                                     <v-autocomplete :items="allSubcategory" v-model="form.subcat_id"
                                         label="Select Subcategory" :rules="[v => !!v || 'Subcategory is required!']"
                                         dense required></v-autocomplete>
-                                </v-col>
+                                </v-col> -->
 
                                 <v-col cols="12" lg="4">
                                     <div class="small text-danger" v-if="form.errors.has('operation_id')"
@@ -314,7 +317,15 @@
                                 <v-col cols="12">
                                     <div class="small text-danger" v-if="form.errors.has('remarks')"
                                         v-html="form.errors.get('remarks')" />
-                                    <label>Details :</label>
+                                    <v-row>
+                                        <v-col cols="8">
+                                            <label>Details :</label>
+                                        </v-col>
+                                        <v-col cols="4" v-if="drafts.length">
+                                            <v-autocomplete :items="drafts" dense v-model="selectDraft" label="Draft">
+                                            </v-autocomplete>
+                                        </v-col>
+                                    </v-row> 
                                     <vue-editor
                                         :class="{ error_bg: (form.remarks && ( form.remarks.length <= 10 || form.remarks.length >= 20000 )) }"
                                         v-model="form.remarks" :editorToolbar="customToolbar"></vue-editor>
@@ -362,7 +373,7 @@
 
         <!-- view product -->
         <view-product v-if="currentData" :currentData="currentData" :category="currentCategory"
-            :subcategory="currentSubcategory" :operation="currentOperation" :key="leaveActionKey"></view-product>
+            :operation="currentOperation" :key="leaveActionKey"></view-product>
 
 
         <!-- user-details -->
@@ -456,7 +467,7 @@
                 form: new Form({
                     id: '',
                     cat_id: '',
-                    subcat_id: '',
+                    //subcat_id: '',
                     serial: '',
                     name: '',
                     remarks: '',
@@ -492,10 +503,6 @@
                     {
                         value: 'cat_id',
                         text: 'Category'
-                    },
-                    {
-                        value: 'subcat_id',
-                        text: 'Subcategory'
                     },
                     {
                         value: 'name',
@@ -597,7 +604,7 @@
 
             // getAllCategory
             getAllCategory() {
-                axios.get('/inventory/admin/category').then(response => {
+                axios.get('/inventory/admin/category/all').then(response => {
                     this.allCatData = response.data
                     //console.log(response.data)
                     for (let i = 0; i < response.data.length; i++) {
@@ -613,35 +620,34 @@
             },
 
             // getSubcategory
-            getSubcategory() {
-                // console.log('cat id', this.form.cat_id)
+            // getSubcategory() {
+            //     // console.log('cat id', this.form.cat_id)
 
-                this.allCatData.forEach(element => {
-                    //console.log(element.id)
+            //     this.allCatData.forEach(element => {
+            //         //console.log(element.id)
 
-                    if (element.id == this.form.cat_id) {
-                        //console.log(element)
-                        this.allSubcategory = []
-                        if (element.subcat.length > 0) {
-                            for (let i = 0; i < element.subcat.length; i++) {
-                                this.allSubcategory.push(element.subcat[i]);
-                                this.allSubcategory[i] = {
-                                    value: element.subcat[i].id,
-                                    text: element.subcat[i].name
-                                };
-                            }
+            //         if (element.id == this.form.cat_id) {
+            //             //console.log(element)
+            //             this.allSubcategory = []
+            //             if (element.subcat.length > 0) {
+            //                 for (let i = 0; i < element.subcat.length; i++) {
+            //                     this.allSubcategory.push(element.subcat[i]);
+            //                     this.allSubcategory[i] = {
+            //                         value: element.subcat[i].id,
+            //                         text: element.subcat[i].name
+            //                     };
+            //                 }
 
-                        }
-                    }
-                })
-
-            },
+            //             }
+            //         }
+            //     })
+            // },
 
 
             // getOffice
             getOffice() {
                 axios.get(this.currentUrl + '/office').then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     // business_unit
                     response.data.office.forEach(element => {
                         this.allOffice.push({
@@ -713,9 +719,9 @@
                 if (data.category) {
                     this.currentCategory = data.category.name
                 }
-                if (data.subcategory) {
-                    this.currentSubcategory = data.subcategory.name
-                }
+                // if (data.subcategory) {
+                //     this.currentSubcategory = data.subcategory.name
+                // }
                 if (data.operation) {
                     this.currentOperation = data.operation.name
                 }

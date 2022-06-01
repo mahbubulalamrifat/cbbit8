@@ -3,28 +3,21 @@
 
         <div class="card">
             <div class="card-header">
-                <div class="row">
-                    <div class="col-6">
-                        <h3 class="card-title">All User List</h3>
-                    </div>
-                    <div class="col-6">
-                      
-                    </div>
-                </div>
+                All User List
 
             </div>
 
-            <div class="card-body table-responsive">
+            <div class="card-body">
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="4" lg="2">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
 
-                        <v-col cols="2">
+                        <v-col cols="4" lg="2">
                             <!-- zone_office --> 
                             <v-select v-model="zone_office" 
                             label="Zones:"
@@ -35,7 +28,7 @@
                             </v-select>
                         </v-col>
 
-                        <v-col cols="3">
+                        <v-col cols="4" lg="3">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
                                 item-text="department" item-value="department" small>
@@ -43,14 +36,14 @@
                         </v-col>
 
 
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- search_field -->
                             <v-select v-model="search_field" label="Search By:" :items="searchByFields" item-text="name"
                                 item-value="value" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="3">
+                        <v-col cols="6" lg="3">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
@@ -58,59 +51,61 @@
 
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('login')">login</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
-                                </th>
-                                <th>Details</th>
-                                <th>Role</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                               <td class="text-center">
-                                    {{ singleData.login  }}<br>
-                                    <v-avatar size="100" @click="currentUserView(singleData)">
-                                            <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image">
-                                    </v-avatar>
-                                </td>
-                                <td>
-                                    <b>Name: </b> {{ singleData.name }} <br>
-                                    <b>Department: </b> {{ singleData.department }} <br>
-                                    <b>Office ID: </b> {{ singleData.office_id }} <br>
-                                    <b>Office: </b> {{ singleData.office }} <br>
-                                    <b>Business Unit: </b> {{ singleData.business_unit }} <br>
-
-                                </td>
-
-                                <td>
-                                    <span v-if="singleData.sms_roles.length">
-                                        <span v-for="(role, index) in singleData.sms_roles" :key="index">
-                                            <span class="p-1 m-1 rounded-pill small">{{ role.name }}, </span> 
-                                        </span>
-                                    </span>
-                                    <span v-else>
-                                        <span class="text-danger">You have no roles</span>
-                                    </span>
-                                </td>
-
-
-
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('login')">login</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
+                                    </th>
+                                    <th>Details</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
                                 <td class="text-center">
+                                        {{ singleData.login  }}<br>
+                                        <v-avatar size="100" @click="currentUserView(singleData)">
+                                                <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image">
+                                        </v-avatar>
+                                    </td>
+                                    <td>
+                                        <b>Name: </b> {{ singleData.name }} <br>
+                                        <b>Department: </b> {{ singleData.department }} <br>
+                                        <b>Office ID: </b> {{ singleData.office_id }} <br>
+                                        <b>Office: </b> {{ singleData.office }} <br>
+                                        <b>Business Unit: </b> {{ singleData.business_unit }} <br>
 
-                                    <v-btn @click="editRoleModel(singleData)" small elevation="10" class="mb-1">
-                                        <v-icon>mdi-alpha-r-circle-outline</v-icon> Role
-                                    </v-btn>
+                                    </td>
 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td>
+                                        <span v-if="singleData.sms_roles.length">
+                                            <span v-for="(role, index) in singleData.sms_roles" :key="index">
+                                                <span class="p-1 m-1 rounded-pill small">{{ role.name }}, </span> 
+                                            </span>
+                                        </span>
+                                        <span v-else>
+                                            <span class="text-danger">You have no roles</span>
+                                        </span>
+                                    </td>
+
+
+
+                                    <td class="text-center">
+
+                                        <v-btn @click="editRoleModel(singleData)" small elevation="10" class="mb-1">
+                                            <v-icon>mdi-alpha-r-circle-outline</v-icon> Role
+                                        </v-btn>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

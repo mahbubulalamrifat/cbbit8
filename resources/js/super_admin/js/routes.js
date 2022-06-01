@@ -12,6 +12,9 @@ import Zones from '../pages/zone/index.vue'
 import ZoneOffices from '../pages/zone/offices.vue'
 
 
+import LogsAll from '../pages/log/all.vue'
+import Announcement from '../pages/announcement/index.vue'
+
 const router = new VueRouter({
     mode: 'history',
     routes : [
@@ -62,6 +65,22 @@ const router = new VueRouter({
             name: 'ZoneOffices',
             meta:{
                 title: 'Super Admin Zone Offices',
+            },   
+        },
+        { 
+            path: '/super_admin/logs_all', 
+            component: LogsAll,
+            name: 'LogsAll',
+            meta:{
+                title: 'Super Admin Logs All',
+            },   
+        },
+        { 
+            path: '/super_admin/announcement', 
+            component: Announcement,
+            name: 'Announcement',
+            meta:{
+                title: 'Super Admin Announcement',
             },   
         },
 

@@ -1,7 +1,6 @@
 <template>
     <div>
 
-        
         <v-row>
             <v-col cols="10">
                 <h3> Car Bookings Information </h3>
@@ -17,21 +16,21 @@
         <div v-if="allData.data">
 
             <v-row>
-                <v-col cols="2">
+                <v-col cols="4" lg="2">
                     <!-- Show -->
-                    <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
+                    <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow">
                     </v-select>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="4" lg="2">
                     <v-select :items="carData" label="All Cars Data" v-model="sort_by_car"></v-select>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="4" lg="2">
                     <v-select :items="reportType" label="Select Type" v-model="sort_by_day"></v-select>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-menu v-model="menu" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-icon="mdi-calendar"
@@ -47,7 +46,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-menu v-model="menu2" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_endDate" label="End Date" prepend-icon="mdi-calendar"
@@ -63,7 +62,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                         placeholder="Search Input..."></v-text-field>
                 </v-col>
@@ -78,7 +77,7 @@
                                 v-if="singleData.status == 1" color="teal" content="Booked" bordered></v-badge>
                             <v-badge v-else color="error" content="Cancelled" bordered></v-badge>
                         </v-col>
-                        <v-col cols="4" class="text-right">
+                        <v-col cols="12" lg="6" class="text-right">
                             <v-btn color="teal white--text" small depressed
                                 @click=" getBookbyModalData( singleData.bookby.id)">
                                 {{ singleData.bookby.name }}
@@ -245,6 +244,9 @@
 
                             <v-row class="text-white text-overline">
                                 <v-col cols="6">
+                                    <div>
+                                        ID:{{ bookbyData.id }}
+                                    </div>
                                     <div>
                                         Name: <span v-if="bookbyData">{{ bookbyData.name }}</span>
                                     </div>
@@ -507,16 +509,17 @@
             // get all car data
             getCarData() {
                 axios.get(this.currentUrl + '/car-data').then(response => {
-
-                    for (let i = 0; i < response.data.length; i++) {
-                        this.carData.push(response.data[i]);
-                        this.carData[i] = {
-                            value: response.data[i].id,
-                            text: response.data[i].name + ' || ' + response.data[i].number
-                        };
-
-                    }
-
+                    response.data.forEach(element => {
+                        if(element.driver){
+                            var driverName = element.driver.name
+                        }else{
+                            var driverName = ''  
+                        }
+                        this.carData.push({
+                            value: element.id,
+                            text: element.name + ' || ' + element.number + ' || ' + driverName
+                        })
+                    });
 
                 }).catch(error => {
                     console.log(error)

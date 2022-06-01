@@ -18,7 +18,7 @@
                     ></v-select>
                 </v-col>
 
-                <v-col cols="6" lg="3">
+                <v-col cols="12" lg="3">
                     <v-menu v-model="menu" min-width="auto" >
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field
@@ -42,7 +42,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="6" lg="3">
+                <v-col cols="12" lg="3">
                     <v-menu v-model="menu2" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field

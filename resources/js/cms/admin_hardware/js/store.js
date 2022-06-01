@@ -17,6 +17,12 @@ export default new Vuex.Store({
 
         ConuntHOService: null,
         ConuntHOServiceAccess: null,
+        AllZoneOfficesAssign:[],
+
+        CountAppDamage: null,
+        CountAppPartialDamage: null,
+        CountNotAppDamage: null,
+        CountNotAppPartialDamage: null,
     },
 
     getters : {
@@ -56,6 +62,22 @@ export default new Vuex.Store({
         },
         getConuntHOServiceAccess(state){
             return state.ConuntHOServiceAccess;
+        },
+        getAllZoneOfficesAssign(state){
+            return state.AllZoneOfficesAssign;
+        },
+
+        getCountAppDamage(state){
+            return state.CountAppDamage;
+        },
+        getCountAppPartialDamage(state){
+            return state.CountAppPartialDamage;
+        },
+        getCountNotAppDamage(state){
+            return state.CountNotAppDamage;
+        },
+        getCountNotAppPartialDamage(state){
+            return state.CountNotAppPartialDamage;
         },
 
     },
@@ -103,6 +125,22 @@ export default new Vuex.Store({
         },
         setConuntHOServiceAccess(state, data){
             state.ConuntHOServiceAccess = data;
+        },
+        setAllZoneOfficesAssign(state, data){
+            state.AllZoneOfficesAssign = data;
+        },
+
+        setConuntAppDamage(state, data){
+            state.CountAppDamage = data;
+        },
+        setConuntAppPartialDamage(state, data){
+            state.CountAppPartialDamage = data;
+        },
+        setConuntNotAppDamage(state, data){
+            state.CountNotAppDamage = data;
+        },
+        setConuntNotAppPartialDamage(state, data){
+            state.CountNotAppPartialDamage = data;
         },
     
     },

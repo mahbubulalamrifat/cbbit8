@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card class="col-8 m-auto">
+        <v-card class="col-lg-8 col-sm-12 m-auto">
             <v-card-title>
                 Data store and show
             </v-card-title>
@@ -15,7 +15,7 @@
                         <v-menu v-model="menu" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="form.start" label="Select Start Date"
-                                    prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" dense>
+                                    prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" dense >
                                 </v-text-field>
                             </template>
                             <v-date-picker v-model="form.start" no-title scrollable>
@@ -35,7 +35,7 @@
                         <v-menu v-model="menu2" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="form.end" label="Select Start Date"
-                                    prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" dense>
+                                    prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" dense >
                                 </v-text-field>
                             </template>
                             <v-date-picker v-model="form.end" no-title scrollable>

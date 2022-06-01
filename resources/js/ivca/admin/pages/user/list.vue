@@ -14,24 +14,24 @@
 
             </div>
 
-            <div class="card-body table-responsive">
+            <div class="card-body">
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="4" lg="2">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
 
-                        <v-col cols="2">
+                        <v-col cols="4" lg="2">
                             <!-- zone_office -->
                             <v-select v-model="zone_office" label="Zones:" :items="allZoneOffices" item-text="name"
                                 item-value="offices" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="3">
+                        <v-col cols="4" lg="3">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
                                 item-text="department" item-value="department" small>
@@ -39,14 +39,14 @@
                         </v-col>
 
 
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- search_field -->
                             <v-select v-model="search_field" label="Search By:" :items="searchByFields" item-text="name"
                                 item-value="value" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="3">
+                        <v-col cols="6" lg="3">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
@@ -54,58 +54,60 @@
 
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('login')">login</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
-                                </th>
-                                <th>Details</th>
-                                <th>Role</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td class="text-center">
-                                    {{ singleData.login  }}<br>
-                                    <v-avatar size="100" @click="currentUserView(singleData)">
-                                            <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image">
-                                    </v-avatar>
-                                </td>
-                                <td>
-                                    <b>Name: </b> {{ singleData.name }} <br>
-                                    <b>Department: </b> {{ singleData.department }} <br>
-                                    <b>Office ID: </b> {{ singleData.office_id }} <br>
-                                    <b>Office: </b> {{ singleData.office }} <br>
-                                    <b>Business Unit: </b> {{ singleData.business_unit }}
-                                </td>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('login')">login</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'login'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'login'">&darr;</span>
+                                    </th>
+                                    <th>Details</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td class="text-center">
+                                        {{ singleData.login  }}<br>
+                                        <v-avatar size="100" @click="currentUserView(singleData)">
+                                                <img v-if="singleData.image" :src="imagePathSm + singleData.image" alt="image">
+                                        </v-avatar>
+                                    </td>
+                                    <td>
+                                        <b>Name: </b> {{ singleData.name }} <br>
+                                        <b>Department: </b> {{ singleData.department }} <br>
+                                        <b>Office ID: </b> {{ singleData.office_id }} <br>
+                                        <b>Office: </b> {{ singleData.office }} <br>
+                                        <b>Business Unit: </b> {{ singleData.business_unit }}
+                                    </td>
 
-                                <td>
-                                    <span v-if="singleData.ivca_roles.length">
-                                        <span v-for="(role, index) in singleData.ivca_roles" :key="index">
-                                            <span class="p-1 m-1 rounded-pill small">{{ role.name }}, </span>
+                                    <td>
+                                        <span v-if="singleData.ivca_roles.length">
+                                            <span v-for="(role, index) in singleData.ivca_roles" :key="index">
+                                                <span class="p-1 m-1 rounded-pill small">{{ role.name }}, </span>
+                                            </span>
                                         </span>
-                                    </span>
-                                    <span v-else>
-                                        <span class="text-danger">You have no roles</span>
-                                    </span>
-                                </td>
+                                        <span v-else>
+                                            <span class="text-danger">You have no roles</span>
+                                        </span>
+                                    </td>
 
 
 
-                                <td class="text-center">
+                                    <td class="text-center">
 
-                                    <v-btn @click="editRoleModel(singleData)" small elevation="10" class="mb-1">
-                                        <v-icon>mdi-alpha-r-circle-outline</v-icon> Role
-                                    </v-btn>
+                                        <v-btn @click="editRoleModel(singleData)" small elevation="10" class="mb-1">
+                                            <v-icon>mdi-alpha-r-circle-outline</v-icon> Role
+                                        </v-btn>
 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -123,7 +125,6 @@
                     </div>
                 </div>
                 <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
-
 
             </div>
         </div>
@@ -154,7 +155,7 @@
                 <v-card-text>
                     <v-row>
                         <!-- {{ currentRoles }} -->
-                        <v-col class="pa-0" cols="3" v-for="(role, index) in allRoles" :key="index">
+                        <v-col class="pa-0" cols="6" lg="3"  v-for="(role, index) in allRoles" :key="index">
                             <v-checkbox v-model="currentRoles" :label="role.name" color="indigo" :value="role.id"
                                 hide-details></v-checkbox>
                         </v-col>
@@ -252,14 +253,12 @@
             },
 
 
-            // editRoleModel
+            // editRoleModel 
             editRoleModel(roleData) {
-                //console.log(roleData.id)
+                console.log(roleData.id)
                 this.currentRoleId = roleData.id
                 // Current role array empty
                 this.currentRoles = []
-
-                //console.log(roleData);
                 // role found then push in arry
                 roleData.ivca_roles.forEach(element => {
                     // console.log('loop', element.id)

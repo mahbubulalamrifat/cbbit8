@@ -46,7 +46,11 @@
                     <div class="table-responsive">
                         <table class="table table-bordered text-center">
                             <thead>
-
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('id')">ID</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'id'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'id'">&darr;</span>
+                                </th>
                                 <th>File</th>
                                 <th>
                                     <a href="#" @click.prevent="change_sort('name')">Product Model</a>
@@ -54,7 +58,6 @@
                                     <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
                                 </th>
                                 <th>Category</th>
-                                <th>Subcategory</th>
                                 <th>
                                     <a href="#" @click.prevent="change_sort('office')">Office</a>
                                     <span v-if="sort_direction == 'desc' && sort_field == 'office'">&uarr;</span>
@@ -80,11 +83,12 @@
                             </thead>
                             <tbody>
                                 <tr v-for="singleData in allData.data" :key="singleData.id">
-
+                                    <td>{{ singleData.id }}</td>
                                     <td>
-                                        <v-btn v-if="singleData.document"
-                                            :href="'/images/inventory/'+singleData.document" color="info" download>
-                                            <v-icon left>mdi-download-network-outline</v-icon> File
+                                        <v-btn v-if="singleData.newtbldata"
+                                            :href="'/images/inventory/'+singleData.newtbldata.document" color="info"
+                                            download>
+                                            <v-icon left>mdi-attachment</v-icon> File
                                         </v-btn>
                                         <span v-else class="text-danger">Not Attached</span>
                                     </td>
@@ -94,10 +98,6 @@
                                     </td>
                                     <td>
                                         <span v-if="singleData.category">{{ singleData.category.name }}</span>
-                                        <span v-else class="error--text">N/A</span>
-                                    </td>
-                                    <td>
-                                        <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
                                         <span v-else class="error--text">N/A</span>
                                     </td>
                                     <td>
@@ -117,12 +117,13 @@
                                         <span v-else class="error--text">N/A</span>
                                     </td>
                                     <td>
-                                        <span v-if="singleData.purchase">{{ singleData.purchase }}</span>
+                                        <span
+                                            v-if="singleData.newtbldata">{{ singleData.newtbldata.purchase | moment("MMMM Do, YYYY") }}</span>
                                         <span v-else class="error--text">N/A</span>
                                     </td>
                                     <td class="text-center">
                                         <v-btn @click="view(singleData)" color="teal white--text" depressed small>
-                                            <v-icon small>mdi-eye</v-icon> View
+                                            <v-icon left>mdi-eye</v-icon> View
                                         </v-btn>
                                     </td>
                                 </tr>
@@ -145,7 +146,9 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h2 class="error--text text-center" v-if="!totalValue && !dataLoading">Given Product Data Not Available
+                    <v-icon large color="error">mdi-alert-octagon-outline</v-icon>
+                </h2>
 
             </v-card-text>
         </v-card>
@@ -154,7 +157,7 @@
 
         <!-- view product -->
         <view-product v-if="currentData" :currentData="currentData" :category="currentCategory"
-            :subcategory="currentSubcategory" :operation="currentOperation" :key="leaveActionKey"></view-product>
+             :operation="currentOperation" :key="leaveActionKey"></view-product>
 
     </div>
 </template>
@@ -209,10 +212,7 @@
                         value: 'cat_id',
                         text: 'Category'
                     },
-                    {
-                        value: 'subcat_id',
-                        text: 'Subcategory'
-                    },
+                   
                     {
                         value: 'operation',
                         text: 'Operation'

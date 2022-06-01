@@ -7,6 +7,9 @@
             </v-app-bar-nav-icon>
 
             <v-spacer></v-spacer>
+            <span v-if="auth" class="m-1">{{ auth.name }} ({{ auth.login }})</span>
+
+            <v-spacer></v-spacer>
 
             <v-btn text link route :to="{ name: 'Dashboard'}" small exact>
                 Dashboard

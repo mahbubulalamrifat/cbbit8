@@ -19,7 +19,7 @@
                     ></v-select>
                 </v-col>
 
-                <v-col cols="6" lg="3">
+                <v-col cols="12" lg="3">
                     <v-menu v-model="menu" min-width="auto" >
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field
@@ -43,7 +43,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="6" lg="3">
+                <v-col cols="12" lg="3">
                     <v-menu v-model="menu2" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field
@@ -78,58 +78,60 @@
             <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
+                        <v-col cols="9">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="newsearch" label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered text-center">
-                        <thead>
-                            <tr>
-                                <th>IP</th>
-                                <th>Name</th>
-                                <th>Group Name</th>
-                                <th>Status</th>
-                                <th>Ping Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>
-                                    <span v-if="singleData.ip">
-                                        {{singleData.ip}}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.name">
-                                        {{singleData.name}}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.group_name">
-                                        {{singleData.group_name}}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.status">
-                                        {{singleData.status}}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.created_at">
-                                        {{singleData.created_at | moment("MMM Do YYYY, h:mm a")}}
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th>IP</th>
+                                    <th>Name</th>
+                                    <th>Group Name</th>
+                                    <th>Status</th>
+                                    <th>Ping Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>
+                                        <span v-if="singleData.ip">
+                                            {{singleData.ip}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.name">
+                                            {{singleData.name}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.group_name">
+                                            {{singleData.group_name}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.status">
+                                            {{singleData.status}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.created_at">
+                                            {{singleData.created_at | moment("MMM Do YYYY, h:mm a")}}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

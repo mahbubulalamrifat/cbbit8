@@ -8,7 +8,7 @@ import imageMethods from './image_methods'
 import createUpdate from './crud'
 import rolesPermission from './roles_permission'
 
-
+import {debounce} from './../../../../helpers'
 
 
 export default {
@@ -64,71 +64,24 @@ export default {
 
 
 
-    
-        handleResize() {
-            this.window.width = window.innerWidth;
-            this.window.height = window.innerHeight;
-        },
-
-       
-        // Add model show
-        newModal() {
-            this.editmode = false;
-            this.form.reset();
-            $('#addNew').modal('show');
-        },
-
-        // Edit Model show
-        editModal(singleData) {
-            this.editmode = true;
-            this.form.reset();
-            $('#addNew').modal('show');
-            this.form.fill(singleData);
-        },
-
-
-
-        testMethod(){
-            return ' Come form common';
-        },
-
-
-       
-        
-        async callApi(method, url, dataObj) {
-
-            try {
-
-                return await axios({
-                    method: method,
-                    url: url,
-                    data: dataObj
-                })
-
-            } catch (e) {
-                return e.response
-            }
-
-        }
-
         // End Methods
     },
 
     watch: {
 
-        //Excuted When make change value 
-        paginate: function (value) {
+        //Excuted When make change  
+        paginate: function () {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
         },
 
-        //Excuted When make change value 
-        search: function (value) {
+        //Excuted When make change  
+        search: debounce(function () {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        }
+        }, 500),
        
     },
 

@@ -10,7 +10,7 @@
                         <v-row>
                             <v-col cols="12" md="6">
                                 <div style="height:230px;">
-                                    <v-img v-if="item.room.image" :src="imagePath+item.room.image" alt="Image"
+                                    <v-img v-if="item.room.image" :src="imagePath+item.room.image" alt="Image" 
                                         class="h-100 w-100" contain></v-img>
                                     <v-img v-else src="/all-assets/common/img/no-image.png" class="h-100 w-100"
                                         alt="Image" contain></v-img>

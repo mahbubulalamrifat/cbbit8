@@ -36,7 +36,7 @@ class IndexController extends Controller
         $allQuery =  CarpoolBooking::with('car', 'bookby', 'driver');
 
 
-        // sort by car
+        // sort by car 
         if(!empty($sort_by_car)){
             $allQuery->where('car_id', $sort_by_car );
         } 
@@ -57,7 +57,7 @@ class IndexController extends Controller
                       ->whereDate('end', '<=', $sort_by_endDate);
         }
 
-        $allData =  $allQuery->orderBy($sort_field, $sort_direction)
+        $allData =  $allQuery->orderBy('start', 'desc')
             ->search( trim(preg_replace('/\s+/' ,' ', $search)) )
             ->paginate($paginate);
 
@@ -156,16 +156,14 @@ class IndexController extends Controller
 
 
     // car data
-
     public function CarData(){
 
-        $allData = CarpoolCar::
-        where("status", 1)
+        $allData = CarpoolCar::with('driver')->where("status", 1)
         ->select('id', 'name', 'number')
         ->get(); 
 
         // Custom Field Data Add
-        $custom = collect( [['id' => '', 'name' => 'Car', 'number' => 'All']] );
+        $custom = collect( [['id' => '', 'name' => 'Car', 'number' => 'All', 'driver'=>['name' => 'Driver All']]] );
         $allData = $custom->merge($allData);
 
         return response()->json($allData, 200);

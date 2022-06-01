@@ -34,9 +34,9 @@
         <v-navigation-drawer app dark v-model="drawer" class="bg_gradient">
             <v-list-item class="px-2" link href="/">
                 <v-list-item-icon>
-                    <img src="/all-assets/common/logo/cpb/cpbit.png" alt="" height="40px" contain>
+                    <img src="/all-assets/common/icon/iaccess.png" alt="" height="40px" contain>
                 </v-list-item-icon>
-                <v-list-item-title>Room Admin</v-list-item-title>
+                <v-list-item-title>iAccess Admin</v-list-item-title>
             </v-list-item>
             <v-divider></v-divider>
 
@@ -52,26 +52,60 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item link router :to="{name: 'RoomIndex'}">
+                <v-list-item link router :to="{name: 'BU'}">
                     <v-list-item-icon>
-                        <v-icon>mdi-home-group </v-icon>
+                        <v-icon>mdi-account-hard-hat </v-icon>
                     </v-list-item-icon>
-
                     <v-list-item-content>
-                        <v-list-item-title>Rooms</v-list-item-title>
+                        <v-list-item-title>B.U</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item link router :to="{name: 'ReportIndex'}">
+                <v-list-item link router :to="{name: 'InternetAccessRequest'}">
                     <v-list-item-icon>
-                        <v-icon>mdi-chart-bar</v-icon>
+                        <v-icon>mdi-web</v-icon>
                     </v-list-item-icon>
-
                     <v-list-item-content>
-                        <v-list-item-title>Report</v-list-item-title>
+                        <v-list-item-title>Internet/Web
+                            <v-badge v-if="CountInternet" color="error ml-2" :content="CountInternet"></v-badge>
+                        </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
 
+                <v-list-item link router :to="{name: 'AccountAuthorityRequest'}">
+                    <v-list-item-icon>
+                        <v-icon>mdi-account-cowboy-hat-outline </v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Account/Authority
+                            <v-badge v-if="CountAccount" color="error ml-2" :content="CountAccount"></v-badge>
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item link router :to="{name: 'EmailRequest'}">
+                    <v-list-item-icon>
+                        <v-icon>mdi-email-check-outline </v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Email 
+                            <v-badge v-if="CountEmail" color="error ml-2" :content="CountEmail"></v-badge>
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item link router :to="{name: 'GuestRequest'}">
+                    <v-list-item-icon>
+                        <v-icon>mdi-account-network-outline </v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Guest 
+                            <v-badge v-if="CountGuest" color="error ml-2" :content="CountGuest"></v-badge>
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                
                 <v-list-item link router href="/logout">
                     <v-list-item-icon>
                         <v-icon>mdi-logout</v-icon>

@@ -12,18 +12,35 @@ Route::namespace('App\Http\Controllers\Auth')->group(function(){
     Route::post('/register_check', 'RegisterController@check');
     Route::post('/register_store', 'RegisterController@store');
 
-    Route::get('/test', 'ADLogin@Data'); 
+    Route::get('/test', 'Common\Log@test'); 
     Route::get('login/{any?}', 'IndexController@index')->name('login');
     Route::get('register/{any?}', 'IndexController@index')->name('register');
+    // register-manual
+    Route::get('/register-manual', 'IndexController@registerManual');
 
 });
 
+// super_admin announcement
+Route::namespace('App\Http\Controllers\SuperAdmin\Announcement')->prefix('super-announcement')->group(function(){
+    Route::get('/announcement', 'IndexController@get_announcement');
+});
 
+
+// iAccess Approve
+Route::namespace('App\Http\Controllers\iAccess\User\Form')->prefix('iaccess-approve')->group(function(){
+    Route::get('/iwaccess', 'IWaccessController@approve');
+    Route::get('/account_authority', 'AccountAuthorityController@approve');
+    Route::get('/email_request', 'EmailRequestController@approve');
+    Route::get('/guest_request', 'GuestRequestController@approve'); 
+});
+
+Route::namespace('App\Http\Controllers\Notification')->prefix('notification')->group(function(){
+    Route::get('/', 'IndexController@all_notification');
+});
 
 
 // Auth Route Start
 Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
-
    
 
     // SuperAdmin Start
@@ -89,10 +106,10 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
             Route::post('/store', 'IndexController@store');
             Route::put('/update/{id}', 'IndexController@update');
             Route::delete('/destroy_temp/{id}', 'IndexController@destroy_temp');
-            Route::delete('/destroy/{id}', 'IndexController@destroy');
+            //Route::delete('/destroy/{id}', 'IndexController@destroy');
             Route::post('/status/{id}', 'IndexController@status');
 
-            // Zone offices
+            // Zone offices 
             Route::prefix('offices')->group(function(){
                 Route::get('/index', 'OfficesController@index');
                 Route::post('/store', 'OfficesController@store');
@@ -100,10 +117,27 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::delete('/destroy_temp/{id}', 'OfficesController@destroy_temp');
                 Route::delete('/destroy/{id}', 'OfficesController@destroy');
                 Route::post('/status/{id}', 'OfficesController@status');
+                Route::get('/edit/{id}', 'OfficesController@edit');
 
                 Route::get('/allzones', 'OfficesController@allzones');
                 Route::get('/alloffices', 'OfficesController@alloffices');
+                Route::get('/all_free_offices', 'OfficesController@all_free_offices');
+
             });
+        });
+
+        // Announcement
+        Route::namespace('Announcement')->prefix('announcement')->group(function(){
+            Route::get('/index', 'IndexController@index');
+            Route::post('/store', 'IndexController@store');
+            Route::put('/update/{id}', 'IndexController@update');
+            Route::delete('/destroy/{id}', 'IndexController@destroy');
+            Route::post('/status/{id}', 'IndexController@status');
+        });
+
+        // Logs
+        Route::namespace('Logs')->prefix('logs')->group(function(){
+            Route::get('/all', 'IndexController@all');
         });
 
         
@@ -243,8 +277,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         });
 
 
-        // User
-        Route::middleware(['can:room'])->namespace('User')->group(function(){
+        // User 
+        Route::middleware(['can:car'])->namespace('User')->group(function(){
 
             Route::prefix('booking')->group(function(){
                 Route::get('/data', 'BookingController@data');
@@ -278,6 +312,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::get('/car-data', 'HistoryController@CarData');
             });
 
+            
+            Route::get('/pdf_view', 'IndexController@pdf_view');
 
             Route::get('{any?}', 'IndexController@index');
         });
@@ -347,6 +383,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         Route::middleware(['can:appAdmin'])->namespace('ApplicationAdmin')->prefix('a_admin')->group(function(){
 
             Route::get('/dashboard_data', 'IndexController@dashboard_data');
+            Route::post('/pdf_get_file', 'IndexController@pdf_get_file');
 
             // index
             Route::prefix('count')->group(function(){
@@ -359,7 +396,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::get('/index', 'IndexController@index');
                 Route::post('/store', 'IndexController@store');
                 Route::put('/update/{id}', 'IndexController@update');
-                Route::delete('/destroy/{id}', 'IndexController@destroy');
+                Route::post('/status/{id}', 'IndexController@status');
+                //Route::delete('/destroy/{id}', 'IndexController@destroy');
             });
 
             //Subcategory 
@@ -367,7 +405,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::get('/index', 'IndexController@index');
                 Route::post('/store', 'IndexController@store');
                 Route::put('/update/{id}', 'IndexController@update');
-                Route::delete('/destroy/{id}', 'IndexController@destroy');
+                //Route::delete('/destroy/{id}', 'IndexController@destroy');
 
                 Route::get('/category', 'IndexController@category');
             });
@@ -403,6 +441,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
             Route::get('/dashboard_data', 'IndexController@dashboard_data');
             Route::get('/zone_access', 'Complain\ComplainController@zone_access');
+            Route::post('/pdf_get_file', 'IndexController@pdf_get_file');
 
             // index
             Route::prefix('count')->group(function(){
@@ -418,7 +457,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                     Route::get('/index', 'IndexController@index');
                     Route::post('/store', 'IndexController@store');
                     Route::put('/update/{id}', 'IndexController@update');
-                    Route::delete('/destroy/{id}', 'IndexController@destroy');
+                    Route::post('/status/{id}', 'IndexController@status');
+                    //Route::delete('/destroy/{id}', 'IndexController@destroy');
 
                     Route::get('/acsosoris', 'IndexController@acsosoris');
                 });
@@ -428,7 +468,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                     Route::get('/index', 'IndexController@index');
                     Route::post('/store', 'IndexController@store');
                     Route::put('/update/{id}', 'IndexController@update');
-                    Route::delete('/destroy/{id}', 'IndexController@destroy');
+                    //Route::delete('/destroy/{id}', 'IndexController@destroy');
 
                     Route::get('/category', 'IndexController@category');
                 });
@@ -438,7 +478,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                     Route::get('/index', 'IndexController@index');
                     Route::post('/store', 'IndexController@store');
                     Route::put('/update/{id}', 'IndexController@update');
-                    Route::delete('/destroy/{id}', 'IndexController@destroy');
+                    //Route::delete('/destroy/{id}', 'IndexController@destroy');
                 });
 
             });
@@ -536,11 +576,14 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
                 Route::get('/index', 'IndexController@index');
                 Route::get('/damaged', 'IndexController@damaged');
                 Route::get('/damaged_replace', 'IndexController@damaged_replace');
+                Route::get('/canceled', 'IndexController@canceled');
+                Route::get('/closed', 'IndexController@closed');
                 
                 // report
                 Route::get('/export_data', 'IndexController@export_data');
                 Route::get('/export_data_damage', 'IndexController@export_data_damage');
                 Route::get('/export_data_damagereplace', 'IndexController@export_data_damagereplace');
+                Route::get('/export_data_closed', 'IndexController@export_data_closed');
                 
             
             });
@@ -598,6 +641,26 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
             Route::get('/dashboard_data', 'IndexController@dashboard_data');
 
             Route::get('/category', 'IndexController@category');
+
+            Route::namespace('Draft')->prefix('draft')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update', 'IndexController@update');
+                Route::delete('/destroy', 'IndexController@destroy');
+                Route::post('/status/{id}', 'IndexController@status');
+                Route::get('/all_data', 'IndexController@all_data');
+            });
+
+            //Category 
+            Route::namespace('Category')->prefix('category')->group(function(){
+                Route::get('/index', 'IndexController@index');
+                Route::post('/store', 'IndexController@store');
+                Route::put('/update', 'IndexController@update');
+                Route::post('/status/{id}', 'IndexController@status');
+                //Route::delete('/destroy/{id}', 'IndexController@destroy'); 
+                Route::get('/all', 'IndexController@all');
+                Route::get('/stock', 'IndexController@stock');
+            });
 
             // NewProduct Management
             Route::namespace('NewProduct')->prefix('new_product')->group(function(){
@@ -719,6 +782,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         // Admin
         Route::middleware(['can:powerbiAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
 
+            Route::get('/dashboard_data', 'IndexController@dashboard_data');
+
             // User
             Route::namespace('User')->prefix('user')->group(function(){
                 Route::get('/index', 'IndexController@index');
@@ -761,11 +826,12 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
     Route::namespace('iVCA')->prefix('ivca')->group(function(){
 
         // Admin
-        Route::middleware(['can:roomAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+        Route::middleware(['can:ivcaAdminSection'])->namespace('Admin')->prefix('admin')->group(function(){
 
             Route::get('/dashboard_data', 'IndexController@dashboard_data');
             Route::get('/inactive_list', 'IndexController@inactive_list');
 
+            Route::get('/pdf_test', 'IndexController@pdf_test');
 
             // User Managment
             Route::namespace('User')->prefix('user')->group( function(){
@@ -934,7 +1000,7 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         });
 
         // User
-        Route::middleware(['can:roomAdmin'])->namespace('User')->group(function(){
+        Route::middleware(['can:ivcaUserSection'])->namespace('User')->group(function(){
 
             // MRO 
             Route::namespace('Mro')->prefix('mro')->group(function(){
@@ -1184,17 +1250,63 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
     // iaccess Start
     Route::namespace('iAccess')->prefix('iaccess')->group(function(){
 
+        
+        Route::post('/pdf_get_file', 'CommonController@pdf_get_file');
+
         // Admin
-        Route::middleware(['can:itempAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
+        Route::middleware(['can:iAccessAdmin'])->namespace('Admin')->prefix('admin')->group(function(){
 
             Route::get('/dashboard_data', 'IndexController@dashboard_data');
+            Route::get('/sidebar_count_data', 'IndexController@sidebar_count_data');
 
+            
 
-            Route::namespace('Allcheckpoint')->prefix('all-checkpoints')->group(function(){
+            Route::namespace('BU')->prefix('bu')->group(function(){
                 Route::get('/index', 'IndexController@index');
                 Route::post('/store', 'IndexController@store');
-                Route::put('/update', 'IndexController@update');
-                Route::delete('/destroy/{id}', 'IndexController@deleteDataDirict');
+                Route::put('/update/{id}', 'IndexController@update');
+                Route::delete('/destroy/{id}', 'IndexController@destroy');
+                Route::post('/status/{id}', 'IndexController@status');
+            });
+
+            Route::namespace('History')->group(function(){
+
+                Route::prefix('iwaccess')->group(function(){
+                    Route::get('/index', 'IWaccessController@index');
+                    Route::post('/remarks_action', 'IWaccessController@remarks_action');
+                    Route::post('/email_resend', 'IWaccessController@email_resend');
+
+                    Route::get('/get_app_details/{id}', 'IWaccessController@get_app_details');
+
+                });
+
+                Route::prefix('account_authority')->group(function(){
+                    Route::get('/index', 'AccountAuthorityController@index');
+                    Route::post('/remarks_action', 'AccountAuthorityController@remarks_action');
+                    Route::post('/email_resend', 'AccountAuthorityController@email_resend');
+
+                    Route::get('/get_app_details/{id}', 'AccountAuthorityController@get_app_details');
+
+                });
+
+                Route::prefix('email_request')->group(function(){
+                    Route::get('/index', 'EmailRequestController@index');
+                    Route::post('/remarks_action', 'EmailRequestController@remarks_action');
+                    Route::post('/email_resend', 'EmailRequestController@email_resend');
+
+                    Route::get('/get_app_details/{id}', 'EmailRequestController@get_app_details');
+                
+                });
+
+                Route::prefix('guest_request')->group(function(){
+                    Route::get('/index', 'GuestRequestController@index');
+                    Route::post('/remarks_action', 'GuestRequestController@remarks_action');
+                    Route::post('/email_resend', 'GuestRequestController@email_resend');
+
+                    Route::get('/get_app_details/{id}', 'GuestRequestController@get_app_details');
+                
+                });
+
             });
 
            
@@ -1205,30 +1317,62 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
         // user
         Route::namespace('User')->group(function(){
 
+            Route::get('/manager_bu_list', 'IndexController@manager_bu_list');
+
+            // iaccess-manual
+            Route::get('/iaccess-manual', 'IndexController@iaccessManual');
+
+
             Route::namespace('Form')->prefix('form')->group(function(){
 
-                Route::prefix('email')->group(function(){
-                    Route::post('/store', 'IndexController@email_store');
-                    //[AllowAnonymous];
-                    Route::get('/email_status/{id}', 'IndexController@email_status');
-                    
+
+                Route::prefix('iwaccess')->group(function(){
+                    Route::post('/store', 'IWaccessController@store');
                 });
 
-                Route::prefix('account')->group(function(){
-                    Route::post('/store', 'IndexController@account_store');
-                    Route::get('/account_status/{id}', 'IndexController@account_status');
+                Route::prefix('account_authority')->group(function(){
+                    Route::post('/store', 'AccountAuthorityController@store');
                 });
 
-                Route::prefix('guest')->group(function(){
-                    Route::post('/store', 'IndexController@guest_store');
-                    Route::get('/guest_status/{id}', 'IndexController@guest_status');
+                Route::prefix('email_request')->group(function(){
+                    Route::post('/store', 'EmailRequestController@store'); 
                 });
 
-                Route::prefix('webaccess')->group(function(){
-                    Route::post('/store', 'IndexController@webaccess_store');
-                    Route::get('/internet_status/{id}', 'IndexController@internet_status');
+                Route::prefix('guest_request')->group(function(){
+                    Route::post('/store', 'GuestRequestController@store');
                 });
+
                 
+                
+            });
+
+            Route::namespace('History')->prefix('history')->group(function(){
+
+                Route::prefix('iwaccess')->group(function(){
+                    Route::get('/index', 'IWaccessController@index');
+                    Route::get('/get_app_details/{id}', 'IWaccessController@get_app_details');
+                   
+                });
+
+                Route::prefix('account_authority')->group(function(){
+                    Route::get('/index', 'AccountAuthorityController@index');
+                    Route::get('/get_app_details/{id}', 'AccountAuthorityController@get_app_details');
+                   
+                });
+
+                Route::prefix('email_request')->group(function(){
+                    Route::get('/index', 'EmailRequestController@index');
+                    Route::get('/get_app_details/{id}', 'EmailRequestController@get_app_details');
+                   
+                });
+
+                Route::prefix('guest_request')->group(function(){
+                    Route::get('/index', 'GuestRequestController@index');
+                    Route::get('/get_app_details/{id}', 'GuestRequestController@get_app_details');
+                   
+                });
+
+
             });
 
             Route::namespace('Status')->prefix('status')->group(function(){
@@ -1296,12 +1440,6 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
 
     
 
-    // Email
-    Route::namespace('Common\Email')->prefix('email')->group(function(){
-        Route::get('/cms_app', 'ScheduleEmailCmsApplication@SEND');
-        
-    }); 
-
 
 
     
@@ -1313,6 +1451,8 @@ Route::middleware('auth')->namespace('App\Http\Controllers')->group(function(){
     
 
 });
+
+
 
 
 

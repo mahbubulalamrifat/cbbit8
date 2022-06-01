@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Auth;
 use DB;
-
+use File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Email\ScheduleEmailCmsHardware;
 use App\Models\User;
@@ -16,7 +16,7 @@ use App\Models\User;
 
 class EmailSend extends Controller
 {
-    //
+    // 
 
     // mail send
     public static function SendMail($item){
@@ -25,7 +25,8 @@ class EmailSend extends Controller
         Mail::send('mail.cms.hardware.action', compact('item'), function ($message) use ($item) {
             //Remove if space have
             $arrayTo = array_map( 'trim', explode(',', $item->to) );
-                $message->to($arrayTo);
+            $message->to($arrayTo);
+            //$message->to('saifulislamw60@gmail.com');
 
             if( !empty($item->cc) ){
                 $arrayCC = array_map( 'trim', explode(',', $item->cc) );
@@ -37,7 +38,11 @@ class EmailSend extends Controller
             if ( !empty($item->document) ) {
                 $docArray      = explode(',', $item->document);
                 foreach($docArray as $item){
-                    $message->attach( public_path('/images/hardware/'.$item) );
+                    $filePath = '/images/hardware/'.$item;
+                    if (file_exists($filePath)){
+                        $message->attach( public_path($filePath) );
+                    }
+                    
                 }
                 
             }

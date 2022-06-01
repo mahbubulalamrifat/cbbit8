@@ -60,11 +60,14 @@ class CarpoolBooking extends Model
         ->OrWhere('start_mileage', 'LIKE', '%'.$val.'%')
         ->OrWhere('km', 'LIKE', '%'.$val.'%')
         ->OrWhere('driver_rating', 'LIKE', '%'.$val.'%')
+        //->OrWhere('id', 'LIKE', '%'.$val.'%')
         ->orWhereHas('car', function($query) use ($val){
-            $query->WhereRaw('name LIKE ?', '%'.$val.'%');
+            $query->WhereRaw('name LIKE ?', '%'.$val.'%')
+            ->OrWhereRaw('number LIKE ?', '%'.$val.'%');
         })
         ->orWhereHas('bookby', function($query) use ($val){
-            $query->WhereRaw('name LIKE ?', '%'.$val.'%');
+            $query->WhereRaw('name LIKE ?', '%'.$val.'%')
+            ->OrWhereRaw('login LIKE ?', '%'.$val.'%');
         })
         ->orWhereHas('driver', function($query) use ($val){
             $query->WhereRaw('name LIKE ?', '%'.$val.'%');

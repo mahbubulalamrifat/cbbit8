@@ -37,103 +37,117 @@
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                
-                                <th>Details</th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('document')">Document</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'document'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'document'">&darr;</span>
-                                </th>
-                                <th>
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                               
-                                <td>
-                                    <div class="d-flex justify-content-between align-center">
-                                        <div>
-                                            <div>
-                                                <b>Name/Model</b> {{ singleData.name }}
-                                            </div>
-                                            <div>
-                                                <b>Serial</b> <span v-html="singleData.serial"></span>
-                                            </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th class="col-2">Details</th>
+                                    <th class="col-8">Details</th>
+                                    <th class="col-2">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                                            <div>
-                                                <b>Unit Price</b> <span v-if="singleData.unit_price">
-                                                    {{singleData.unit_price}}
-                                                </span>
-                                                <span v-else class="error--text">Not Available</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div>
-                                                <b>Category</b> <span
-                                                    v-if="singleData.category">{{ singleData.category.name }}</span>
-                                            </div>
-                                            <div>
-                                                <b>Subcategory</b> <span
-                                                    v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
-                                            </div>
-                                            <div>
-                                                <b>Warranty</b> <span
-                                                    v-if="singleData.warranty && singleData.warranty > $moment(new Date()).format('YYYY-MM-DD')">
-                                                    {{ singleData.warranty | moment("from") }} </span>
-                                                <span v-else class="error--text">Expired </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <v-btn v-if="singleData.document" :href="'/images/inventory/'+singleData.document"
-                                        color="info" download>
-                                        <v-icon left>mdi-download-network-outline</v-icon> File
-                                    </v-btn>
-                                    <span v-else class="text-danger">Not Attached</span>
-                                </td>
+                                    <td class="text-left">
+                                        <v-row>
+                                            <v-col cols="12" lg="6">
+                                                <div>
+                                                    <v-checkbox v-model="form.selectedProIds" :value="singleData.id"
+                                                :label="`${singleData.id}`"> </v-checkbox>
+                                                </div>
+                                                <!-- <div>
+                                                    <b>ID:</b> {{ singleData.id }}
+                                                </div> -->
+                                                <div>
+                                                    <b>Name/Model:</b> {{ singleData.name }}
+                                                </div>
+                                                <div>
+                                                    <b>Serial:</b> <span v-html="singleData.serial"></span>
+                                                </div>
 
-                                 <td class="text-center">
+                                                <div>
+                                                    <b>Unit Price:</b> <span v-if="singleData.unit_price">
+                                                        {{singleData.unit_price}}
+                                                    </span>
+                                                    <span v-else class="error--text">Not Available</span>
+                                                </div>
+                                                <div>
+                                                    <b>Remarks:</b> <span v-html="singleData.remarks"></span>
+                                                </div>
 
-                                    <v-btn class="m-1" v-if="isSuperAdmin()" @click="editDataModel(singleData)" color="info" elevation="20"
-                                        small>
-                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
-                                    </v-btn>
+                                            </v-col>
+                                            <v-col cols="12" lg="6">
+                                                <div>
+                                                    <b>Category:</b> <span
+                                                        v-if="singleData.category">{{ singleData.category.name }}</span>
+                                                </div>
+                                                <div>
+                                                    <b>Warranty:</b> <span
+                                                        v-if="singleData.warranty && singleData.warranty > $moment(new Date()).format('YYYY-MM-DD')">
+                                                        {{ singleData.warranty | moment("from") }} </span>
+                                                    <span v-else class="error--text">Expired </span>
+                                                </div>
+                                                <div>
+                                                    <b>Documents:</b>
+                                                    <v-btn v-if="singleData.document"
+                                                        :href="'/images/inventory/'+singleData.document" color="info"
+                                                        download small>
+                                                        <v-icon left>mdi-attachment</v-icon> File
+                                                    </v-btn>
+                                                    <span v-else class="text-danger">N/A</span>
+                                                </div>
+                                                <div class="small text-muted">
+                                                    <b>Updated At:</b> <span
+                                                        v-if="singleData.updated_at">{{ singleData.updated_at | moment("MMMM Do, YYYY") }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                                <div class="small text-muted">
+                                                    <b>Created At:</b> <span
+                                                        v-if="singleData.created_at">{{ singleData.created_at | moment("MMMM Do, YYYY") }}</span>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                            </v-col>
+                                        </v-row>
+                                    </td>
 
-                                    <v-btn class="ma-2" v-if="isAdministrator()" @click="deleteDataTemp(singleData.id)" color="error"
-                                        elevation="20" small>
-                                        <v-icon left>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>
+                                    <td>
 
-                                    <v-btn class="ma-2" @click="deliever(singleData)" color="orange" elevation="20"
-                                        small>
-                                        <v-icon left>mdi-upload</v-icon> Delivery
-                                    </v-btn>
-                                    <span v-if="isSuperAdmin()">
-                                         <v-btn v-if="singleData.damage_st === null" @click="damageChange(singleData)"
-                                        color="success" depressed small>
-                                        <v-icon left>mdi-check-circle-outline</v-icon> Running
-                                    </v-btn>
+                                        <v-btn class="m-1" v-if="isSuperAdmin()" @click="editDataModel(singleData)"
+                                            color="info" elevation="20" small>
+                                            <v-icon left>mdi-circle-edit-outline</v-icon> Edit
+                                        </v-btn>
 
-                                    <v-btn v-else @click="damageChange(singleData)" color="error" depressed small>
-                                        <v-icon left>mdi-alert-circle-outline </v-icon> Damage
-                                    </v-btn>
-                                    </span>
-                                   
+                                        <v-btn class="ma-2" v-if="isAdministrator()"
+                                            @click="deleteDataTemp(singleData.id)" color="error" elevation="20" small>
+                                            <v-icon left>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
 
-                                    <br>
-                                    <span v-if="singleData.makby" class="small text-muted">Create By--
-                                        {{ singleData.makby.name }}</span>
-                                </td>
+                                        <v-btn class="ma-2 text-white" @click="deliever(singleData)" color="orange"
+                                            elevation="20" small>
+                                            <v-icon left>mdi-upload</v-icon> Delivery
+                                        </v-btn>
+                                        <span v-if="isSuperAdmin()">
+                                            <v-btn v-if="singleData.damage_st === null"
+                                                @click="damageChange(singleData)" color="success" depressed small>
+                                                <v-icon left>mdi-check-circle-outline</v-icon> Running
+                                            </v-btn>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                                            <v-btn v-else @click="damageChange(singleData)" color="error" depressed
+                                                small>
+                                                <v-icon left>mdi-alert-circle-outline </v-icon> Damage
+                                            </v-btn>
+                                        </span>
+
+                                        <br>
+                                        <span v-if="singleData.makby" class="small text-muted">Create By--
+                                            {{ singleData.makby.name }}</span>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -150,7 +164,10 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+
+                <h2 class="error--text text-center" v-if="!totalValue && !dataLoading">New Product Data Not Available
+                    <v-icon large color="error">mdi-alert-octagon-outline</v-icon>
+                </h2>
 
             </v-card-text>
         </v-card>
@@ -181,17 +198,9 @@
                                 <v-col cols="12" lg="4">
                                     <div class="small text-danger" v-if="form.errors.has('cat_id')"
                                         v-html="form.errors.get('cat_id')" />
-                                    <v-autocomplete :items="allCategory" @change="getSubcategory
-                                    ()" v-model="form.cat_id" label="Select Category"
+                                    <v-autocomplete :items="allCategory" v-model="form.cat_id" label="Select Category"
                                         :rules="[v => !!v || 'Category is required!']" dense required>
                                     </v-autocomplete>
-                                </v-col>
-                                <v-col cols="12" lg="4">
-                                    <div class="small text-danger" v-if="form.errors.has('subcat_id')"
-                                        v-html="form.errors.get('subcat_id')" />
-                                    <v-autocomplete :items="allSubcategory" v-model="form.subcat_id"
-                                        label="Select Subcategory" :rules="[v => !!v || 'Subcategory is required!']"
-                                        dense required></v-autocomplete>
                                 </v-col>
 
                                 <v-col cols="12" lg="4">
@@ -275,7 +284,7 @@
                                         :return-value.sync="date" offset-y min-width="auto" dense>
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="form.bill_submit" label="Bill Submit Date"
-                                                prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" dense>
+                                                prepend-icon="mdi-calendar" v-bind="attrs" v-on="on" dense>
                                             </v-text-field>
                                         </template>
                                         <v-date-picker v-model="form.bill_submit" scrollable dense>
@@ -299,18 +308,10 @@
                                 <v-col cols="12" lg="4">
                                     <!-- {{ warranty }} -->
                                     <v-radio-group label="Warranty Status" v-model="warranty" row
-                                        :rules="[v => !!v || 'Warranty is required!']" dense required>
+                                        :rules="[v => !!v || 'Warranty is required!']" required>
                                         <v-radio label="Yes" value="y" color="success"></v-radio>
                                         <v-radio label="No" value="n" color="error"></v-radio>
                                     </v-radio-group>
-                                </v-col>
-
-                                <v-col cols="12" lg="4">
-                                    <div class="small text-danger" v-if="form.errors.has('unit_price')"
-                                        v-html="form.errors.get('unit_price')" />
-                                    <v-text-field v-model="form.unit_price" label="Unit Price"
-                                        placeholder="Enter request payment number" dense>
-                                    </v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" lg="4" v-if="warranty == 'y'">
@@ -328,17 +329,60 @@
                                             </v-text-field>
                                         </v-col>
                                     </v-row>
-
                                 </v-col>
 
+                                <v-col cols="12" lg="4">
+                                    <div class="small text-danger" v-if="form.errors.has('unit_price')"
+                                        v-html="form.errors.get('unit_price')" />
+                                    <v-text-field v-model="form.unit_price" label="Unit Price"
+                                        placeholder="Enter request payment number" dense required>
+                                    </v-text-field>
+                                </v-col>
 
+                                <v-col cols="12" lg="4">
+                                    <v-radio-group label="Multiple Product Input" v-model="multi_product_st" row
+                                        :rules="[v => !!v || 'Product quantity is required!']" required>
+                                        <v-radio label="Yes" value="y" color="success"></v-radio>
+                                        <v-radio label="No" value="n" color="error"></v-radio>
+                                    </v-radio-group>
+                                </v-col>
 
+                                <v-col cols="12" lg="4" v-if="multi_product_st == 'y'">
+                                    <v-text-field type="number" v-model="form.multi_product_quantity"
+                                        label="Total Number of product" :rules="[v => !!v || 'Number is required!']"
+                                        placeholder="Enter total quantity of product" required>
+                                    </v-text-field>
+                                </v-col>
 
-                                <!-- Details  -->
                                 <v-col cols="12">
                                     <div class="small text-danger" v-if="form.errors.has('remarks')"
                                         v-html="form.errors.get('remarks')" />
-                                    <label>Details :</label>
+                                    <v-row>
+                                        <v-col cols="8">
+                                            <label>Details :</label>
+                                        </v-col>
+                                        <v-col cols="4" v-if="drafts.length">
+                                            <v-autocomplete :items="drafts" dense v-model="selectDraft" label="Draft">
+                                            </v-autocomplete>
+                                        </v-col>
+                                    </v-row>
+                                    <v-textarea v-model="form.remarks" placeholder="Enter product details" counter="2000" outlined required></v-textarea>
+                                </v-col>
+
+
+                                <!-- Details  -->
+                                <!-- <v-col cols="12">
+                                    <div class="small text-danger" v-if="form.errors.has('remarks')"
+                                        v-html="form.errors.get('remarks')" />
+                                    <v-row>
+                                        <v-col cols="8">
+                                            <label>Details :</label>
+                                        </v-col>
+                                        <v-col cols="4" v-if="drafts.length">
+                                            <v-autocomplete :items="drafts" dense v-model="selectDraft" label="Draft">
+                                            </v-autocomplete>
+                                        </v-col>
+                                    </v-row> 
                                     <vue-editor
                                         :class="{ error_bg: (form.remarks && ( form.remarks.length <= 10 || form.remarks.length >= 20000 )) }"
                                         v-model="form.remarks" :editorToolbar="customToolbar"></vue-editor>
@@ -354,8 +398,7 @@
                                             <span class="float-right">{{ form.remarks.length }}/ 20,000</span>
                                         </v-col>
                                     </v-row>
-
-                                </v-col>
+                                </v-col> -->
                             </v-row>
 
 
@@ -379,7 +422,8 @@
 
 
         <delivery-component v-if="currentData" :currentData="currentData" :category="currentCategory"
-            :subcategory="currentSubcategory" :key="leaveActionKey" @childToParent="childToParentCall"></delivery-component>
+            :key="leaveActionKey" @childToParent="childToParentCall">
+        </delivery-component>
 
     </div>
 
@@ -439,6 +483,7 @@
                 warranty_type_data: '',
 
                 documentAppend: '',
+                multi_product_st: 'n',
 
 
                 allCategory: [],
@@ -450,7 +495,6 @@
                 form: new Form({
                     id: '',
                     cat_id: '',
-                    subcat_id: '',
                     serial: '',
                     name: '',
                     remarks: '',
@@ -462,6 +506,8 @@
                     bill_submit: '',
                     req_payment_num: '',
                     po_number: '',
+                    multi_product_quantity: '',
+                    selectedProIds:[],
 
                 }),
 
@@ -477,11 +523,7 @@
                     {
                         value: 'cat_id',
                         text: 'Category'
-                    },
-                    {
-                        value: 'subcat_id',
-                        text: 'Subcategory'
-                    },
+                    }
                 ],
 
                 sortByProduct: [],
@@ -495,7 +537,8 @@
                 currentCategory: '',
                 currentSubcategory: '',
 
-
+                // selectedProId
+                selectedProIds:[],
 
 
             }
@@ -516,7 +559,7 @@
 
             // getAllCategory
             getAllCategory() {
-                axios.get('/inventory/admin/category').then(response => {
+                axios.get('/inventory/admin/category/all').then(response => {
                     this.allCatData = response.data
                     //console.log(response.data)
                     for (let i = 0; i < response.data.length; i++) {
@@ -532,30 +575,28 @@
             },
 
             // getSubcategory
-            getSubcategory() {
-                // console.log('cat id', this.form.cat_id)
+            // getSubcategory() {
+            //     // console.log('cat id', this.form.cat_id)
 
-                this.allCatData.forEach(element => {
-                    //console.log(element.id)
+            //     this.allCatData.forEach(element => {
+            //         //console.log(element.id)
 
-                    if (element.id == this.form.cat_id) {
-                        //console.log(element)
-                        this.allSubcategory = []
-                        if (element.subcat.length > 0) {
-                            for (let i = 0; i < element.subcat.length; i++) {
-                                this.allSubcategory.push(element.subcat[i]);
-                                this.allSubcategory[i] = {
-                                    value: element.subcat[i].id,
-                                    text: element.subcat[i].name
-                                };
-                            }
+            //         if (element.id == this.form.cat_id) {
+            //             //console.log(element)
+            //             this.allSubcategory = []
+            //             if (element.subcat.length > 0) {
+            //                 for (let i = 0; i < element.subcat.length; i++) {
+            //                     this.allSubcategory.push(element.subcat[i]);
+            //                     this.allSubcategory[i] = {
+            //                         value: element.subcat[i].id,
+            //                         text: element.subcat[i].name
+            //                     };
+            //                 }
 
-                        }
-                    }
-                })
-
-
-            },
+            //             }
+            //         }
+            //     })
+            // },
 
             // Create Data
             createData() {
@@ -592,6 +633,8 @@
                     // Refresh Tbl Data with current page
                     this.getResults(this.currentPageNumber);
                     this.$Progress.finish();
+                    //custom field empty
+                    this.customFieldEmpty();
 
                     Toast.fire({
                         icon: response.data.icon,
@@ -633,7 +676,7 @@
                 this.form.fill(singleData);
                 //console.log('singleData after',  this.form.document, singleData)
                 // Subcategory
-                this.getSubcategory()
+                //this.getSubcategory()
 
                 this.dataModalDialog = true;
             },
@@ -707,6 +750,16 @@
                 this.currentData = data
             },
 
+
+            //custom field empty
+            customFieldEmpty() {
+                // For Multi product
+                this.multi_product_st = 'n'
+                // For warranty
+                this.warranty = 'n'
+                this.warranty_type = 'month'
+                this.warranty_type_data = ''
+            }
 
 
         },

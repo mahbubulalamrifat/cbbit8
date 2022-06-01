@@ -11,21 +11,21 @@
         <div v-if="allData.data">
 
             <v-row>
-                <v-col cols="2">
+                <v-col cols="4" lg="2">
                     <!-- Show -->
                     <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
                     </v-select>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="4" lg="2">
                     <v-autocomplete :items="userData" label="All Users" item-text="name" item-value="name" v-model="sort_by_user" outlined dense></v-autocomplete>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="4" lg="2">
                     <v-select :items="reportType" label="Select Type" v-model="sort_by_day" outlined dense></v-select>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-menu v-model="menu" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-inner-icon="mdi-calendar"
@@ -41,7 +41,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-menu v-model="menu2" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_endDate" label="End Date" prepend-inner-icon="mdi-calendar"
@@ -57,65 +57,66 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                         placeholder="Search Input..." outlined dense></v-text-field>
                 </v-col>
             </v-row>
 
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="text-center">
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Department
+                            </th>
+                            <th>
+                                Temparature
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr v-for="singleData in allData.data" :key="singleData.id">
+                            <td>
+                                {{singleData.emp_id}}
+                            </td>
 
-            <table class="table table-bordered">
-                <thead class="text-center">
-                    <tr>
-                        <th>
-                            ID
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Department
-                        </th>
-                        <th>
-                            Temparature
-                        </th>
-                        <th>
-                            Date
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="text-center">
-                    <tr v-for="singleData in allData.data" :key="singleData.id">
-                        <td>
-                            {{singleData.emp_id}}
-                        </td>
+                            <td>
+                                {{singleData.name}}
+                            </td>
 
-                        <td>
-                            {{singleData.name}}
-                        </td>
+                            <td>
+                                {{singleData.department}}
+                            </td>
 
-                        <td>
-                            {{singleData.department}}
-                        </td>
+                            <td>
 
-                        <td>
+                                <span v-if="singleData.temp_final > 100">
+                                    <v-btn class="error">{{singleData.temp_final}}</v-btn>
+                                </span>
 
-                            <span v-if="singleData.temp_final > 100">
-                                <v-btn class="error">{{singleData.temp_final}}</v-btn>
-                            </span>
+                                <span v-else>
+                                    <v-btn class="success">{{singleData.temp_final}}</v-btn>
+                                </span>
+                                
+                            </td>
 
-                            <span v-else>
-                                <v-btn class="success">{{singleData.temp_final}}</v-btn>
-                            </span>
-                            
-                        </td>
-
-                        <td>
-                            {{singleData.created_at | moment("MMM Do YYYY")}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            <td>
+                                {{singleData.created_at | moment("MMM Do YYYY")}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div>
                 <span>Total Records: {{ totalValue }}</span>

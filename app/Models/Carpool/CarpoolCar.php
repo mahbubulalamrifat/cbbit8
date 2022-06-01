@@ -26,7 +26,9 @@ class CarpoolCar extends Model
     public function scopeSearch($query, $val='')
     {
         return $query
-        ->where('name', 'LIKE', '%'.$val.'%'); 
+        ->where('name', 'LIKE', '%'.$val.'%')
+        ->orWhere('number', 'LIKE', '%'.$val.'%')
+        ->orWhere('capacity', 'LIKE', '%'.$val.'%'); 
     }
 
 

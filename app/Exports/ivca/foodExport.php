@@ -8,9 +8,11 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
-use PhpOffice\PhpSpreadsheet\Cell\Hyperlink;
 
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+
+use DB;
+
 
 class foodExport implements FromView, WithEvents
 {
@@ -62,22 +64,6 @@ class foodExport implements FromView, WithEvents
                 $event->sheet->getDelegate()->getRowDimension('45')->setRowHeight(50);
 
                 $event->sheet->getDelegate()->getRowDimension('65')->setRowHeight(40);
-
-                foreach ($event->sheet->getColumnIterator('B') as $row) {
-                    foreach ($row->getCellIterator() as $cell) {
-                        if (str_contains($cell->getValue(), '://')) {
-                            $cell->setHyperlink(new Hyperlink($cell->getValue(), 'Read'));
-
-                            // Upd: Link styling added
-                            $event->sheet->getStyle($cell->getCoordinate())->applyFromArray([
-                                'font' => [
-                                    'color' => ['rgb' => '0000FF'],
-                                    'underline' => 'single'
-                                ]
-                            ]);
-                        }
-                    }
-                }
 
                 
             },

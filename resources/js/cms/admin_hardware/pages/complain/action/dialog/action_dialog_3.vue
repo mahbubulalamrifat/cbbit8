@@ -188,8 +188,8 @@
                     document: '',
                     accessories: '',
                     warranty: '',
-                    delivery: '',
-                    applicable: '',
+                    delivery: 'Not Deliverable',
+                    applicable: 'Not Applicable',
                 }),
 
                 currentHoProcess: '',
@@ -359,7 +359,7 @@
                 this.form.accessories = this.checkedAccessories
 
                 this.form.post(this.currentUrl + '/action_remarks').then(response => {
-                    console.log(response.data)
+                   // console.log(response.data)
 
                     // Loading
                     this.dataModalLoading = false

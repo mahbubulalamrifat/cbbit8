@@ -45,7 +45,7 @@
                 </v-card-title>
                 
                 <v-card-text @click="redirect()">
-                    <div class="rounded-lg px-3 text-center font-weight-bold py-2 indigo lighten-2" > Your have <span class="h3 error--text"> {{ selectedCount }} {{selectedComp}} </span> pending ratings &nbsp; </div>
+                    <div class="rounded-lg px-3 text-center font-weight-bold py-2 indigo lighten-2" > Your have <span class="h3 error--text"> {{ selectedCount }} {{ selectedComp }} </span> pending ratings &nbsp; </div>
                     <div class="rounded-lg px-3 text-center font-weight-bold py-2 deep-purple lighten-1 my-3">Please Fulfill Rating section. </div>
                     <div class="rounded-lg px-3 text-center font-weight-bold py-2 cyan darken-1">Otherwise you can't place any complain in future. </div>
                 </v-card-text>
@@ -67,7 +67,7 @@
 
         components:{
             hardwareComplain,
-            applicationComplain,
+           'application-complain': applicationComplain,
         },
 
         data(){
@@ -92,57 +92,74 @@
 
             // hardwareComplainDialog
             hardwareComplainDialog(){
+                this.selectedComp = 'Hardware'
                 this.selectedCount = this.hardRating;
+                console.log('remaing hardRating: ', this.hardRating)
+                if(this.hardRating.length){
+                    this.closeComplainForRating();
+                }
                 if(this.hardRating > 2){
                     this.counterDialogShow=true;
+                    return false;
                 }
-
+               
                 this.hardwareDialogShow = true
                 this.hardwareComKey++;
-                
             },
 
             // applicationComplainDialog
             applicationComplainDialog(){
+                this.selectedComp = 'Application'
                 this.selectedCount = this.appRating;
+                console.log('remaing Application: ', this.appRating)
+                if(this.appRating.length){
+                    this.closeComplainForRating();
+                }
                 if(this.appRating > 2){
                     this.counterDialogShow=true;
                 }
 
                 this.applicationDialogShow = true
                 this.applicationComKey++;
-                
             },
 
             // redirect
             redirect(){
-                if(this.selectedComp == "Application"){
 
-                    this.$router.push({ name: 'ApplicationHistory' });
-                }else{
+                // Hardware History
+                if(this.selectedComp == "Hardware"){
                     this.$router.push({ name: 'HardwareHistory' });
                 }
+
+                // Application History
+                if(this.selectedComp == "Application"){
+                    this.$router.push({ name: 'ApplicationHistory' });
+                } 
             }
 
         },
 
-        watch:{
-            applicationDialogShow: function(e){
-                if(e){
-                    this.applicationDialogShow = false;
-                    this.selectedComp = 'Application';
-                }
-            },
+        // watch:{
+        //     applicationComplainDialog: function(e){
+        //         if(e){
+        //             this.applicationComplainDialog = false;
+        //             this.selectedComp = 'Application';
+        //         }
+        //     },
 
-            hardwareComplainDialog: function(e){
-                if(e){
-                    this.hardwareComplainDialog = false;
-                    this.selectedComp = 'Hardware';
-                }
-            }
-        },
+        //     hardwareComplainDialog: function(e){
+        //         if(e){
+        //             this.hardwareComplainDialog = false;
+        //             this.selectedComp = 'Hardware';
+        //         }
+        //     }
+        // },
 
-        
+
+        created(){
+            //this.closeComplainForRating();
+            //console.log('Remaining rating dashboard', this.appRating, this.hardRating)
+        }
 
 
     }

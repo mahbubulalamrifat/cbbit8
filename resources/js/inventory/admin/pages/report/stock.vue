@@ -3,10 +3,10 @@
         <v-card>
             <v-card-title class="justify-center">
                 <v-row>
-                    <v-col cols="10">
+                    <v-col cols="8" lg="10">
                         <b class="info--text">{{ current_category.name }}</b> Stock Report ( {{sort_by_startDate}} to {{sort_by_endDate}} )
                     </v-col>
-                    <v-col cols="2">
+                    <v-col cols="4" lg="2">
                         <v-btn outlined elevation="5" class="float-right" small @click="exportExcel()"
                             :loading="exportLoading">
                             <v-icon left color="success">mdi-file-excel</v-icon>
@@ -28,14 +28,14 @@
             <v-card-text>
                 <v-row>
                    
-                    <v-col lg="4" cols="4">
+                    <v-col lg="4" cols="12">
                         <!-- {{ current_category.id }} -->
                         <v-autocomplete v-model="current_category" label="Choose Category:" :items="allCategory" dense>
                         </v-autocomplete>
                     </v-col>
 
 
-                    <v-col lg="4" cols="4">
+                    <v-col lg="4" cols="12">
                         <!-- {{sort_by_startDate}} -->
                         <v-menu v-model="menu" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
@@ -52,7 +52,7 @@
                         </v-menu>
                     </v-col>
 
-                    <v-col lg="4" cols="4">
+                    <v-col lg="4" cols="12">
                         <v-menu v-model="menu2" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field v-model="sort_by_endDate" label="Report End Date"
@@ -71,8 +71,8 @@
 
                 </v-row>
 
-                <div v-if="allData.data">
-
+                <div v-if="allData.data" class="table-responsive">
+                    
                     <table class="table table-bordered text-center">
                         <thead>
                             <tr>
@@ -88,17 +88,12 @@
                         <tbody>
                             <tr v-for="singleData in allData.data" :key="singleData.id">
                                 <td><span v-if="singleData.updated_at">{{ singleData.updated_at | moment("dddd, MMMM Do YYYY") }}</span></td>
-                                <td><span v-if="singleData.newold">{{ singleData.newold.new_pro_id }}</span></td>
-                                <td><span v-if="singleData.newold">{{ singleData.newold.business_unit }}</span></td>
-                                <td><span v-if="singleData.newold">{{ singleData.newold.office }}</span></td>
-                                <td><span v-if="singleData.category">{{ singleData.category.name }}</span></td>
-                                <td> <span v-if="singleData.unit_price">
-                                        {{singleData.unit_price}}
-                                    </span>
-                                    <span v-else class="error--text">N/A</span>
-                                </td>
+                                <td><span v-if="singleData.newold && singleData.newold.comp_id">{{ singleData.newold.comp_id }}</span><span v-else class="error--text">N/A</span></td>
+                                <td><span v-if="singleData.newold && singleData.newold.business_unit">{{ singleData.newold.business_unit }}</span><span v-else class="error--text">N/A</span></td>
+                                <td><span v-if="singleData.newold && singleData.newold.office">{{ singleData.newold.office }}</span><span v-else class="error--text">N/A</span></td>
+                                <td><span v-if="singleData.category && singleData.category.name">{{ singleData.category.name }}</span><span v-else class="error--text">N/A</span></td>
+                                <td><span v-if="singleData.unit_price">{{singleData.unit_price}}</span> <span v-else class="error--text">N/A</span></td>
                                 <td><span v-html="singleData.remarks"></span></td>
-
                             </tr>
                         </tbody>
                     </table>
@@ -242,19 +237,30 @@
 
             // getAllCategory
             getAllCategory() {
-                axios.get('/inventory/admin/category').then(response => {
+                axios.get('/inventory/admin/category/stock').then(response => {
+                    // console.log(response.data)
                     this.allCatData = response.data
-                    //console.log(response.data)
-                    this.current_category = response.data[0]
-                    this.current_category_name = response.data[0].name
+                    if(response.data.length){
+                        this.current_category = response.data[0]
+                        this.current_category_name = response.data[0].name
 
-                    for (let i = 0; i < response.data.length; i++) {
-                        this.allCategory.push(response.data[i]);
-                        this.allCategory[i] = {
-                            value: response.data[i],
-                            text: response.data[i].name
-                        };
+                        response.data.forEach((element, index )=> {
+                            //console.log(element)
+                            let counter = index+1
+                            this.allCategory.push(
+                            {
+                                value: element,
+                                text: counter + '. ' + element.name
+                            })
+                        });
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Stock category missing!!',
+                            text: 'No Stock category selected !!'
+                        })
                     }
+                   
                 }).catch(error => {
                     console.log(error)
                 })
@@ -270,7 +276,7 @@
                         '&sort_by_category=' + this.current_category.id
                     )
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         this.allData = response.data;
                         this.totalValue = response.data.totalIssue;
                         this.dataLoading = false;

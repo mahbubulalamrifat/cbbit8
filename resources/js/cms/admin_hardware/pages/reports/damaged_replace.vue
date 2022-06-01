@@ -3,10 +3,10 @@
         <v-card>
             <v-card-title class="justify-center">
                 <v-row>
-                    <v-col cols="10">
+                    <v-col cols="8" lg="10">
                         All Damaged Replace Reports
                     </v-col>
-                    <v-col cols="2">
+                    <v-col cols="4" lg="2">
                         <v-btn outlined elevation="5" class="float-right" small @click="exportExcel()"
                             :loading="exportLoading">
                             <v-icon left color="success">mdi-file-excel</v-icon>
@@ -16,7 +16,7 @@
                 </v-row>
             </v-card-title>
 
-            <v-card-text class="table-responsive pt-3">
+            <v-card-text class="pt-3">
                 <div v-if="allData.data">
                     <v-row>
                         <v-col cols="4">
@@ -41,13 +41,13 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="4" lg="2">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow"  dense>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="2">
+                        <v-col cols="4" lg="2">
                             <!-- {{ zone_office }} -->
                             <v-select v-model="zone_office" label="Zones:" :items="allZoneOfficesAssign" item-text="name"
                                 item-value="offices"  dense>
@@ -55,14 +55,14 @@
                         </v-col>
 
 
-                        <v-col cols="2">
+                        <v-col cols="4" lg="2">
                             <!-- Departments -->
                             <v-select v-model="department" label="Departments:" :items="allDepartments"
                                 item-text="department" item-value="department"  dense>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="2">
+                        <v-col cols="12" lg="2">
                             <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="Start:" type="date" v-model="start_date" ></v-text-field> -->
                             <v-menu v-model="menu" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
@@ -78,7 +78,7 @@
                                 </v-date-picker>
                             </v-menu>
                         </v-col>
-                        <v-col cols="2">
+                        <v-col cols="12" lg="2">
                             <!-- <v-text-field prepend-icon="mdi-calendar-cursor" label="End:" type="date" v-model="end_date" ></v-text-field> -->
                             <v-menu v-model="menu2" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
@@ -95,214 +95,216 @@
                             </v-menu>
                         </v-col>
 
-                        <v-col cols="2">
+                        <v-col cols="12" lg="2">
                             <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search"
                                 label="Search:" placeholder="Search Input..."  dense></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered responsive">
-                        <thead class="text-center">
-                            <tr>
-                               
-                                <th>Product Details</th>
-                                <th>Delivery Details</th>
-                                <th>View</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                
+                                    <th>Product Details</th>
+                                    <th>Delivery Details</th>
+                                    <th>View</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                               
-                                <td>
-                                    <v-row>
-                                        <v-col cols="4">
-                                            <div>
-                                                <b>Category:</b> <span
-                                                    v-if="singleData.complain.category">{{ singleData.complain.category.name }}</span>
-                                            </div>
+                                
+                                    <td>
+                                        <v-row>
+                                            <v-col cols="4">
+                                                <div>
+                                                    <b>Category:</b> <span
+                                                        v-if="singleData.complain.category">{{ singleData.complain.category.name }}</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Subcategory:</b> <span
-                                                    v-if="singleData.complain.subcategory">{{ singleData.complain.subcategory.name }}</span>
-                                            </div>
+                                                <div>
+                                                    <b>Subcategory:</b> <span
+                                                        v-if="singleData.complain.subcategory">{{ singleData.complain.subcategory.name }}</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Damaged Reason:</b> <span
-                                                    v-if="singleData.damaged_reason">{{ singleData.damaged_reason }}</span>
-                                            </div>
+                                                <div>
+                                                    <b>Damaged Reason:</b> <span
+                                                        v-if="singleData.damaged_reason">{{ singleData.damaged_reason }}</span>
+                                                </div>
 
-                                        </v-col>
-                                        <v-col cols="4">
-                                            <div>
-                                                <b>Complain By</b>
-                                                <v-btn x-small color="secondary" v-if="singleData.complain.makby"
-                                                    @click="currentUserView(singleData.complain.makby)">
-                                                    <v-avatar size="20"
+                                            </v-col>
+                                            <v-col cols="4">
+                                                <div>
+                                                    <b>Complain By</b>
+                                                    <v-btn x-small color="secondary" v-if="singleData.complain.makby"
                                                         @click="currentUserView(singleData.complain.makby)">
-                                                        <img v-if="singleData.complain.makby.image"
-                                                            :src="'/images/users/small/' + singleData.complain.makby.image"
-                                                            alt="image">
-                                                    </v-avatar> {{ singleData.complain.makby.name }}
-                                                </v-btn>
-                                            </div>
+                                                        <v-avatar size="20"
+                                                            @click="currentUserView(singleData.complain.makby)">
+                                                            <img v-if="singleData.complain.makby.image"
+                                                                :src="'/images/users/small/' + singleData.complain.makby.image"
+                                                                alt="image">
+                                                        </v-avatar> {{ singleData.complain.makby.name }}
+                                                    </v-btn>
+                                                </div>
 
-                                            <div>
-                                                <b>Department</b> <span
-                                                    v-if="singleData.makby">{{ singleData.makby.department }}</span>
-                                            </div>
+                                                <div>
+                                                    <b>Department</b> <span
+                                                        v-if="singleData.makby">{{ singleData.makby.department }}</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Damaged By</b>
-                                                <v-btn x-small color="secondary" v-if="singleData.makby"
-                                                    @click="currentUserView(singleData.makby)">
-                                                    <v-avatar size="20" @click="currentUserView(singleData.makby)">
-                                                        <img v-if="singleData.makby.image"
-                                                            :src="'/images/users/small/' + singleData.makby.image"
-                                                            alt="image">
-                                                    </v-avatar> {{ singleData.makby.name }}
-                                                </v-btn>
-                                            </div>
-                                        </v-col>
-                                        <v-col cols="4">
-                                            <div>
-                                                <b>Receiver Name</b> <span
-                                                    v-if="singleData.rec_name">{{ singleData.rec_name }}</span>
-                                            </div>
+                                                <div>
+                                                    <b>Damaged By</b>
+                                                    <v-btn x-small color="secondary" v-if="singleData.makby"
+                                                        @click="currentUserView(singleData.makby)">
+                                                        <v-avatar size="20" @click="currentUserView(singleData.makby)">
+                                                            <img v-if="singleData.makby.image"
+                                                                :src="'/images/users/small/' + singleData.makby.image"
+                                                                alt="image">
+                                                        </v-avatar> {{ singleData.makby.name }}
+                                                    </v-btn>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="4">
+                                                <div>
+                                                    <b>Receiver Name</b> <span
+                                                        v-if="singleData.rec_name">{{ singleData.rec_name }}</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Receiver Contact</b> <span
-                                                    v-if="singleData.rec_contact">{{ singleData.rec_contact }}</span>
-                                            </div>
+                                                <div>
+                                                    <b>Receiver Contact</b> <span
+                                                        v-if="singleData.rec_contact">{{ singleData.rec_contact }}</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Receiver Position</b> <span
-                                                    v-if="singleData.rec_position">{{ singleData.rec_position }}</span>
-                                            </div>
-                                        </v-col>
-                                    </v-row>
-                                </td>
+                                                <div>
+                                                    <b>Receiver Position</b> <span
+                                                        v-if="singleData.rec_position">{{ singleData.rec_position }}</span>
+                                                </div>
+                                            </v-col>
+                                        </v-row>
+                                    </td>
 
-                                <td>
-                                    <v-row>
-                                        <v-col cols="4">
-                                            <div>
-                                                <b>Prouct Name</b> <span v-if="singleData.replace_product.length > 0">
-                                                    <span v-for="(item, index) in singleData.replace_product "
-                                                        :key="index">
-                                                        <small v-if="item.name"><b>{{index+1}}:</b> {{ item.name }}, </small>
+                                    <td>
+                                        <v-row>
+                                            <v-col cols="4">
+                                                <div>
+                                                    <b>Prouct Name</b> <span v-if="singleData.replace_product.length > 0">
+                                                        <span v-for="(item, index) in singleData.replace_product "
+                                                            :key="index">
+                                                            <small v-if="item.name"><b>{{index+1}}:</b> {{ item.name }}, </small>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Prouct Serial</b> <span v-if="singleData.replace_product.length > 0">
-                                                    <span v-for="(item, index) in singleData.replace_product "
-                                                        :key="index">
-                                                       <small v-if="item.serial"><b>{{index+1}}:</b> {{ item.serial }}, </small>
+                                                <div>
+                                                    <b>Prouct Serial</b> <span v-if="singleData.replace_product.length > 0">
+                                                        <span v-for="(item, index) in singleData.replace_product "
+                                                            :key="index">
+                                                        <small v-if="item.serial"><b>{{index+1}}:</b> {{ item.serial }}, </small>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Purchase Date</b> <span v-if="singleData.replace_product.length > 0">
-                                                    <span v-for="(item, index) in singleData.replace_product "
-                                                        :key="index">
-                                                       <small v-if="item.purchase"><b>{{index+1}}:</b> {{ item.purchase }}, </small>
+                                                <div>
+                                                    <b>Purchase Date</b> <span v-if="singleData.replace_product.length > 0">
+                                                        <span v-for="(item, index) in singleData.replace_product "
+                                                            :key="index">
+                                                        <small v-if="item.purchase"><b>{{index+1}}:</b> {{ item.purchase }}, </small>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
 
-                                        </v-col>
-                                        <v-col cols="4">
-                                            <div>
-                                                <b>PO Number</b> <span v-if="singleData.replace_product.length > 0">
-                                                    <span v-for="(item, index) in singleData.replace_product "
-                                                        :key="index">
-                                                       <small v-if="item.po_number"><b>{{index+1}}:</b> {{ item.po_number }}, </small>
+                                            </v-col>
+                                            <v-col cols="4">
+                                                <div>
+                                                    <b>PO Number</b> <span v-if="singleData.replace_product.length > 0">
+                                                        <span v-for="(item, index) in singleData.replace_product "
+                                                            :key="index">
+                                                        <small v-if="item.po_number"><b>{{index+1}}:</b> {{ item.po_number }}, </small>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Request Payment Number</b> <span v-if="singleData.replace_product.length > 0">
-                                                    <span v-for="(item, index) in singleData.replace_product "
-                                                        :key="index">
-                                                       <small v-if="item.req_payment_num"><b>{{index+1}}:</b> {{ item.req_payment_num }}, </small>
+                                                <div>
+                                                    <b>Request Payment Number</b> <span v-if="singleData.replace_product.length > 0">
+                                                        <span v-for="(item, index) in singleData.replace_product "
+                                                            :key="index">
+                                                        <small v-if="item.req_payment_num"><b>{{index+1}}:</b> {{ item.req_payment_num }}, </small>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Bill submit Date</b> <span v-if="singleData.replace_product.length > 0">
-                                                    <span v-for="(item, index) in singleData.replace_product "
-                                                        :key="index">
-                                                       <small v-if="item.bill_submit"><b>{{index+1}}:</b> {{ item.bill_submit }}, </small>
+                                                <div>
+                                                    <b>Bill submit Date</b> <span v-if="singleData.replace_product.length > 0">
+                                                        <span v-for="(item, index) in singleData.replace_product "
+                                                            :key="index">
+                                                        <small v-if="item.bill_submit"><b>{{index+1}}:</b> {{ item.bill_submit }}, </small>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
-                                        </v-col>
-                                        <v-col cols="4">
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="4">
 
-                                            <div>
-                                                <b>Invoice Number</b> <span v-if="singleData.replace_product.length > 0">
-                                                    <span v-for="(item, index) in singleData.replace_product "
-                                                        :key="index">
-                                                       <small v-if="item.invoice_num"><b>{{index+1}}:</b> {{ item.invoice_num }}, </small>
+                                                <div>
+                                                    <b>Invoice Number</b> <span v-if="singleData.replace_product.length > 0">
+                                                        <span v-for="(item, index) in singleData.replace_product "
+                                                            :key="index">
+                                                        <small v-if="item.invoice_num"><b>{{index+1}}:</b> {{ item.invoice_num }}, </small>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
 
-                                            <div>
-                                                <!-- {{ $moment(new Date()).format('YYYY-MM-DD') }} -->
-                                                <b>Warranty</b> <span v-if="singleData.replace_product.length > 0">
-                                                    <span v-for="(item, index) in singleData.replace_product "
-                                                        :key="index">
-                                                       <small v-if="item.warranty > $moment(new Date()).format('YYYY-MM-DD')"><b>{{index+1}}:</b> {{ item.warranty | moment("from") }}, </small>
-                                                       <small v-else><b>{{index+1}}:</b> <span class="error--text">Expired </span>, </small>
+                                                <div>
+                                                    <!-- {{ $moment(new Date()).format('YYYY-MM-DD') }} -->
+                                                    <b>Warranty</b> <span v-if="singleData.replace_product.length > 0">
+                                                        <span v-for="(item, index) in singleData.replace_product "
+                                                            :key="index">
+                                                        <small v-if="item.warranty > $moment(new Date()).format('YYYY-MM-DD')"><b>{{index+1}}:</b> {{ item.warranty | moment("from") }}, </small>
+                                                        <small v-else><b>{{index+1}}:</b> <span class="error--text">Expired </span>, </small>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span v-else class="error--text">N/A</span>
-                                            </div>
+                                                    <span v-else class="error--text">N/A</span>
+                                                </div>
 
-                                            <div>
-                                                <b>Document</b>
-                                                <span v-if="singleData.replace_product.length > 0">
-                                                    <span v-for="(item, index) in singleData.replace_product "
-                                                        :key="index">
-                                                       <span v-if="item.document">
-                                                       <v-btn :href="'/images/inventory/'+item.document" color="info" x-small download><v-icon left>mdi-download-network-outline</v-icon> File- {{index+1}}</v-btn>,</span>
-                                                
+                                                <div>
+                                                    <b>Document</b>
+                                                    <span v-if="singleData.replace_product.length > 0">
+                                                        <span v-for="(item, index) in singleData.replace_product "
+                                                            :key="index">
+                                                        <span v-if="item.document">
+                                                        <v-btn :href="'/images/inventory/'+item.document" color="info" x-small download><v-icon left>mdi-download-network-outline</v-icon> File- {{index+1}}</v-btn>,</span>
+                                                    
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span v-else class="text-danger">Not Attached</span>
-                                            </div>
-                                        </v-col>
-                                    </v-row>
-                                </td>
+                                                    <span v-else class="text-danger">Not Attached</span>
+                                                </div>
+                                            </v-col>
+                                        </v-row>
+                                    </td>
 
-                                <td class="text-center">
-                                    <v-btn @click="action(singleData.comp_id)" color="error" depressed small
-                                        elevation="20">
-                                        <v-icon small>mdi-arch</v-icon> View
-                                    </v-btn>
+                                    <td class="text-center">
+                                        <v-btn @click="action(singleData.comp_id)" color="error" depressed small
+                                            elevation="20">
+                                            <v-icon small>mdi-arch</v-icon> View
+                                        </v-btn>
 
-                                    <hr>
+                                        <hr>
 
-                                    <div class="pa-1 info rounded-pill h5 text-white text-center mt-2">
-                                        {{ singleData.comp_id }}
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        <div class="pa-1 info rounded-pill h5 text-white text-center mt-2">
+                                            {{ singleData.comp_id }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

@@ -90,7 +90,7 @@ class IndexController extends Controller
 
     // zone_data
     public function zone_data(){
-        $allData = Zone::orderBy('name')->get();
+        $allData = Zone::where('status', 1)->orderBy('name')->get();
         return response()->json($allData, 200);
     }
 

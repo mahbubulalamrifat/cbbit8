@@ -3,16 +3,29 @@
         <div class="pb-6 rounded success pr-1 pl-1 pt-2">
             <h3 class="text-center pb-2 text-white">Remaining Stock</h3>
             <div v-if="allDashboardData.length > 0">
-                <v-row>
-                    <v-col cols="12" lg="3" v-for="(item, index) in allDashboardData" :key="index">
-                        <v-card>
-                            <v-card-text>
-                                <p v-if="item.category">{{ item.category.name }}:
-                                    <b class="float-right">{{ item.total }}</b></p>
+                <v-row class="pa-2">
+                    <v-col cols="12" lg="3" v-for="(item, index) in allDashboardData" :key="index" class="pa-1">
+                        <v-card v-if="item.category" class="pa-0">
+                            <v-card-text class="pa-1">
+                                <span v-if="item.category">
+                                    <span class="small">
+                                         <span v-if="item.category.name.length < 20">{{ item.category.name }}</span>
+                                        <span v-else>{{ item.category.name.substring(0,20) + '...' }}</span>
+                                    </span>
+                                    <b class="float-right">{{ item.total }}</b>
+                                </span>
                             </v-card-text>
+
+                            <!-- <v-card-title v-if="item.category" class="small">
+                                    <span v-if="item.category.name.length < 15">{{ item.category.name }}</span>
+                                    <span v-else>{{ item.category.name.substring(0,15) + '...' }}</span>
+                                </v-card-title>
+                                <v-card-title v-text="item.total" class="align-end"></v-card-title> -->
                         </v-card>
                     </v-col>
                 </v-row>
+                   
+               
             </div>
             <div v-if="!overlay && allDashboardData.length <= 0" class="m-auto">
                 <p class="text-center h3 text-danger"> Data Not Available </p>

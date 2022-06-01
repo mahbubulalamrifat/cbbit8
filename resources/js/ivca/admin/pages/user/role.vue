@@ -34,44 +34,46 @@
                         </div>
                     </div>
 
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('id')">ID</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'id'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'id'">&darr;</span>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('id')">ID</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'id'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'id'">&darr;</span>
 
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('name')">Name</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                                </th>
-                               
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>{{ singleData.id }}</td>
-                                <td>{{ singleData.name }}</td>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('name')">Name</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                    </th>
                                 
-                                <td class="text-center">
-                                    <!-- v-if="isAdministrator()" -->
-                                    <v-btn  @click="editDataModel(singleData)" small color="info" elevation="10" class="mb-1">
-                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
-                                    </v-btn>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>{{ singleData.id }}</td>
+                                    <td>{{ singleData.name }}</td>
                                     
-                                    <!-- v-if="isAdministrator()" -->
-                                    <v-btn  @click="deleteData(singleData.id)" small color="error" elevation="10" class="mb-1">
-                                        <v-icon left>mdi-close-octagon</v-icon> Delete
-                                    </v-btn>
-                                   
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td class="text-center">
+                                        <!-- v-if="isAdministrator()" -->
+                                        <v-btn  @click="editDataModel(singleData)" small color="info" elevation="10" class="mb-1">
+                                            <v-icon left>mdi-circle-edit-outline</v-icon> Edit
+                                        </v-btn>
+                                        
+                                        <!-- v-if="isAdministrator()" -->
+                                        <v-btn  @click="deleteData(singleData.id)" small color="error" elevation="10" class="mb-1">
+                                            <v-icon left>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
+                                    
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -112,21 +114,21 @@
                     <v-form v-model="valid">
                         <form @submit.prevent="editmode ? updateData() : createData()">
 
-                            <v-text-field v-model="form.name" label="Enter role name" 
-                                        :rules="[v => !!v || 'Role Name is required!']" required>
-                            </v-text-field>
-                            <div class="small text-danger" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
-                            
+                                <v-text-field v-model="form.name" label="Enter role name" 
+                                            :rules="[v => !!v || 'Role Name is required!']" required>
+                                </v-text-field>
+                                <div class="small text-danger" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
+                                
 
-                            <v-btn block blockdepressed :loading="modalBtnLoading" color="primary mt-3"
-                                    type="submit">
-                                <span v-if="editmode">
-                                    <v-icon left dark>mdi-circle-edit-outline</v-icon> Update
-                                </span>
-                                <span v-else>
-                                    <v-icon left dark>mdi-shape-polygon-plus </v-icon> Create
-                                </span>
-                            </v-btn>
+                                <v-btn block blockdepressed :loading="modalBtnLoading" color="primary mt-3"
+                                        type="submit">
+                                    <span v-if="editmode">
+                                        <v-icon left dark>mdi-circle-edit-outline</v-icon> Update
+                                    </span>
+                                    <span v-else>
+                                        <v-icon left dark>mdi-shape-polygon-plus </v-icon> Create
+                                    </span>
+                                </v-btn>
 
                         </form>
                     </v-form>

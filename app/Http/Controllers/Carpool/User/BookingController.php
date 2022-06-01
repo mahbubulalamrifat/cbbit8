@@ -19,12 +19,21 @@ class BookingController extends Controller
     //data
     public function data(){
 
-        $allData = CarpoolBooking::where('status', '1')
-        ->with('car', 'driver', 'bookby')
-        ->orderBy('id', 'desc')
+        $sort_by_car  = Request('sort_by_car', '');
+
+        $allQuery = CarpoolBooking::where('status', '1')
+        ->with('car', 'driver', 'bookby');
+        
+        // sort by car
+        if(!empty($sort_by_car)){
+            $allQuery->where('car_id', $sort_by_car);
+        } 
+
+        $allData = $allQuery->orderBy('id', 'desc')
         ->take(200)
         ->get()
         ->toArray();
+        
 
         //dd($allData);
 

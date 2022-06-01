@@ -25,7 +25,7 @@ class IndexController extends Controller
         $business_unit  = Request('business_unit', '');
         $search_type  = Request('search_type', '');
 
-        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'subcategory', 'operation')
+        $allDataQuery = InventoryOldProduct::with('makby', 'category', 'operation')
             ->where('delete_temp', '!=', '1');
 
         // business unit
@@ -40,7 +40,7 @@ class IndexController extends Controller
         
 
         // Search
-        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id'  && $search_field != 'operation'){
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id'  && $search_field != 'operation'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
@@ -55,16 +55,16 @@ class IndexController extends Controller
             });
 
         }
-        elseif($search_field == 'subcat_id'){
+        // elseif($search_field == 'subcat_id'){
 
-            $val = trim(preg_replace('/\s+/' ,' ', $search));
+        //     $val = trim(preg_replace('/\s+/' ,' ', $search));
 
-            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
-                //$query->where( 'name', $search_field );
-                $query->where('name', 'LIKE', '%'.$val.'%');
-            });
+        //     $allDataQuery->whereHas( 'subcategory', function($query) use($val){
+        //         //$query->where( 'name', $search_field );
+        //         $query->where('name', 'LIKE', '%'.$val.'%');
+        //     });
 
-        }
+        // }
         elseif($search_field == 'operation'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
@@ -142,7 +142,7 @@ class IndexController extends Controller
         //Validate
         $this->validate($request,[
             'cat_id'           =>  'required',
-            'subcat_id'        =>  'required',
+            //'subcat_id'        =>  'required',
             'name'             =>  'required',
             'serial'           =>  'required|max:200|unique:inventory_old_products',
             'invoice_num'      =>  'nullable|max:200|unique:inventory_old_products',
@@ -159,7 +159,7 @@ class IndexController extends Controller
 
 
         $data->cat_id        = $request->cat_id;
-        $data->subcat_id     = $request->subcat_id;
+        //$data->subcat_id     = $request->subcat_id;
         $data->name          = $request->name;
         $data->serial        = $request->serial;
         $data->remarks       = $request->remarks;
@@ -194,7 +194,7 @@ class IndexController extends Controller
         //Validate
         $this->validate($request,[
             'cat_id'           =>  'required',
-            'subcat_id'        =>  'required',
+            //'subcat_id'        =>  'required',
             'name'             =>  'required',
             'serial'           =>  'required|max:200|unique:inventory_old_products,serial,'.$id,
             'invoice_num'      =>  'nullable|max:200|unique:inventory_old_products,invoice_num,'.$id,
@@ -211,7 +211,7 @@ class IndexController extends Controller
 
 
         $data->cat_id           = $request->cat_id;
-        $data->subcat_id        = $request->subcat_id;
+        //$data->subcat_id        = $request->subcat_id;
         $data->name             = $request->name;
         $data->serial           = $request->serial;
         $data->remarks          = $request->remarks;

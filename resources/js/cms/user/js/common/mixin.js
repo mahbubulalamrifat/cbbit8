@@ -5,16 +5,12 @@ import {
 
 import store from '../store';
 
-
 import paginateMethods from './paginate_methods'
 import imageMethods from './image_methods'
 import createUpdate from './crud'
 
-
 import globalRolePermissions from '../../../../role_permissions'
-
-
-
+import {debounce} from './../../../../helpers'
 
 
 export default {
@@ -44,11 +40,6 @@ export default {
 
             // Tbl number of data show
             tblItemNumberShow: [5, 10, 15, 25, 50, 100],
-
-            hardRating: null,
-            appRating: null,
-
-
             counterDialogShow: false,
         }
     },
@@ -72,37 +63,13 @@ export default {
 
 
 
-        handleResize() {
-            this.window.width = window.innerWidth;
-            this.window.height = window.innerHeight;
-        },
-
-
-        // Add model show
-        newModal() {
-            this.editmode = false;
-            this.form.reset();
-            $('#addNew').modal('show');
-        },
-
-        // Edit Model show
-        editModal(singleData) {
-            this.editmode = true;
-            this.form.reset();
-            $('#addNew').modal('show');
-            this.form.fill(singleData);
-        },
-
-
         closeComplainForRating() {
             axios.get('/cms/ratings').then(response => {
-
+                //console.log('remain Rating mixin: ', response)
                 store.commit('setHardCounter', response.data.hardRating);
-                this.hardRating = response.data.hardRating;
                 store.commit('setAppCounter', response.data.appRating);
-                this.appRating = response.data.appRating
-                
                
+                //console.log('Remaining rating mixin store', this.appRating, this.hardRating)
             });
         }
 
@@ -112,21 +79,21 @@ export default {
     watch: {
 
         //Excuted When make change value 
-        paginate: function (value) {
+        paginate: function () {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
         },
 
-        //Excuted When make change value 
-        search: function (value) {
+        //Excuted When make change  
+        search: debounce(function () {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        },
+        }, 500),
 
-        //Excuted When make change value 
-        search_field: function (value) {
+        //Excuted When make change  
+        search_field: function () {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
@@ -136,9 +103,6 @@ export default {
 
     created() {
         // window.addEventListener('resize', this.handleResize);
-        // this.handleResize();
-
-        
 
     },
 
@@ -160,8 +124,8 @@ export default {
             'auth': 'getAuth',
             'roles': 'getRoles',
 
-            'hardCounter': 'getHardCounter',
-            'appCounter': 'getAppCounter',
+            'hardRating': 'getHardCounter',
+            'appRating': 'getAppCounter',
 
         }),
 

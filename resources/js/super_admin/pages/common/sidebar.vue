@@ -102,32 +102,26 @@
                     </v-list-item-content>
                 </v-list-item>
 
+                <v-list-item link router :to="{ name: 'Announcement' }">
+                    <v-list-item-icon>
+                        <v-icon>mdi-bullhorn-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Announcement</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
 
-                <!-- <v-list-group prepend-icon="mdi-account-group" active-class="dark--text">
-                    <template v-slot:activator>
-                        <v-list-item-title>Zone Manage</v-list-item-title>
-                    </template>
-
-                    <v-list-item link router :to="{ name: 'Zones' }">
-                        <v-list-item-icon>
-                            <v-icon>mdi-account-details</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title>All Zones</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item link router :to="{ name: 'ZoneOffices' }">
-                        <v-list-item-icon>
-                            <v-icon>mdi-account-details</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title>All Zone Offices</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                  
-                </v-list-group> -->
+                <v-list-item link router :to="{ name: 'LogsAll' }">
+                    <v-list-item-icon>
+                        <v-icon>mdi-math-log </v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Login Logs</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
 
 
+            
 
 
                 <!-- Sidebar Multi level Item -->
@@ -205,6 +199,10 @@
 <style scoped>
     .gradient_color {
         background: linear-gradient(180deg, #a8bfbb, #0cb7bb);
+    }
+
+    a:hover{
+        text-decoration: none;
     }
 
 </style>

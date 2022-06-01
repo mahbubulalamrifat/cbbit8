@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Auth;
+use App\Models\User;
 
 class IndexController extends Controller
 {
@@ -17,5 +18,30 @@ class IndexController extends Controller
         $roles = $roles->merge($otherData);
         // dd( $roles);
         return view('pbi.admin.index', compact('roles'));
+    }
+
+    // dashboard_data
+    public function dashboard_data(){
+
+        $total_user = User::with('pbi_roles')
+        ->where('delete_temp', '!=', '1')
+        ->count();
+
+        $pbi_user = User::with('pbi_roles')
+        ->where('delete_temp', '!=', '1')
+        ->whereHas( 'roles', function($query){
+            $query->where( 'name', 'Powerbi' );
+        })
+        ->count();
+
+        $pbi_admin = User::with('pbi_roles')
+        ->where('delete_temp', '!=', '1')
+        ->whereHas( 'roles', function($query){
+            $query->where( 'name', 'Powerbi-admin' );
+        })
+        ->count();
+
+        return response()->json(['total_user'=> $total_user, 'pbi_user'=> $pbi_user, 'pbi_admin'=> $pbi_admin]);
+
     }
 }

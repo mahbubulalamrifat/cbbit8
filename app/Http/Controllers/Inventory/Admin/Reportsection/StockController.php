@@ -82,8 +82,10 @@ class StockController extends Controller
                     ->where('delete_temp', '!=', '1')
                     ->where('give_st', 1)
                     ->where('cat_id', $sort_by_category)
-                    ->whereDate('created_at', '>=', $sort_by_startDate)
-                    ->whereDate('created_at', '<=', $sort_by_endDate)
+                    //->whereDate('created_at', '>=', $sort_by_startDate)
+                    //->whereDate('created_at', '<=', $sort_by_endDate)
+                    ->whereDate('updated_at', '>=', $sort_by_startDate)
+                    ->whereDate('updated_at', '<=', $sort_by_endDate)
                     ->get();
                     //->groupBy('comp_id');
 
@@ -106,8 +108,8 @@ class StockController extends Controller
         // totalIssue
         $totalIssueQuery = InventoryNewProduct::where('delete_temp', '!=', '1')
                     ->where('cat_id', $sort_by_category)
-                    ->whereDate('created_at', '>=', $sort_by_startDate)
-                    ->whereDate('created_at', '<=', $sort_by_endDate)
+                    ->whereDate('updated_at', '>=', $sort_by_startDate)
+                    ->whereDate('updated_at', '<=', $sort_by_endDate)
                     ->where('give_st', 1);    
         $totalIssue         = $totalIssueQuery->count();
         $totalIssueAmmount  = $totalIssueQuery->sum('unit_price');
@@ -121,8 +123,8 @@ class StockController extends Controller
         // totalDamaged
         $totalDamagedQuery = InventoryNewProduct::where('delete_temp', '!=', '1')
                     ->where('cat_id', $sort_by_category)
-                    ->whereDate('created_at', '>=', $sort_by_startDate)
-                    ->whereDate('created_at', '<=', $sort_by_endDate)
+                    ->whereDate('updated_at', '>=', $sort_by_startDate)
+                    ->whereDate('updated_at', '<=', $sort_by_endDate)
                     ->where('damage_st', 1);
                    
         $totalDamaged         = $totalDamagedQuery->count();

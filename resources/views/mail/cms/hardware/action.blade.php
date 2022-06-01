@@ -160,17 +160,36 @@
                                                                     <div style="color: #a0522d">
                                                                         <h4 style="margin-bottom:1rem">Head Office Support Team</h4>
                                                                         <div>
-                                                                            Baharul Islam   <span style="margin-left: 5rem"> Contact: 01324 254 055 </span><br>
-                                                                            Md. Polash Mahamud   <span style="margin-left: 2rem"> Contact: 01787 692 530 </span><br>
-                                                                            Md. Moniruzzaman   <span style="margin-left: 3rem"> Contact: 01787 692 529 </span>
-                                                                            
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td style="color: #a0522d;">Baharul Islam Biju</td>
+                                                                                    <td style="color: #a0522d; float:right">Contact: 01324 254 055</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="color: #a0522d">Polash Mahamud</td>
+                                                                                    <td style="color: #a0522d; float:right">Contact: 01787 692 530</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="color: #a0522d">Moniruzzaman (Shadhin)</td>
+                                                                                    <td style="color: #a0522d; float:right">Contact: 01787 692 529</td>
+                                                                                </tr>
+                                                                            </table>
                                                                         </div>
 
                                                                         <h4 style="margin-bottom:1rem">Chittagong Zone Support Team</h4>
                                                                         <div>
-                                                                            Jilluer Rahaman   <span style="margin-left: 4rem"> Contact: 01787 692 529 </span>
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td style="color: #a0522d">Jillur Rahman</td>
+                                                                                    <td style="color: #a0522d; float:right">Contact: 01324 254 025</td>
+                                                                                </tr>
+                                                                            </table>
                                                                         </div>
                                                                        
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div style="text-align:center;color:#e64b4b;align-items:center;font-size:12px;">
+                                                                        N.B: This is system generated email. Do Not reply here
                                                                     </div>
 
                                                                 </div>

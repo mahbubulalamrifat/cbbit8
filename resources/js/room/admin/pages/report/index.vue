@@ -6,68 +6,70 @@
             <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
+                        <v-col cols="9">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th>
-                                    Room
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('start')">Start</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'start'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'start'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('end')">End</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'end'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'end'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('purpose')">Purpose</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'purpose'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'purpose'">&darr;</span>
-                                </th>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('status')">Status</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'status'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'status'">&darr;</span>
-                                </th>
-                                <th>
-                                    Booked By
-                                </th>
-                                <th>
-                                    Department
-                                </th>
-                             
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td> <span v-if="singleData.room">{{ singleData.room.name }}</span></td>
-                                <td>{{ singleData.start  | moment("MMMM Do YYYY, h:mm a") }}</td>
-                                <td>{{ singleData.end  | moment("MMMM Do YYYY, h:mm a") }}</td>
-                                <td>{{ singleData.purpose }}</td>
-                                 <td><span v-if="singleData.status == 1" >Booked</span><span v-else>Canceled</span> </td>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>
+                                        Room
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('start')">Start</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'start'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'start'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('end')">End</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'end'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'end'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('purpose')">Purpose</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'purpose'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'purpose'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('status')">Status</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'status'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'status'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        Booked By
+                                    </th>
+                                    <th>
+                                        Department
+                                    </th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td> <span v-if="singleData.room">{{ singleData.room.name }}</span></td>
+                                    <td>{{ singleData.start  | moment("MMMM Do YYYY, h:mm a") }}</td>
+                                    <td>{{ singleData.end  | moment("MMMM Do YYYY, h:mm a") }}</td>
+                                    <td>{{ singleData.purpose }}</td>
+                                    <td><span v-if="singleData.status == 1" >Booked</span><span v-else>Canceled</span> </td>
 
-                                <td> <span v-if="singleData.bookby">{{ singleData.bookby.name }}</span></td>
-                                <td> <span v-if="singleData.bookby">{{ singleData.bookby.department }}</span></td>
-                               
-                            
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td> <span v-if="singleData.bookby">{{ singleData.bookby.name }}</span></td>
+                                    <td> <span v-if="singleData.bookby">{{ singleData.bookby.department }}</span></td>
+                                
+                                
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

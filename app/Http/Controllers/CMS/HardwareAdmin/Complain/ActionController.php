@@ -55,7 +55,17 @@ class ActionController extends Controller
 
         // Store in Application Complain tbl
         $complain_data = HardwareComplain::find($comp_id);
-        $complain_data->process      = $process;
+        
+
+        if($complain_data->status == 0){
+            // Canceled
+            return response()->json(['msg'=>'Complain already canceled &#128558;', 'icon'=>'warning'], 200);
+        }
+
+        if($complain_data->process == 'Closed'){
+            // Check Closed
+            return response()->json(['msg'=>'Complain already Closed &#128558;', 'icon'=>'warning'], 200);
+        }
 
         $documentPath = 'images/hardware/';
         $document     = $request->file('document');
@@ -71,7 +81,8 @@ class ActionController extends Controller
         $remarks_data->created_by   = Auth::user()->id;
        
         $success = $remarks_data->save();
-        // Store in Application Complain tbl  
+        // Store in Application Complain tbl
+        $complain_data->process      = $process;  
         $success2 = $complain_data->save();
 
 
@@ -192,9 +203,8 @@ class ActionController extends Controller
             // Update inventory Old Product table 
             $inventory_old_data = new InventoryOldProduct();
             $inventory_old_data->new_pro_id        = $product_id;
-            $inventory_old_data->comp_id           = $request->comp_id; //add complain id
+            $inventory_old_data->comp_id           = $comp_id; //add complain id
             $inventory_old_data->cat_id            = $inventory_new_data->cat_id;
-            $inventory_old_data->subcat_id         = $inventory_new_data->subcat_id;
             $inventory_old_data->name              = $inventory_new_data->name;
             $inventory_old_data->serial            = $inventory_new_data->serial;
             $inventory_old_data->operation_id      = $request->operation_id;
@@ -207,7 +217,7 @@ class ActionController extends Controller
             $inventory_old_data->rec_position      = $rec_position;
             
             $inventory_old_data->created_by = Auth::user()->id;
-            //$inventory_old_data->save();
+            $inventory_old_data->save();
         }
 
         

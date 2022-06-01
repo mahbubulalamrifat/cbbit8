@@ -34,7 +34,7 @@ class IndexController extends Controller
     // operations
     public function operations(){
        
-        $data = Auth::user()->sms_roles()->select('name', 'code')->get()->toArray();
+        $data = Auth::user()->sms_roles()->select('name', 'code')->orderBy('code')->get()->toArray();
         //dd( $data);
         return response()->json($data);
  
@@ -86,7 +86,7 @@ class IndexController extends Controller
                         $Namedate=str_replace("/","_", $date);
                         $fileName ="Sales Order SMS - ".$operationName . " (".$Namedate.")".".xlsx";
 
-                        return Excel::download(new SalesSMS($invSmsFormatData), $fileName);
+                        //return Excel::download(new SalesSMS($invSmsFormatData), $fileName);
 
                 }
             }
@@ -160,7 +160,10 @@ class IndexController extends Controller
 
         if($type == 'Sales_Order'){
 
-            $data = $this->SmsSalesPayment($code, $date);
+            $data = $this->SmsSalesOrder($code, $date);
+
+            // dd($data);
+
             // return Excel::download(new SalesSMS($invSmsFormatData), $fileName);
             return Excel::download(new SalesSMS($data), 'sales.xlsx');
 
@@ -187,13 +190,14 @@ class IndexController extends Controller
     // test
     public function test(){
 
-        $Code = '11';
-        $Date = '2022-02-01';
+        $Code = '01';
+        $Date = '2022-05-11';
 
         // $data =  $this->SmsSalesOrder();
         // $data =  $this->SmsSalesOrder( $Code, $Date );
 
-        $data = $this->SmsSalesPayment($Code, $Date);
+        $data = $this->SmsSalesOrder($Code, $Date);
+        //$data = $this->SmsSalesPayment($Code, $Date);
         dd( $data );
 
        

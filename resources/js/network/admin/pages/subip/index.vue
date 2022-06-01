@@ -18,13 +18,13 @@
             <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="4">
+                        <v-col cols="6" lg="4">
                             <v-text-field
                                 v-model="newsearch"
                                 append-icon="mdi-magnify"
@@ -38,12 +38,12 @@
 
                         
 
-                        <v-col cols="4">
+                        <v-col cols="6" lg="4">
                             <v-select label="Search By Group Name" v-model="sort_by_name" :items="group_names" item-text="name" item-value="name" outlined dense>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="2">
+                        <v-col cols="6" lg="2">
                             <v-btn @click="pingAll()" color="info" small
                                     class="float-right">
                                 <v-icon small>mdi-access-point-network</v-icon> Ping All
@@ -51,69 +51,71 @@
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered text-center">
-                        <thead>
-                            <tr>
-                                <th>IP</th>
-                                <th>Name</th>
-                                <th>Group</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>
-                                    <span v-if="singleData.ip">
-                                        {{singleData.ip}}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.name">
-                                        {{singleData.name}}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.group_name">
-                                        {{singleData.group_name}}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.status == 1">
-                                        <span class="success--text">Active</span>
-                                    </span>
-                                    <span v-else>
-                                        <span class="warning--text">Inactive</span>
-                                    </span>
-                                </td>
-                               
-                        
-                                <td>
-                                    <v-btn @click="ping(singleData.id)" color="indigo white--text" depressed small class="m-1">
-                                        <v-icon small>mdi-access-point-network</v-icon> Ping
-                                    </v-btn>
-                                    
-                                    <v-btn v-if="singleData.status" @click="statusChange(singleData)" color="success" depressed small class="m-1">
-                                        <v-icon small>mdi-check-circle-outline</v-icon> Active
-                                    </v-btn>
-                                    <v-btn v-else @click="statusChange(singleData)" color="warning" depressed small class="m-1">
-                                        <v-icon small>mdi-alert-circle-outline </v-icon> Inactive
-                                    </v-btn>
-                                    
-                                    <v-btn @click="editDataModel(singleData)" color="info" depressed small class="m-1">
-                                        <v-icon small>mdi-pencil-box-multiple-outline</v-icon> Edit
-                                    </v-btn>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th>IP</th>
+                                    <th>Name</th>
+                                    <th>Group</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>
+                                        <span v-if="singleData.ip">
+                                            {{singleData.ip}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.name">
+                                            {{singleData.name}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.group_name">
+                                            {{singleData.group_name}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.status == 1">
+                                            <span class="success--text">Active</span>
+                                        </span>
+                                        <span v-else>
+                                            <span class="warning--text">Inactive</span>
+                                        </span>
+                                    </td>
+                                
+                            
+                                    <td>
+                                        <v-btn @click="ping(singleData.id)" color="indigo white--text" depressed small class="m-1">
+                                            <v-icon small>mdi-access-point-network</v-icon> Ping
+                                        </v-btn>
+                                        
+                                        <v-btn v-if="singleData.status" @click="statusChange(singleData)" color="success" depressed small class="m-1">
+                                            <v-icon small>mdi-check-circle-outline</v-icon> Active
+                                        </v-btn>
+                                        <v-btn v-else @click="statusChange(singleData)" color="warning" depressed small class="m-1">
+                                            <v-icon small>mdi-alert-circle-outline </v-icon> Inactive
+                                        </v-btn>
+                                        
+                                        <v-btn @click="editDataModel(singleData)" color="info" depressed small class="m-1">
+                                            <v-icon small>mdi-pencil-box-multiple-outline</v-icon> Edit
+                                        </v-btn>
 
-                                    <v-btn @click="deleteData(singleData.id)" color="error" depressed small class="m-1">
-                                        <v-icon small>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>
+                                        <v-btn @click="deleteData(singleData.id)" color="error" depressed small class="m-1">
+                                            <v-icon small>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
 
-                                    <br>
-                                    <span v-if="singleData.makby" class="small text-muted">Create By-- {{ singleData.makby.name }}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        <br>
+                                        <span v-if="singleData.makby" class="small text-muted">Create By-- {{ singleData.makby.name }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

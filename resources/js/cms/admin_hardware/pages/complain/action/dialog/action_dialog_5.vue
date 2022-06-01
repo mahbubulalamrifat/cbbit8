@@ -150,7 +150,7 @@
                     document: '',
                     accessories: '',
                     warranty: '',
-                    delivery: '',
+                    delivery: 'Not Deliverable',
                     applicable_type:'',
                     damaged_reason:''
                 }),
@@ -186,7 +186,7 @@
                 this.form.accessories = this.checkedAccessories
 
                 this.form.post( this.currentUrl + '/action_quotation' ).then(response=>{
-                    console.log(response.data)
+                    //console.log(response.data)
 
                     // Loading
                     this.dataModalLoading = false

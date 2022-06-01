@@ -1,59 +1,44 @@
 <template>
     <div>
         <v-card>
-            <v-card-title class="justify-center">
-                <v-row>
-                    <v-col cols="10">
-                         H.O. Service Complain List
-                    </v-col>
-                    <v-col cols="2">
-
-                    </v-col>
-                </v-row>
+            <v-card-title>
+                H.O. Service Complain List
             </v-card-title>
 
-            <v-card-text class="table-responsive">
+            <v-card-text>
                 <v-row>
-                        <v-col cols="2">
-                            <!-- Show -->
-                            <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
-                            </v-select>
-                        </v-col>
-                        <v-col cols="4" >
-                            <!-- zone_office --> 
-                            <!-- <v-select v-model="zone_office" 
+                    <v-col cols="3" lg="2">
+                        <!-- Show -->
+                        <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
+                        </v-select>
+                    </v-col>
+                    <v-col cols="9" lg="4">
+                        <!-- zone_office -->
+                        <!-- <v-select v-model="zone_office" 
                             label="Zones:"
                             :items="allZoneOfficesAssign"
                             item-text="name"
                                 item-value="offices"
                              >
                             </v-select> -->
-                            <v-select v-if="isHardwareHoService()" v-model="zone_office_custom" 
-                            label="Zones:"
-                            :items="allZoneOffices"
-                            item-text="name"
-                            item-value="name"
-                             >
-                            </v-select>
-                            <v-select v-else disabled v-model="zone_office_custom" 
-                            label="Zones:"
-                            :items="allZoneOffices"
-                            item-text="name"
-                            item-value="name"
-                             >
-                            </v-select>
-                        </v-col>
+                        <v-select v-if="isHardwareHoService()" v-model="zone_office_custom" label="Zones:"
+                            :items="allZoneOffices" item-text="name" item-value="name">
+                        </v-select>
+                        <v-select v-else disabled v-model="zone_office_custom" label="Zones:" :items="allZoneOffices"
+                            item-text="name" item-value="name">
+                        </v-select>
+                    </v-col>
 
-                        <v-col cols="6">
-                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..."></v-text-field>
-                        </v-col>
-                    </v-row>
-                <div v-if="allData.data">
-                    
+                    <v-col cols="12" lg="6">
+                        <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search"
+                            label="Search:" placeholder="Search Input..."></v-text-field>
+                    </v-col>
+                </v-row>
+                <div v-if="allData.data" class="table-responsive">
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
+
+                    <table class="table table-bordered text-center">
+                        <thead>
                             <tr>
                                 <th>
                                     <a href="#" @click.prevent="change_sort('id')">Num.</a>
@@ -64,6 +49,7 @@
                                 <th>Subcategory</th>
                                 <th>User</th>
                                 <th>Department</th>
+                                <th>Business Unit</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -71,7 +57,7 @@
                             <tr v-for="singleData in allData.data" :key="singleData.id">
 
                                 <td>
-                                    <div class="pa-1 info rounded-pill h4 text-white text-center">
+                                    <div class="pa-1 info rounded-pill h4 text-white">
                                         {{ singleData.id }}
                                     </div>
                                 </td>
@@ -82,7 +68,7 @@
                                     <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
                                 </td>
 
-                                <td class="text-center">
+                                <td>
 
                                     <button class="btn btn-secondary btn-sm" v-if="singleData.makby"
                                         @click="currentUserView(singleData.makby)">
@@ -96,7 +82,10 @@
                                 <td>
                                     <span v-if="singleData.makby">{{ singleData.makby.department }}</span>
                                 </td>
-                                <td class="text-center">
+                                <td>
+                                    <span v-if="singleData.makby">{{ singleData.makby.business_unit }}</span>
+                                </td>
+                                <td>
                                     <v-btn @click="action(singleData.id)" color="error" depressed small elevation="20">
                                         <v-icon small>mdi-arch</v-icon> Action
                                     </v-btn>
@@ -121,7 +110,9 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Not have any head office service
+                    Complaint <v-icon right class="text-danger" large>mdi-alert-octagon-outline</v-icon>
+                </h1>
 
             </v-card-text>
         </v-card>
@@ -192,7 +183,7 @@
                     });
             },
 
-             // Get all Zone
+            // Get all Zone
             getZons() {
                 axios.get(this.currentUrl + '/zone_data').then(response => {
                     //console.log(response.data)
@@ -216,8 +207,8 @@
         },
 
 
-        watch:{
-            zone_office_custom:function(){
+        watch: {
+            zone_office_custom: function () {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();

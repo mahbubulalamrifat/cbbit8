@@ -1,85 +1,91 @@
 <template>
     <div>
         <v-card>
-            <v-card-title class="justify-center">
-                <v-row>
-                    <v-col cols="10">
-                        All Deliverable Complain List
-                    </v-col>
-                    <v-col cols="2">
-
-                    </v-col>
-                </v-row>
+            <v-card-title>
+                All Deliverable Complain List
             </v-card-title>
 
-            <v-card-text class="table-responsive">
+            <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="3" lg="2">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
-                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
-                                placeholder="Search Input..."></v-text-field>
+                        <v-col cols="9" lg="4">
+                            <v-select v-model="zone_office" label="Zones:" :items="allZoneOfficesAssign"
+                                item-text="name" item-value="name">
+                            </v-select>
+                        </v-col>
+
+                        <v-col cols="5" lg="6">
+                            <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search"
+                                label="Search:" placeholder="Search Input..."></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th>
-                                    <a href="#" @click.prevent="change_sort('id')">Num.</a>
-                                    <span v-if="sort_direction == 'desc' && sort_field == 'id'">&uarr;</span>
-                                    <span v-if="sort_direction == 'asc' && sort_field == 'id'">&darr;</span>
-                                </th>
-                                <th>Category</th>
-                                <th>Subcategory</th>
-                                <th>User</th>
-                                <th>Department</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('id')">Num.</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'id'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'id'">&darr;</span>
+                                    </th>
+                                    <th>Category</th>
+                                    <th>Subcategory</th>
+                                    <th>User</th>
+                                    <th>Department</th>
+                                    <th>Business Unit</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                                <td>
-                                    <div class="pa-1 info rounded-pill h4 text-white text-center">
-                                        {{ singleData.id }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.category">{{ singleData.category.name }}</span>
-                                </td>
-                                <td>
-                                    <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
-                                </td>
+                                    <td>
+                                        <div class="pa-1 info rounded-pill h4 text-white">
+                                            {{ singleData.id }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.category">{{ singleData.category.name }}</span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
+                                    </td>
 
-                                <td class="text-center">
+                                    <td>
 
-                                    <button class="btn btn-secondary btn-sm" v-if="singleData.makby"
-                                        @click="currentUserView(singleData.makby)">
-                                        <v-avatar size="20" @click="currentUserView(singleData.makby)">
-                                            <img v-if="singleData.makby.image"
-                                                :src="'/images/users/small/' + singleData.makby.image" alt="image">
-                                        </v-avatar> {{ singleData.makby.name }}
-                                    </button>
+                                        <button class="btn btn-secondary btn-sm" v-if="singleData.makby"
+                                            @click="currentUserView(singleData.makby)">
+                                            <v-avatar size="20" @click="currentUserView(singleData.makby)">
+                                                <img v-if="singleData.makby.image"
+                                                    :src="'/images/users/small/' + singleData.makby.image" alt="image">
+                                            </v-avatar> {{ singleData.makby.name }}
+                                        </button>
 
-                                </td>
-                                <td>
-                                    <span v-if="singleData.makby">{{ singleData.makby.department }}</span>
-                                </td>
-                                <td class="text-center">
-                                    <v-btn @click="action(singleData.id)" color="error" depressed small elevation="20">
-                                        <v-icon small>mdi-arch</v-icon> Action
-                                    </v-btn>
-                                </td>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.makby">{{ singleData.makby.department }}</span>
+                                    </td>
+                                    <td>
+                                        <span v-if="singleData.makby">{{ singleData.makby.business_unit }}</span>
+                                    </td>
+                                    <td>
+                                        <v-btn @click="action(singleData.id)" color="error" depressed small
+                                            elevation="20">
+                                            <v-icon small>mdi-arch</v-icon> Action
+                                        </v-btn>
+                                    </td>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -96,7 +102,9 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Not have any deliverable
+                    Complaint <v-icon right class="text-danger" large>mdi-alert-octagon-outline</v-icon>
+                </h1>
 
             </v-card-text>
         </v-card>
@@ -148,7 +156,8 @@
                         '&search=' + this.search +
                         '&sort_direction=' + this.sort_direction +
                         '&sort_field=' + this.sort_field +
-                        '&search_field=' + this.search_field
+                        '&search_field=' + this.search_field +
+                        '&zone_office=' + this.zone_office
                     )
                     .then(response => {
                         //console.log(response.data.data);

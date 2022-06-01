@@ -3,7 +3,7 @@
         <v-app-bar app flat dense dark class="bg_gradient">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <v-app-bar-title>Today: {{ $moment(new Date()).format('YYYY-MMM-DD') }}</v-app-bar-title>
+            <v-app-bar-title class="hidden-sm-and-down">Today: {{ $moment(new Date()).format('YYYY-MMM-DD') }}</v-app-bar-title>
             <v-spacer></v-spacer>
             <v-app-bar-title v-if="isAdministrator()" class="red--text" small>Administrator</v-app-bar-title>
             <v-spacer></v-spacer>
@@ -54,7 +54,7 @@
 
                 <v-list-item link router :to="{name: 'NewProduct'}" exact>
                     <v-list-item-icon>
-                        <v-icon>mdi-grid-large</v-icon>
+                        <v-icon>mdi-new-box</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>New Product</v-list-item-title>
@@ -194,6 +194,25 @@
                     </v-list-item>
 
                 </v-list-group>
+
+                <v-list-item link router :to="{name: 'Category'}">
+                    <v-list-item-icon>
+                        <v-icon>mdi-cog-outline</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>Category</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item link router :to="{name: 'Draft'}">
+                    <v-list-item-icon>
+                        <v-icon>mdi-book-open-page-variant-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Draft</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
 
                
                 <v-list-item link router href="/logout">

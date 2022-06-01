@@ -51,7 +51,7 @@
                                 <td v-if="singleData.makby">{{ singleData.makby.name }}</td>
                                 <td v-else><span class="error--text"> Not Found </span></td>
                         
-                                <td class="text-center">
+                                <td>
                                     <v-btn @click="editDataModel(singleData)" color="info" depressed small>
                                         <v-icon small>mdi-pencil-box-multiple-outline</v-icon> Edit
                                     </v-btn>

@@ -217,6 +217,21 @@ class ScheduleController extends Controller
                 $this->storeDataByDateTblModel($start, $end, $modelName, $tblName, $oracleField, $mysqlField );
             }
         }
+
+
+        // BI_MAP_UNIT_LEVEL
+        elseif($tbl_model == 'PbiMapUnitLevel'){
+
+            $modelName   = 'App\Models\Pbi\PbiMapUnitLevel';
+            $tblName     = 'MAP_UNIT_LEVEL';
+            $oracleField = 'no'; 
+            $mysqlField  = 'no';
+            
+            // Store Data
+            if(!empty($start) && !empty($end) && !empty($modelName) && !empty($tblName) && !empty($oracleField) && !empty($mysqlField)){
+                $this->storeDataByDateTblModel($start, $end, $modelName, $tblName, $oracleField, $mysqlField );
+            }
+        }
         
         //***************************************************//
         //***************************************************//

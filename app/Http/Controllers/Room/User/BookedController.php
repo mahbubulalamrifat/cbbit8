@@ -157,7 +157,7 @@ class BookedController extends Controller
     public function status($id){
         // dd($id);
 
-        $data = RoomBooking::find($id);
+        $data = RoomBooking::with('room')->find($id);
 
         if($data->status == 1){
             $data->status = null;
@@ -165,7 +165,25 @@ class BookedController extends Controller
             $data->status = 1;
         }
 
-       $data->save();
+
+        //dd($data);
+        $room_name        = $data->room->name ?? '';
+        $purpose          = $data->purpose;
+        $duration         = $data->duration;
+
+        $userName           = Auth::user()->name;
+        $department         = Auth::user()->department;
+        $startLine          = date("j-M-Y, g:i A", strtotime($data->start));
+        $endLine            = date("j-M-Y, g:i A", strtotime($data->end));
+        $purposeLine        = str_replace('&', 'and', $purpose);
+
+        //Send Line Message
+        $message = "Canceled Status,%0A Canceled By: $userName,%0A Department: $department,%0A Purpose: $purposeLine,%0A Room: $room_name,%0A Start: $startLine,%0A End: $endLine,%0A Duration : $duration. ";
+
+        //Send Line Message
+        $this->lineMsg($message);
+
+        $data->save();
 
         return response()->json('success', 200);
     }

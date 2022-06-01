@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @include('common.cpbd-icon')
     <title>CPB-IT Demo Admin</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/room/admin/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/room/admin/app.css') }}">
 </head>
 <body>
     <div id="app">
@@ -15,7 +15,7 @@
         </div>
         <index-component authuser="{{ Auth::user() }}" permission="{{ $roles }}"></index-component>
     </div>
-    <script src="{{ asset('js/room/admin/app.js') }}"></script>
+    <script src="{{ mix('js/room/admin/app.js') }}"></script>
 </body>
 
 </html>

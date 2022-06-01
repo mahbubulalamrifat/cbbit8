@@ -59,13 +59,46 @@ trait CommonFunctions {
 
     }
 
+    //Check Car Booking Have or Not
+    public function CheckBookingHaveOrNotByDriver($car_id, $start, $end){
+
+        $bookingData = CarpoolBooking::where('status', '1')
+            //->where('driver_id', $driver_id)
+            ->where('car_id', '=', $car_id)
+            ->whereRaw("( `start` BETWEEN '$start' AND '$end' OR `end` BETWEEN '$start' AND '$end' OR '$start' BETWEEN `start` AND `end` OR '$end' BETWEEN `start` AND `end` )")
+            ->count();
+            //->get();
+        //return $bookingData;
+        //dd($bookingData);
+        if($bookingData > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    // check DriverLeaveHaveOrNot have
+    public function DriverLeaveHaveOrNot( $driver_id, $start, $end ){
+        $data = CarpoolLeaves::where('status', '1')
+        ->where('driver_id', $driver_id)
+        ->whereRaw("( `start` BETWEEN '$start' AND '$end' OR `end` BETWEEN '$start' AND '$end' OR '$start' BETWEEN `start` AND `end` OR '$end' BETWEEN `start` AND `end` )")
+        ->count();
+        //dd($data);
+
+        if($data > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
     //Check Car Booking Have or Not Except ID
     public function CheckModifyBookingHaveOrNot($id, $car_id, $start, $end){
 
         $bookingData = CarpoolBooking::where('id', '!=', $id)
-            ->where('car_id', '=', $car_id)
-            ->where('status', '=', '1')
+            ->where('car_id', $car_id)
+            ->where('status', '1')
             ->whereRaw("( `start` BETWEEN '$start' AND '$end' OR `end` BETWEEN '$start' AND '$end' OR '$start' BETWEEN `start` AND `end` OR '$end' BETWEEN `start` AND `end` )")
             ->count();
 
@@ -196,7 +229,7 @@ trait CommonFunctions {
         // $headers = array('Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.config('values.line_test_key'),);  // ��ѧ����� Bearer ��� line authen code �
 
         //Car Booking Group
-        $headers = array('Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.config('values.line_room_key'),);  // ��ѧ����� Bearer ��� line authen code � env('APP_DEBUG')
+        $headers = array('Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.config('values.line_carpool_key'),);  // ��ѧ����� Bearer ��� line authen code � env('APP_DEBUG')
         
         curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers);
         //RETURN

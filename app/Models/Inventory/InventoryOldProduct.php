@@ -21,12 +21,12 @@ class InventoryOldProduct extends Model
 
 
     public function category(){
-        return $this->belongsTo('App\Models\Cms\Hardware\HardwareCategory', 'cat_id', 'id');
+        return $this->belongsTo('App\Models\Inventory\inventoryCategory', 'cat_id', 'id');
     }
 
-    public function subcategory(){
-        return $this->belongsTo('App\Models\Cms\Hardware\HardwareSubcategory', 'subcat_id', 'id');
-    }
+    // public function subcategory(){
+    //     return $this->belongsTo('App\Models\Cms\Hardware\HardwareSubcategory', 'subcat_id', 'id');
+    // }
 
     public function business(){
         return $this->belongsTo('App\Models\User', 'business_unit_id', 'id');
@@ -48,8 +48,6 @@ class InventoryOldProduct extends Model
     public function scopeSearch($query, $val='')
     {
         return $query
-        ->where('serial', 'LIKE', '%'.$val.'%')
-        ->where('name', 'LIKE', '%'.$val.'%')
         ->where('remarks', 'LIKE', '%'.$val.'%')
         ->orWhereHas('makby', function($query) use ($val){
             $query->WhereRaw('login LIKE ?', '%'.$val.'%');
@@ -57,8 +55,12 @@ class InventoryOldProduct extends Model
         ->orWhereHas('category', function($query) use ($val){
             $query->WhereRaw('name LIKE ?', '%'.$val.'%');
         })
-        ->orWhereHas('subcategory', function($query) use ($val){
-            $query->WhereRaw('name LIKE ?', '%'.$val.'%');
+        ->orWhereHas('newtbldata', function($query) use ($val){
+            $query->WhereRaw('serial LIKE ?', '%'.$val.'%')
+                ->OrWhereRaw('invoice_num LIKE ?', '%'.$val.'%')
+                ->OrWhereRaw('req_payment_num LIKE ?', '%'.$val.'%')
+                ->OrWhereRaw('po_number LIKE ?', '%'.$val.'%')
+                ->OrWhereRaw('remarks LIKE ?', '%'.$val.'%');
         }); 
     }
 

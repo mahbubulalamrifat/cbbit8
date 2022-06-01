@@ -14,69 +14,71 @@
             <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
+                        <v-col cols="9">
                             <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                                 placeholder="Search Input..." outlined dense></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
-                                <th>
-                                    ID
-                                </th>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Department
-                                </th>
-                                <th>
-                                    Temparature
-                                </th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center">
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>
-                                    {{singleData.id_number}}
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Department
+                                    </th>
+                                    <th>
+                                        Temparature
+                                    </th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>
+                                        {{singleData.id_number}}
 
-                                </td>
-                                <td>{{ singleData.name }}</td>
-                                <td>{{ singleData.department }}</td>
-                                <td>
-                                    <span v-if="singleData.temp">
-                                        <span v-if="singleData.temp.temp_final > 100">
-                                            <v-btn class="error">{{singleData.temp.temp_final}}</v-btn>
+                                    </td>
+                                    <td>{{ singleData.name }}</td>
+                                    <td>{{ singleData.department }}</td>
+                                    <td>
+                                        <span v-if="singleData.temp">
+                                            <span v-if="singleData.temp.temp_final > 100">
+                                                <v-btn class="error">{{singleData.temp.temp_final}}</v-btn>
+                                            </span>
+
+                                            <span v-else>
+                                                <v-btn class="success">{{singleData.temp.temp_final}}</v-btn>
+                                            </span>
                                         </span>
 
-                                        <span v-else>
-                                            <v-btn class="success">{{singleData.temp.temp_final}}</v-btn>
-                                        </span>
-                                    </span>
-
-                                    <span v-else class="error--text">Not Available</span>
-                                </td>
+                                        <span v-else class="error--text">Not Available</span>
+                                    </td>
 
 
-                                <td class="text-center">
+                                    <td class="text-center">
 
-                                    <v-btn @click="addDataModel(singleData)" color="info" depressed small>
-                                        <v-icon small>mdi-plus</v-icon> Add Temp
-                                    </v-btn>
+                                        <v-btn @click="addDataModel(singleData)" color="info" depressed small>
+                                            <v-icon small>mdi-plus</v-icon> Add Temp
+                                        </v-btn>
 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

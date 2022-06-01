@@ -11,6 +11,7 @@ use App\Models\Inventory\InventoryOldProduct;
 use App\Models\User;
 use Auth;
 use App\Http\Controllers\Common\ImageUpload;
+use Illuminate\Support\Str;
 
 
 
@@ -28,14 +29,14 @@ class IndexController extends Controller
 
         $search_field     = Request('search_field', '');
 
-        $allDataQuery = InventoryNewProduct::with('makby', 'category', 'subcategory')
+        $allDataQuery = InventoryNewProduct::with('makby', 'category')
             ->where('delete_temp', '!=', '1')
             ->where('give_st', '!=', '1');
 
 
 
             // Search
-        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id' && $search_field != 'subcat_id'){
+        if(!empty($search_field) && $search_field != 'All' && $search_field != 'cat_id'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
             $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
@@ -50,16 +51,16 @@ class IndexController extends Controller
             });
 
         }
-        elseif($search_field == 'subcat_id'){
+        // elseif($search_field == 'subcat_id'){
 
-            $val = trim(preg_replace('/\s+/' ,' ', $search));
+        //     $val = trim(preg_replace('/\s+/' ,' ', $search));
 
-            $allDataQuery->whereHas( 'subcategory', function($query) use($val){
-                //$query->where( 'name', $search_field );
-                $query->where('name', 'LIKE', '%'.$val.'%');
-            });
+        //     $allDataQuery->whereHas( 'subcategory', function($query) use($val){
+        //         //$query->where( 'name', $search_field );
+        //         $query->where('name', 'LIKE', '%'.$val.'%');
+        //     });
 
-        }
+        // }
         else{
             $allDataQuery->search( trim(preg_replace('/\s+/' ,' ', $search)) );
         }
@@ -79,49 +80,96 @@ class IndexController extends Controller
    
     // store
     public function store(Request $request){
-        //dd($request->all());
+        // dd($request->all());
 
         //Validate
         $this->validate($request,[
             'cat_id'            =>  'required',
-            'subcat_id'         =>  'required',
+            //'subcat_id'         =>  'required',
             'name'              =>  'required',
             'serial'            =>  'required|max:200|unique:inventory_new_products',
             'po_number'         =>  'nullable|max:200',
-            'invoice_num'       =>  'nullable|max:200|unique:inventory_new_products',
-            'req_payment_num'   =>  'nullable|max:200|unique:inventory_new_products',
+            // 'invoice_num'       =>  'nullable|max:200|unique:inventory_new_products',
+            // 'req_payment_num'   =>  'nullable|max:200|unique:inventory_new_products',
+            'invoice_num'       =>  'nullable|max:200',
+            'req_payment_num'   =>  'nullable|max:200',
             'purchase'          =>  'required',
             'unit_price'        =>  'required',
             'remarks'           =>  'required|min:10|max:2000',
         ]);
 
-        $data = new InventoryNewProduct();
+        if( !empty($request->multi_product_quantity) ){
+
+            // dd( 'if',  $request->all() );
+
+            $documentPath = 'images/inventory/';
+            $document     = $request->file('document');
+            // Direct any file store
+            if ($document) {
+                $document_full_name = $this->documentUpload($document, $documentPath, $request->po_number.'_');
+                // $data->document     = $document_full_name;
+            }
+
+            for ($i=1; $i <= $request->multi_product_quantity; $i++) { 
+
+                $data = new InventoryNewProduct();
+
+                // document
+                if(!empty($document_full_name)){
+                    $data->document     = $document_full_name;
+                }
+                
+               
+                $data->cat_id       = $request->cat_id;
+                //$data->subcat_id    = $request->subcat_id;
+                $data->name         = $request->name;
+                $data->serial       = $request->serial.'_'.Str::random(6);
+                $data->remarks      = $request->remarks;
+                $data->purchase     = $request->purchase;
+                $data->warranty     = $request->warranty;
+                $data->unit_price   = $request->unit_price;
+                $data->invoice_num     = $request->invoice_num;
+                $data->bill_submit     = $request->bill_submit;
+                $data->req_payment_num = $request->req_payment_num;
+                $data->po_number    = $request->po_number;
+                
+                $data->created_by   = Auth::user()->id;
+                $success            = $data->save();
+            }
+
+        }else{
+
+            // dd( 'else', $request->all());
+            $data = new InventoryNewProduct();
 
 
+            $documentPath = 'images/inventory/';
+            $document     = $request->file('document');
+            // Direct any file store
+            if ($document) {
+                $document_full_name = $this->documentUpload($document, $documentPath, $request->po_number.'_');
+                $data->document     = $document_full_name;
+            }
+    
+            $data->cat_id       = $request->cat_id;
+            //$data->subcat_id    = $request->subcat_id;
+            $data->name         = $request->name;
+            $data->serial       = $request->serial;
+            $data->remarks      = $request->remarks;
+            $data->purchase     = $request->purchase;
+            $data->warranty     = $request->warranty;
+            $data->unit_price   = $request->unit_price;
+            $data->invoice_num     = $request->invoice_num;
+            $data->bill_submit     = $request->bill_submit;
+            $data->req_payment_num = $request->req_payment_num;
+            $data->po_number    = $request->po_number;
+            
+            $data->created_by   = Auth::user()->id;
+            $success            = $data->save();
 
-        $documentPath = 'images/inventory/';
-        $document     = $request->file('document');
-        // Direct any file store
-        if ($document) {
-            $document_full_name = $this->documentUpload($document, $documentPath, $request->po_number.'_');
-            $data->document     = $document_full_name;
         }
 
-        $data->cat_id       = $request->cat_id;
-        $data->subcat_id    = $request->subcat_id;
-        $data->name         = $request->name;
-        $data->serial       = $request->serial;
-        $data->remarks      = $request->remarks;
-        $data->purchase     = $request->purchase;
-        $data->warranty     = $request->warranty;
-        $data->unit_price   = $request->unit_price;
-        $data->invoice_num     = $request->invoice_num;
-        $data->bill_submit     = $request->bill_submit;
-        $data->req_payment_num = $request->req_payment_num;
-        $data->po_number    = $request->po_number;
-        
-        $data->created_by   = Auth::user()->id;
-        $success            = $data->save();
+       
 
         if($success){
             return response()->json(['msg'=>'Stored Successfully &#128513;', 'icon'=>'success'], 200);
@@ -164,13 +212,15 @@ class IndexController extends Controller
         //Validate
         $this->validate($request,[
             'cat_id'        =>  'required',
-            'subcat_id'     =>  'required',
+            //'subcat_id'     =>  'required',
             'name'          =>  'required',
             'unit_price'    =>  'required',
             'serial'        =>  'required|max:200|unique:inventory_new_products,serial,'.$request->id,
             'po_number'     =>  'nullable|max:200',
-            'invoice_num'     =>  'nullable|max:200|unique:inventory_new_products,invoice_num,'.$request->id,
-            'req_payment_num' =>  'nullable|max:200|unique:inventory_new_products,req_payment_num,'.$request->id,
+            // 'invoice_num'     =>  'nullable|max:200|unique:inventory_new_products,invoice_num,'.$request->id,
+            // 'req_payment_num' =>  'nullable|max:200|unique:inventory_new_products,req_payment_num,'.$request->id,
+            'invoice_num'       =>  'nullable|max:200',
+            'req_payment_num'   =>  'nullable|max:200',
             'purchase'      =>  'required',
             'remarks'       =>  'required|min:10|max:2000',
         ]);
@@ -183,17 +233,22 @@ class IndexController extends Controller
         $old_doc      = $data->document; 
 
         //dd($document, $old_doc, $request->all());
-
+        if($request->po_number == 'N/A'){
+            $customName = 'null';
+        }else{
+            $customName = $request->po_number;
+        }
+        
         // Direct any file store
         if ($document) {
-            $document_full_name = $this->documentUpload($document, $documentPath, $request->po_number.'_');
+            $document_full_name = $this->documentUpload($document, $documentPath, $customName.'_');
             $data->document     = $document_full_name;
         }
     
         
 
         $data->cat_id       = $request->cat_id;
-        $data->subcat_id    = $request->subcat_id;
+        //$data->subcat_id    = $request->subcat_id;
         $data->name         = $request->name;
         $data->serial       = $request->serial;
         $data->remarks      = $request->remarks;
@@ -270,7 +325,7 @@ class IndexController extends Controller
         //Validate
         $this->validate($request,[
             'cat_id'            =>  'required',
-            'subcat_id'         =>  'required',
+            //'subcat_id'         =>  'required',
             'name'              =>  'required',
             'serial'            =>  'required|max:200|unique:inventory_new_products,serial,'.$request->id,
             'remarks'           =>  'required',
@@ -292,7 +347,7 @@ class IndexController extends Controller
 
         $data2->new_pro_id        = $request->id;
         $data2->cat_id            = $request->cat_id;
-        $data2->subcat_id         = $request->subcat_id;
+        //$data2->subcat_id         = $request->subcat_id;
         $data2->name              = $request->name;
         $data2->serial            = $request->serial;
         $data2->operation_id      = $request->operation_id;

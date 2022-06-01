@@ -54,9 +54,6 @@
                 </v-col>
             </v-row>
 
-
-
-
             <div v-else>
                 <div class="p-5 my-5">
                     <p class="text-center text-info h1">Sorry !! You have no current booking. </p>

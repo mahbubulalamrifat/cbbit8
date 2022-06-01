@@ -29,7 +29,6 @@
                                 </span>
                                 <span v-else class="error--text">N/A</span>
                             </td>
-
                             <th>Product Type:</th>
                             <td>
                                 <span v-if="currentData.type">
@@ -40,14 +39,6 @@
                         </tr>
                         
                         <tr>
-                            <th>Subcategory:</th>
-                            <td>
-                                <span v-if="subcategory">
-                                    {{ subcategory }}
-                                </span>
-                                <span v-else class="error--text">N/A</span>
-                            </td>
-
                             <th>Product Serial:</th>
                             <td>
                                 <span v-if="currentData.serial">
@@ -63,6 +54,8 @@
                                 </span>
                                 <span v-else class="error--text">N/A</span>
                             </td>
+                            <th></th>
+                            <td></td>
                         </tr>
 
                         <tr>

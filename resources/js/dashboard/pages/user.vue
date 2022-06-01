@@ -1,6 +1,7 @@
 <template>
     <div class="bg_grad">
-        <nav-bar headerText="User"></nav-bar>
+        <nav-bar headerText="User" homeBtn="y"></nav-bar>
+        
         <v-row class="d-flex flex-wrap justify-content-around my-5" style="min-height: 100vh;">
             <v-col cols="6" lg="3" class="text-center" v-if="isCarpool()">
                 <a href="/carpool" class="text-decoration-none text-dark">
@@ -66,7 +67,7 @@
                 </a>
             </v-col>
 
-            <v-col cols="6" lg="3" class="text-center" v-if="isAdministrator()">
+            <v-col cols="6" lg="3" class="text-center">
                 <a href="/iaccess" class="text-decoration-none text-dark">
                     <v-avatar size="150">
                         <v-img src="/all-assets/common/icon/iaccess.png"></v-img>

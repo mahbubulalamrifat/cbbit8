@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\Common\Authentication;
 use App\Http\Controllers\Auth\Common\Log;
 use App\Http\Controllers\Auth\Common\ADLogin;
 
+
 class LoginController extends Controller
 {
 
@@ -195,6 +196,9 @@ class LoginController extends Controller
 
     // logout
     public function logout(){
+        // Logout Log Update
+        Log::LogoutLog();
+      
         Session::flush();
         Auth::logout();
         return redirect()->to('login');

@@ -191,8 +191,8 @@
                     details: '',
                     document: '',
                     accessories: '',
-                    delivery: '',
-                    applicable_type: '',
+                    delivery: 'Not Deliverable',
+                    applicable_type: 'Not Applicable', 
                     damaged_reason: ''
                 }),
 
@@ -313,7 +313,7 @@
                 this.form.accessories = this.checkedAccessories
 
                 this.form.post(this.currentUrl + '/action_remarks').then(response => {
-                    console.log(response.data)
+                    //console.log(response.data)
 
                     // Loading
                     this.dataModalLoading = false

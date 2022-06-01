@@ -1,0 +1,51 @@
+ 
+Power BI Schedule     : ( 10:00 AM, 11:00 AM, 12:00 PM, 02:00 PM, 03:00 PM, 04:00 PM, 05:00 PM, 06:00 PM )
+Local Server Schedule : ( '9:30',   '10:30',  '11:30',  '13:30',  '14:30',  '15:30',  '16:30',  '17:30'  )
+Data Table            :  BI_FOOD_FURTHER_SALES
+
+
+
+
+Power BI Schedule     : ( 08:00 AM, 10:30 AM, 12:00 PM, 02:00 PM, 03:30 PM, 05:00 PM, 07:00 PM, 11:00 PM )
+Local Server Schedule : ( '7:30',   '10:00',  '11:30',  '13:30',  '15:00',  '16:30',  '18:30',  '22:30'  )
+Data Table            :  BI_FEED_SALES
+                         BI_FEED_PURCHASE
+                         
+
+
+
+Power BI Schedule     : ( 04:00 AM, 09:00 AM, 10:00 AM, 11:00 PM, 12:30 PM, 03:00 PM, 04:00 PM, 05:00 PM )
+Local Server Schedule : ( '03:30',  '08:30',  '09:30',  '10:30',  '12:00',  '14:30',  '15:30',  '16:30'  )
+Data Table            :  BI_FARM_POULTRY_SALES
+
+
+
+
+Power BI Schedule     : ( 01:00 AM, 06:00 AM, 10:00 AM, 02:00 PM, 04:00 PM, 06:00 PM, 08:00 PM, 10:00 PM )
+Local Server Schedule : ( '00:30', '05:30', '09:30', '13:30', '15:30', '17:30', '19:30', '21:30'  )
+Data Table            :  BI_FOOD_SLAUGHTER_SALES
+
+
+
+
+Power BI Schedule     : ( 10:00 AM, 11:00 AM, 12:00 PM, 02:00 PM, 03:00 PM, 04:00 PM, 05:00 PM, 06:00 PM )
+Local Server Schedule : ( '9:30',   '10:30',  '11:30',  '13:30',  '14:30',  '15:30',  '16:30',  '17:30'  )
+Data Table            :  BI_FARM_AQUA_SALES
+                         BI_FARM_AQUA_PURCHASE
+                         BI_FARM_POULTRY_PURCHASE
+                         BI_EXPENSE
+
+
+
+Power BI Schedule     : ( 08:30 AM, 10:30 AM, 12:30 PM, 02:30 PM, 04:30 PM, 06:30 PM, 08:30 PM, 10:30 PM )
+Local Server Schedule : ( '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00' )
+Data Table            :  BI_FEED_PRODUCTION
+
+
+
+Power BI Schedule     : ( 12:00 AM )
+Local Server Schedule : ( '23:30' )
+Data Table            :  BI_MAP_UNIT_LEVEL
+
+
+

@@ -53,15 +53,26 @@ trait StoreController
     public function storeCommonByModalTbl($start=null, $end=null, $modelName=null, $tblName=null, $oracleField=null, $mysqlField=null){
 
         // Response Form oracle
-        $response = DB::connection('oracle_db')->table($tblName)
-        ->whereDate($oracleField,'<=', $end)
-        ->whereDate($oracleField,'>=', $start)
-        ->get();
+        $responseQuery = DB::connection('oracle_db')->table($tblName);
+
+        if($oracleField != 'no'){
+            $responseQuery->whereDate($oracleField,'<=', $end)
+                         ->whereDate($oracleField,'>=', $start);
+        }
+        
+        $response = $responseQuery->get();
+
+        //dd($response);
 
         if( !empty($response) ){
 
-            $olddata = $modelName::whereDate($mysqlField,'<=', $end)
-            ->whereDate($mysqlField,'>=', $start)->delete();
+            if( $mysqlField != 'no' ){
+                $olddata = $modelName::whereDate($mysqlField,'<=', $end)
+                ->whereDate($mysqlField,'>=', $start)->delete();
+            }else{
+               $olddata = $modelName::truncate();
+            }
+           
 
             // Data Insert
             foreach ($response as $obj)  {

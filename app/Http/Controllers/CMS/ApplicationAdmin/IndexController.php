@@ -76,16 +76,35 @@ class IndexController extends Controller
     public function sidebar_count_data(){
 
         $notprocess = ApplicationComplain::with('makby', 'category', 'subcategory')
+            ->where('status', 1)
             ->where('process', 'Not Process')
             ->count();
 
         // process
         $process = ApplicationComplain::with('makby', 'category', 'subcategory')
-        ->where('process', 'Processing')
-        ->count();
+            ->where('status', 1)
+            ->where('process', 'Processing')
+            ->count();
 
         return response()->json(['notprocess'=>$notprocess,'process'=>$process]);
 
+    }
+
+
+    // pdf_get_file
+    public function pdf_get_file(){
+        $path = Request('document');
+        
+        $infoPath = pathinfo(public_path($path));
+        
+        $extension = $infoPath['extension'];
+
+        if($extension == 'pdf'){
+            $file = file_get_contents($path);
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $base64 = base64_encode($file);
+            return response()->json($base64);
+        }
     }
 
 

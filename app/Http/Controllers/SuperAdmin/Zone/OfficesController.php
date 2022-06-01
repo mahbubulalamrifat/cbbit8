@@ -44,11 +44,15 @@ class OfficesController extends Controller
     // alloffices
     public function alloffices(){
 
-        $allData = User::where('status', 1)
-            ->select('zone_office')
-            ->orderBy('zone_office')
-            ->distinct()
-            ->get();
+        // $allData = User::where('status', 1)
+        //     ->whereNotNull('zone_office')
+        //     ->Where('zone_office','<>','')
+        //     ->select('zone_office')
+        //     ->orderBy('zone_office')
+        //     ->distinct()
+        //     ->get();
+
+        $allData = self::AllNotAssignedZones();
 
         return response()->json($allData, 200);
     }
@@ -67,10 +71,13 @@ class OfficesController extends Controller
 
         $data = new ZoneOffice();
 
+        $allOffices = $request->offices;
+        asort($allOffices);
     
         //$data->name    = ucwords(strtolower($request->name));
         $data->name       = $request->name;
-        $data->offices    = implode(",", $request->offices);
+        
+        $data->offices    = implode(",", $allOffices);
         $data->status     = 1;
         $data->created_by = Auth::user()->id;
         $success          = $data->save();
@@ -88,6 +95,10 @@ class OfficesController extends Controller
 
     // update
     public function update(Request $request, $id){
+        // $allOffices = $request->offices;
+        // asort($allOffices);
+
+        // dd( $request->all(), $allOffices );
 
         //Validate
         $this->validate($request,[
@@ -97,9 +108,11 @@ class OfficesController extends Controller
 
         $data = ZoneOffice::find($id);
 
-      
+        $allOffices = $request->offices;
+        asort($allOffices);
+       
         $data->name       = $request->name;
-        $data->offices    = implode(",", $request->offices);
+        $data->offices    = implode(",", $allOffices);
         $data->status     = 1;
         $data->created_by = Auth::user()->id;
         $success          = $data->save();
@@ -155,4 +168,81 @@ class OfficesController extends Controller
         }
 
     }
+
+    // edit
+    public function edit($id){
+        //dd($id);
+
+        if($id){
+
+            $notAssignZone = self::AllNotAssignedZones();
+            //dd($notAssignZone);
+
+            $data = ZoneOffice::find($id);
+            $editZoneData = explode(",", $data->offices);
+            foreach($editZoneData as $item){
+                if($item){
+                    array_push($notAssignZone, ['zone_office'=>$item] );
+                }
+            }
+
+            // Final Array short by assending
+            asort($notAssignZone);
+
+            //dd($editZoneData, $notAssignZone, $allActiveZoneOfficeArray, $allZoneOffices, $allData, $data);
+
+            return response()->json($notAssignZone, 200);
+        }
+
+    }
+
+
+    // all active zone Offices assigned array
+    public static function AllAssignedZones(){
+        $allData = ZoneOffice::where('status', 1)->get();
+            $allActiveZoneOfficeArray = [];
+            // All Zone offices form Assigned Zone Office tbl
+            foreach($allData as $item){
+                if( !empty($item) ){
+                    $singleData = explode(",", $item->offices);
+                    foreach($singleData as $item2){
+                        //dd($item2, $singleData);
+                        array_push($allActiveZoneOfficeArray, $item2);
+                    }
+                }
+            } 
+        return $allActiveZoneOfficeArray;
+    }
+
+
+    // Find Not Assigned Zones Offices
+    public static function AllNotAssignedZones(){
+
+        $allActiveZoneOfficeArray = self::AllAssignedZones();
+
+            // All Zone offices form user tbl
+            $allZoneOffices = User::where('status', 1)
+                ->whereNotNull('zone_office')
+                ->Where('zone_office','<>','')
+                ->select('zone_office')
+                ->orderBy('zone_office')
+                ->distinct()
+                ->get();
+                //->toArray();
+
+            $notAssignZone = [];
+            // check not assigned
+            foreach($allZoneOffices as $item){
+                $curr_office = $item->zone_office;
+                if( ! in_array($curr_office, $allActiveZoneOfficeArray) ){
+                    array_push($notAssignZone, ['zone_office'=>$curr_office] );
+                }
+            }
+
+        return $notAssignZone;
+
+    }
+
+
+
 }

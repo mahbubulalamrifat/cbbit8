@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app class="pbi">
         <!-- <nav-bar></nav-bar> -->
         <side-bar></side-bar>
         <v-main>
@@ -60,11 +60,9 @@ export default {
 
         this.$Progress.start();
 
-        
-
         //this.check(checkUserRole)
       
-        console.log('Index: ', this.roles, this.pbis, this.reportName);
+        //console.log('Index: ', this.roles, this.pbis, this.reportName);
 
         //console.log('Role: ', this.isAdministrator(), this.isAnyRole(['Administrator', 'Ivca']), this.isRole('Administrator') )
 
@@ -74,7 +72,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style scoped>
+    .pbi{
+        background-color: #F4F7FA
+    }
 </style>
 

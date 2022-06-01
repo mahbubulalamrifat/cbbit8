@@ -24,9 +24,19 @@ class IndexController extends Controller
 
     public function ratings(){
 
+        $applyDate = '2022-06-01 01:00:00';
 
-        $app =  ApplicationComplain::where('process', 'Closed')->whereNull('rating')->where('user_id', Auth::user()->id)->count();
-        $hard =  HardwareComplain::where('process', 'Closed')->whereNull('rating')->where('user_id', Auth::user()->id)->count();
+        $app  =  ApplicationComplain::where('process', 'Closed')
+            ->whereNull('rating')
+            ->where('user_id', Auth::user()->id)
+            ->where('updated_at', '>', $applyDate)
+            ->count();
+
+        $hard =  HardwareComplain::where('process', 'Closed')
+            ->whereNull('rating')
+            ->where('user_id', Auth::user()->id)
+            ->where('updated_at', '>', $applyDate)
+            ->count();
 
         return response()->json(['appRating'=>$app,'hardRating'=>$hard]);
 

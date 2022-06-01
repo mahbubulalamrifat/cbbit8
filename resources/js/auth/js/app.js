@@ -1,16 +1,14 @@
 require('../../bootstrap');
 window.Vue = require('vue').default; 
 
-// vuetify
-// import Vuetify from 'vuetify/lib'
-// Vue.use(Vuetify)
-// import Vuetify from "./../../../Plugins/vuetify"
+// vue confeteti
+import VueConfetti from 'vue-confetti'
+Vue.use(VueConfetti)
+
 
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
 
-// import  BootstrapVue from 'bootstrap-vue';
-// Vue.use(BootstrapVue)
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
@@ -95,7 +93,8 @@ window.Toast = Toast;
 
 
 Vue.component('index-component', require('../index.vue').default);
-
+//vue-moment
+Vue.use(require('vue-moment'));
 
 const app = new Vue({
     el: '#app',

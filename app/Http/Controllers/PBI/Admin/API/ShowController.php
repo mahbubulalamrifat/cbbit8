@@ -18,12 +18,13 @@ use App\Models\Pbi\PbiFeedPurchase;
 use App\Models\Pbi\PbiFeedSale;
 
 use App\Models\Pbi\PbiExpense;
+use App\Models\Pbi\PbiMapUnitLevel;
 
 class ShowController extends Controller
 {
 
     public function test(Request $request){
-        dd($request->all());
+        dd($request->all()); 
     }
 
     //***************************************************//
@@ -601,6 +602,28 @@ class ShowController extends Controller
 
 
 
+    // mapUnitLevel
+    public function mapUnitLevel(Request $request){
+
+        // dd($days,$start, $end);
+
+        $query = PbiMapUnitLevel::select('ul_code as UL Code',
+        'ul_name as UL Name',
+        'department as Department',
+        'operation as Operation',
+        'business_unit as Business Unit',
+        'business as Business'
+        );
+        
+       // return BiFarmPoultrySale::get();
+       $allData = $query ->orderBy('ul_code', 'asc')
+       ->get();
+      
+       // dd($allData);
+
+       return $allData; 
+
+    }
 
 
 

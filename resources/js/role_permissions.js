@@ -161,6 +161,11 @@ export default{
         return this.checkAnyRoleOfArray(['Administrator', 'Network-monitor']);
     },
 
+    // iAccess
+    isIaccessAdmin(){
+        return this.checkAnyRoleOfArray(['Administrator', 'iAccess-admin']);
+    },
+
 
     
 }

@@ -34,7 +34,7 @@
         <v-navigation-drawer app dark v-model="drawer" class="bg_gradient">
             <v-list-item class="px-2" link href="/">
                 <v-list-item-icon>
-                    <img src="/all-assets/common/logo/cpb/cpbit.png" alt="" height="40px" contain>
+                    <img src="/all-assets/common/icon/powerbi.png" alt="" height="40px" contain>
                 </v-list-item-icon>
                 <v-list-item-title>PBI Admin</v-list-item-title>
             </v-list-item>
@@ -193,11 +193,17 @@
 
 <style scoped>
     .bg_gradient {
-       background: linear-gradient(180deg, #a8bfbb, #0cb7bb);
+        background: linear-gradient(180deg, #000, #2d2f01);
     }
 
     a:hover {
         text-decoration: none;
+    }
+
+    .v-list .v-list-item--active,
+    .v-list .v-list-item--active {
+        background: #886807;
+        color: white;
     }
 
 </style>

@@ -33,13 +33,10 @@ export default {
         this.$store.commit('setRoles', JSON.parse(this.permission) )
 
         this.$Progress.start();
+        this.countAll();
 
         //checkUserRole
-      
-        console.log('Super Admin Index, auth user', JSON.parse(this.authuser));
-
-        console.log('Role: ', this.isAdministrator(), this.isAnyRole(['Administrator', 'Ivca']), this.isRole('Administrator') )
-
+    
         this.$Progress.finish();  
     }
     

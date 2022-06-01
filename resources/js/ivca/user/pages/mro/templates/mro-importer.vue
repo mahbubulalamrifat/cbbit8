@@ -486,12 +486,8 @@
         </div>
 
 
-
         <v-overlay :value="overlay">
-            <v-progress-circular
-                indeterminate
-                size="64"
-            ></v-progress-circular>
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
         </v-overlay>
         
 
@@ -509,10 +505,9 @@
         data() {
             return {
 
+                valid:false,
                 // overlay
                 overlay: false,
-
-                valid:false,
 
                 mroImporterRules: [v => !!v || 'This Field is required!'],
 
@@ -703,7 +698,7 @@
 
             // checkPhotoUploadAccess
             checkPhotoUploadAccess(){
-                if(singleData.user_id == this.auth.id && singleData.date == this.todayDate){
+                if(singleData.user_id == this.user.id && singleData.date == this.todayDate){
                     return true;
                 }
                 return false;
@@ -899,7 +894,7 @@
 
                     }).catch(error => {
                         this.final_loading =false
-                        this.overlay = false
+                        this.overlay = true
                         // Error
                         Swal.fire({
                             icon: 'error',

@@ -12,6 +12,8 @@ use Auth;
 use App\Exports\h_admin\allcomplain;
 use App\Exports\h_admin\alldamage;
 use App\Exports\h_admin\damagereplace;
+use App\Exports\h_admin\canceled;
+use App\Exports\h_admin\closed;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Http\Controllers\CMS\HardwareAdmin\CommonController;
@@ -173,9 +175,6 @@ class IndexController extends Controller
 
     }
 
-
-
-
     // damaged replace
     public function damaged_replace(){
 
@@ -260,6 +259,142 @@ class IndexController extends Controller
                     ->paginate($paginate);
 
         //dd($allData);
+
+        return response()->json($allData, 200);
+
+    }
+
+
+    // canceled
+    public function canceled(){
+
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
+
+        $paginate       = Request('paginate', 10);
+        $search         = Request('search', '');
+        $sort_direction = Request('sort_direction', 'desc');
+        $sort_field     = Request('sort_field', 'id');
+        $search_field   = Request('search_field', '');
+
+        $start          = Request('start', '');
+        $end            = Request('end', '');
+        $zone_office    = Request('zone_office', '');
+        $department     = Request('department', '');
+        
+
+        // Query
+        $allDataQuery =  HardwareComplain::with('makby', 'category', 'subcategory')
+        ->where('status', 0);
+        
+
+        // Department Selected
+        if( !empty($start) && !empty($end) ){
+            $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
+        }
+
+        // user Zone Selected
+        if( !empty($zone_office) && $zone_office != 'All'){
+            $allDataQuery->whereHas('makby', function($q) use($zone_office){
+                //dd($department);
+                $q->whereIn('zone_office', explode(",",$zone_office));
+                //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
+            });
+        }
+
+        // user department Selected
+        if( !empty($department) && $department != 'All'){
+            $allDataQuery->whereHas('makby', function($q) use($department){
+                //dd($department);
+                $q->where('department', $department);
+            });
+        }
+
+
+        // Search
+        if(!empty($search_field) && $search_field != 'All'){
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+            $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
+        }else{
+            $allDataQuery->search( trim(preg_replace('/\s+/' ,' ', $search)) );
+        }
+            
+        // Final Data
+        $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)
+                    ->paginate($paginate);
+
+        return response()->json($allData, 200);
+
+    }
+
+    // closed
+    public function closed(){
+
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
+
+        $paginate       = Request('paginate', 10);
+        $search         = Request('search', '');
+        $sort_direction = Request('sort_direction', 'desc');
+        $sort_field     = Request('sort_field', 'id');
+        $search_field   = Request('search_field', '');
+
+        $start          = Request('start', '');
+        $end            = Request('end', '');
+        $zone_office    = Request('zone_office', '');
+        $department     = Request('department', '');
+        
+
+        // Query
+        $allDataQuery =  HardwareComplain::with('makby', 'category', 'subcategory')
+        ->where('status', 1)
+        ->where('process', 'Closed');
+        
+
+        // Department Selected
+        if( !empty($start) && !empty($end) ){
+            $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
+        }
+
+        // user Zone Selected
+        if( !empty($zone_office) && $zone_office != 'All'){
+            $allDataQuery->whereHas('makby', function($q) use($zone_office){
+                //dd($department);
+                $q->whereIn('zone_office', explode(",",$zone_office));
+                //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
+            });
+        }
+
+        // user department Selected
+        if( !empty($department) && $department != 'All'){
+            $allDataQuery->whereHas('makby', function($q) use($department){
+                //dd($department);
+                $q->where('department', $department);
+            });
+        }
+
+
+        // Search
+        if(!empty($search_field) && $search_field != 'All'){
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+            $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
+        }else{
+            $allDataQuery->search( trim(preg_replace('/\s+/' ,' ', $search)) );
+        }
+            
+        // Final Data
+        $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)
+                    ->paginate($paginate);
 
         return response()->json($allData, 200);
 
@@ -513,6 +648,145 @@ class IndexController extends Controller
         //dd($allData);
 
         return Excel::download(new damagereplace($allData), 'complain-' . time() . '.xlsx');
+    }
+
+
+    // export_data_canceled
+
+    public function export_data_canceled(Request $request) 
+    {
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
+        
+        $search         = Request('search', '');
+        $sort_direction = Request('sort_direction', 'desc');
+        $sort_field     = Request('sort_field', 'id');
+        $search_field   = Request('search_field', '');
+
+        $start          = Request('start', '');
+        $end            = Request('end', '');
+        $zone_office    = Request('zone_office', '');
+        $department     = Request('department', '');
+        
+
+        // Query
+        $allDataQuery =  HardwareComplain::with('makby', 'category', 'subcategory')
+        ->where('status', 0);
+        
+
+        // Department Selected
+        if( !empty($start) && !empty($end) ){
+            $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
+        }
+
+        // user Zone Selected
+        if( !empty($zone_office) && $zone_office != 'All'){
+            $allDataQuery->whereHas('makby', function($q) use($zone_office){
+                //dd($department);
+                $q->whereIn('zone_office', explode(",",$zone_office));
+                //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
+            });
+        }
+
+        // user department Selected
+        if( !empty($department) && $department != 'All'){
+            $allDataQuery->whereHas('makby', function($q) use($department){
+                //dd($department);
+                $q->where('department', $department);
+            });
+        }
+
+
+        // Search
+        if(!empty($search_field) && $search_field != 'All'){
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+            $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
+        }else{
+            $allDataQuery->search( trim(preg_replace('/\s+/' ,' ', $search)) );
+        }
+            
+        // Final Data
+        $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)->get();
+
+        //dd($allData);
+
+        return Excel::download(new canceled($allData), 'complain-' . time() . '.xlsx');
+    }
+
+
+
+
+    // export_data_closed
+
+    public function export_data_closed(Request $request) 
+    {
+        // Check access offices
+        $accessZoneOffices = CommonController::ZoneOfficesByAuth();
+        
+        $search         = Request('search', '');
+        $sort_direction = Request('sort_direction', 'desc');
+        $sort_field     = Request('sort_field', 'id');
+        $search_field   = Request('search_field', '');
+
+        $start          = Request('start', '');
+        $end            = Request('end', '');
+        $zone_office    = Request('zone_office', '');
+        $department     = Request('department', '');
+        
+
+        // Query
+        $allDataQuery =  HardwareComplain::with('makby', 'category', 'subcategory')
+        ->where('status', 1)
+        ->where('process', 'Closed');
+        
+
+        // Department Selected
+        if( !empty($start) && !empty($end) ){
+            $allDataQuery->whereBetween('created_at' ,[$start ." 00:00:00", $end." 23:59:59"]);
+        }
+
+        // user Zone Selected
+        if( !empty($zone_office) && $zone_office != 'All'){
+            $allDataQuery->whereHas('makby', function($q) use($zone_office){
+                //dd($department);
+                $q->whereIn('zone_office', explode(",",$zone_office));
+                //$q->whereIn('zone_office', ['Chittagong Feedmill', "Chittagong 1 Farm", "Chittagong 2 Farm", "Chittagong 4 Farm"]);
+            });
+        }else{
+            $allDataQuery->whereHas('makby', function($q) use($accessZoneOffices){
+                //dd($accessZoneOffices);
+                $q->whereIn('zone_office', $accessZoneOffices);
+            });
+        }
+
+        // user department Selected
+        if( !empty($department) && $department != 'All'){
+            $allDataQuery->whereHas('makby', function($q) use($department){
+                //dd($department);
+                $q->where('department', $department);
+            });
+        }
+
+
+        // Search
+        if(!empty($search_field) && $search_field != 'All'){
+            $val = trim(preg_replace('/\s+/' ,' ', $search));
+            $allDataQuery->where($search_field, 'LIKE', '%'.$val.'%');
+        }else{
+            $allDataQuery->search( trim(preg_replace('/\s+/' ,' ', $search)) );
+        }
+            
+        // Final Data
+        $allData =  $allDataQuery->orderBy($sort_field, $sort_direction)->get();
+
+        //dd($allData);
+
+        return Excel::download(new closed($allData), 'complain-' . time() . '.xlsx');
     }
 
 

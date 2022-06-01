@@ -179,7 +179,7 @@ class ScheduleEmailIaccessInternetRequest extends Controller
                         'subject'    => $item->subject,
                         'document'   => $item->document,
                         'form_type'  => 'Internet Access Request',
-                        'url'        => $url.$item->id,
+                        'url'        => $url.$item->id, 
                     ];
         
                 

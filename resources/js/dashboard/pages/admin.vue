@@ -1,6 +1,6 @@
 <template>
     <div class="bg_grad">
-        <nav-bar headerText="Admin"></nav-bar>
+        <nav-bar headerText="Admin" homeBtn="y"></nav-bar>
 
         <v-row class="d-flex flex-wrap justify-content-around my-5" style="min-height: 100vh;">
 
@@ -115,7 +115,7 @@
                 </a>
             </v-col>
 
-            <v-col cols="6" lg="3" class="text-center" v-if="isAdministrator()">
+            <v-col cols="6" lg="3" class="text-center" v-if="isIaccessAdmin()">
                 <a href="/iaccess/admin" class="text-decoration-none text-dark">
                     <v-avatar size="150">
                         <v-img src="/all-assets/common/icon/iaccess.png"></v-img>

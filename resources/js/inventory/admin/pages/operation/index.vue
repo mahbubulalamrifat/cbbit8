@@ -46,6 +46,16 @@
                                     <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
                                 </th>
                                 <th>
+                                        <a href="#" @click.prevent="change_sort('created_at')">Created At</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'created_at'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'created_at'">&darr;</span>
+                                    </th>
+                                    <th>
+                                        <a href="#" @click.prevent="change_sort('updated_at')">Updated At</a>
+                                        <span v-if="sort_direction == 'desc' && sort_field == 'updated_at'">&uarr;</span>
+                                        <span v-if="sort_direction == 'asc' && sort_field == 'updated_at'">&darr;</span>
+                                    </th>
+                                <th>
                                     Created By
                                 </th>
                                 <th>Action</th>
@@ -53,6 +63,12 @@
                             <tbody>
                                 <tr v-for="singleData in allData.data" :key="singleData.id">
                                     <td>{{ singleData.name }}</td>
+                                     <td><span
+                                            v-if="singleData.created_at">{{ singleData.created_at | moment("MMM Do YYYY, h:mm a") }}</span>
+                                    </td>
+                                    <td><span
+                                            v-if="singleData.updated_at">{{ singleData.updated_at | moment("MMM Do YYYY, h:mm a") }}</span>
+                                    </td>
                                     <td v-if="singleData.makby">{{ singleData.makby.name }}</td>
                                     <td v-else><span class="error--text"> Not Found </span></td>
                             
@@ -60,9 +76,9 @@
                                         <v-btn @click="editDataModel(singleData)" color="info" depressed small>
                                             <v-icon left>mdi-circle-edit-outline</v-icon> Edit
                                         </v-btn>
-                                        <v-btn @click="deleteData(singleData.id)" color="error" depressed small>
+                                        <!-- <v-btn @click="deleteData(singleData.id)" color="error" depressed small>
                                             <v-icon left>mdi-delete-empty</v-icon> Delete
-                                        </v-btn>
+                                        </v-btn> -->
                                     </td>
                                 </tr>
                             </tbody>
@@ -81,7 +97,7 @@
                         <p class="text-center h1">Loading.. <v-icon color="success" size="100">mdi mdi-loading mdi-spin</v-icon></p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h2 class="error--text text-center" v-if="!totalValue && !dataLoading" >Operation Data Not Available <v-icon large color="error">mdi-alert-octagon-outline</v-icon></h2>
 
             </v-card-text>
         </v-card>

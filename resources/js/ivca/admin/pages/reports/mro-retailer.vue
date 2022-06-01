@@ -3,12 +3,7 @@
 
         <div class="card">
             <div class="card-header">
-                <div class="row">
-                    <div class="col-6">
-                        <h3 class="card-title">Retailer Audit Report</h3>
-                    </div>
-        
-                </div>
+                <h3 class="card-title">Retailer Audit Report</h3>
             </div>
 
             <div class="card-body">

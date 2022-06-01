@@ -10,7 +10,6 @@
         <tr>
             <td style="font-weight:bold; background-color: khaki">Product Name/Model</td>
             <td style="font-weight:bold; background-color: khaki">Category</td>
-            <td style="font-weight:bold; background-color: khaki">Subcategory</td>
             <td style="font-weight:bold; background-color: khaki">Office</td>
             <td style="font-weight:bold; background-color: khaki">Business Unit</td>
             <td style="font-weight:bold; background-color: khaki">Operaiton</td>
@@ -28,12 +27,6 @@
 
             @if($product->category)
             <td>{{ $product->category->name }}</td>
-            @else
-            <td style="color:red">N/A</td>
-            @endif
-
-            @if($product->subcategory)
-            <td>{{ $product->subcategory->name }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif

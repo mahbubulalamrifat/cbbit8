@@ -619,10 +619,7 @@
 
 
         <v-overlay :value="overlay">
-            <v-progress-circular
-                indeterminate
-                size="64"
-            ></v-progress-circular>
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
         </v-overlay>
 
 
@@ -639,7 +636,6 @@
         data() {
             return {
                 valid: false,
-
                 // overlay
                 overlay: false,
 

@@ -81,16 +81,16 @@
                                             <span v-else>
                                                 <!-- Schedule date not matched with current date -->
                                                 <span v-if="singleData.date == todayDate">
-                                                    <v-btn @click="generateToken(singleData)"
-                                                        small class="success m-1 link-hobar"><i
+                                                    <button @click="generateToken(singleData)"
+                                                        class="btn btn-success btn-sm m-1 link-hobar"><i
                                                             class="far fa-check-circle"></i> Token Generate
-                                                    </v-btn>
+                                                    </button>
                                                 </span>
                                                 <!-- Schedule date matched with current date -->
                                                 <span v-else>
-                                                    <v-btn small class="success m-1 link-hobar-disabled"
+                                                    <button class="btn btn-success btn-sm m-1 link-hobar-disabled"
                                                         disabled><i class="far fa-check-circle"></i> Token Generate
-                                                    </v-btn>
+                                                    </button>
                                                 </span>
 
                                             </span>
@@ -100,17 +100,17 @@
                                             <!-- Schedule date not matched with current date -->
                                             <span v-if="singleData.date == todayDate">
 
-                                                <v-btn @click="showModal(singleData)"
-                                                    small class="success m-1 link-hobar">
+                                                <button @click="showModal(singleData)"
+                                                    class="btn btn-success btn-sm m-1 link-hobar">
                                                     <i class="far fa-clipboard"></i> Put Token
-                                                </v-btn>
+                                                </button>
 
                                             </span>
 
                                             <span v-else>
-                                                <v-btn small class="success m-1 link-hobar-disabled" disabled>
+                                                <button class="btn btn-success btn-sm m-1 link-hobar-disabled" disabled>
                                                     <i class="far fa-clipboard"></i> Put Token
-                                                </v-btn>
+                                                </button>
 
                                                 <!-- {{ todayDate }} == {{ singleData.date }}  -->
                                             </span>

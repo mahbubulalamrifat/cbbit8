@@ -1,11 +1,19 @@
 <template>
     <div>
-        <v-toolbar flat dense dark class="nav-color" >
+        <v-toolbar flat dense dark class="nav-color">
 
             <v-app-bar-nav-icon href="/">
                 <v-img src="/all-assets/common/icon/car.png" alt="room" max-height="40" max-width="40" contain
                     class="nav-logo-bg"></v-img>
             </v-app-bar-nav-icon>
+
+            <v-spacer></v-spacer>
+            <v-avatar v-if="auth.image">
+                <v-img :src="'/images/users/small/'+auth.image" alt="CPB-IT" max-height="40" max-width="40" contain>
+                </v-img>
+            </v-avatar>
+            <span v-if="auth" class="m-1">{{ auth.name }} ({{ auth.login }})</span>
+
 
             <v-spacer></v-spacer>
             <v-btn icon link route :to="{ name: 'notCommented'}">
@@ -60,6 +68,10 @@
                     Booked History
                 </v-btn>
 
+                <!-- <v-btn text link route :to="{ name: 'UserManual'}" small>
+                    Manual
+                </v-btn> -->
+
                 <v-btn text link route href="/logout" small>
                     Logout
                 </v-btn>
@@ -68,21 +80,20 @@
 
             <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-            
-
         </v-toolbar>
 
 
-        <v-navigation-drawer v-model="drawer" absolute temporary right src="https://asset.cpbangladesh.com/documents/car_side_20220209093005qOCfkoaZjx.jpg" style="height:100vh;">
+        <v-navigation-drawer v-model="drawer" absolute temporary right overlay-opacity=".6" overlay-color="green"
+            src="https://asset.cpbangladesh.com/documents/car_side_20220209093005qOCfkoaZjx.jpg" style="height:100vh;" >
             <v-list-item>
                 <v-list-item-content>
-                    <v-list-item-title>Carpool User</v-list-item-title>
+                    <v-list-item-title>Carpool</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
 
             <v-divider></v-divider>
 
-            <v-list dense>
+            <v-list dense class="img-opcty">
 
                 <v-list-item link route :to="{ name: 'Dashboard'}" exact>
                     <v-list-item-content>
@@ -102,6 +113,12 @@
                     </v-list-item-content>
                 </v-list-item>
 
+                 <v-list-item link route :to="{ name: 'BookedHistory'}">
+                    <v-list-item-content>
+                        <v-list-item-title>Booked History</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
                 <v-list-item link route href="/logout">
                     <v-list-item-content>
                         <v-list-item-title>Logout</v-list-item-title>
@@ -110,22 +127,21 @@
             </v-list>
         </v-navigation-drawer>
 
-        
+
 
     </div>
 </template>
 
 <script>
-
     export default {
-       
-        data(){
-            return{
+
+        data() {
+            return {
                 drawer: null,
             }
         },
 
-       
+
     }
 
 </script>
@@ -147,6 +163,13 @@
 
     a:hover {
         text-decoration: none;
+    }
+
+    .img-opcty {
+        /* Fallback for web browsers that doesn't support RGBa */
+        background: rgb(244, 241, 241) !important;
+        /* RGBa with 0.6 opacity */
+        background: rgba(244, 241, 241, 0.6) !important;
     }
 
 </style>

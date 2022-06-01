@@ -165,6 +165,10 @@
                                                                         </div>
 
                                                                     </div>
+                                                                    <hr>
+                                                                    <div style="text-align:center;color:#e64b4b;align-items:center;font-size:12px;">
+                                                                        N.B: This is system generated email. Do Not reply here
+                                                                     </div>
 
                                                                 </div>
                                                             </div>

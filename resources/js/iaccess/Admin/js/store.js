@@ -7,7 +7,11 @@ export default new Vuex.Store({
 
     state : {
         auth  : null,
-        roles : null,
+        roles: null,
+        email: null,
+        internet: null,
+        account: null,
+        guest: null,
     },
 
     getters : {
@@ -17,6 +21,18 @@ export default new Vuex.Store({
         },
         getRoles(state){
             return state.roles;
+        },
+        getCountEmailRequest(state) {
+            return state.email
+        },
+        getCountInternetRequest(state) {
+            return state.internet
+        },
+        getCountAccountRequest(state) {
+            return state.account
+        },
+        getCountGuestRequest(state) {
+            return state.guest
         },
     
  
@@ -32,6 +48,19 @@ export default new Vuex.Store({
         // Roles User
         setRoles(state, data){
             state.roles = data;
+        },
+
+        setCountEmailRequest(state,data) {
+            state.email = data;
+        },
+        setCountInternetRequest(state,data) {
+            state.internet = data;
+        },
+        setCountAccountRequest(state,data) {
+            state.account = data;
+        },
+        setCountGuestRequest(state,data) {
+            state.guest = data;
         },
     
     },

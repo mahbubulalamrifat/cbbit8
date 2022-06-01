@@ -61,14 +61,17 @@ class IndexController extends Controller
 
         //dd($arr, $allOperations);
 
-
-        $remainProduct = InventoryNewProduct::with('category')
-        ->where('delete_temp', 0)
+        $remainProduct = InventoryNewProduct::with('category')->where('delete_temp', 0)
+        ->whereHas('category', function($q){
+            $q->where('status', 1);
+        })
         ->where('give_st', 0)
         ->groupBy('cat_id')
         ->selectRaw('count(*) as total, cat_id')
+        ->orderByRaw('(SELECT name FROM inventory_categories WHERE inventory_categories.id = inventory_new_products.cat_id)')
         ->get();
-
+        
+        //dd($remainProduct);
 
 
         return response()->json(['remainProduct'=> $remainProduct, 'operationWiseProduct'=> $operationWiseProduct  ],200);
@@ -79,12 +82,12 @@ class IndexController extends Controller
 
    
     //category
-    public function category(){
-        //dd("test");
-        $allData = HardwareCategory::with('subcat')->orderBy('name')->get();
+    // public function category(){
+    //     //dd("test");
+    //     $allData = HardwareCategory::with('subcat')->orderBy('name')->get();
         
-        return response()->json($allData);
-    }
+    //     return response()->json($allData);
+    // }
 
 
 }

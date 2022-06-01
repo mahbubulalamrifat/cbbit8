@@ -11,13 +11,11 @@ use Maatwebsite\Excel\Events\AfterSheet;
 
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Cell\Hyperlink;
 
-use Maatwebsite\Excel\Concerns\WithDrawings;
-use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use DB;
 
 
-class summuryImporter implements FromView, ShouldAutoSize, WithEvents, WithStyles, WithDrawings
+class summuryImporter implements FromView, ShouldAutoSize, WithEvents, WithStyles
 {
     public $data;
 
@@ -34,32 +32,6 @@ class summuryImporter implements FromView, ShouldAutoSize, WithEvents, WithStyle
         
         return view('ivca.admin.excel.summuryImporter', compact('finalResult'));
     }
-
-
-    public function drawings()
-    {
-        $drawing = new Drawing();
-        $drawing->setName('Logo');
-        $drawing->setDescription('CPB Logo');
-        $drawing->setPath(public_path('/all-assets/common/logo/cpb/cpbgroup.png'));
-        $drawing->setHeight(40);
-        $drawing->setCoordinates('A1');
-
-        $drawing2 = new Drawing();
-        $drawing2->setName('Logo2');
-        $drawing2->setDescription('Food Logo');
-        $drawing2->setPath(public_path('/all-assets/common/logo/cpb/food.png'));
-        $drawing2->setHeight(40);
-        $drawing2->setCoordinates('D1');
-        $drawing2->setOffsetX(32);
-
-        return [$drawing, $drawing2];
-
-    }
-
-        
-
-    
 
     public function registerEvents(): array
     {
@@ -85,22 +57,6 @@ class summuryImporter implements FromView, ShouldAutoSize, WithEvents, WithStyle
 
                 $event->sheet->getDelegate()->getStyle('A26')
                 ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
-
-                foreach ($event->sheet->getColumnIterator('B') as $row) {
-                    foreach ($row->getCellIterator() as $cell) {
-                        if (str_contains($cell->getValue(), '://')) {
-                            $cell->setHyperlink(new Hyperlink($cell->getValue(), 'Read'));
-
-                            // Upd: Link styling added
-                            $event->sheet->getStyle($cell->getCoordinate())->applyFromArray([
-                                'font' => [
-                                    'color' => ['rgb' => '0000FF'],
-                                    'underline' => 'single'
-                                ]
-                            ]);
-                        }
-                    }
-                }
                
             },
         ];
@@ -126,6 +82,7 @@ class summuryImporter implements FromView, ShouldAutoSize, WithEvents, WithStyle
 
     }
 
+    
 
 
 }

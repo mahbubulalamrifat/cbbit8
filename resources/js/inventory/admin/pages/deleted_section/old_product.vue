@@ -1,15 +1,8 @@
 <template>
     <div>
         <v-card>
-            <v-card-title class="justify-center">
-                <v-row>
-                    <v-col cols="10">
-                        All Old Product Deleted Data
-                    </v-col>
-                    <v-col cols="2">
-
-                    </v-col>
-                </v-row>
+            <v-card-title>
+                All Old Product Deleted Data
             </v-card-title>
 
             <v-card-text>
@@ -27,57 +20,59 @@
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
 
-                                <th>
-                                    Details
-                                </th>
-                                <th>Deleted By</th>
-                                <th>
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <th>
+                                        Details
+                                    </th>
+                                    <th>Deleted By</th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
 
-                                <td>
-                                    <div>
-                                        <b>Product Name: </b>{{ singleData.name }}
-                                    </div>
-                                    <div>
-                                        <b>Product Category: </b><span
-                                            v-if="singleData.category">{{ singleData.category.name }}</span>
-                                    </div>
-                                    <div>
-                                        <b>Product Subcategory: </b><span
-                                            v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
-                                    </div>
-                                    <div>
-                                        <b>Product Serial: </b>{{ singleData.serial }}
-                                    </div>
-                                </td>
-                                <td class="text-center text-muted">
-                                    -----{{singleData.makby.name}}-----
-                                </td>
-                                <td class="text-center">
+                                    <td>
+                                        <div>
+                                            <b>Product Name: </b>{{ singleData.name }}
+                                        </div>
+                                        <div>
+                                            <b>Product Category: </b><span
+                                                v-if="singleData.category">{{ singleData.category.name }}</span>
+                                        </div>
+                                        <div>
+                                            <b>Product Subcategory: </b><span
+                                                v-if="singleData.subcategory">{{ singleData.subcategory.name }}</span>
+                                        </div>
+                                        <div>
+                                            <b>Product Serial: </b>{{ singleData.serial }}
+                                        </div>
+                                    </td>
+                                    <td class="text-center text-muted">
+                                        -----{{singleData.makby.name}}-----
+                                    </td>
+                                    <td class="text-center">
 
-                                    <v-btn class="ma-2" @click="deleteData(singleData.id, 'old')" color="error"
-                                        elevation="20" small>
-                                        <v-icon small>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>
+                                        <v-btn class="ma-2" @click="deleteData(singleData.id, 'old')" color="error"
+                                            elevation="20" small>
+                                            <v-icon small>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
 
-                                    <v-btn class="ma-2" @click="restoreData(singleData.id, 'old')" color="success"
-                                        elevation="20" small>
-                                        <v-icon small>mdi-delete-restore</v-icon> Restore
-                                    </v-btn>
-                                </td>
+                                        <v-btn class="ma-2" @click="restoreData(singleData.id, 'old')" color="success"
+                                            elevation="20" small>
+                                            <v-icon small>mdi-delete-restore</v-icon> Restore
+                                        </v-btn>
+                                    </td>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>
@@ -94,7 +89,7 @@
                         </p>
                     </div>
                 </div>
-                <h1 v-if="!totalValue && !dataLoading" class="text-danger text-center">Sorry !! Data Not Available</h1>
+                <h2 class="error--text text-center" v-if="!totalValue && !dataLoading" >Old Deleted Product Data Not Available <v-icon large color="error">mdi-alert-octagon-outline</v-icon></h2>
 
             </v-card-text>
         </v-card>
@@ -116,13 +111,9 @@
                 //current page url
                 currentUrl: '/inventory/admin/delete/old-product',
 
-
-
                 allCategory: [],
                 allSubcategory: [],
                 allCatData: '',
-
-
             }
 
 
@@ -132,7 +123,7 @@
 
             // getAllCategory
             getAllCategory() {
-                axios.get('/inventory/admin/category').then(response => {
+                axios.get('/inventory/admin/category/all').then(response => {
                     this.allCatData = response.data
                     console.log(response.data)
                     for (let i = 0; i < response.data.length; i++) {
@@ -147,31 +138,29 @@
                 })
             },
 
-            // getSubcategory
-            getSubcategory() {
-                // console.log('cat id', this.form.cat_id)
+            // // getSubcategory
+            // getSubcategory() {
+            //     // console.log('cat id', this.form.cat_id)
 
-                this.allCatData.forEach(element => {
-                    //console.log(element.id)
+            //     this.allCatData.forEach(element => {
+            //         //console.log(element.id)
 
-                    if (element.id == this.form.cat_id) {
-                        //console.log(element)
-                        this.allSubcategory = []
-                        if (element.subcat.length > 0) {
-                            for (let i = 0; i < element.subcat.length; i++) {
-                                this.allSubcategory.push(element.subcat[i]);
-                                this.allSubcategory[i] = {
-                                    value: element.subcat[i].id,
-                                    text: element.subcat[i].name
-                                };
-                            }
+            //         if (element.id == this.form.cat_id) {
+            //             //console.log(element)
+            //             this.allSubcategory = []
+            //             if (element.subcat.length > 0) {
+            //                 for (let i = 0; i < element.subcat.length; i++) {
+            //                     this.allSubcategory.push(element.subcat[i]);
+            //                     this.allSubcategory[i] = {
+            //                         value: element.subcat[i].id,
+            //                         text: element.subcat[i].name
+            //                     };
+            //                 }
 
-                        }
-                    }
-                })
-
-
-            },
+            //             }
+            //         }
+            //     })
+            // },
 
 
         },

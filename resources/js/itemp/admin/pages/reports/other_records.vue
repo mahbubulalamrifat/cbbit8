@@ -13,21 +13,22 @@
         <div v-if="allData.data">
 
             <v-row>
-                <v-col cols="2">
+                <v-col cols="6" lg="2">
                     <!-- Show -->
                     <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" outlined dense>
                     </v-select>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="6" lg="2">
                     <v-select :items="reportType" label="Select Type" v-model="sort_by_day" outlined dense></v-select>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-menu v-model="menu" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-text-field v-model="sort_by_startDate" label="Start Date" prepend-inner-icon="mdi-calendar"
-                                readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                            <v-text-field v-model="sort_by_startDate" label="Start Date"
+                                prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" outlined dense>
+                            </v-text-field>
                         </template>
 
                         <v-date-picker v-model="sort_by_startDate" no-title scrollable>
@@ -39,7 +40,7 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="2">
+                <v-col cols="12" lg="2">
                     <v-menu v-model="menu2" min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="sort_by_endDate" label="End Date" prepend-inner-icon="mdi-calendar"
@@ -55,77 +56,78 @@
                     </v-menu>
                 </v-col>
 
-                <v-col cols="4">
+                <v-col cols="12" lg="4">
                     <v-text-field prepend-inner-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                         placeholder="Search Input..." outlined dense></v-text-field>
                 </v-col>
             </v-row>
 
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="text-center">
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                From
+                            </th>
+                            <th>
+                                To
+                            </th>
+                            <th>
+                                Temparature
+                            </th>
+                            <th>
+                                Location
+                            </th>
+                            <th>
+                                Temparature By
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr v-for="singleData in allData.data" :key="singleData.id">
+                            <td>
+                                {{singleData.name}}
+                            </td>
 
-            <table class="table table-bordered">
-                <thead class="text-center">
-                    <tr>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            From
-                        </th>
-                        <th>
-                            To
-                        </th>
-                        <th>
-                            Temparature
-                        </th>
-                        <th>
-                            Location
-                        </th>
-                        <th>
-                            Temparature By
-                        </th>
-                        <th>
-                            Date
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="text-center">
-                    <tr v-for="singleData in allData.data" :key="singleData.id">
-                        <td>
-                            {{singleData.name}}
-                        </td>
+                            <td>
+                                {{singleData.from}}
+                            </td>
 
-                        <td>
-                            {{singleData.from}}
-                        </td>
+                            <td>
+                                {{singleData.to}}
+                            </td>
 
-                        <td>
-                            {{singleData.to}}
-                        </td>
+                            <td>
+                                <span v-if="singleData.temp > 100">
+                                    <v-btn class="error">{{singleData.temp}}</v-btn>
+                                </span>
 
-                        <td>
-                            <span v-if="singleData.temp > 100">
-                                <v-btn class="error">{{singleData.temp}}</v-btn>
-                            </span>
+                                <span v-else>
+                                    <v-btn class="success">{{singleData.temp}}</v-btn>
+                                </span>
+                            </td>
 
-                            <span v-else>
-                                <v-btn class="success">{{singleData.temp}}</v-btn>
-                            </span>
-                        </td>
+                            <td>
+                                {{singleData.temp_location}}
+                            </td>
 
-                        <td>
-                            {{singleData.temp_location}}
-                        </td>
+                            <td>
+                                {{singleData.temp_by}}
+                            </td>
 
-                        <td>
-                            {{singleData.temp_by}}
-                        </td>
-
-                        <td>
-                            {{singleData.created_at | moment("MMM Do YYYY")}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            <td>
+                                {{singleData.created_at | moment("MMM Do YYYY")}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div>
                 <span>Total Records: {{ totalValue }}</span>
@@ -202,7 +204,7 @@
                 // datepicker
                 menu: '',
                 menu2: '',
-                
+
                 // exportLoading
                 exportLoading: false,
             }
@@ -241,12 +243,12 @@
 
 
 
-            exportExcel(){
+            exportExcel() {
                 this.exportLoading = true;
 
                 axios({
                     method: 'get',
-                    url: this.currentUrl+'/export_data?search=' + this.search +
+                    url: this.currentUrl + '/export_data?search=' + this.search +
                         '&sort_direction=' + this.sort_direction +
                         '&sort_field=' + this.sort_field +
                         '&search_field=' + this.search_field +

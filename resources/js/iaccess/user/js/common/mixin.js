@@ -40,8 +40,23 @@ export default {
             fileMaxSize: '5111775',
             overlayshow: false,
 
-            allDepartments: [],
-            allOffice: [],
+            Departments: [],
+            Offices: [],
+            allManager: [],
+            allBU: [],
+
+            // Tbl number of data show
+            tblItemNumberShow:[5,10,15,25,50,100],
+            
+            dataModalLoading: false,
+
+            // pdf
+            pdfFile: '',
+            viewDocument: false,
+            // for pdf only
+            docPath2: 'images/iaccess/',
+            pdfReadyLoading:false,
+
 
 
         }
@@ -66,73 +81,107 @@ export default {
 
 
 
-        handleResize() {
-            this.window.width = window.innerWidth;
-            this.window.height = window.innerHeight;
-        },
+
+        // getDepartments() {
+        //     axios.get('/super_admin/user/departments').then(response => {
+        //         //console.log(response.data)
+        //         this.allDepartments = response.data
+
+        //         this.allDepartments.shift();
+        //     }).catch(error => {
+        //         console.log(error)
+        //     })
+        // },
 
 
-        // Add model show
-        newModal() {
-            this.editmode = false;
-            this.form.reset();
-            $('#addNew').modal('show');
-        },
 
-        // Edit Model show
-        editModal(singleData) {
-            this.editmode = true;
-            this.form.reset();
-            $('#addNew').modal('show');
-            this.form.fill(singleData);
-        },
+        // getOffice() {
+        //     axios.get('/super_admin/user/zoneoffices').then(response => {
+        //         // zone_office
+        //         response.data.office.forEach(element => {
+        //             this.allOffice.push({
+        //                 value: element.zone_office,
+        //                 text: element.zone_office
+        //             });
+        //         });
+        //     });
+        // },
 
+        
 
-        getDepartments() {
-            axios.get('/super_admin/user/departments').then(response => {
+        getAllManagerBuOfficeDept() {
+            axios.get('/iaccess/manager_bu_list').then(response => {
                 //console.log(response.data)
-                this.allDepartments = response.data
 
-                this.allDepartments.shift();
-            }).catch(error => {
-                console.log(error)
-            })
-        },
+                // Manager
+                response.data.userList.forEach(element => {
+                    if(element.office_email){
+                        this.allManager.push({
+                            value: element,
+                            text: element.name+' || '+ element.department+' || '+ element.business_unit
+                        });
+                    }
+                });
 
+                // BU
+                response.data.buList.forEach(element => {
+                    if(element.email){
+                        this.allBU.push({
+                            value: element,
+                            text: element.name+' || '+ element.designation
+                        });
+                    }
+                });
 
+                // Office
+                response.data.allOffices.forEach(element => {
+                    if(element.zone_office){
+                        this.Offices.push({
+                            value: element.zone_office,
+                            text: element.zone_office
+                        });
+                    }
+                });
 
-        getOffice() {
-            axios.get('/inventory/admin/new_product/office').then(response => {
-                // zone_office
-                response.data.office.forEach(element => {
-                    this.allOffice.push({
-                        value: element.zone_office,
-                        text: element.zone_office
-                    });
+                // Department
+                response.data.allDepartment.forEach(element => {
+                    if(element.department){
+                        this.Departments.push({
+                            value: element.department,
+                            text: element.department
+                        });
+                    }
                 });
             });
         },
 
-        
 
 
-
-
-
-        async callApi(method, url, dataObj) {
-
-            try {
-
-                return await axios({
-                    method: method,
-                    url: url,
-                    data: dataObj
-                })
-
-            } catch (e) {
-                return e.response
+        // PDF
+        base64ToArrayBuffer(base64) {
+            var binary_string = window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
             }
+            this.pdfFile = bytes.buffer
+            this.pdfReadyLoading = false
+            this.viewDocument = true
+            return bytes.buffer;
+        },
 
+        // PDF
+        pdfGetFile(doc) {
+            this.pdfReadyLoading = true
+            axios.post('/iaccess/pdf_get_file', {
+                document: doc
+            }).then((res) => {
+                this.base64ToArrayBuffer(res.data)
+            }).catch(error=>{
+                this.pdfReadyLoading = false
+                console.error(error)
+            });
         }
 
         // End Methods

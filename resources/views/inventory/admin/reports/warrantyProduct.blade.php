@@ -10,7 +10,6 @@
         <tr>
             <td style="font-weight:bold; background-color: khaki">Product Name/Model</td>
             <td style="font-weight:bold; background-color: khaki">Category</td>
-            <td style="font-weight:bold; background-color: khaki">Subcategory</td>
             <td style="font-weight:bold; background-color: khaki">Serial</td>
             <td style="font-weight:bold; background-color: khaki">Invoice</td>
             <td style="font-weight:bold; background-color: khaki">P.O.</td>
@@ -20,18 +19,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($product as $product)
+        @foreach($products as $product)
         <tr>
             <td>{{ $product->name }}</td>
 
             @if($product->category)
             <td>{{ $product->category->name }}</td>
-            @else
-            <td style="color:red">N/A</td>
-            @endif
-
-            @if($product->subcategory)
-            <td>{{ $product->subcategory->name }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
@@ -61,13 +54,13 @@
             @endif
 
             @if($product->warranty)
-            <td>{{ warranty_check($product->warranty )  }}</td>
+            <td>{{ warranty_check($product->warranty) }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($product->remarks)
-            <td>{!! $product->remarks !!}</td>
+            @if( $product->remarks )
+            <td>{{ strip_tags($product->remarks)  }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif

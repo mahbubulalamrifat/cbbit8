@@ -6,9 +6,8 @@ import paginateMethods from './paginate_methods'
 import imageMethods from './image_methods'
 import createUpdate from './crud'
 
-
 import globalRolePermissions from './../../../role_permissions'
-
+import {debounce} from './../../../helpers'
 
 
 export default {
@@ -63,22 +62,7 @@ export default {
 
 
        
-        // Add model show
-        newModal() {
-            this.editmode = false;
-            this.form.reset();
-            $('#addNew').modal('show');
-        },
-
-        // Edit Model show
-        editModal(singleData) {
-            this.editmode = true;
-            this.form.reset();
-            $('#addNew').modal('show');
-            this.form.fill(singleData);
-        },
-
-
+        
         // End Methods
     },
 
@@ -92,11 +76,11 @@ export default {
         },
 
         //Excuted When make change value 
-        search: function (value) {
+        search: debounce(function (value) {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        },
+        }, 500),
 
         //Excuted When make change value 
         search_field: function (value) {

@@ -197,7 +197,9 @@
                                 <v-icon>mdi-select-group</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title>Damaged</v-list-item-title>
+                                <v-list-item-title>Damaged
+                                    <v-badge v-if="CountAppDamage" color="error ml-2" :content="CountAppDamage"></v-badge>
+                                </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item link router :to="{ name:'ApplicablePartialDamaged' }">
@@ -205,7 +207,9 @@
                                 <v-icon>mdi-select-group</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title>Partial Damaged</v-list-item-title>
+                                <v-list-item-title>Partial Damaged
+                                    <v-badge v-if="CountAppPartialDamage" color="error ml-2" :content="CountAppPartialDamage"></v-badge>
+                                </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-group>
@@ -220,7 +224,9 @@
                                 <v-icon>mdi-select-group</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title>Damaged</v-list-item-title>
+                                <v-list-item-title>Damaged
+                                    <v-badge v-if="CountNotAppDamage" color="error ml-2" :content="CountNotAppDamage"></v-badge>
+                                </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item link router :to="{ name:'NotApplicablePartialDamaged' }">
@@ -228,7 +234,9 @@
                                 <v-icon>mdi-select-group</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title>Partial Damaged</v-list-item-title>
+                                <v-list-item-title>Partial Damaged
+                                    <v-badge v-if="CountNotAppPartialDamage" color="error ml-2" :content="CountNotAppPartialDamage"></v-badge>
+                                </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-group>
@@ -307,6 +315,24 @@
                         </v-list-item-content>
                     </v-list-item>
 
+                    <v-list-item link router :to="{name: 'ReportCanceled'}">
+                        <v-list-item-icon>
+                            <v-icon>mdi-select-group</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Canceled</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item link router :to="{name: 'ReportClosed'}">
+                        <v-list-item-icon>
+                            <v-icon>mdi-select-group</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Closed</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
                 </v-list-group>
 
 
@@ -315,7 +341,7 @@
                 <v-list-group prepend-icon="mdi-format-list-group" active-class="indigo lighten-3 white--text"
                     no-action>
                     <template v-slot:activator>
-                        <v-list-item-title>Others</v-list-item-title>
+                        <v-list-item-title>Settings</v-list-item-title>
                     </template>
 
                     <v-list-item link router :to="{name: 'Category'}">

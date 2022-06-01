@@ -10,6 +10,7 @@ use App\Models\Cms\Application\ApplicationCategory;
 use App\Models\Cms\Application\ApplicationComplain;
 use App\Http\Controllers\Common\ImageUpload;
 use Auth;
+use Carbon\Carbon;
 use App\Http\Controllers\CMS\Email\Application\EmailStore;
 
 class ApplicationController extends Controller
@@ -18,7 +19,7 @@ class ApplicationController extends Controller
 
     //category
     public function category(){
-        $allData = ApplicationCategory::with('subcat')->orderBy('name')->get();
+        $allData = ApplicationCategory::with('subcat')->where('status', 1)->orderBy('name')->get();
         return response()->json($allData);
     }
 
@@ -166,7 +167,7 @@ class ApplicationController extends Controller
 
 
         $data->rating    = $request->rating;
-        $data->feedback      = $request->feedback;
+        $data->feedback  = $request->feedback;
 
         $success = $data->save();
 

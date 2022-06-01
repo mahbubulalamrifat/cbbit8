@@ -24,6 +24,8 @@ class CreateHardwareComplainsTable extends Migration
             $table->string('document')->nullable();
             $table->string('acsosoris')->nullable();
             $table->integer('status')->default(1);
+            $table->float('rating')->nullable();
+            $table->string('feedback')->nullable();
             $table->timestamps();
         });
     }

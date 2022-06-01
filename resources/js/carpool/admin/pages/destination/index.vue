@@ -18,49 +18,51 @@
             <v-card-text>
                 <div v-if="allData.data">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <!-- Show -->
                             <v-select v-model="paginate" label="Show:" :items="tblItemNumberShow" small>
                             </v-select>
                         </v-col>
 
-                        <v-col cols="10">
+                        <v-col cols="9">
                             <v-text-field prepend-icon="mdi-clipboard-text-search" v-model="search" label="Search:"
                                 placeholder="Search Input..."></v-text-field>
                         </v-col>
                     </v-row>
 
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <th>
-                                <a href="#" @click.prevent="change_sort('name')">Destinations</a>
-                                <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
-                                <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
-                            </th>
-                            <th>
-                                <a href="#" @click.prevent="change_sort('')">Created by</a>
-                                <span v-if="sort_direction == 'desc' && sort_field == ''">&uarr;</span>
-                                <span v-if="sort_direction == 'asc' && sort_field == ''">&darr;</span>
-                            </th>
-                            <th>Action</th>
-                        </thead>
-                        <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
-                                <td>{{ singleData.name }}</td>
-                                <td v-if="singleData.makby">{{ singleData.makby.name }}</td>
-                                <td v-else><span class="error--text"> Not Found </span></td>
-                        
-                                <td class="text-center">
-                                    <v-btn @click="editDataModel(singleData)" color="info" depressed small>
-                                        <v-icon left>mdi-circle-edit-outline</v-icon> Edit
-                                    </v-btn>
-                                    <v-btn @click="deleteDataTemp(singleData.id)" color="error" depressed small>
-                                        <v-icon left>mdi-delete-empty</v-icon> Delete
-                                    </v-btn>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('name')">Destinations</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == 'name'">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == 'name'">&darr;</span>
+                                </th>
+                                <th>
+                                    <a href="#" @click.prevent="change_sort('')">Created by</a>
+                                    <span v-if="sort_direction == 'desc' && sort_field == ''">&uarr;</span>
+                                    <span v-if="sort_direction == 'asc' && sort_field == ''">&darr;</span>
+                                </th>
+                                <th>Action</th>
+                            </thead>
+                            <tbody>
+                                <tr v-for="singleData in allData.data" :key="singleData.id">
+                                    <td>{{ singleData.name }}</td>
+                                    <td v-if="singleData.makby">{{ singleData.makby.name }}</td>
+                                    <td v-else><span class="error--text"> Not Found </span></td>
+                            
+                                    <td class="text-center">
+                                        <v-btn @click="editDataModel(singleData)" color="info" depressed small>
+                                            <v-icon left>mdi-circle-edit-outline</v-icon> Edit
+                                        </v-btn>
+                                        <v-btn @click="deleteDataTemp(singleData.id)" color="error" depressed small>
+                                            <v-icon left>mdi-delete-empty</v-icon> Delete
+                                        </v-btn>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                         <span>Total Records: {{ totalValue }}</span>
                     </div>

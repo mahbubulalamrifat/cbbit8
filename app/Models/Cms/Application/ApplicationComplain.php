@@ -31,16 +31,14 @@ class ApplicationComplain extends Model
     {
         return $query
         ->where('id', 'LIKE', '%'.$val.'%')
-        ->where('details', 'LIKE', '%'.$val.'%')
+        ->orWhere('details', 'LIKE', '%'.$val.'%')
         ->orWhereHas('makby', function($query) use ($val){
-            $query->WhereRaw('login LIKE ?', '%'.$val.'%');
+            $query->WhereRaw('login LIKE ?', '%'.$val.'%')
+            ->WhereRaw('name LIKE ?', '%'.$val.'%')
+            ->orWhereRaw('department LIKE ?', '%'.$val.'%')
+            ->orWhereRaw('office LIKE ?', '%'.$val.'%');
         })
-        ->orWhereHas('makby', function($query) use ($val){
-            $query->WhereRaw('name LIKE ?', '%'.$val.'%');
-        })
-        ->orWhereHas('makby', function($query) use ($val){
-            $query->WhereRaw('department LIKE ?', '%'.$val.'%');
-        })
+      
         ->orWhereHas('category', function($query) use ($val){
             $query->WhereRaw('name LIKE ?', '%'.$val.'%');
         })

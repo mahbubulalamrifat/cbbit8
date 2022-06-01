@@ -98,13 +98,13 @@ class IndexController extends Controller
     }
 
     // destroy
-    public function destroy($id)
-    {
-        $data       =  Role::find($id);
-        $success    =  $data->delete();
-        return response()->json('success', 200);
+    // public function destroy($id)
+    // {
+    //     $data       =  Role::find($id);
+    //     $success    =  $data->delete();
+    //     return response()->json('success', 200);
       
-    }
+    // }
 
 
     // status

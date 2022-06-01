@@ -25,7 +25,10 @@ class CarpoolDriver extends Model
     public function scopeSearch($query, $val='')
     {
         return $query
-        ->where('name', 'LIKE', '%'.$val.'%'); 
+        ->where('name', 'LIKE', '%'.$val.'%')
+        ->orWhere('contact', 'LIKE', '%'.$val.'%')
+        ->orWhere('nid', 'LIKE', '%'.$val.'%')
+        ->orWhere('license', 'LIKE', '%'.$val.'%'); 
     }
 
 
