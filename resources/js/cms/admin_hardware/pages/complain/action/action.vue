@@ -747,7 +747,16 @@
     <!-- viewImageDialog -->
     <v-dialog v-model="viewImage" max-width="900">
       <v-card>
-        <img :src="imageFile" alt="image" />
+        <v-card-title>
+          <a
+            :href="'/' + imageFile"
+            class="btn btn-info btn-sm text-white m-1"
+            download
+          >
+            <v-icon color="white" small>mdi-paperclip</v-icon> Download
+          </a>
+        </v-card-title>
+        <v-img :src="'/' + imageFile" alt="image" contain></v-img>
       </v-card>
     </v-dialog>
   </div>
