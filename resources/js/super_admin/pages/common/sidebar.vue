@@ -82,25 +82,60 @@
                     </v-list-item-content>
                 </v-list-item>
 
+                <v-list-group prepend-icon="mdi-map-clock" active-class="dark--text" no-action>
+                    <template v-slot:activator>
+                        <v-list-item-title>Zones</v-list-item-title>
+                    </template>
+
+                    <v-list-item link router :to="{ name: 'Zones' }">
+                        <v-list-item-icon>
+                            <v-icon>mdi-map-clock</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>All Zones</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item link router :to="{ name: 'ZoneOffices' }">
+                        <v-list-item-icon>
+                            <v-icon>mdi-office-building-marker</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>All Zone Offices</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-group>
+
+                <v-list-group prepend-icon="mdi-map-clock" active-class="dark--text" no-action>
+                    <template v-slot:activator>
+                        <v-list-item-title>Operations</v-list-item-title>
+                    </template>
+
+                    <v-list-item link router :to="{ name: 'Operations' }">
+                        <v-list-item-icon>
+                            <v-icon>mdi-map-clock</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>All Operations</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item link router :to="{ name: 'OperationOffices' }">
+                        <v-list-item-icon>
+                            <v-icon>mdi-office-building-marker</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>All Operation Offices</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-group>
 
 
 
-                <v-list-item link router :to="{ name: 'Zones' }">
-                    <v-list-item-icon>
-                        <v-icon>mdi-map-clock</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>All Zones</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item link router :to="{ name: 'ZoneOffices' }">
-                    <v-list-item-icon>
-                        <v-icon>mdi-office-building-marker</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>All Zone Offices</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
+
+              
+
+
 
                 <v-list-item link router :to="{ name: 'Announcement' }">
                     <v-list-item-icon>
@@ -199,6 +234,12 @@
 <style scoped>
     .gradient_color {
         background: linear-gradient(180deg, #a8bfbb, #0cb7bb);
+    }
+
+    .v-list-group__items .v-list-item--active {
+        background-color: #3f51b5;
+        border-color: #3f51b5;
+        color: white;
     }
 
     a:hover{

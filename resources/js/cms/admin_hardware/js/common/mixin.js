@@ -1,5 +1,7 @@
 import axios from "axios";
-import { mapGetters } from 'vuex'
+import {
+    mapGetters
+} from 'vuex'
 
 
 import paginateMethods from './paginate_methods'
@@ -9,84 +11,86 @@ import createUpdate from './crud'
 import store from './../store'
 
 import globalRolePermissions from './../../../../role_permissions'
-import {debounce} from './../../../../helpers'
+import {
+    debounce
+} from './../../../../helpers'
 
 
 
 export default {
     data() {
-      return {
-      
-        paginate: 10,
-        search: '',
-        search_field: '',
-        sort_direction: 'desc',
-        sort_field: 'id',
-        currentPageNumber: null,
-        // Our data object that holds the Laravel paginator data
-        allData: {},
-        totalValue: '',
-        dataShowFrom: '',
-        dataShowTo: '',
+        return {
 
-        // For Modal Dilog
-        dataModalDialog :false,
-        // Loading Animation
-        dataModalLoading: false,
+            paginate: 10,
+            search: '',
+            search_field: '',
+            sort_direction: 'desc',
+            sort_field: 'id',
+            currentPageNumber: null,
+            // Our data object that holds the Laravel paginator data
+            allData: {},
+            totalValue: '',
+            dataShowFrom: '',
+            dataShowTo: '',
 
-        editmode: false,
-        dataModelTitle: 'Store Data',
-        // Loading Animation
-        dataLoading: false,
+            // For Modal Dilog
+            dataModalDialog: false,
+            // Loading Animation
+            dataModalLoading: false,
 
-        imageMaxSize: '2111775',
-        fileMaxSize: '5111775',
+            editmode: false,
+            dataModelTitle: 'Store Data',
+            // Loading Animation
+            dataLoading: false,
 
-        // Tbl number of data show
-        tblItemNumberShow:[5,10,15,25,50,100],
-        // v-form
-        valid: false,
+            imageMaxSize: '2111775',
+            fileMaxSize: '5111775',
 
-        // allRepDrafts: [],
-        selectDraft:'',
-        
-        // overlay
-        overlay:false,
+            // Tbl number of data show
+            tblItemNumberShow: [5, 10, 15, 25, 50, 100],
+            // v-form
+            valid: false,
 
-        // For Report search
-        allZoneOffices:[],
-        allDepartments:[],
-        //allZoneOfficesAssign:[],
+            // allRepDrafts: [],
+            selectDraft: '',
 
-        
-        department:'',
-        start_date:'',
-        end_date:'',
-        zone_office: '',
-        
+            // overlay
+            overlay: false,
 
-          // pdf
-        pdfFile: '',
-        viewDocument: false,
-        // for pdf only
-        docPath2: 'images/hardware/',
-          pdfReadyLoading: false,
-        
-        //   imageFile
-          imageFile: '',
-          viewImage: false,
-          imageReadyLoading: false,
-        
-          
-      }
+            // For Report search
+            allZoneOffices: [],
+            allDepartments: [],
+            //allZoneOfficesAssign:[],
+
+
+            department: '',
+            start_date: '',
+            end_date: '',
+            zone_office: '',
+
+
+            // pdf
+            pdfFile: '',
+            viewDocument: false,
+            // for pdf only
+            docPath2: 'images/hardware/',
+            pdfReadyLoading: false,
+
+            //   imageFile
+            imageFile: '',
+            viewImage: false,
+            imageReadyLoading: false,
+
+
+        }
     },
 
     methods: {
 
-        
+
         // Permission Role check
         ...globalRolePermissions,
-      
+
         // Paginate Methods
         ...paginateMethods,
 
@@ -100,46 +104,46 @@ export default {
 
 
         // all Replay Draft
-        allReplayDraft(){
-            axios.get('/cms/h_admin/draft/all_data').then(response=>{
+        allReplayDraft() {
+            axios.get('/cms/h_admin/draft/all_data').then(response => {
                 //console.log(response.data)
                 //this.allRepDrafts = response.data;
                 // Store
-                store.commit('setDraft', response.data )
+                store.commit('setDraft', response.data)
 
-            }).catch(error=>{
+            }).catch(error => {
                 console.log(error)
             })
         },
 
 
         // get Zone Offices
-        getZoneOffices(){
-            axios.get('/super_admin/user/zoneoffices').then(response=>{
+        getZoneOffices() {
+            axios.get('/super_admin/user/zoneoffices').then(response => {
                 // console.log(response.data)
                 this.allZoneOffices = response.data
-            }).catch(error=>{
+            }).catch(error => {
                 console.log(error)
             })
         },
 
         // get Zone Offices
-        getZoneOfficesAssign(){
-            axios.get('/cms/h_admin/complain/get_user_assign_zone_offices').then(response=>{
+        getZoneOfficesAssign() {
+            axios.get('/cms/h_admin/complain/get_user_assign_zone_offices').then(response => {
                 //console.log(response.data)
                 //this.allZoneOfficesAssign = response.data
                 store.commit('setAllZoneOfficesAssign', response.data)
-            }).catch(error=>{
+            }).catch(error => {
                 console.log(error)
             })
         },
 
         // get Departments
-        getDepartments(){
-            axios.get('/super_admin/user/departments').then(response=>{
+        getDepartments() {
+            axios.get('/super_admin/user/departments').then(response => {
                 //console.log(response.data)
                 this.allDepartments = response.data
-            }).catch(error=>{
+            }).catch(error => {
                 console.log(error)
             })
         },
@@ -147,29 +151,29 @@ export default {
         // countNotProcess 
         countAll() {
 
-            axios.get('/cms/h_admin/count/sidebar_count_data').then(response=>{
+            axios.get('/cms/h_admin/count/sidebar_count_data').then(response => {
                 //console.log(response.data)
 
                 store.commit('setCountNotProcess', response.data.notprocess)
                 store.commit('setCountProcess', response.data.process)
                 store.commit('setCountDeliverable', response.data.deliverable)
-                store.commit('setCountService', response.data.service )
-                store.commit('setCountServiceAccess', response.data.serviceAccess )
-                store.commit('setConuntHOService', response.data.hoService )
+                store.commit('setCountService', response.data.service)
+                store.commit('setCountServiceAccess', response.data.serviceAccess)
+                store.commit('setConuntHOService', response.data.hoService)
                 store.commit('setConuntHOServiceAccess', response.data.hoServiceAccess)
-                
+
                 // damage applicable
                 store.commit('setConuntAppDamage', response.data.appDamage)
                 store.commit('setConuntAppPartialDamage', response.data.appPartialDamage)
                 // damage not applicable
                 store.commit('setConuntNotAppDamage', response.data.notAppDamage)
-                store.commit('setConuntNotAppPartialDamage', response.data.notAppPartialDamage )
-                
+                store.commit('setConuntNotAppPartialDamage', response.data.notAppPartialDamage)
+
             }).
-            catch(error=>{
+            catch(error => {
                 console.log(error)
             })
-            
+
         },
 
         // PDF
@@ -196,23 +200,21 @@ export default {
                 document: doc
             }).then((res) => {
                 this.base64ToArrayBuffer(res.data)
-            }).catch(error=>{
+            }).catch(error => {
                 this.pdfReadyLoading = false
                 console.error(error)
             });
         },
 
         imageGetFile(doc) {
-            //console.log(doc);
+            console.log(doc);
             this.imageReadyLoading = true;
             this.imageFile = doc;
             this.viewImage = true;
             this.imageReadyLoading = false;
-            
-            
         }
-       
-       
+
+
 
         // End Methods
     },
@@ -238,48 +240,48 @@ export default {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        }, 
+        },
 
         // selectDraft
-        selectDraft: function(value){
-            if(this.form.details){
-                this.form.details = this.form.details + value 
-            }else{
-                this.form.details = value 
+        selectDraft: function (value) {
+            if (this.form.details) {
+                this.form.details = this.form.details + value
+            } else {
+                this.form.details = value
             }
-        }, 
+        },
 
         start_date: function (value) {
-            if(this.end_date){
+            if (this.end_date) {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
             }
-        }, 
+        },
 
         end_date: function (value) {
-            if(this.start_date){
+            if (this.start_date) {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
             }
-        }, 
+        },
 
-       
+
         department: function (value) {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        }, 
+        },
 
-        zone_office: function (value) {  
+        zone_office: function (value) {
             this.$Progress.start();
             this.getResults();
             this.$Progress.finish();
-        }, 
+        },
 
 
-       
+
     },
 
     created() {
@@ -290,7 +292,7 @@ export default {
 
 
     mounted() {
- 
+
     },
 
 
@@ -299,30 +301,30 @@ export default {
     },
 
 
-    computed : {
+    computed: {
 
         // map this.count to store.state.count getLoading 
         ...mapGetters({
-            'auth'        : 'getAuth',
-            'roles'       : 'getRoles',
-            'drafts'      : 'getDraft',
-            'CountNotprocess'  : 'getCountNotProcess',
-            'CountProcess'     : 'getCountProcess',
-            'CountDeliverable' : 'getCountDeliverable',
-            'CountService'     : 'getCountService',
-            'CountServiceAccess'     : 'getCountServiceAccess',
-            'CountHOService'     : 'getConuntHOService',
-            'CountHOServiceAccess'     : 'getConuntHOServiceAccess',
+            'auth': 'getAuth',
+            'roles': 'getRoles',
+            'drafts': 'getDraft',
+            'CountNotprocess': 'getCountNotProcess',
+            'CountProcess': 'getCountProcess',
+            'CountDeliverable': 'getCountDeliverable',
+            'CountService': 'getCountService',
+            'CountServiceAccess': 'getCountServiceAccess',
+            'CountHOService': 'getConuntHOService',
+            'CountHOServiceAccess': 'getConuntHOServiceAccess',
             'allZoneOfficesAssign': 'getAllZoneOfficesAssign',
             // damage
-            'CountAppDamage' : 'getCountAppDamage',
-            'CountAppPartialDamage' : 'getCountAppPartialDamage',
-            'CountNotAppDamage' : 'getCountNotAppDamage',
-            'CountNotAppPartialDamage' : 'getCountNotAppPartialDamage',
+            'CountAppDamage': 'getCountAppDamage',
+            'CountAppPartialDamage': 'getCountAppPartialDamage',
+            'CountNotAppDamage': 'getCountNotAppDamage',
+            'CountNotAppPartialDamage': 'getCountNotAppPartialDamage',
         }),
 
     },
 
 
 
-  }
+}

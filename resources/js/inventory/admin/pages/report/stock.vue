@@ -12,15 +12,7 @@
                             <v-icon left color="success">mdi-file-excel</v-icon>
                             Export
                         </v-btn>
-
-                         <!-- <a :href="'/inventory/admin/report/stock/export_view?sort_by_startDate=' + sort_by_startDate +
-                    '&sort_by_endDate=' +sort_by_endDate +
-                    '&sort_by_category=' +current_category.id +
-                    '&product_name=' +current_category.name" target="_blank" class="btn" >Export View</a> -->
-
                     </v-col>
-
-                    
 
                 </v-row>
             </v-card-title>
@@ -81,18 +73,30 @@
                                 <th>Location</th>
                                 <th>Department</th>
                                 <th>Product Type/Category</th>
+                                <th>Quantity</th>
                                 <th>Unit Price</th>
+                                <th>Total Price</th>
                                 <th>Remarks</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="singleData in allData.data" :key="singleData.id">
+                            <tr v-for="(singleData, index) in allData.data" :key="index">
                                 <td><span v-if="singleData.updated_at">{{ singleData.updated_at | moment("dddd, MMMM Do YYYY") }}</span></td>
-                                <td><span v-if="singleData.newold && singleData.newold.comp_id">{{ singleData.newold.comp_id }}</span><span v-else class="error--text">N/A</span></td>
-                                <td><span v-if="singleData.newold && singleData.newold.business_unit">{{ singleData.newold.business_unit }}</span><span v-else class="error--text">N/A</span></td>
-                                <td><span v-if="singleData.newold && singleData.newold.office">{{ singleData.newold.office }}</span><span v-else class="error--text">N/A</span></td>
-                                <td><span v-if="singleData.category && singleData.category.name">{{ singleData.category.name }}</span><span v-else class="error--text">N/A</span></td>
+
+                                <td><span v-if="singleData.comp_id == 'm'" class="error--text">N/A</span><span v-else >{{ singleData.comp_id }}</span></td>
+
+                                <td><span v-if="singleData.location">{{ singleData.location }}</span><span v-else class="error--text">N/A</span></td>
+
+                                <td><span v-if="singleData.department">{{ singleData.department }}</span><span v-else class="error--text">N/A</span></td>
+
+                                <td><span v-if="singleData.category">{{ singleData.category }}</span><span v-else class="error--text">N/A</span></td>
+
+                                <td><span v-if="singleData.quantity">{{singleData.quantity}}</span> <span v-else class="error--text">N/A</span></td>
+
                                 <td><span v-if="singleData.unit_price">{{singleData.unit_price}}</span> <span v-else class="error--text">N/A</span></td>
+
+                                <td><span v-if="singleData.total_price">{{singleData.total_price}}</span> <span v-else class="error--text">N/A</span></td>
+
                                 <td><span v-html="singleData.remarks"></span></td>
                             </tr>
                         </tbody>
@@ -122,9 +126,9 @@
                         <th>B/F</th>
                         <td><span v-if="allData.totalBroughtForward"> {{ allData.totalBroughtForward }}</span><span v-else
                                 class="error--text">N/A</span></td>
-                        <td><span v-if="allData.broughtForwardAmmountUnit"> {{ allData.broughtForwardAmmountUnit }}</span><span
+                        <td><span v-if="allData.broughtForwardAmmountUnit"> {{ (allData.broughtForwardAmmountUnit).toFixed(2) }}</span><span
                                 v-else class="error--text">N/A</span></td>
-                        <td><span v-if="allData.totalBroughtForwardAmmount"> {{ allData.totalBroughtForwardAmmount }}</span><span
+                        <td><span v-if="allData.totalBroughtForwardAmmount"> {{ (allData.totalBroughtForwardAmmount).toFixed(2) }}</span><span
                                 v-else class="error--text">N/A</span></td>
                        
                     </tr>
@@ -132,9 +136,9 @@
                         <th>RECEIVED</th>
                         <td><span v-if="allData.totalReceived"> {{ allData.totalReceived }}</span> <span v-else
                                 class="error--text">N/A</span></td>
-                        <td><span v-if="allData.receivedAmmountUnit"> {{ allData.receivedAmmountUnit }}</span><span
+                        <td><span v-if="allData.receivedAmmountUnit"> {{ (allData.receivedAmmountUnit).toFixed(2) }}</span><span
                                 v-else class="error--text">N/A</span></td>
-                        <td><span v-if="allData.totalReceivedAmmount"> {{ allData.totalReceivedAmmount }}</span><span
+                        <td><span v-if="allData.totalReceivedAmmount"> {{ (allData.totalReceivedAmmount).toFixed(2) }}</span><span
                                 v-else class="error--text">N/A</span></td>
 
                     </tr>
@@ -142,9 +146,9 @@
                         <th>ISSUE</th>
                         <td><span v-if="allData.totalIssue"> {{ allData.totalIssue }}</span><span v-else
                                 class="error--text">N/A</span></td>
-                        <td><span v-if="allData.issueAmmountUnit"> {{ allData.issueAmmountUnit }}</span><span v-else
+                        <td><span v-if="allData.issueAmmountUnit"> {{ (allData.issueAmmountUnit).toFixed(2) }}</span><span v-else
                                 class="error--text">N/A</span></td>
-                        <td><span v-if="allData.totalIssueAmmount"> {{ allData.totalIssueAmmount }}</span><span v-else
+                        <td><span v-if="allData.totalIssueAmmount"> {{ (allData.totalIssueAmmount).toFixed(2) }}</span><span v-else
                                 class="error--text">N/A</span></td>
 
                     </tr>
@@ -152,18 +156,18 @@
                         <th>DAMAGE</th>
                         <td><span v-if="allData.totalDamaged"> {{ allData.totalDamaged }}</span><span v-else
                                 class="error--text">N/A</span></td>
-                        <td><span v-if="allData.totalDamagedAmmount"> {{ allData.totalDamagedAmmount }}</span><span
+                        <td><span v-if="allData.totalDamagedAmmount"> {{ (allData.totalDamagedAmmount).toFixed(2) }}</span><span
                                 v-else class="error--text">N/A</span></td>
-                        <td><span v-if="allData.damagedAmmountUnit"> {{ allData.damagedAmmountUnit }}</span><span v-else
+                        <td><span v-if="allData.damagedAmmountUnit"> {{ (allData.damagedAmmountUnit).toFixed(2) }}</span><span v-else
                                 class="error--text">N/A</span></td>
                     </tr>
                     <tr class="summary_color">
-                        <th>C/F</th>
+                        <th>C/F</th> 
                         <td><span v-if="allData.totalRemaining"> {{ allData.totalRemaining }}</span><span v-else
                                 class="error--text">N/A</span></td>
-                        <td><span v-if="allData.totalRemainingAmmount"> {{ allData.totalRemainingAmmount }}</span><span
+                        <td><span v-if="allData.remainingAmmountUnit"> {{ (allData.remainingAmmountUnit).toFixed(2) }}</span><span
                                 v-else class="error--text">N/A</span></td>
-                        <td><span v-if="allData.totalRemainingAmmount"> {{ allData.totalRemainingAmmount }}</span><span
+                        <td><span v-if="allData.totalRemainingAmmount"> {{ (allData.totalRemainingAmmount).toFixed(2) }}</span><span
                                 v-else class="error--text">N/A</span></td>
                        
                     </tr>

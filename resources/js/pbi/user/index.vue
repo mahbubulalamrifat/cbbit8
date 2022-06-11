@@ -1,6 +1,6 @@
 <template>
     <v-app class="pbi">
-        <!-- <nav-bar></nav-bar> -->
+       
         <side-bar></side-bar>
         <v-main>
             <div class="pa-3">
@@ -15,7 +15,7 @@
 
 <script>
 
-import navBar from './pages/common/navbar.vue'
+
 import sideBar from './pages/common/sidebar.vue'
 import pageFooter from './pages/common/footer.vue'
 
@@ -25,7 +25,6 @@ export default {
     props: ['authuser', 'permission', 'pbi_access'],
 
     components:{
-       'nav-bar'        : navBar,
        'side-bar'       : sideBar,
        'page-footer'    : pageFooter,
     },

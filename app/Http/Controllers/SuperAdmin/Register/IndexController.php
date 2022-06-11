@@ -11,6 +11,8 @@ use App\Models\Role;
 use Auth;
 use App\Http\Controllers\Common\ImageUpload;
 use App\Models\UserReginster;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\SuperAdmin\CommonController;
 
 class IndexController extends Controller
 {
@@ -163,8 +165,8 @@ class IndexController extends Controller
 
 
        
-
-        
+        // Send Register email
+        self::RegisterMailSend($login);
 
 
         //dd($data, $registerData);
@@ -180,7 +182,72 @@ class IndexController extends Controller
     }
 
 
-  
+    // managers emails 
+    public function manager_mails($login=null){
+
+      return  $data = CommonController::GetManagerBuMailArray($login);
+
+    }
+
+
+    // register_mail_send
+    public function register_mail_send($login=null){
+        if($login){
+             self::RegisterMailSend($login);
+        }
+
+        $msg = 'Registered Mail Sent Successfully at '. $login;
+
+        return response()->json( $msg, 200);
+    }
+
+
+
+    // Register Mail Send
+    public static function RegisterMailSend($login = null){
+
+        if( !empty( $login ) ){
+            $data = User::where('login', $login)->first();
+
+            if(!empty($data->office_email)){
+                $to = $data->office_email;
+            }else{
+                $to = $data->personal_email;
+            }
+
+
+            // For CC
+            $managerEmails = CommonController::GetManagerBuMailArray($login);
+            if( $managerEmails && $managerEmails->emails ){
+                $cc = $managerEmails->emails;
+            }
+
+            $mailData = [
+                'to'    => $to,
+                'cc'    => $cc,
+                'name'  => $data->name,
+                'login' => $data->login,
+                'sub'   => 'Successfully registered in CPB-IT Portal'
+            ];
+
+
+            if( $data ){
+
+                Mail::send('register.email.register', compact('mailData'), function ($message) use ($mailData) {
+                    $message->to( $mailData['to'] );
+                    $message->cc( $mailData['cc'] );
+                    $message->subject( $mailData['sub'] );
+                    $message->from( 'it-noreply@cpbangladesh.com' );
+                });
+                
+                return true;      
+
+            }
+        }
+        
+        return true;   
+
+    }
 
 
 

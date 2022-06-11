@@ -15,6 +15,11 @@ class HardwareDamaged extends Model
         return $this->belongsTo('App\Models\User', 'created_by', 'id');
     }
 
+    public function mail(){
+        //return $this->belongsTo('App\Models\Email\ScheduleEmailCmsHard', 'id', 'rem_id')->select(['id']);
+        return $this->hasOne('App\Models\Email\ScheduleEmailCmsHardware', 'dmj_id', 'id');
+    }
+
     public function complain(){
         return $this->hasOne('App\Models\Cms\Hardware\HardwareComplain', 'id', 'comp_id');
     }

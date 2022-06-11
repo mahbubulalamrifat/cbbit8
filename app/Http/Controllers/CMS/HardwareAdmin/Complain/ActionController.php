@@ -17,6 +17,7 @@ use App\Models\Inventory\InventoryOldProduct;
 use App\Models\User;
 use Auth;
 use App\Http\Controllers\CMS\Email\Hardware\EmailStore;
+use App\Models\SuperAdmin\OperationOffice;
 
 class ActionController extends Controller
 {
@@ -24,7 +25,7 @@ class ActionController extends Controller
 
     //action
     public function action($id){
-        $allData = HardwareComplain::with('makby', 'category', 'subcategory', 'remarks', 'remarks.makby', 'remarks.mail', 'damage', 'damage.makby', 'ho_remarks', 'ho_remarks.makby', 'ho_remarks.mail', 'delivery', 'delivery.mail', 'delivery.makby')  
+        $allData = HardwareComplain::with('makby', 'category', 'subcategory', 'remarks', 'remarks.makby', 'remarks.mail', 'damage', 'ho_remarks', 'ho_remarks.makby', 'ho_remarks.mail', 'delivery', 'delivery.mail', 'delivery.makby')  
         ->where('id', $id)
         ->first();
 
@@ -101,7 +102,7 @@ class ActionController extends Controller
         }
 
         // For email
-        if($process == 'Damaged' || $process == 'Partial Damaged' || $process == 'Closed' || $process == 'Deliverable'){
+        if($process == 'Damaged' || $process == 'Partial Damaged' || $process == 'Closed' || $process == 'Deliverable' || $process == 'Service Quotation'){
             //ScheduleEmailCmsHardware::STORE($complain_data, $remarks_data);
             EmailStore::StorMailAdminAction($comp_id, $remarks_data->id, $damaged_data->id ?? null);
         }
@@ -126,14 +127,14 @@ class ActionController extends Controller
         //Validate
         $this->validate($request,[
             'comp_id'       => 'required',
-            'rec_name'      => 'required',
-            'rec_contact'   => 'required',
-            'rec_position'  => 'required',
+            // 'rec_name'      => 'required',
+            // 'rec_contact'   => 'required',
+            // 'rec_position'  => 'required',
             'details'       => 'required|min:10|max:20000',
         ]);
 
         $comp_id = $request->comp_id;
-        $process = 'Closed';
+        $process = 'Deliverable';
 
        
         $product_id_arr = $request->product_id;
@@ -146,9 +147,9 @@ class ActionController extends Controller
         //dd($product_id_arr, $product_id_text, $request->product_id); 
 
 
-        $rec_name       = $request->rec_name;
-        $rec_contact    = $request->rec_contact;
-        $rec_position   = $request->rec_position;
+        // $rec_name       = $request->rec_name;
+        // $rec_contact    = $request->rec_contact;
+        // $rec_position   = $request->rec_position;
 
         $remarks_data = new HardwareRemarks();
 
@@ -179,9 +180,9 @@ class ActionController extends Controller
         $damaged_data  = HardwareDamaged::where('comp_id', $comp_id)->first();
 
         $damaged_data->rep_pro_id      = $product_id_text;
-        $damaged_data->rec_name        = $rec_name;
-        $damaged_data->rec_contact     = $rec_contact;
-        $damaged_data->rec_position    = $rec_position;
+        // $damaged_data->rec_name        = $rec_name;
+        // $damaged_data->rec_contact     = $rec_contact;
+        // $damaged_data->rec_position    = $rec_position;
         $damaged_data->created_by      = Auth::user()->id;
         $damaged_data->save();
 
@@ -193,6 +194,24 @@ class ActionController extends Controller
         // Complain User 
         $user_data = User::find($complain_data->user_id);
 
+        // Find Operation ID
+        $operation_id = null;
+        $user_zone_office = $user_data->zone_office;
+        if( !empty($user_zone_office) ){
+            $operationOfficeData = OperationOffice::where('status', 1)->where('delete_temp', '!=', '1')->get();
+            if( !empty($operationOfficeData)  ){
+                foreach($operationOfficeData as $operationItem){
+                    if($operationItem && $operationItem->offices){
+                        $officeDataArray = explode(',', $operationItem->offices);
+                        if( in_array( $user_zone_office, $officeDataArray ) ){
+                            $operation_id = $operationItem->operation_id;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        //dd($operation_id, $user_zone_office, $operationOfficeData);
 
         foreach($product_id_arr as $product_id){
             // Update inventory New Product table 
@@ -207,14 +226,14 @@ class ActionController extends Controller
             $inventory_old_data->cat_id            = $inventory_new_data->cat_id;
             $inventory_old_data->name              = $inventory_new_data->name;
             $inventory_old_data->serial            = $inventory_new_data->serial;
-            $inventory_old_data->operation_id      = $request->operation_id;
+            $inventory_old_data->operation_id      = $operation_id;
             //  from user tbl
-            $inventory_old_data->business_unit     = $user_data->business_unit;
-            $inventory_old_data->office            = $user_data->zone_office;
+            $inventory_old_data->location          = $user_data->zone_office;
+            $inventory_old_data->department        = $user_data->department;
 
-            $inventory_old_data->rec_name          = $rec_name;
-            $inventory_old_data->rec_contact       = $rec_contact;
-            $inventory_old_data->rec_position      = $rec_position;
+            // $inventory_old_data->rec_name          = $rec_name;
+            // $inventory_old_data->rec_contact       = $rec_contact;
+            // $inventory_old_data->rec_position      = $rec_position;
             
             $inventory_old_data->created_by = Auth::user()->id;
             $inventory_old_data->save();
@@ -303,6 +322,9 @@ class ActionController extends Controller
         ]);
 
         $comp_id = $request->comp_id;
+        $rec_name       = $request->rec_name;
+        $rec_contact    = $request->rec_contact;
+        $rec_position   = $request->rec_position;
 
         $delivery_data = new HardwareDelivery();
 
@@ -321,15 +343,42 @@ class ActionController extends Controller
         }
 
         $delivery_data->comp_id      = $comp_id;
-        $delivery_data->rec_name     = $request->rec_name;
-        $delivery_data->rec_contact  = $request->rec_contact;
-        $delivery_data->rec_position = $request->rec_position;
+        $delivery_data->rec_name     = $rec_name;
+        $delivery_data->rec_contact  = $rec_contact;
+        $delivery_data->rec_position = $rec_position;
         $delivery_data->details      = $request->details;
         $delivery_data->created_by   = Auth::user()->id;
+
+        // damaged tbl
+        $damaged_data  = HardwareDamaged::where('comp_id', $comp_id)->first();
+        if( $damaged_data ){
+
+            $damaged_data->rec_name        = $rec_name;
+            $damaged_data->rec_contact     = $rec_contact;
+            $damaged_data->rec_position    = $rec_position;
+            $success = $damaged_data->save();
+
+            $inventory_old_data = InventoryOldProduct::where('comp_id', $comp_id)->get();
+            if($inventory_old_data){
+                foreach ($inventory_old_data as $item_inv_old_data) {
+                    $item_inv_old_data->rec_name          = $rec_name;
+                    $item_inv_old_data->rec_contact       = $rec_contact;
+                    $item_inv_old_data->rec_position      = $rec_position;
+                    $item_inv_old_data->save();
+                }
+            }
+
+        }
+       
+
+        
+
+
+
     
         // delivery tbl
         $success = $delivery_data->save();
-        // omplain tbl
+        // complain tbl
         $success = $complain_data->save();
 
         // For email

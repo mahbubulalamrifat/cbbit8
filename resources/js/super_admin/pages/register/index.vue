@@ -382,7 +382,7 @@
 
     import allJsMethods from './indexMethods'
 
-    import ManagerSelectComponent from '../users/manager_select.vue'
+    import ManagerSelectComponent from './manager_select.vue'
     import userMethods from './../users/js/methods'
     import userTblData from './../users/js/data'
     import userFormFields from './../users/js/userFormField'

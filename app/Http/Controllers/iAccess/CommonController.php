@@ -89,9 +89,9 @@ class CommonController extends Controller
         
         if($lastNumber){
             //$number = $lastData->number;
-            $firts6ch = substr($lastNumber, 0, 6);
+            //$firts6ch = substr($lastNumber, 0, 6);
             $lastNum = (int) substr($lastNumber,6) + 1;
-            $number = $firts6ch.$lastNum;
+            $number = $prefix.date('y').date('m').$lastNum;
             //dd($number,$firts6ch, $lastNum);
         }else{
             $prefix = $prefix??'NA'; 

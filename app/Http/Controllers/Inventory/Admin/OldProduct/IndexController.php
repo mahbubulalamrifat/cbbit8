@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 
 use App\Models\Inventory\InventoryOldProduct;
-use App\Models\Inventory\InventoryOperation;
+// use App\Models\Inventory\InventoryOperation;
+use App\Models\SuperAdmin\Operation;
 use App\Models\User;
 use Auth;
 
@@ -22,15 +23,15 @@ class IndexController extends Controller
         $sort_field     = Request('sort_field', 'id');
 
         $search_field  = Request('search_field', '');
-        $business_unit  = Request('business_unit', '');
-        $search_type  = Request('search_type', '');
+        $by_location   = Request('by_location', '');
+        $search_type   = Request('search_type', '');
 
         $allDataQuery = InventoryOldProduct::with('makby', 'category', 'operation')
             ->where('delete_temp', '!=', '1');
 
-        // business unit
-        if(!empty($business_unit) && $business_unit != 'All'){
-            $allDataQuery->where('business_unit', $business_unit);
+        // location
+        if( !empty($by_location) && $by_location != 'All' ){
+            $allDataQuery->where('location', $by_location);
         }
 
         // search type
@@ -55,16 +56,6 @@ class IndexController extends Controller
             });
 
         }
-        // elseif($search_field == 'subcat_id'){
-
-        //     $val = trim(preg_replace('/\s+/' ,' ', $search));
-
-        //     $allDataQuery->whereHas( 'subcategory', function($query) use($val){
-        //         //$query->where( 'name', $search_field );
-        //         $query->where('name', 'LIKE', '%'.$val.'%');
-        //     });
-
-        // }
         elseif($search_field == 'operation'){
 
             $val = trim(preg_replace('/\s+/' ,' ', $search));
@@ -88,17 +79,17 @@ class IndexController extends Controller
 
     }
 
-    public function businessUnit(){
+    public function locations(){
 
-        $allData = InventoryOldProduct::whereNotNull('business_unit')
-            ->select('business_unit','id')
-            ->orderBy('business_unit')
-            ->groupBy('business_unit')
+        $allData = InventoryOldProduct::whereNotNull('location')
+            ->select('location','id')
+            ->orderBy('location')
+            ->groupBy('location')
             ->get()
             ->toArray();
 
             // Custom Field Data Add
-        $custom = collect( [['business_unit' => 'All', 'id' => 'All']] );
+        $custom = collect( [['location' => 'All', 'id' => 'All']] );
         $allData = $custom->merge($allData);
 
         return response()->json($allData,200);
@@ -106,11 +97,12 @@ class IndexController extends Controller
     }
 
 
-     //office
-    public function office(){
+     //options 
+    public function options(){
 
-        $office = User::where('status', 1)
+        $department = User::where('status', 1)
             ->whereNotNull('department')
+            ->Where('department','<>','')
             ->select('department','id')
             ->orderBy('department')
             //->distinct('department')
@@ -120,18 +112,19 @@ class IndexController extends Controller
             
 
 
-        $business_unit = User::where('status', 1)
-            ->whereNotNull('business_unit')
-            ->select('business_unit','id')
-            ->orderBy('business_unit')
-            //->distinct('business_unit')
-            ->groupBy('business_unit')
+            $zone_office = User::where('status', 1)
+            ->whereNotNull('zone_office')
+            ->Where('zone_office','<>','')
+            ->select('zone_office','id')
+            ->orderBy('zone_office')
+            //->distinct('zone_office')
+            ->groupBy('zone_office')
             ->get()
             ->toArray();
 
-        $operation = InventoryOperation::select('id', 'name')->get()->toArray();
+        $operation = Operation::select('id', 'name')->get()->toArray();
 
-        return response()->json(['office'=>$office, 'business_unit'=>$business_unit, 'operation'=>$operation]);
+        return response()->json(['department'=>$department, 'zone_office'=>$zone_office, 'operation'=>$operation]);
 
     }
 
@@ -148,9 +141,9 @@ class IndexController extends Controller
             'invoice_num'      =>  'nullable|max:200|unique:inventory_old_products',
             'req_payment_num'  =>  'nullable|max:200|unique:inventory_old_products',
             'operation_id'     =>  'required',
-            'business_unit'    =>  'required',
+            'location'    =>  'required',
             'type'             =>  'required',
-            'office'           =>  'required',
+            'department'           =>  'required',
             'remarks'          =>  'nullable|string',
             
         ]);
@@ -158,15 +151,15 @@ class IndexController extends Controller
         $data = new InventoryOldProduct();
 
 
-        $data->cat_id        = $request->cat_id;
+        $data->cat_id          = $request->cat_id;
         //$data->subcat_id     = $request->subcat_id;
-        $data->name          = $request->name;
-        $data->serial        = $request->serial;
-        $data->remarks       = $request->remarks;
-        $data->operation     = $request->operation;
-        $data->business_unit = $request->business_unit;
-        $data->type          = $request->type;
-        $data->office        = $request->office;
+        $data->name            = $request->name;
+        $data->serial          = $request->serial;
+        $data->remarks         = $request->remarks;
+        $data->operation       = $request->operation;
+        $data->location        = $request->location;
+        $data->type            = $request->type;
+        $data->department      = $request->department;
         $data->invoice_num     = $request->invoice_num;
         $data->bill_submit     = $request->bill_submit;
         $data->req_payment_num = $request->req_payment_num;
@@ -200,9 +193,9 @@ class IndexController extends Controller
             'invoice_num'      =>  'nullable|max:200|unique:inventory_old_products,invoice_num,'.$id,
             'req_payment_num'  =>  'nullable|max:200|unique:inventory_old_products,req_payment_num,'.$id,
             'operation_id'     =>  'required',
-            'business_unit'    =>  'required',
+            'location'    =>  'required',
             'type'             =>  'required',
-            'office'           =>  'required',
+            'department'           =>  'required',
             'remarks'          =>  'nullable|string',
             
         ]);
@@ -216,9 +209,9 @@ class IndexController extends Controller
         $data->serial           = $request->serial;
         $data->remarks          = $request->remarks;
         $data->operation_id     = $request->operation_id;
-        $data->business_unit = $request->business_unit;
+        $data->location         = $request->location;
         $data->type             = $request->type;
-        $data->office           = $request->office;
+        $data->department       = $request->department;
         $data->invoice_num     = $request->invoice_num;
         $data->bill_submit     = $request->bill_submit;
         $data->req_payment_num = $request->req_payment_num;

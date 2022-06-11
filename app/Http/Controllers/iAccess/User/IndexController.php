@@ -44,10 +44,9 @@ class IndexController extends Controller
 
     }
 
-
     // iaccessManual
     public function iaccessManual(){
-        $path = public_path('/manuals/iaccess/Iaccess_Manual.pdf');
+        $path = public_path('/manuals/iaccess/iAccess_Manual.pdf');
 
         $infoPath = pathinfo($path);
         $extension = $infoPath['extension'];
@@ -60,7 +59,5 @@ class IndexController extends Controller
         }
 
     }
-
- 
 
 }

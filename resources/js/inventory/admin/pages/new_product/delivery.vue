@@ -21,18 +21,16 @@
 
                                 <v-row>
 
-                                    <v-col cols="12" lg="3">
+                                    <v-col cols="12" lg="4">
                                         <v-text-field disabled label="Category" :value="category" dense></v-text-field>
                                     </v-col>
-                                    <!-- <v-col cols="12" lg="3">
-                                        <v-text-field disabled label="Subcategory" :value="subcategory" dense></v-text-field>
-                                    </v-col> -->
+                                   
 
-                                    <v-col cols="12" lg="3">
+                                    <v-col cols="12" lg="4">
                                         <v-text-field disabled v-model="form.name" label="Product Name or Model" dense></v-text-field>
                                     </v-col>
 
-                                    <v-col cols="12" lg="3">
+                                    <v-col cols="12" lg="4">
                                         <v-text-field disabled v-model="form.serial" label="Serial Number" dense></v-text-field>
                                     </v-col>
 
@@ -45,17 +43,17 @@
                                     </v-col>
 
                                     <v-col cols="12" lg="4">
-                                        <div class="small text-danger" v-if="form.errors.has('business_unit')"
-                                            v-html="form.errors.get('business_unit')" />
-                                        <v-autocomplete :items="business_unit" v-model="form.business_unit"
-                                            label="Select Business Unit" :rules="[v => !!v || 'Business Unit is required!']"
+                                        <div class="small text-danger" v-if="form.errors.has('location')"
+                                            v-html="form.errors.get('location')" />
+                                        <v-autocomplete :items="allLocationList" v-model="form.location"
+                                            label="Select Office / Location Unit" :rules="[v => !!v || 'Business Unit is required!']"
                                             dense  required></v-autocomplete>
                                     </v-col>
 
                                     <v-col cols="12" lg="4">
-                                        <div class="small text-danger" v-if="form.errors.has('office')"
-                                            v-html="form.errors.get('office')" />
-                                        <v-autocomplete :items="allOffice" v-model="form.office"
+                                        <div class="small text-danger" v-if="form.errors.has('department')"
+                                            v-html="form.errors.get('department')" />
+                                        <v-autocomplete :items="allDepartmentList" v-model="form.department"
                                             label="Select Department Name" :rules="[v => !!v || 'Department is required!']"
                                             dense  required></v-autocomplete>
                                     </v-col>
@@ -140,10 +138,6 @@ export default {
         return{
             deliverModal: true,
 
-            allOffice: [],
-            business_unit: [],
-            operation: [],
-
             // numberRules
             numberRules: [
                 v => !!v || 'Phone Number is required',
@@ -162,8 +156,8 @@ export default {
                 name: '',
                 remarks: '',
                 operation_id: '',
-                business_unit: '',
-                office: '',
+                location: '',
+                department: '',
                 rec_name: '',
                 rec_contact: '',
                 rec_position: '',
@@ -184,44 +178,7 @@ export default {
 
     
     methods:{
-        // getOffice 
-        getOffice() {
-            axios.get(this.currentUrl+'/office').then(response => {
-                console.log(response.data);
-                // department
-                response.data.office.forEach(element => {
-                    this.allOffice.push({
-                        value: element.department,
-                        text: element.department
-                    }) ;
-                    //console.log('getOffice',  this.allOffice, element);
-                });
-
-                // business_unit
-                response.data.business_unit.forEach(element => {
-                    this.business_unit.push({
-                        value: element.business_unit,
-                        text: element.business_unit
-                    }) ;
-                    //console.log('business_unit',  this.allOffice, element);
-                });
-
-                // operation
-                response.data.operation.forEach(element => {
-                    this.operation.push({
-                        value: element.id,
-                        text: element.name
-                    }) ;
-                    //console.log('operation',  this.allOffice, element);
-                });
-
-            }).catch(error => {
-                console.log(error)
-            })
-        },
-
-
-
+     
 
         deliveryData(){
 
@@ -251,10 +208,10 @@ export default {
         },
     },
 
-    mounted(){
+    created(){
         
-        this.getOffice();
-
+        this.getOptions();
+        
         this.form.id = this.currentData.id
         this.form.cat_id =  this.currentData.cat_id
         //this.form.subcat_id =  this.currentData.subcat_id

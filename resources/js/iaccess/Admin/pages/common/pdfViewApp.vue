@@ -1,22 +1,19 @@
 <template>
-  <div>
-    <vue-pdf-app
-      style="height: 100vh"
-      :pdf="file"
-      isSidebarHidden="false"
-    ></vue-pdf-app>
-  </div>
+    <div>
+        <vue-pdf-app style="height: 100vh;" :pdf="file" isSidebarHidden="false"></vue-pdf-app>
+    </div>
 </template>
 
 <script>
-import VuePdfApp from "vue-pdf-app";
-import "vue-pdf-app/dist/icons/main.css";
+    import VuePdfApp from "vue-pdf-app";
+    import "vue-pdf-app/dist/icons/main.css";
 
-export default {
-  components: {
-    VuePdfApp,
-  },
+    export default {
+        components: {
+            VuePdfApp
+        },
 
-  props: ["file"],
-};
+        props: ['file'],
+    }
+
 </script>

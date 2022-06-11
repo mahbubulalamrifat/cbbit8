@@ -13,6 +13,12 @@ import AccountAuthorityRequest from './../pages/form/account_authority_request.v
 import EmailRequest from './../pages/form/email_request.vue'
 import GuestRequest from './../pages/form/guest_request.vue'
 
+// verified
+import VerifyInternetAccessRequest from './../pages/verify/internet_access_request.vue'
+import VerifyAccountAuthorityRequest from './../pages/verify/account_authority_request.vue'
+import VerifyEmailRequest from './../pages/verify/email_request.vue'
+import VerifyGuestRequest from './../pages/verify/guest_request.vue'
+
 
 const router = new VueRouter({
     mode: 'history',
@@ -69,6 +75,43 @@ const router = new VueRouter({
             name: 'GuestRequest',
             meta:{
                 title: 'Admin Guest Request',
+            },   
+        },
+
+        // verified
+        { 
+            path: '/iaccess/admin/verify-internet-access', 
+            component: VerifyInternetAccessRequest,
+            name: 'VerifyInternetAccessRequest',
+            meta:{
+                title: 'Admin Verified Internet Access Request',
+            },   
+        },
+
+        { 
+            path: '/iaccess/admin/verify-account-authority', 
+            component: VerifyAccountAuthorityRequest,
+            name: 'VerifyAccountAuthorityRequest',
+            meta:{
+                title: 'Admin Verified Account Authority Request',
+            },   
+        },
+
+        { 
+            path: '/iaccess/admin/verify-email-request', 
+            component: VerifyEmailRequest,
+            name: 'VerifyEmailRequest',
+            meta:{
+                title: 'Admin Verified Email Request',
+            },   
+        },
+
+        { 
+            path: '/iaccess/admin/verify-guest-request', 
+            component: VerifyGuestRequest,
+            name: 'VerifyGuestRequest',
+            meta:{
+                title: 'Admin Verified Guest Request',
             },   
         },
 

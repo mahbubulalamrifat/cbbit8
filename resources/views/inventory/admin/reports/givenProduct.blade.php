@@ -10,8 +10,8 @@
         <tr>
             <td style="font-weight:bold; background-color: khaki">Product Name/Model</td>
             <td style="font-weight:bold; background-color: khaki">Category</td>
-            <td style="font-weight:bold; background-color: khaki">Office</td>
-            <td style="font-weight:bold; background-color: khaki">Business Unit</td>
+            <td style="font-weight:bold; background-color: khaki">Department</td>
+            <td style="font-weight:bold; background-color: khaki">Location</td>
             <td style="font-weight:bold; background-color: khaki">Operaiton</td>
             <td style="font-weight:bold; background-color: khaki">Serial</td>
             <td style="font-weight:bold; background-color: khaki">Purchase Date</td>
@@ -31,14 +31,14 @@
             <td style="color:red">N/A</td>
             @endif
 
-            @if($product->office)
-            <td>{{ $product->office }}</td>
+            @if($product->department)
+            <td>{{ $product->department }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif
 
-            @if($product->business_unit)
-            <td>{{ $product->business_unit }}</td>
+            @if($product->location)
+            <td>{{ $product->location }}</td>
             @else
             <td style="color:red">N/A</td>
             @endif

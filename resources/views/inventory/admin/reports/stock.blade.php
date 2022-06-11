@@ -10,10 +10,12 @@
         <tr>
             <td style="background-color: #3F51B5; color:white;font-weight:bold;">DATE</td>
             <td style="background-color: #3F51B5; color:white;font-weight:bold;">Doc.No</td>
-            <td style="background-color: #3F51B5; color:white;font-weight:bold;">LOCATION</td>
-            <td style="background-color: #3F51B5; color:white;font-weight:bold;">DEPARTMENT</td>
-            <td style="background-color: #3F51B5; color:white;font-weight:bold;">Product Type</td>
+            <td style="background-color: #3F51B5; color:white;font-weight:bold;">Location</td>
+            <td style="background-color: #3F51B5; color:white;font-weight:bold;">Department</td>
+            <td style="background-color: #3F51B5; color:white;font-weight:bold;">Product Type/Category</td>
+            <td style="background-color: #3F51B5; color:white;font-weight:bold;">Quantity</td>
             <td style="background-color: #3F51B5; color:white;font-weight:bold;">Unit Price</td>
+            <td style="background-color: #3F51B5; color:white;font-weight:bold;">Total Price</td>
             <td style="background-color: #3F51B5; color:white;font-weight:bold;">Remark</td>
         </tr>
     </thead>
@@ -24,58 +26,66 @@
             @foreach($product->data as $singleData)
             <tr>
                 {{-- date --}}
-                @if($singleData->updated_at)
+                @if($singleData["updated_at"])
                 <td>
-                    {{date("F j, Y", strtotime($singleData->updated_at))}}
+                    {{date("F j, Y", strtotime($singleData["updated_at"]))}}
                 </td>
                 @else
                 <td style="color:red">N/A</td>
                 @endif
 
                 {{-- doc no --}}
-                @if($singleData->newold)
-                    <td>
-                        @if ($singleData->newold->comp_id)
-                            CMS-{{ $singleData->newold->comp_id }}
-                        @else
-                            <span style="color:red">N/A</span>
-                        @endif
-                    </td>
-                @else
+                @if($singleData["comp_id"] == 'm')
                 <td style="color:red">N/A</td>
+                @else
+                <td>{{ $singleData["comp_id"] }}</td>
                 @endif
 
                 {{-- location --}}
-                @if($singleData->newold)
-                <td>{{ $singleData->newold->business_unit }}</td>
+                @if($singleData["location"])
+                <td>{{ $singleData["location"] }}</td>
                 @else
                 <td style="color:red">N/A</td>
                 @endif
 
                 {{-- department --}}
-                @if($singleData->newold)
-                <td>{{ $singleData->newold->office }}</td>
+                @if($singleData["department"])
+                <td>{{ $singleData["department"] }}</td>
                 @else
                 <td style="color:red">N/A</td>
                 @endif
 
                {{-- product type --}}
-               @if($singleData->category)
-               <td>{{ $singleData->category->name }}</td>
+               @if($singleData["category"])
+               <td>{{ $singleData["category"] }}</td>
                @else
                <td style="color:red">N/A</td>
                @endif
 
+               {{-- quantity --}}
+               @if($singleData["quantity"])
+               <td>{{ $singleData["quantity"] }}</td>
+               @else
+               <td style="color:red">N/A</td>
+               @endif
+               
                 {{-- unit_price --}}
-                @if($singleData->unit_price)
-                <td>{{ number_format($singleData->unit_price) }}</td>
+                @if($singleData["unit_price"])
+                <td>{{ number_format($singleData["unit_price"]) }}</td>
+                @else
+                <td style="color:red">N/A</td>
+                @endif
+
+                {{-- total_price --}}
+                @if($singleData["total_price"])
+                <td>{{ $singleData["total_price"] }}</td>
                 @else
                 <td style="color:red">N/A</td>
                 @endif
 
                 {{-- remark --}}
-                @if($singleData->remarks)
-                <td>{{   strip_tags( str_replace('&', ' and ',$singleData->remarks) ) }}</td>
+                @if($singleData["remarks"])
+                <td>{{   strip_tags( str_replace('&', ' and ',$singleData["remarks"]) ) }}</td>
                 @else
                 <td style="color:red">N/A</td>
                 @endif

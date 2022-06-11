@@ -8,7 +8,8 @@ export default {
                 '&search=' + this.search +
                 '&sort_direction=' + this.sort_direction +
                 '&sort_field=' + this.sort_field +
-                '&search_field=' + this.search_field
+                '&search_field=' + this.search_field +
+                '&by_location=' + this.by_location
             )
             .then(response => {
                 //console.log(response.data.data);

@@ -15,7 +15,7 @@
             </div>
             <div>
                 <div style="font-weight: bold;">
-                    Number:
+                    Req. No:
                     <span>
                         @if($data->number)
                             {{ $data->number }}
@@ -94,7 +94,7 @@
             <div>
                 <span class="font-weight-bold">
                     @if($data->internet_id)
-                        Yes{{ $data->internet_id }}
+                        {{ $data->internet_id }}
                     @else
                         No
                     @endif

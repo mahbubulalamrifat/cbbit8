@@ -9,6 +9,7 @@ use App\Models\Email\ScheduleEmailCmsHardware;
 use App\Models\Cms\Hardware\HardwareComplain;
 use Auth;
 use App\Models\User;
+use App\Http\Controllers\SuperAdmin\CommonController;
 
 class EmailStore extends Controller
 {
@@ -23,19 +24,12 @@ class EmailStore extends Controller
             $to = Auth::user()->personal_email;
         }
 
-        $managerId      = Auth::user()->manager_id;
-        if( !empty($managerId) )
-        {
-            $managerId      = explode(',', $managerId);
-            $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
-            if( !empty($managerMail) ){
-                $managerMail    = implode(", ", array_filter($managerMail));
-            }else{ $managerMail = null; }
+        $managerMail = null;
+        $managerEmails = CommonController::GetManagerBuMailArray(Auth::user()->login);
+        if( $managerEmails && $managerEmails->emails ){
+            $managerMail = implode(',', $managerEmails->emails);
         }
-        elseif( !empty(Auth::user()->manager_emails) ){
-            $managerMail =  Auth::user()->manager_emails;
-        }
-        else{ $managerMail    = null; }
+        
 
         $subject     = $emaildata->id.' : Hardware Complain';
         $category    = $emaildata->category->name ?? 'N/A';
@@ -60,7 +54,7 @@ class EmailStore extends Controller
     // Admin Action 
     public static function StorMailAdminAction($com_id, $rem_id, $dmj_id){
         $data = new ScheduleEmailCmsHardware();
-        $emaildata = HardwareComplain::with('category', 'subcategory', 'makby', 'remarks', 'remarks.makby', 'damage')->where('id', $com_id)->first();
+        $emaildata = HardwareComplain::with('category', 'subcategory', 'makby', 'remarks', 'remarks.makby', 'damage', 'damage.makby')->where('id', $com_id)->first();
         if(empty($emaildata->makby)){
             // user not found return back
             return true;
@@ -72,27 +66,21 @@ class EmailStore extends Controller
             $to = $emaildata->makby->personal_email;
         }
 
-        $managerId      = $emaildata->makby->manager_id;
-        if( !empty($managerId) )
-        {
-            $managerId      = explode(',', $managerId);
-            $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
-            if( !empty($managerMail) ){
-                $managerMail    = implode(", ", array_filter($managerMail));
-            }else{ $managerMail = null; }
+        // For CC
+        $managerMail = null;
+        $managerEmails = CommonController::GetManagerBuMailArray($emaildata->makby->login);
+        if( $managerEmails && $managerEmails->emails ){
+            $managerMail = implode(',', $managerEmails->emails);
         }
-        elseif( !empty($emaildata->makby->manager_emails) ){
-            $managerMail =  $emaildata->makby->manager_emails;
-        }
-        else{ $managerMail    = null; }
-        
+
+     
 
         $subject = $emaildata->id.' : Hardware Complain Update';
 
         $category    = $emaildata->category->name ?? 'N/A';
         $subcategory = $emaildata->subcategory->name ?? 'N/A';
         $user_name   = $emaildata->makby->name ?? 'N/A';
-        $body = 'Dear, '. $user_name .'<hr> You have complain about <b>'. $category .'</b> of <b>'. $subcategory .'</b>.<hr> Your Product Current status is : <b>'. $emaildata->process .'</b><br><br>';
+        $body = 'Dear, '. $user_name .'<hr> You have complain about <b>'. $category .'</b> of <b>'. $subcategory .'</b>.<hr> Your complain current status is : <b>'. $emaildata->process .'</b><br><br>';
 
         // Start Remarks
         // Document Array
@@ -121,7 +109,7 @@ class EmailStore extends Controller
 
             if( !empty($emaildata->damage->rep_pro_id) ){
                 // Damaged Replaced Receiver 
-                $body .= '<br>Damaged Replaced: <hr>Receiver Name:'. $emaildata->damage->rec_name .'<br>Receiver Contact:'. $emaildata->damage->rec_contact .'<br>Receiver Position:'. $emaildata->damage->rec_position .'<br> Action At: '. date('Y-m-d h:i A', strtotime($emaildata->damage->created_at)).'<br><br>';
+                $body .= '<br>Damaged Replaced Completed, As soon as possible receive your product<br><div style="color: #999999;text-align:center;"><i> Action By: '. $emaildata->damage->makby->name ?? 'NA' . '<br> Action At: '. date('d-m-Y H:i ', strtotime($emaildata->damage->created_at)).'<br></i></div>';
             }
             
         }
@@ -165,19 +153,12 @@ class EmailStore extends Controller
             $to = $emaildata->makby->personal_email;
         }
 
-        $managerId      = $emaildata->makby->manager_id;
-        if( !empty($managerId) )
-        {
-            $managerId      = explode(',', $managerId);
-            $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
-            if( !empty($managerMail) ){
-                $managerMail    = implode(", ", array_filter($managerMail));
-            }else{ $managerMail = null; }
+        // For CC
+        $managerMail = null;
+        $managerEmails = CommonController::GetManagerBuMailArray($emaildata->makby->login);
+        if( $managerEmails && $managerEmails->emails ){
+            $managerMail = implode(',', $managerEmails->emails);
         }
-        elseif( !empty($emaildata->makby->manager_emails) ){
-            $managerMail =  $emaildata->makby->manager_emails;
-        }
-        else{ $managerMail    = null; }
         
 
         $subject = $emaildata->id.' : Hardware Complain Update';
@@ -185,7 +166,7 @@ class EmailStore extends Controller
         $category    = $emaildata->category->name ?? 'N/A';
         $subcategory = $emaildata->subcategory->name ?? 'N/A';
         $user_name   = $emaildata->makby->name ?? 'N/A';
-        $body = 'Dear, '. $user_name .'<hr> You have complain about <b>'. $category .'</b> of <b>'. $subcategory .'</b>.<hr> Your Product Current status is : <b>'. $emaildata->process .'</b><br><br>';
+        $body = 'Dear, '. $user_name .'<hr> You have complain about <b>'. $category .'</b> of <b>'. $subcategory .'</b>.<hr> Your Complain current status is : <b>'. $emaildata->process .'</b><br><br>';
 
       
         // Start Damaged
@@ -230,19 +211,12 @@ class EmailStore extends Controller
             $to = $emaildata->makby->personal_email;
         }
 
-        $managerId      = $emaildata->makby->manager_id;
-        if( !empty($managerId) )
-        {
-            $managerId      = explode(',', $managerId);
-            $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
-            if( !empty($managerMail) ){
-                $managerMail    = implode(", ", array_filter($managerMail));
-            }else{ $managerMail = null; }
+        // For CC
+        $managerMail = null;
+        $managerEmails = CommonController::GetManagerBuMailArray($emaildata->makby->login);
+        if( $managerEmails && $managerEmails->emails ){
+            $managerMail = implode(',', $managerEmails->emails);
         }
-        elseif( !empty($emaildata->makby->manager_emails) ){
-            $managerMail =  $emaildata->makby->manager_emails;
-        }
-        else{ $managerMail    = null; }
         
 
         $subject = $emaildata->id.' : Hardware Complain Update';
@@ -250,7 +224,7 @@ class EmailStore extends Controller
         $category    = $emaildata->category->name ?? 'N/A';
         $subcategory = $emaildata->subcategory->name ?? 'N/A';
         $user_name   = $emaildata->makby->name ?? 'N/A';
-        $body = 'Dear, '. $user_name .'<hr> You have complain about <b>'. $category .'</b> of <b>'. $subcategory .'</b>.<hr> Your Product Current status is : <b>'. $emaildata->process .'</b><br><br>';
+        $body = 'Dear, '. $user_name .'<hr> You have complain about <b>'. $category .'</b> of <b>'. $subcategory .'</b>.<hr> Complain current status is : <b>'. $emaildata->process .'</b><br><br>';
 
         // Start Remarks
         // Document Array
@@ -322,19 +296,12 @@ class EmailStore extends Controller
             $to = $emaildata->makby->personal_email;
         }
 
-        $managerId      = $emaildata->makby->manager_id;
-        if( !empty($managerId) )
-        {
-            $managerId      = explode(',', $managerId);
-            $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
-            if( !empty($managerMail) ){
-                $managerMail    = implode(", ", array_filter($managerMail));
-            }else{ $managerMail = null; }
+        // For CC
+        $managerMail = null;
+        $managerEmails = CommonController::GetManagerBuMailArray($emaildata->makby->login);
+        if( $managerEmails && $managerEmails->emails ){
+            $managerMail = implode(',', $managerEmails->emails);
         }
-        elseif( !empty($emaildata->makby->manager_emails) ){
-            $managerMail =  $emaildata->makby->manager_emails;
-        }
-        else{ $managerMail    = null; }
         
 
         $subject = $emaildata->id.' : Hardware Complain Update';
@@ -342,7 +309,7 @@ class EmailStore extends Controller
         $category    = $emaildata->category->name ?? 'N/A';
         $subcategory = $emaildata->subcategory->name ?? 'N/A';
         $user_name   = $emaildata->makby->name ?? 'N/A';
-        $body = 'Dear, '. $user_name .'<hr> You have complain about <b>'. $category .'</b> of <b>'. $subcategory .'</b>.<hr> Your Product Current status is : <b>'. $emaildata->process .'</b><br><br>';
+        $body = 'Dear, '. $user_name .'<hr> You have complain about <b>'. $category .'</b> of <b>'. $subcategory .'</b>.<hr>Your Complain current status is : <b>'. $emaildata->process .'</b><br><br>';
 
         // Start Remarks
         // Document Array

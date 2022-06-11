@@ -11,7 +11,8 @@ use App\Models\User;
 use DB;
 
 use App\Models\Inventory\InventoryNewProduct;
-use App\Models\Inventory\InventoryOperation;
+use App\Models\SuperAdmin\Operation;
+// use App\Models\Inventory\InventoryOperation;
 use App\Models\Inventory\InventoryOldProduct;
 
 class IndexController extends Controller
@@ -29,7 +30,7 @@ class IndexController extends Controller
     // dashboard_data
     public function dashboard_data(){
 
-        $allOperations = InventoryOperation::select('id', 'name')->get();
+        $allOperations = Operation::select('id', 'name')->get();
 
         $operationWiseProduct = [];
 

@@ -155,17 +155,26 @@
                         </v-list-item-content>
                     </v-list-item>
 
+                    <v-list-item link router :to="{name: 'reportStock2'}">
+                        <v-list-item-icon>
+                            <v-icon>mdi-grid-large</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Stock Old</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
                 </v-list-group>
                 
 
-                <v-list-item link router :to="{name: 'operation'}" exact>
+                <!-- <v-list-item link router :to="{name: 'operation'}" exact>
                     <v-list-item-icon>
                         <v-icon>mdi-opera </v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Operation</v-list-item-title>
                     </v-list-item-content>
-                </v-list-item>
+                </v-list-item> -->
 
                 <v-list-group no-action prepend-icon="mdi-alert-decagram" active-class="indigo white--text">
                     <template v-slot:activator>

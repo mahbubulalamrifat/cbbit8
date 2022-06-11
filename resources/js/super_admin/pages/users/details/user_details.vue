@@ -64,12 +64,12 @@
                                     </div>
                                     <hr>
                                     <div>
-                                        Office: <span v-if="userData.office">{{ userData.office }}</span> <span v-else
+                                        Department: <span v-if="userData.department">{{ userData.department }}</span> <span v-else
                                             class="error--text">Not Available !</span>
                                     </div>
                                     <hr>
                                     <div>
-                                        Zone Office: <span v-if="userData.zone_office">{{ userData.zone_office }}</span>
+                                       Location / Zone Office: <span v-if="userData.zone_office">{{ userData.zone_office }}</span>
                                         <span v-else class="error--text">Not Available !</span>
                                     </div>
                                     <hr>

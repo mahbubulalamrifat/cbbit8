@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vue-pdf-app style="height: 100vh;" :pdf="file" :config="config"></vue-pdf-app>
+        <vue-pdf-app style="height: 100vh;" :pdf="file" :config="config" isSidebarHidden="false"></vue-pdf-app>
     </div>
 </template>
 

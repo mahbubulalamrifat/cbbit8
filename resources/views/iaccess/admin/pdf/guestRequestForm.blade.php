@@ -15,7 +15,7 @@
             </div>
             <div>
                 <div style="font-weight: bold;">
-                    Number:
+                    Req. No:
                     <span>
                         @if($data->number)
                             {{ $data->number }}
@@ -94,7 +94,7 @@
             <div>
                 <span class="font-weight-bold">
                     @if($data->internet_id)
-                        Yes{{ $data->internet_id }}
+                        {{ $data->internet_id }}
                     @else
                         No
                     @endif
@@ -107,7 +107,7 @@
             <table class="table table-borderless">
                 <tr>
                     <td>Guest User Company: <span>{{$data->guest_company}}</span></td>
-                    <td>Number of Guest Users: <span> {{$data->no_of_guest}} </span>User(s)</td>
+                    <td>Run. No of Guest Users: <span> {{$data->no_of_guest}} </span>User(s)</td>
                 </tr>
                 <tr>
                     <td colspan="2">Guest User Job: <span>{{$data->guest_job}}</span></td>

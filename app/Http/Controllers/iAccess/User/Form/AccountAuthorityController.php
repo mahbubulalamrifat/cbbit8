@@ -87,6 +87,12 @@ class AccountAuthorityController extends Controller
             $data->document2     = $document_full_name;
         }
 
+        $document3     = $request->file('document3');
+        if ($document3) {
+            $document_full_name =  CommonController::documentUpload($document3, $documentPath, $request->name);
+            $data->document3     = $document_full_name;
+        }
+
 
 
         $success                 = $data->save();

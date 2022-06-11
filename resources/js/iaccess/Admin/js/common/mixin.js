@@ -52,6 +52,7 @@ export default {
             valid: false,
 
             overlayshow: false,
+            overlayFileView: false,
 
             sort_by_day: '',
             sort_by_startDate: '',
@@ -114,11 +115,16 @@ export default {
 
 
             // pdf
-            pdf: '',
+            pdfFile: '',
             viewDocument: false,
             // for pdf only
             docPath2: 'images/iaccess/',
-            pdfReadyLoading:false,
+            pdfReadyLoading: false,
+
+            //   imageFile
+            imageFile: '',
+            viewImage: false,
+            imageReadyLoading: false,
 
         }
     },
@@ -141,19 +147,19 @@ export default {
         // count
         countAll() {
 
-            axios.get('/iaccess/admin/sidebar_count_data').then(response=>{
+            axios.get('/iaccess/admin/sidebar_count_data').then(response => {
                 // console.log(response.data)
 
                 store.commit('setCountEmailRequest', response.data.email)
                 store.commit('setCountInternetRequest', response.data.internet)
                 store.commit('setCountAccountRequest', response.data.account)
-                store.commit('setCountGuestRequest', response.data.guest )
-                
+                store.commit('setCountGuestRequest', response.data.guest)
+
             }).
-            catch(error=>{
+            catch(error => {
                 console.log(error)
             })
-            
+
         },
 
         // PDF
@@ -164,7 +170,7 @@ export default {
             for (var i = 0; i < len; i++) {
                 bytes[i] = binary_string.charCodeAt(i);
             }
-            this.pdf = bytes.buffer
+            this.pdfFile = bytes.buffer
             this.pdfReadyLoading = false
             this.appDetailsLodaing = false;
             this.checkID = '';
@@ -174,16 +180,25 @@ export default {
 
         // PDF
         pdfGetFile(doc) {
-            this.pdfReadyLoading = true
+            this.overlayFileView = true
             axios.post('/iaccess/pdf_get_file', {
                 document: doc
             }).then((res) => {
+                this.overlayFileView = false
                 this.base64ToArrayBuffer(res.data)
-            }).catch(error=>{
-                this.pdfReadyLoading = false
+            }).catch(error => {
+                this.overlayFileView = false
                 console.error(error)
             });
-        }
+        },
+
+        imageGetFile(doc) {
+            //console.log(doc);
+            this.imageReadyLoading = true;
+            this.imageFile = doc;
+            this.viewImage = true;
+            this.imageReadyLoading = false;
+        },
 
         // End Methods
     },
@@ -266,10 +281,10 @@ export default {
             'auth': 'getAuth',
             'roles': 'getRoles',
 
-            'CountEmail'    : 'getCountEmailRequest',
-            'CountInternet' : 'getCountInternetRequest',
-            'CountAccount'  : 'getCountAccountRequest',
-            'CountGuest'    : 'getCountGuestRequest',
+            'CountEmail': 'getCountEmailRequest',
+            'CountInternet': 'getCountInternetRequest',
+            'CountAccount': 'getCountAccountRequest',
+            'CountGuest': 'getCountGuestRequest',
         }),
 
     },

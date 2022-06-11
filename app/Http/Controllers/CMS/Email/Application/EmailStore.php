@@ -9,6 +9,7 @@ use App\Models\Email\ScheduleEmailCmsApplication;
 use App\Models\Cms\Application\ApplicationComplain;
 use Auth;
 use App\Models\User;
+use App\Http\Controllers\SuperAdmin\CommonController;
 
 class EmailStore extends Controller
 {
@@ -23,19 +24,25 @@ class EmailStore extends Controller
             $to = Auth::user()->personal_email;
         }
 
-        $managerId      = Auth::user()->manager_id;
-        if( !empty($managerId) )
-        {
-            $managerId      = explode(',', $managerId);
-            $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
-            if( !empty($managerMail) ){
-                $managerMail    = implode(", ", array_filter($managerMail));
-            }else{ $managerMail = null; }
+        $managerMail = null;
+        $managerEmails = CommonController::GetManagerBuMailArray(Auth::user()->login);
+        if( $managerEmails && $managerEmails->emails ){
+            $managerMail = implode(',', $managerEmails->emails);
         }
-        elseif( !empty(Auth::user()->manager_emails) ){
-            $managerMail =  Auth::user()->manager_emails;
-        }
-        else{ $managerMail    = null; }
+
+        // $managerId      = Auth::user()->manager_id;
+        // if( !empty($managerId) )
+        // {
+        //     $managerId      = explode(',', $managerId);
+        //     $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
+        //     if( !empty($managerMail) ){
+        //         $managerMail    = implode(", ", array_filter($managerMail));
+        //     }else{ $managerMail = null; }
+        // }
+        // elseif( !empty(Auth::user()->manager_emails) ){
+        //     $managerMail =  Auth::user()->manager_emails;
+        // }
+        // else{ $managerMail    = null; }
 
         $subject     = $emaildata->id.' : Application Complain';
         $category    = $emaildata->category->name ?? 'N/A';
@@ -89,19 +96,26 @@ class EmailStore extends Controller
             $to = $emaildata->makby->personal_email;
         }
 
-        $managerId      = $emaildata->makby->manager_id;
-        if( !empty($managerId) )
-        {
-            $managerId      = explode(',', $managerId);
-            $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
-            if( !empty($managerMail) ){
-                $managerMail    = implode(", ", array_filter($managerMail));
-            }else{ $managerMail = null; }
+        // For CC
+        $managerMail = null;
+        $managerEmails = CommonController::GetManagerBuMailArray($emaildata->makby->login);
+        if( $managerEmails && $managerEmails->emails ){
+            $managerMail = implode(',', $managerEmails->emails);
         }
-        elseif( !empty($emaildata->makby->manager_emails) ){
-            $managerMail =  $emaildata->makby->manager_emails;
-        }
-        else{ $managerMail    = null; }
+
+        // $managerId      = $emaildata->makby->manager_id;
+        // if( !empty($managerId) )
+        // {
+        //     $managerId      = explode(',', $managerId);
+        //     $managerMail    = User::whereIn( 'id', $managerId )->pluck('office_email')->toArray();
+        //     if( !empty($managerMail) ){
+        //         $managerMail    = implode(", ", array_filter($managerMail));
+        //     }else{ $managerMail = null; }
+        // }
+        // elseif( !empty($emaildata->makby->manager_emails) ){
+        //     $managerMail =  $emaildata->makby->manager_emails;
+        // }
+        // else{ $managerMail    = null; }
         
 
         $subject = $emaildata->id.' : Application Complain Update';

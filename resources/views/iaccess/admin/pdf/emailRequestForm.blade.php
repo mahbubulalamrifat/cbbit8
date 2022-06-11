@@ -4,7 +4,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('all-assets\common\bootstrap-4.0\css\bootstrap.min.css') }}" />
-
+    <style>
+        body{
+            font-size: 12px !important;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid" style="border:3px solid black">
@@ -15,7 +19,7 @@
             </div>
             <div>
                 <div style="font-weight: bold;">
-                    Number:
+                    Req. No:
                     <span>
                         @if($data->number)
                             {{ $data->number }}
@@ -32,7 +36,7 @@
         </div>
 
 
-        <div class="my-5">
+        <div class="my-4">
             <div class="h5 text-center w-50 py-2 bg-dark text-white">User Information</div>
             <div class="table-responsive">
                 <table class="table table-borderless">
@@ -94,7 +98,7 @@
             <div>
                 <span class="font-weight-bold">
                     @if($data->internet_id)
-                        Yes{{ $data->internet_id }}
+                        {{ $data->internet_id }}
                     @else
                         No
                     @endif
@@ -106,7 +110,7 @@
         <div class="mb-5">
             <div class="h5 text-center w-50 py-2 bg-dark text-white">Request For</div>
             <div class="my-2 font-weight-bold">{{ $data->request_for }}</div>
-            <hr>
+            <br>
             <div><b>Request Email ID:</b> 
                 <span>
                     <i>
@@ -120,16 +124,16 @@
             </div>
         </div>
 
-        <div class="my-4">
+        <div>
             <div class="h5 text-center w-50 py-2 bg-dark text-white">Purpose</div>
-            <textarea rows="7" class="form-control">
+            <textarea rows="7" cols="60" class="form-control">
                 {{$data->purpose}}
             </textarea>
         </div>
 
 
         <div>
-            <div class="d-flex justify-content-between my-5">
+            <div class="d-flex justify-content-between mb-5">
                 <div>
                     <div class="h5 text-center d-block py-2 bg-dark text-white">User</div>
                     <small>I Confirm that all the details provided in this form are correct & true</small>

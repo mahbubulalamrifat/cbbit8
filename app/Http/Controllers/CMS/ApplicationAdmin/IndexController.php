@@ -90,7 +90,6 @@ class IndexController extends Controller
 
     }
 
-
     // pdf_get_file
     public function pdf_get_file(){
         $path = Request('document');

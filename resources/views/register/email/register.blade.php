@@ -116,11 +116,15 @@
                                                 cellpadding="0" cellspacing="0" width="100%" border="0">
                                                 <tbody>
                                                     <tr>
-                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:2px;font-family:arial,helvetica,sans-serif;"
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
                                                             align="left">
                                                             <div>
                                                                 <div style="text-align:center;">
-                                                                    <img src="https://asset.cpbangladesh.com/documents/cpbit_96_96_20220130055505qOomPLPI0l.png" alt="logo" style="height:60px"/>
+                                                                    <div>
+                                                                        <img src="https://asset.cpbangladesh.com/documents/cpbit_96_96_20220130055505qOomPLPI0l.png" alt="logo" style="height:60px"/>
+                                                                    </div>
+                                                                    <h2 style="color:green;margin:0">CPB-IT Portal Register</h2>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -151,38 +155,39 @@
                                                             <div>
                                                                 <div style="margin: auto;padding: 1.4rem;background-color: white;border-radius: 8px;">
 
-                                                                    
-                                                                    <h2>Complain Number: <span style="color: #a0522d">6</span></h2>
-                                                                    @if($name == 'Rifat')
-                                                                        <h2>Status: <span style="color: #a0522d">Damaged Quotation</span></h2>
-                                                                    @else
-
-                                                                    <div style="margin: auto;padding: 1.4rem;background-color: white;border-radius: 8px;">
-                                                                        <div style="color: #a0522d">
-                                                                            <h4 style="margin-bottom:1rem">Receiver Name:</h4>
-                                                                            <h4 style="margin-bottom:1rem">Receiver Email:</h4>
-                                                                            <h4 style="margin-bottom:1rem">Receiver Contact:</h4>
-                                                                        </div>
+                                                                    <div>Hi <strong>{{ $mailData['name'] }}</strong>, 
+                                                                        <br>
+                                                                        <span>Your registered id is: <strong>{{ $mailData['login'] }}</strong></span><br>
+                                                                        <span>Your password id is: <strong>Current AD or internet login password</strong></span><br>
                                                                     </div>
 
-                                                                    @endif
-                                                                    
-                                                                    <h2>Reamrks: <span style="color: #a0522d">Damaged Quotation</span></h2>
-                                                                    
-
-                                                                    <div>
-                                                                       
-                                                                        
+                                                                    <div style="object-fit:contain;">
+                                                                        <img src="https://imgdb.net/storage/uploads/1b2abc8a5a35c643e0e95c7f356da060d62faaa2c63b489d9e847c64cf4749de.png" alt="image"
+                                                                            style="width:100%;height:230px" />
                                                                     </div>
 
-                                                                    <div style="color: #a0522d">
-                                                                        <h4 style="margin-bottom:1rem">Support Team</h4>
+                                                                    <div style="margin:1rem 0;text-align:center;font-weight:700">
+                                                                       Congratulations, Your account has been successfully created. 
+                                                                    </div>
+
+                                                                    <div style="margin: 1rem 0;text-align:center;">
+                                                                        <a href="http://it.cpbangladesh.com:8090/" class="button_div" style="padding:0.7rem 1.8rem;background-color: #407BFF;border-radius: 3px;color: white;text-decoration: none;"> http://it.cpbangladesh.com ( Login Now )</a>
+                                                                    </div>
+
+                                                                    <div
+                                                                        style="text-align:center ;font-weight:700;color:grey;">
+                                                                        <small> P.S. If you didn't request this email,
+                                                                            you may safely ignore it </small></div>
+                                                                   
+                                                                    <div style="color: #3a70d4">
+                                                                        <h4 style="margin-bottom:1rem">Regards</h4>
                                                                         <div>
-                                                                            <h3>Md. Moniruzzaman   <span style="margin-left: 1rem"> Contact: 01787 692 529 </span></h3>
+                                                                            Saiful Alam (Sagor)   <span style="margin-left: 5rem"> Contact: 01730 358 261</span>
                                                                         </div>
-                                                                        <div>
-                                                                            <h3>Md. Polash Mahamud   <span style="margin-left: 1rem"> Contact: 01787 692 530 </span></h3>
-                                                                        </div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div style="text-align:center;color:#e64b4b;align-items:center;font-size:12px;">
+                                                                        N.B: This is system generated email. Do Not reply here
                                                                     </div>
 
                                                                 </div>

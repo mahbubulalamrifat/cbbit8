@@ -35,7 +35,7 @@ class EmailRequestController extends Controller
             'purpose'           => 'required|max:20000',
         ]);
 
-        $lastData = iaccessAccountRequest::whereNotNull('number')->select('number')->latest()->first();
+        $lastData = iaccessEmailRequest::whereNotNull('number')->select('number')->latest()->first();
         if($lastData && $lastData->number){
             $number = CommonController::RunningNumberGenerate('ER', $lastData->number);
         }else{

@@ -41,7 +41,7 @@ class GuestRequestController extends Controller
 
         ]);
 
-        $lastData = iaccessAccountRequest::whereNotNull('number')->select('number')->latest()->first();
+        $lastData = iaccessGuestRequest::whereNotNull('number')->select('number')->latest()->first();
         if($lastData && $lastData->number){
             $number = CommonController::RunningNumberGenerate('GR', $lastData->number);
         }else{

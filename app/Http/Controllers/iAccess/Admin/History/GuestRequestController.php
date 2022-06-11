@@ -26,7 +26,7 @@ class GuestRequestController extends Controller
         $sort_by_endDate     = Request('sort_by_endDate', '');
         $sort_by_type     = Request('sort_by_type', '');
 
-        $allQuery =  iaccessGuestRequest::with('manager', 'buhead', 'verify', 'makby');
+        $allQuery =  iaccessGuestRequest::with('manager', 'buhead', 'verify', 'makby')->whereNull('verify_status');
         
         
         // sort_by_day

@@ -8,7 +8,7 @@ import er404 from '../pages/common/404.vue'
 
 import NewProduct from './../pages/new_product/index.vue'
 import OldProduct from './../pages/old_product/index.vue'
-import operation from './../pages/operation/index.vue'
+
 
 import givenProduct from './../pages/product_section/givenProduct.vue'
 import runningProduct from './../pages/product_section/runningProduct.vue'
@@ -19,6 +19,7 @@ import expireProduct from './../pages/warranty_section/expireProduct.vue'
 
 // Report
 import reportStock from './../pages/report/stock.vue'
+import reportStock2 from './../pages/report/stock2.vue'
 
 import deletedNewProduct from './../pages/deleted_section/new_product.vue'
 import deletedOldProduct from './../pages/deleted_section/old_product.vue'
@@ -55,14 +56,7 @@ const router = new VueRouter({
                 title: 'Admin Old Product',
             },   
         },
-        { 
-            path: '/inventory/admin/operation', 
-            component: operation,
-            name: 'operation',
-            meta:{
-                title: 'Admin Operation',
-            },   
-        },
+        
 
         // productSection
         { 
@@ -113,6 +107,15 @@ const router = new VueRouter({
             path: '/inventory/admin/report_stock', 
             component: reportStock,
             name: 'reportStock',
+            meta:{
+                title: 'Admin Report Stock',
+            },   
+        },
+
+        { 
+            path: '/inventory/admin/report_stock2', 
+            component: reportStock2,
+            name: 'reportStock2',
             meta:{
                 title: 'Admin Report Stock',
             },   

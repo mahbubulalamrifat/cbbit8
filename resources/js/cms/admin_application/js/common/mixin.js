@@ -1,6 +1,8 @@
 import axios from "axios";
 import store from './../store'
-import { mapGetters } from 'vuex'
+import {
+    mapGetters
+} from 'vuex'
 
 
 import paginateMethods from './paginate_methods'
@@ -9,72 +11,74 @@ import createUpdate from './crud'
 
 
 import globalRolePermissions from './../../../../role_permissions'
-import {debounce} from './../../../../helpers'
+import {
+    debounce
+} from './../../../../helpers'
 
 
 
 export default {
     data() {
-      return {
-      
-        paginate: 10,
-        search: '',
-        search_field: '',
-        sort_direction: 'desc',
-        sort_field: 'id',
-        currentPageNumber: null,
-        // Our data object that holds the Laravel paginator data
-        allData: {},
-        totalValue: '',
-        dataShowFrom: '',
-        dataShowTo: '',
+        return {
 
-        // For Modal Dilog
-        dataModalDialog :false,
-        // Loading Animation
-        dataModalLoading: false,
+            paginate: 10,
+            search: '',
+            search_field: '',
+            sort_direction: 'desc',
+            sort_field: 'id',
+            currentPageNumber: null,
+            // Our data object that holds the Laravel paginator data
+            allData: {},
+            totalValue: '',
+            dataShowFrom: '',
+            dataShowTo: '',
 
-        editmode: false,
-        dataModelTitle: 'Store Data',
-        // Loading Animation
-        dataLoading: false,
+            // For Modal Dilog
+            dataModalDialog: false,
+            // Loading Animation
+            dataModalLoading: false,
 
-        imageMaxSize: '2111775',
-        fileMaxSize: '5111775',
+            editmode: false,
+            dataModelTitle: 'Store Data',
+            // Loading Animation
+            dataLoading: false,
 
-        // Tbl number of data show
-        tblItemNumberShow:[5,10,15,25,50,100],
+            imageMaxSize: '2111775',
+            fileMaxSize: '5111775',
 
-        // v-form
-        valid: false,
-        
-        // overlay
-        overlay:false,
+            // Tbl number of data show
+            tblItemNumberShow: [5, 10, 15, 25, 50, 100],
 
-        // For Report search
-        allZoneOffices:[],
-        allDepartments:[],
+            // v-form
+            valid: false,
 
-        // pdf
-        pdfFile: '',
-        viewDocument: false,
-        // for pdf only
-        docPath2: 'images/application/',
-          pdfReadyLoading: false,
-        
-        //   imageFile
-          imageFile: '',
-          viewImage: false,
-          imageReadyLoading: false,
-      }
+            // overlay
+            overlay: false,
+
+            // For Report search
+            allZoneOffices: [],
+            allDepartments: [],
+
+            // pdf
+            pdfFile: '',
+            viewDocument: false,
+            // for pdf only
+            docPath2: 'images/application/',
+            pdfReadyLoading: false,
+
+            //   imageFile
+            imageFile: '',
+            viewImage: false,
+            imageReadyLoading: false,
+        }
     },
 
     methods: {
 
-        
+
         // Permission Role check
         ...globalRolePermissions,
-      
+
         // Paginate Methods
         ...paginateMethods,
 
@@ -88,21 +92,21 @@ export default {
 
 
         // get Zone Offices
-        getZoneOffices(){
-            axios.get('/super_admin/user/zoneoffices').then(response=>{
+        getZoneOffices() {
+            axios.get('/super_admin/user/zoneoffices').then(response => {
                 // console.log(response.data)
                 this.allZoneOffices = response.data
-            }).catch(error=>{
+            }).catch(error => {
                 console.log(error)
             })
         },
 
         // get Departments
-        getDepartments(){
-            axios.get('/super_admin/user/departments').then(response=>{
+        getDepartments() {
+            axios.get('/super_admin/user/departments').then(response => {
                 //console.log(response.data)
                 this.allDepartments = response.data
-            }).catch(error=>{
+            }).catch(error => {
                 console.log(error)
             })
         },
@@ -112,16 +116,16 @@ export default {
         // countNotProcess
         countAll() {
 
-            axios.get('/cms/a_admin/count/sidebar_count_data').then(response=>{
+            axios.get('/cms/a_admin/count/sidebar_count_data').then(response => {
                 //console.log(response.data)
 
                 store.commit('setCountNotProcess', response.data.notprocess)
                 store.commit('setCountProcess', response.data.process)
             }).
-            catch(error=>{
+            catch(error => {
                 console.log(error)
             })
-            
+
         },
 
         // PDF
@@ -148,7 +152,7 @@ export default {
                 document: doc
             }).then((res) => {
                 this.base64ToArrayBuffer(res.data)
-            }).catch(error=>{
+            }).catch(error => {
                 this.pdfReadyLoading = false
                 console.error(error)
             });
@@ -156,17 +160,15 @@ export default {
 
 
         imageGetFile(doc) {
-            //console.log(doc);
+            console.log(doc);
             this.imageReadyLoading = true;
             this.imageFile = doc;
             this.viewImage = true;
             this.imageReadyLoading = false;
-            
-            
         }
 
-        
-     
+
+
 
         // End Methods
     },
@@ -194,9 +196,9 @@ export default {
             this.$Progress.finish();
         },
 
-         //Excuted When make change value 
-         start_date: function (value) {
-            if(this.end_date){
+        //Excuted When make change value 
+        start_date: function (value) {
+            if (this.end_date) {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
@@ -204,14 +206,14 @@ export default {
         },
 
         end_date: function (value) {
-            if(this.start_date){
+            if (this.start_date) {
                 this.$Progress.start();
                 this.getResults();
                 this.$Progress.finish();
             }
         },
 
-        
+
         zone_office: function (value) {
             this.$Progress.start();
             this.getResults();
@@ -223,7 +225,7 @@ export default {
             this.getResults();
             this.$Progress.finish();
         },
-       
+
     },
 
     created() {
@@ -234,7 +236,7 @@ export default {
 
 
     mounted() {
- 
+
     },
 
 
@@ -243,18 +245,18 @@ export default {
     },
 
 
-    computed : {
+    computed: {
 
         // map this.count to store.state.count getLoading 
         ...mapGetters({
-            'auth'      : 'getAuth',
-            'roles'     : 'getRoles',
-            'sidebar_notprocess_counter'  : 'getCountNotProcess',
-            'sidebar_process_counter'     : 'getCountProcess',
+            'auth': 'getAuth',
+            'roles': 'getRoles',
+            'sidebar_notprocess_counter': 'getCountNotProcess',
+            'sidebar_process_counter': 'getCountProcess',
         }),
 
     },
 
 
 
-  }
+}

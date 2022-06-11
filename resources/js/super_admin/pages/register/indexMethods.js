@@ -63,6 +63,8 @@ export default{
     editDataModelDirect(singleData){
 
         //console.log('singleData', singleData)
+
+        this.makeEmptyVariables();
        
         this.manager_name = singleData.manager_name
         this.manager_email = singleData.manager_email

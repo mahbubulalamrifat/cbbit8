@@ -288,37 +288,6 @@ class IndexController extends Controller
 
 
 
-     //office
-    public function office(){
-
-        $office = User::where('status', 1)
-            ->whereNotNull('department')
-            ->Where('department','<>','')
-            ->select('department')
-            ->orderBy('department')
-            ->distinct()
-            ->get()
-            ->toArray();
-            
-
-
-        $business_unit = User::where('status', 1)
-            ->whereNotNull('business_unit')
-            ->select('business_unit','id')
-            ->orderBy('business_unit')
-            //->distinct('business_unit')
-            ->groupBy('business_unit')
-            ->get()
-            ->toArray();
-
-        $operation = InventoryOperation::select('id', 'name')->get()->toArray();
-
-
-        return response()->json(['office'=>$office, 'business_unit'=>$business_unit, 'operation'=>$operation]);
-
-    }
-
-
     // deliver
     public function deliver(Request $request){
 
@@ -330,8 +299,8 @@ class IndexController extends Controller
             'serial'            =>  'required|max:200|unique:inventory_new_products,serial,'.$request->id,
             'remarks'           =>  'required',
             'operation_id'      =>  'required',
-            'business_unit'  =>  'required',
-            'office'         =>  'required',
+            'location'          =>  'required',
+            'department'        =>  'required',
             'rec_name'          =>  'required',
             'rec_contact'       =>  'required',
             'rec_position'      =>  'required',
@@ -351,14 +320,74 @@ class IndexController extends Controller
         $data2->name              = $request->name;
         $data2->serial            = $request->serial;
         $data2->operation_id      = $request->operation_id;
-        $data2->business_unit     = $request->business_unit;
-        $data2->office            = $request->office;
+        $data2->location          = $request->location;
+        $data2->department        = $request->department;
         $data2->rec_name          = $request->rec_name;
         $data2->rec_contact       = $request->rec_contact;
         $data2->rec_position      = $request->rec_position;
+        $data2->remarks           = $request->remarks;
         
         $data2->created_by = Auth::user()->id;
         $success           = $data2->save();
+
+        return response()->json('success', 200);
+
+
+    }
+
+    // deliver_multi
+    public function deliver_multi(Request $request){
+
+        //Validate
+        $this->validate($request,[
+            //'cat_id'            =>  'required',
+            //'subcat_id'         =>  'required',
+            //'name'              =>  'required',
+            //'serial'            =>  'required|max:200|unique:inventory_new_products,serial,'.$request->id,
+            'remarks'           =>  'required',
+            'operation_id'      =>  'required',
+            'location'          =>  'required',
+            'department'        =>  'required',
+            'rec_name'          =>  'required',
+            'rec_contact'       =>  'required',
+            'rec_position'      =>  'required',
+        ]);
+
+        //dd($request->product_ids);
+
+        foreach($request->product_ids as $id){
+
+            // giveen status chnage
+            $data           =  InventoryNewProduct::find($id);
+            $data->give_st  = 1;
+            $success        = $data->save();
+
+
+            $data2 = new InventoryOldProduct();
+
+            $data2->new_pro_id        = $id;
+            $data2->cat_id            = $data->cat_id;
+            //$data2->subcat_id         = $request->subcat_id;
+            $data2->name              = $data->name;
+            $data2->serial            = $data->serial;
+
+            $data2->operation_id      = $request->operation_id;
+            $data2->location          = $request->location;
+            $data2->department        = $request->department;
+            $data2->rec_name          = $request->rec_name;
+            $data2->rec_contact       = $request->rec_contact;
+            $data2->rec_position      = $request->rec_position;
+            $data2->remarks           = $request->remarks;
+            
+            
+            $data2->created_by = Auth::user()->id;
+            $success           = $data2->save();
+
+            //dd($data, $data2);
+
+        }
+
+       
 
         return response()->json('success', 200);
 

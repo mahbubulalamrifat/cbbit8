@@ -123,10 +123,9 @@ export default{
         this.form.manager_id = []
         this.selectedManagerName = []
 
-        var allDataArr = this.allData.data;
-        var managerId = this.selectedManager
-        //console.log(managerId, myarr, singleData.manager_id);
-        
+        var allDataArr = this.fullUserList;
+        var managerId  = this.selectedManager
+
         // Manager ID check in all Data
         for (var key in allDataArr) {
             var value = allDataArr[key];
@@ -146,7 +145,7 @@ export default{
         }
        
        
-        console.log('selectedManagerName', this.selectedManagerName, this.form)
+        console.log('setManager', this.selectedManagerName,'selectedManager', managerId, 'form.manager_id',this.form.manager_id)
         // Hide second modal
         this.userModal2ndShowHide = false
    
@@ -240,10 +239,11 @@ export default{
             this.selectedManagerName = []
         
             //this.selectedManager.push(singleData.manager_id);
-            var allDataArr = this.allData.data;
+            var allDataArr = this.fullUserList;
             // Text split in array
             var managerId = this.selectedManager
-            //console.log(managerId, myarr, singleData.manager_id);
+            // console.log('editDataModel --selectedManagerName',singleData.manager_id, this.selectedManager, allDataArr, this.selectedManagerName )
+            // console.log(managerId, myarr, singleData.manager_id);
             // Manager ID check in all Data
             for (var key in allDataArr) {
                 var value = allDataArr[key];
@@ -259,6 +259,12 @@ export default{
                     // console.log('for2 -- ', key2, value2);
                 }
             }
+
+
+
+
+
+            
         }
 
         // Role Assign

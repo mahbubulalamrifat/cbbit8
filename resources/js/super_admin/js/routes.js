@@ -8,8 +8,12 @@ import er404 from '../pages/common/404.vue'
 import Users from '../pages/users/index.vue'
 import Registered from '../pages/register/index.vue'
 import Roles from '../pages/roles/index.vue'
+
 import Zones from '../pages/zone/index.vue'
 import ZoneOffices from '../pages/zone/offices.vue'
+
+import Operations from '../pages/operation/index.vue'
+import OperationOffices from '../pages/operation/offices.vue'
 
 
 import LogsAll from '../pages/log/all.vue'
@@ -65,6 +69,22 @@ const router = new VueRouter({
             name: 'ZoneOffices',
             meta:{
                 title: 'Super Admin Zone Offices',
+            },   
+        },
+        { 
+            path: '/super_admin/operation', 
+            component: Operations,
+            name: 'Operations',
+            meta:{
+                title: 'Super Admin Operations',
+            },   
+        },
+        { 
+            path: '/super_admin/operation_offices', 
+            component: OperationOffices,
+            name: 'OperationOffices',
+            meta:{
+                title: 'Super Admin Operation Offices',
             },   
         },
         { 

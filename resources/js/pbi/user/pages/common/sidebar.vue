@@ -31,12 +31,13 @@
 
 
         <!-- sidebar -->
-        <v-navigation-drawer app dark v-model="drawer" class="bg_color" src="/all-assets/common/sidebar_powerbi.png">
+        <!-- <v-navigation-drawer app dark v-model="drawer" class="bg_color" src="/all-assets/common/icon/powerbi.png"> -->
+        <v-navigation-drawer app dark v-model="drawer" class="bg_color">
             <v-list-item class="px-2" link href="/">
                 <v-list-item-icon>
                     <img src="/all-assets/common/icon/powerbi.png" alt="" height="40px" contain>
                 </v-list-item-icon>
-                <v-list-item-title>PBI</v-list-item-title>
+                <v-list-item-title>Power BI</v-list-item-title>
             </v-list-item>
             <v-divider></v-divider>
 
@@ -139,7 +140,7 @@
 
 <style scoped>
     .bg_color {
-       background: black;
+        background: linear-gradient(180deg, #000, #2d2f01);
     }
 
     a:hover {

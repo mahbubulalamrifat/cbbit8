@@ -181,39 +181,146 @@
                 </td>
                 <td>
                   {{ item.name }}<br />
-                  <span v-if="item.document || item.document2">
-                    <a
-                      v-if="item.document"
-                      :href="docPath + item.document"
-                      class="btn btn-info btn-sm text-white m-1"
-                      download
-                    >
-                      <v-icon color="white" small>mdi-paperclip</v-icon> NID
-                    </a>
-                    <a
-                      v-if="item.document2"
-                      :href="docPath + item.document2"
-                      class="btn btn-info btn-sm text-white"
-                      download
-                    >
-                      <v-icon color="white" small>mdi-paperclip</v-icon> OID
-                    </a>
+                  <span v-if="item.document || item.document2 || item.document3">
+                    <span v-if="item.document">
+                        <span v-if="item.document && item.document.includes('.pdf')">
+                        <v-btn
+                            v-if="item.document"
+                            @click="pdfGetFile(docPath2 + item.document)"
+                            small
+                            class="ma-1"
+                            color="primary"
+                            ><v-icon left>mdi-eye</v-icon>NID (PDF)</v-btn
+                        >
+                        </span>
+                        <span
+                        v-else-if="
+                            (item.document && item.document.includes('.jpg')) ||
+                            (item.document && item.document.includes('.jpeg')) ||
+                            (item.document && item.document.includes('.png')) ||
+                            (item.document && item.document.includes('.JPG')) ||
+                            (item.document && item.document.includes('.JPEG')) ||
+                            (item.document && item.document.includes('.PNG'))
+                        "
+                        >
+                        <v-btn
+                            v-if="item.document && item.document"
+                            :loading="imageReadyLoading"
+                            @click="imageGetFile(docPath2 + item.document)"
+                            small
+                            class="ma-1"
+                            color="primary"
+                        >
+                            <v-icon left>mdi-eye</v-icon> NID (image)
+                        </v-btn>
+                        </span>
+                        <span v-else>
+                        <a
+                            v-if="item.document"
+                            :href="docPath + item.document"
+                            class="btn btn-info btn-sm text-white m-1"
+                            download
+                        >
+                            <v-icon color="white" small>mdi-paperclip</v-icon> NID
+                        </a>
+                        </span>
+                    </span>
+                    
+                    <span v-if="item.document2">
+                        <span v-if="item.document2.includes('.pdf')">
+                        <v-btn
+                            v-if="item.document2"
+                            @click="pdfGetFile(docPath2 + item.document2)"
+                            small
+                            class="ma-1"
+                            color="success"
+                            ><v-icon left>mdi-eye</v-icon>OID (PDF)</v-btn
+                        >
+                        </span>
+                        <span
+                        v-else-if="
+                            (item.document2 && item.document2.includes('.jpg')) ||
+                            (item.document2 && item.document2.includes('.jpeg')) ||
+                            (item.document2 && item.document2.includes('.png')) ||
+                            (item.document2 && item.document2.includes('.JPG')) ||
+                            (item.document2 && item.document2.includes('.JPEG')) ||
+                            (item.document2 && item.document2.includes('.PNG'))
+                        "
+                        >
+                        <v-btn
+                            v-if="item.document2"
+                            :loading="imageReadyLoading"
+                            @click="imageGetFile(docPath2 + item.document2)"
+                            small
+                            class="ma-1"
+                            color="success"
+                        >
+                            <v-icon left>mdi-eye</v-icon> OID (image)
+                        </v-btn>
+                        </span>
+                        <span v-else>
+                        <a
+                            v-if="item.document2"
+                            :href="docPath + item.document2"
+                            class="btn btn-info btn-sm text-white"
+                            download
+                        >
+                            <v-icon color="white" small>mdi-paperclip</v-icon> OID
+                        </a>
+                        </span>
+                    </span>
+
+                    <span v-if="item.document3">
+                        <span v-if="item.document3 && item.document3.includes('.pdf')">
+                        <v-btn
+                            v-if="item.document3"
+                            @click="pdfGetFile(docPath2 + item.document3)"
+                            small
+                            class="ma-1"
+                            color="success"
+                            ><v-icon left>mdi-eye</v-icon>DOC (PDF)</v-btn
+                        >
+                        </span>
+                        <span
+                        v-else-if="
+                            (item.document3 && item.document3.includes('.jpg')) ||
+                            (item.document3 && item.document3.includes('.jpeg')) ||
+                            (item.document3 && item.document3.includes('.png')) ||
+                            (item.document3 && item.document3.includes('.JPG')) ||
+                            (item.document3 && item.document3.includes('.JPEG')) ||
+                            (item.document3 && item.document3.includes('.PNG'))
+                        "
+                        >
+                        <v-btn
+                            v-if="item.document3"
+                            :loading="imageReadyLoading"
+                            @click="imageGetFile(docPath2 + item.document3)"
+                            small
+                            class="ma-1"
+                            color="success"
+                        >
+                            <v-icon left>mdi-eye</v-icon> DOC (image)
+                        </v-btn>
+                        </span>
+                        <span v-else>
+                        <a
+                            v-if="item.document3"
+                            :href="docPath + item.document3"
+                            class="btn btn-info btn-sm text-white"
+                            download
+                        >
+                            <v-icon color="white" small>mdi-paperclip</v-icon> DOC
+                        </a>
+                        </span>
+                    </span>
+                    
                   </span>
                   <span v-else class="text-danger">No Document's Send</span>
                 </td>
 
-                <td>
-                  {{ item.branch }}
-                </td>
-
-                <td>
-                  {{ item.position }}
-                </td>
-
-                <td>
-                  {{ item.department }}
-                </td>
-
+                <td>{{ item.branch }}</td>
+                <td>{{ item.position }}</td>
+                <td>{{ item.department }}</td>
                 <td>
                   <span v-if="item.created_at">{{
                     item.created_at | moment("MMMM Do YYYY, h:mm a")
@@ -328,16 +435,6 @@
                     color="teal"
                     @click="getDetails(item.id)"
                     small
-                    v-if="item.id != checkID"
-                    class="white--text"
-                    ><v-icon left>mdi-eye</v-icon>View</v-btn
-                  >
-
-                  <v-btn
-                    v-if="item.id == checkID"
-                    :loading="appDetailsLodaing"
-                    color="teal"
-                    small
                     class="white--text"
                     ><v-icon left>mdi-eye</v-icon>View</v-btn
                   >
@@ -386,12 +483,12 @@
     <!-- viewDocumentDialog -->
     <v-dialog v-model="viewDocument" max-width="900">
       <v-card>
-        <vue-pdf-app :file="pdfFile" />
+        <vue-pdf-app :file="pdfbase64" />
       </v-card>
     </v-dialog>
 
     <!-- viewApplication -->
-    <v-dialog v-model="viewApplication" max-width="900" fullscreen>
+    <v-dialog v-model="viewApplication" fullscreen>
       <v-card>
         <v-card-text>
           <v-card-title>
@@ -531,6 +628,27 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+
+    <!-- File preview Overlay -->
+    <v-overlay :value="overlayFileView">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+
+    <!-- viewImageDialog -->
+    <v-dialog v-model="viewImage">
+      <v-card>
+        <v-card-title>
+          <a
+            :href="'/' + imageFile"
+            class="btn btn-info btn-sm text-white m-1"
+            download
+          >
+            <v-icon color="white" small>mdi-paperclip</v-icon> Download
+          </a>
+        </v-card-title>
+        <v-img :src="'/' + imageFile" alt="image" contain></v-img>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -547,9 +665,7 @@ export default {
     return {
       // viewApplication
       viewApplication: false,
-      appDetailsLodaing: false,
       applicationDetails: {},
-      checkID: "",
 
       // dialog
       driverModal: false,
@@ -631,18 +747,16 @@ export default {
     },
 
     getDetails(id) {
-      this.checkID = id;
-      this.appDetailsLodaing = true;
+      this.overlayFileView = true;
       axios
         .get(this.currentUrl + "/get_app_details/" + id)
         .then((response) => {
           this.applicationDetails = response.data;
           this.viewApplication = true;
-          this.appDetailsLodaing = false;
+          this.overlayFileView = false;
         })
         .catch((error) => {
-          this.appDetailsLodaing = false;
-          this.checkID = "";
+          this.overlayFileView = false;
           Swal.fire({
             icon: "error",
             title: "Somthing Going Wrong<br>",

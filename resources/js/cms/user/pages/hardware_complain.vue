@@ -71,15 +71,7 @@
                                         <span class="float-right">{{ form.details.length }}/ 20,000</span>
                                     </v-col>
                                 </v-row>
-                                <!-- <v-textarea
-                                    outlined
-                                    label="Details"
-                                    v-model="form.details"
-                                    placeholder="Please, Mention your problem in details"
-                                    :counter="20000"
-                                    :rules="remRules"
-                                    required
-                                    ></v-textarea> -->
+                               
                             </v-col>
 
                             <!-- document -->
@@ -193,6 +185,9 @@
             // getSubcategory
             getSubcategory() {
                 //console.log('cat id', this.form.cat_id)
+
+                // checkedAccessories make empty
+                this.checkedAccessories = []
 
                 this.allCatData.forEach(element => {
                     //console.log(element.id)

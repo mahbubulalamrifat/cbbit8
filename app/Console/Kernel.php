@@ -37,11 +37,22 @@ class Kernel extends ConsoleKernel
         //->everyMinute();
         ->dailyAt('08:30');
 
+        $schedule->command('command:Pendings')
+            ->withoutOverlapping()
+            ->dailyAt('09:30')
+            //->everyMinute();
+            ->onFailure(function () { 
+                $msg ="Notification Pending Schedule Error";
+                \Log::info($msg);
+                ScheduleCheck::ErrorMsgOnLine($msg);
+            });
+            
+
         $schedule->command('command:TodayBookedCar')
             ->withoutOverlapping()
             ->dailyAt('08:00')
             ->onFailure(function () { 
-                $msg ="TodayBookedCar schedule Error";
+                $msg ="TodayBookedCar Schedule Error";
                 \Log::info($msg);
                 ScheduleCheck::ErrorMsgOnLine($msg);
             });

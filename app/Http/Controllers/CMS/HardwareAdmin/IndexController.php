@@ -162,6 +162,7 @@ class IndexController extends Controller
         return response()->json($alldata, 200);
     }
 
+
     // pdf_get_file
     public function pdf_get_file(){
         $path = Request('document');
@@ -177,8 +178,4 @@ class IndexController extends Controller
             return response()->json($base64);
         }
     }
-
-
-
-
 }

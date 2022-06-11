@@ -26,7 +26,7 @@ class EmailRequestController extends Controller
         $sort_by_endDate     = Request('sort_by_endDate', '');
         $sort_by_type     = Request('sort_by_type', '');
 
-        $allQuery =  iaccessEmailRequest::with('manager', 'buhead', 'verify', 'makby');
+        $allQuery =  iaccessEmailRequest::with('manager', 'buhead', 'verify', 'makby')->whereNull('verify_status');
         
         
         // sort_by_day
@@ -210,6 +210,7 @@ class EmailRequestController extends Controller
             'applicant_branch'=> $data->branch ?? '',
             'applicant_department'=> $data->department ?? '',
             'applicant_request_for'=> $data->request_for ?? '',
+            'applicant_request_email'=> $data->request_email ?? '',
             'applicant_purpose'=> $data->purpose ?? '',
             'applicant_web_url'=> $data->web_url ?? '',
             'token' => $data->manager_token
@@ -249,6 +250,7 @@ class EmailRequestController extends Controller
             'applicant_branch'=> $data->branch ?? '',
             'applicant_department'=> $data->department ?? '',
             'applicant_request_for'=> $data->request_for ?? '',
+            'applicant_request_email'=> $data->request_email ?? '',
             'applicant_purpose'=> $data->purpose ?? '',
             'applicant_web_url'=> $data->web_url ?? '',
             'token' => $data->bu_token ?? '',

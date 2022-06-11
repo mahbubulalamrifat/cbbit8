@@ -13,8 +13,6 @@ import globalRolePermissions from './../../../../role_permissions'
 
 
 
-
-
 export default {
     data() {
         return {
@@ -39,6 +37,7 @@ export default {
             imageMaxSize: '2111775',
             fileMaxSize: '5111775',
             overlayshow: false,
+            overlayFileView: false,
 
             Departments: [],
             Offices: [],
@@ -51,13 +50,17 @@ export default {
             dataModalLoading: false,
 
             // pdf
-            pdfFile: '',
+            //pdf: '',
+            pdfbase64: '',
             viewDocument: false,
             // for pdf only
             docPath2: 'images/iaccess/',
             pdfReadyLoading:false,
 
-
+            //   imageFile
+            imageFile: '',
+            viewImage: false,
+            imageReadyLoading: false,
 
         }
     },
@@ -76,36 +79,6 @@ export default {
 
         // create Update Methods
         ...createUpdate,
-
-
-
-
-
-
-        // getDepartments() {
-        //     axios.get('/super_admin/user/departments').then(response => {
-        //         //console.log(response.data)
-        //         this.allDepartments = response.data
-
-        //         this.allDepartments.shift();
-        //     }).catch(error => {
-        //         console.log(error)
-        //     })
-        // },
-
-
-
-        // getOffice() {
-        //     axios.get('/super_admin/user/zoneoffices').then(response => {
-        //         // zone_office
-        //         response.data.office.forEach(element => {
-        //             this.allOffice.push({
-        //                 value: element.zone_office,
-        //                 text: element.zone_office
-        //             });
-        //         });
-        //     });
-        // },
 
         
 
@@ -156,7 +129,6 @@ export default {
         },
 
 
-
         // PDF
         base64ToArrayBuffer(base64) {
             var binary_string = window.atob(base64);
@@ -165,24 +137,32 @@ export default {
             for (var i = 0; i < len; i++) {
                 bytes[i] = binary_string.charCodeAt(i);
             }
-            this.pdfFile = bytes.buffer
-            this.pdfReadyLoading = false
+            this.pdfbase64 = bytes.buffer
+            this.overlayFileView = false
             this.viewDocument = true
             return bytes.buffer;
         },
 
         // PDF
         pdfGetFile(doc) {
-            this.pdfReadyLoading = true
+            this.overlayFileView = true
             axios.post('/iaccess/pdf_get_file', {
                 document: doc
             }).then((res) => {
                 this.base64ToArrayBuffer(res.data)
             }).catch(error=>{
-                this.pdfReadyLoading = false
+                this.overlayFileView = false
                 console.error(error)
             });
-        }
+        },
+
+        imageGetFile(doc) {
+            //console.log(doc);
+            this.imageReadyLoading = true;
+            this.imageFile = doc;
+            this.viewImage = true;
+            this.imageReadyLoading = false;
+        },
 
         // End Methods
     },

@@ -12,40 +12,6 @@ use App\Models\User;
 
 class CommonController extends Controller
 {
-
-    // for notification only
-
-    public static function NotificationZoneOfficesByAuth(){
-
-        // Zones By Users access
-        // $zoneAccess = Auth::user()->zons()->select('name')->get()->toArray();
-        // $zoneAccessName = [];
-        // foreach( $zoneAccess as $item ){
-        //     array_push($zoneAccessName, $item['name'] );
-        // }
-
-        $zoneAccessName = ['Aqua','North Bengal','Dhaka','Chittagong'];
-
-        // Zone offices
-        $zoneOffices = ZoneOffice::whereIn('name', $zoneAccessName)->get()->toArray();
-        $zoneOfficeName = [];
-        foreach( $zoneOffices as $item ){
-            $arr = explode(",", $item['offices'] );
-            array_push($zoneOfficeName, $arr);
-        }
-
-        $finalArrOffices = [];
-        // Array Size
-        foreach($zoneOfficeName as $item){
-            // Array Merge
-            $finalArrOffices = array_merge($finalArrOffices, $item);
-        }
-      
-        return $finalArrOffices;
-        
-    }
-
-
     // zone Offices name By Admin Access  
     public static function ZoneOfficesByAuth(){
 

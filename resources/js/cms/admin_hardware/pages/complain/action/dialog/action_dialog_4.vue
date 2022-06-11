@@ -47,7 +47,7 @@
 
                                     <v-row v-if="selectedProduct.length">
                                         <!-- Product Select -->
-                                        <v-col cols="6">
+                                        <v-col cols="10">
                                             <!-- {{ form.product_id.length }} -->
                                             <v-autocomplete :items="selectedProduct" v-model="form.product_id"
                                                 label="Select Product" :rules="[v => !!v || 'Product is required!']"
@@ -60,13 +60,12 @@
                                                 class="rounded bg-info px-1 h4">{{ form.product_id.length }}</span>
                                         </v-col>
                                         <!-- Operation Select for Inventory -->
-                                        <v-col cols="4">
-                                            <!-- {{ form.product_id }} -->
+                                        <!-- <v-col cols="4">
                                             <v-autocomplete :items="invOperations" v-model="form.operation_id"
                                                 label="Select Operation" :rules="[v => !!v || 'Operation is required!']"
                                                 outlined dense required>
                                             </v-autocomplete>
-                                        </v-col>
+                                        </v-col> -->
                                     </v-row>
                                 </v-card-text>
                                 <v-card-text v-else>
@@ -79,7 +78,7 @@
                                 </v-card-text>
 
                                 <!-- Reciver Details -->
-                                <v-col cols="12" lg="4">
+                                <!-- <v-col cols="12" lg="4">
                                     <div class="small text-danger" v-if="form.errors.has('rec_name')"
                                         v-html="form.errors.get('rec_name')" />
                                     <v-text-field v-model="form.rec_name"
@@ -98,7 +97,7 @@
                                     <v-text-field v-model="form.rec_position"
                                         :rules="[v => !!v || 'Reciver Position is required!']" label="Receiver Position"
                                         required></v-text-field>
-                                </v-col>
+                                </v-col> -->
 
 
 
@@ -198,7 +197,7 @@
                     v => /01+/.test(v) || 'Phone Number must be valid',
                 ],
 
-                dataModalLoading: false,
+                dataModalLoading: false, 
 
 
                 // Form
@@ -286,57 +285,54 @@
                     this.selectedProduct.push(optionData)
                 }
 
+               // console.log('Selected Product', this.initialSelectProduct)
 
-
-                console.log('Selected Product', this.initialSelectProduct)
-
-
-                // let selectedProduct =[]
-                // for (let i = 0; i < val.length; i++) {
-                //         selectedProduct.push(val[i]);
-                //         selectedProduct[i] = {value: val[i].id, text: val[i].category.name + ' -- ' + val[i].name + ' -- SL: ' + val[i].serial + ' -- P.O: ' + val[i].po_number};
-                //     }
-
-
-                //this.secectedProID = val[0].cat_id
-                // console.log('Selected Product', val, this.secectedProID, this.selectedProduct)
-
-                //this.selectedProduct = val
             },
 
            
 
 
             // actionStore
-            actionStore() {
-                // Loading
-                this.dataModalLoading = true
-                // Assign complain ID
-                this.form.comp_id = this.comData.id
+            actionStore() {  
 
-                this.form.accessories = this.checkedAccessories
-
-                this.form.post(this.currentUrl + '/action_damaged').then(response => {
-                    //console.log(response.data)
+                if( ! this.form.product_id.length ){
+                    Swal.fire({
+                        icon:'warning',
+                        title: 'Product selection error?',
+                        text: 'Please, select a product for replace',
+                    })
+                }else{
 
                     // Loading
-                    this.dataModalLoading = false
+                    this.dataModalLoading = true
+                    // Assign complain ID
+                    this.form.comp_id = this.comData.id
 
-                    this.actionDailog = false
+                    this.form.accessories = this.checkedAccessories
 
-                    Swal.fire({
-                        icon: response.data.icon,
-                        title: response.data.msg,
+                    this.form.post(this.currentUrl + '/action_damaged').then(response => {
+                        //console.log(response.data)
+
+                        // Loading
+                        this.dataModalLoading = false
+
+                        this.actionDailog = false
+
+                        Swal.fire({
+                            icon: response.data.icon,
+                            title: response.data.msg,
+                        })
+
+                        // Parent to child
+                        this.$emit('childToParent')
+
+                    }).catch(error => {
+                        // Loading
+                        this.dataModalLoading = false
+                        console.log(error)
                     })
 
-                    // Parent to child
-                    this.$emit('childToParent')
-
-                }).catch(error => {
-                    // Loading
-                    this.dataModalLoading = false
-                    console.log(error)
-                })
+                }
 
             },
 

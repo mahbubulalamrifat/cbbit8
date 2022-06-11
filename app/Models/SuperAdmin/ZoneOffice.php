@@ -17,6 +17,7 @@ class ZoneOffice extends Model
     public function scopeSearch($query, $val='')
     {
         return $query
-        ->where('name', 'LIKE', '%'.$val.'%'); 
+        ->where('name', 'LIKE', '%'.$val.'%')
+        ->orWhere('offices', 'LIKE', '%'.$val.'%'); 
     }
 }
