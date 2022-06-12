@@ -19,6 +19,12 @@ import VerifyAccountAuthorityRequest from './../pages/verify/account_authority_r
 import VerifyEmailRequest from './../pages/verify/email_request.vue'
 import VerifyGuestRequest from './../pages/verify/guest_request.vue'
 
+// rejected
+import RejectInternetAccessRequest from './../pages/reject/internet_access_request.vue'
+import RejectAccountAuthorityRequest from './../pages/reject/account_authority_request.vue'
+import RejectEmailRequest from './../pages/reject/email_request.vue'
+import RejectGuestRequest from './../pages/reject/guest_request.vue'
+
 
 const router = new VueRouter({
     mode: 'history',
@@ -110,6 +116,44 @@ const router = new VueRouter({
             path: '/iaccess/admin/verify-guest-request', 
             component: VerifyGuestRequest,
             name: 'VerifyGuestRequest',
+            meta:{
+                title: 'Admin Verified Guest Request',
+            },   
+        },
+
+
+        // rejected
+        { 
+            path: '/iaccess/admin/reject-internet-access', 
+            component: RejectInternetAccessRequest,
+            name: 'RejectInternetAccessRequest',
+            meta:{
+                title: 'Admin Verified Internet Access Request',
+            },   
+        },
+
+        { 
+            path: '/iaccess/admin/reject-account-authority', 
+            component: RejectAccountAuthorityRequest,
+            name: 'RejectAccountAuthorityRequest',
+            meta:{
+                title: 'Admin Verified Account Authority Request',
+            },   
+        },
+
+        { 
+            path: '/iaccess/admin/reject-email-request', 
+            component: RejectEmailRequest,
+            name: 'RejectEmailRequest',
+            meta:{
+                title: 'Admin Verified Email Request',
+            },   
+        },
+
+        { 
+            path: '/iaccess/admin/reject-guest-request', 
+            component: RejectGuestRequest,
+            name: 'RejectGuestRequest',
             meta:{
                 title: 'Admin Verified Guest Request',
             },   

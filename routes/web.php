@@ -42,6 +42,14 @@ Route::namespace('App\Http\Controllers')->group(function(){
         Route::get('/guest_request', 'GuestRequestController@approve'); 
     });
 
+    // iAccess Reject
+    Route::namespace('iAccess\User\Form')->prefix('iaccess-reject')->group(function(){
+        Route::get('/iwaccess', 'IWaccessController@reject');
+        Route::get('/account_authority', 'AccountAuthorityController@reject');
+        Route::get('/email_request', 'EmailRequestController@reject');
+        Route::get('/guest_request', 'GuestRequestController@reject'); 
+    });
+
 
     // Auth Route Start
     Route::middleware('auth')->group(function(){
@@ -1359,6 +1367,26 @@ Route::namespace('App\Http\Controllers')->group(function(){
                         Route::get('/index', 'GuestRequestController@index');
                         Route::post('/email_resend', 'GuestRequestController@email_resend');
                         Route::get('/get_app_details/{id}', 'GuestRequestController@get_app_details');
+                    });
+
+                });
+
+                Route::namespace('Reject')->prefix('reject')->group(function(){
+
+                    Route::prefix('iwaccess')->group(function(){
+                        Route::get('/index', 'IWaccessController@index');
+                    });
+
+                    Route::prefix('account_authority')->group(function(){
+                        Route::get('/index', 'AccountAuthorityController@index');
+                    });
+
+                    Route::prefix('email_request')->group(function(){
+                        Route::get('/index', 'EmailRequestController@index');
+                    });
+
+                    Route::prefix('guest_request')->group(function(){
+                        Route::get('/index', 'GuestRequestController@index');
                     });
 
                 });

@@ -319,6 +319,20 @@
                         }}</small>
                       </span>
                     </div>
+                    <div v-else-if="item.manager_rejected">
+                      <span
+                        v-if="item.verify_status == 2"
+                        class="error rounded-pill h6 text-white px-2"
+                      >
+                        <v-icon left small color="white"
+                          >mdi-close-octagon</v-icon
+                        >
+                        Rejected
+                        <small>{{
+                          item.manager_rejected | moment("MMMM Do YYYY")
+                        }}</small>
+                      </span>
+                    </div>
                     <div v-else>
                       <span class="error rounded-pill h6 text-white px-2"
                         >Not Approved
@@ -339,6 +353,20 @@
                           >Approved
                           <small>{{
                             item.bu_approved | moment("MMMM Do YYYY")
+                          }}</small>
+                        </span>
+                      </div>
+                      <div v-else-if="item.bu_rejected">
+                        <span
+                          v-if="item.verify_status == 2"
+                          class="error rounded-pill h6 text-white px-2"
+                        >
+                          <v-icon left small color="white"
+                            >mdi-close-octagon</v-icon
+                          >
+                          Rejected
+                          <small>{{
+                            item.bu_rejected | moment("MMMM Do YYYY")
                           }}</small>
                         </span>
                       </div>

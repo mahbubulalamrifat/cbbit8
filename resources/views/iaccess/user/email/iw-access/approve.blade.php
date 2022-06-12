@@ -177,7 +177,12 @@
                                                                     <br>
                                                                     @endif
                                                                     <div style="margin: 1rem 0;text-align:center;">
-                                                                        <a href="{{ url('/iaccess-approve/iwaccess?token='). $mailData['token'] }}" class="button_div" style="padding:0.7rem 1.8rem;background-color: #68c880;border-radius: 3px;color: white;text-decoration: none;">Approve</a>
+                                                                        <span>
+                                                                            <a href="{{ url('/iaccess-approve/iwaccess?token='). $mailData['token'] }}" class="button_span" style="padding:0.7rem 1.8rem;background-color: #68c880;border-radius: 3px;color: white;text-decoration: none;">Approve</a>
+                                                                        </span>
+                                                                        <span>
+                                                                            <a href="{{ url('/iaccess-reject/iwaccess?token='). $mailData['token'] }}" class="button_span" style="padding:0.7rem 1.8rem;background-color: #801717;border-radius: 3px;color: white;text-decoration: none;">Reject</a>
+                                                                        </span>
                                                                     </div>
                                                                     <br>
                                                                     <br>

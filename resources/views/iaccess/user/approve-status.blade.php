@@ -20,7 +20,7 @@
                 <img src="{{ asset('all-assets/common/img/approved.gif') }}" alt="Success">
             @elseif($notification['status'] == 'warning')
                 <img src="{{ asset('all-assets/common/img/warning.gif') }}" alt="Warning">
-            @else 
+            @elseif($notification['status'] == 'reject') 
                 <img src="{{ asset('all-assets/common/img/rejected.gif') }}" alt="Error">
             @endif
            

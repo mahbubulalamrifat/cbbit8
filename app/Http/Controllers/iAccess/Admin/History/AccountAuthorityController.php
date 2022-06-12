@@ -200,7 +200,7 @@ class AccountAuthorityController extends Controller
                 'msg' => 'Sending Email Error !!'
             ], 422);  
         }
-        $sub = $data->name.' : Internet / Web Access Request';
+        $sub = $data->name.' : Account / Authority Request';
 
         $mailData = [
             'to'=> $to,

@@ -112,8 +112,6 @@ class GuestRequestController extends Controller
             $to = $data->personal_email;
         }
 
-        // $to = 'saifulislamw60@gmail.com';
-        $to = $data->buhead->email;
         if(empty($to)){
             return response()->json([
                 'msg' => 'Sending Email Error !!'

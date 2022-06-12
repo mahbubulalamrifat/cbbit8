@@ -137,6 +137,7 @@
           </v-list-item-content>
         </v-list-item>
 
+        <!-- verified -->
         <v-list-group
           prepend-icon="mdi-check-circle-outline"
           active-class="indigo white--text"
@@ -155,14 +156,7 @@
               <v-icon>mdi-web</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title
-                >Internet/Web
-                <v-badge
-                  v-if="CountInternet"
-                  color="error ml-2"
-                  :content="CountInternet"
-                ></v-badge>
-              </v-list-item-title>
+              <v-list-item-title>Internet/Web </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -175,14 +169,7 @@
               <v-icon>mdi-account-cowboy-hat-outline </v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title
-                >Account/Authority
-                <v-badge
-                  v-if="CountAccount"
-                  color="error ml-2"
-                  :content="CountAccount"
-                ></v-badge>
-              </v-list-item-title>
+              <v-list-item-title>Account/Authority </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -191,14 +178,7 @@
               <v-icon>mdi-email-check-outline </v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title
-                >Email
-                <v-badge
-                  v-if="CountEmail"
-                  color="error ml-2"
-                  :content="CountEmail"
-                ></v-badge>
-              </v-list-item-title>
+              <v-list-item-title>Email </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -207,14 +187,62 @@
               <v-icon>mdi-account-network-outline </v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title
-                >Guest
-                <v-badge
-                  v-if="CountGuest"
-                  color="error ml-2"
-                  :content="CountGuest"
-                ></v-badge>
-              </v-list-item-title>
+              <v-list-item-title>Guest </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+
+        <!-- rejected -->
+        <v-list-group
+          prepend-icon="mdi-close-circle-outline"
+          active-class="indigo white--text"
+          no-action
+        >
+          <template v-slot:activator>
+            <v-list-item-title>Rejected (BU/Manager)</v-list-item-title>
+          </template>
+
+          <v-list-item
+            link
+            router
+            :to="{ name: 'RejectInternetAccessRequest' }"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-web</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Internet/Web </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            link
+            router
+            :to="{ name: 'RejectAccountAuthorityRequest' }"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-account-cowboy-hat-outline </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Account/Authority </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item link router :to="{ name: 'RejectEmailRequest' }">
+            <v-list-item-icon>
+              <v-icon>mdi-email-check-outline </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Email </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item link router :to="{ name: 'RejectGuestRequest' }">
+            <v-list-item-icon>
+              <v-icon>mdi-account-network-outline </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Guest </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>

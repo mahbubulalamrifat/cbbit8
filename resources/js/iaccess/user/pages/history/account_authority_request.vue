@@ -348,6 +348,15 @@
                       item.manager_approved | moment("MMMM Do YYYY")
                     }}</small></span
                   >
+                  <span
+                    v-else-if="item.manager_rejected"
+                    class="error rounded-pill h6 text-white px-2"
+                  >
+                    Rejected
+                    <span small>{{
+                      item.manager_rejected | moment("MMMM Do YYYY")
+                    }}</span>
+                  </span>
                   <span v-else class="error rounded-pill h6 text-white px-2"
                     >Not Approved</span
                   >
@@ -367,10 +376,35 @@
                         item.bu_approved | moment("MMMM Do YYYY")
                       }}</small></span
                     >
+                    <span
+                      v-else-if="item.bu_rejected"
+                      class="error rounded-pill h6 text-white px-2"
+                    >
+                      Rejected
+                      <span small>{{
+                        item.bu_rejected | moment("MMMM Do YYYY")
+                      }}</span>
+                    </span>
                     <span v-else class="error rounded-pill h6 text-white px-2"
                       >Not Approved</span
                     >
                   </span>
+                  <span v-else-if="item.bu_rejected || item.manager_rejected">
+                    <span
+                      v-if="item.manager_rejected"
+                      class="error rounded-pill h6 text-white px-2"
+                    >
+                      Rejected by Manager
+                      <span small>{{
+                        item.manager_rejected | moment("MMMM Do YYYY")
+                      }}</span>
+                    </span>
+                    <hr />
+                    <span class="error rounded-pill h6 text-white px-2">
+                      Rejected
+                    </span>
+                  </span>
+
                   <span v-else>
                     <span class="info rounded-pill h6 text-white px-2"
                       >Waiting for Manager</span
@@ -431,6 +465,33 @@
                     <span v-else class="info rounded-pill h6 text-white px-2"
                       >Not Yet Done</span
                     >
+                  </span>
+
+                  <span v-else-if="item.verify_status == 3">
+                    <span
+                      v-if="item.manager_rejected"
+                      class="error rounded-pill h6 text-white px-2"
+                    >
+                      <v-icon left small color="white"
+                        >mdi-close-octagon</v-icon
+                      >
+                      Rejected by Manager
+                      <small>
+                        {{ item.manager_rejected | moment("MMMM Do YYYY") }}
+                      </small>
+                    </span>
+                    <span
+                      v-if="item.bu_rejected"
+                      class="error rounded-pill h6 text-white px-2"
+                    >
+                      <v-icon left small color="white"
+                        >mdi-close-octagon</v-icon
+                      >
+                      Rejected by BU Head
+                      <small>
+                        {{ item.bu_rejected | moment("MMMM Do YYYY") }}
+                      </small>
+                    </span>
                   </span>
                   <span v-else>
                     <span class="error rounded-pill h6 text-white px-2"

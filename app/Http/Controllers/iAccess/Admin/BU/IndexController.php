@@ -37,7 +37,7 @@ class IndexController extends Controller
         $this->validate($request,[
             'name'     => 'required|string|max:100',
             'email'    => 'required|string|max:100|unique:iaccess_bus',
-            'designation' => 'nuulable|string|max:100',
+            'designation' => 'nullable|string|max:100',
         ]);
 
         $data = new iaccessBu();

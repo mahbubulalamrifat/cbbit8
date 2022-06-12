@@ -181,50 +181,56 @@ class AccountAuthorityController extends Controller
 
                 if($data){
 
-                    if( empty($data->manager_approved) ){
-                        // Manager Part
+                    if( empty($data->manager_rejected) ){
+                        if( empty($data->manager_approved) ){
+                            // Manager Part
 
-                        $data->manager_approved = Carbon::now();
-                        $success = $data->save();
+                            $data->manager_approved = Carbon::now();
+                            $success = $data->save();
 
-                        // B U mail Start
-                        //$to = 'saifulislamw60@gmail.com';
-                        $to = $data->buhead->email;
-                        if(empty($to)){
-                            return response()->json([
-                                'msg' => 'Sending Email Error !!'
-                            ], 422);  
-                        }
-                        $sub = $data->name.' : Account / Authority Request';
+                            // B U mail Start
+                            //$to = 'saifulislamw60@gmail.com';
+                            $to = $data->buhead->email;
+                            
+                            if(empty($to)){
+                                return response()->json([
+                                    'msg' => 'Sending Email Error !!'
+                                ], 422);  
+                            }
+                            $sub = $data->name.' : Account / Authority Request';
 
-                        $mailData = [
-                            'to'=> $to,
-                            'sub'=> $sub,
-                            'name'=> $data->buhead->name ?? '',
-                            'applicant_name'=> $data->name ?? '',
-                            'applicant_position'=> $data->position ?? '',
-                            'applicant_branch'=> $data->branch ?? '',
-                            'applicant_department'=> $data->department ?? '',
-                            'applicant_request_for'=> $data->request_for ?? '',
-                            'applicant_access_for'=> $data->access_for ?? '',
-                            'applicant_modules'=> $data->modules ?? '',
-                            'applicant_purpose'=> $data->purpose ?? '',
-                            'applicant_web_url'=> $data->web_url ?? '',
-                            'token' => $data->bu_token ?? '',
-                        ];
-                
-                        self::MailSendAccountAuthorityRequest($mailData);
-                        // B U mail End
+                            $mailData = [
+                                'to'=> $to,
+                                'sub'=> $sub,
+                                'name'=> $data->buhead->name ?? '',
+                                'applicant_name'=> $data->name ?? '',
+                                'applicant_position'=> $data->position ?? '',
+                                'applicant_branch'=> $data->branch ?? '',
+                                'applicant_department'=> $data->department ?? '',
+                                'applicant_request_for'=> $data->request_for ?? '',
+                                'applicant_access_for'=> $data->access_for ?? '',
+                                'applicant_modules'=> $data->modules ?? '',
+                                'applicant_purpose'=> $data->purpose ?? '',
+                                'applicant_web_url'=> $data->web_url ?? '',
+                                'token' => $data->bu_token ?? '',
+                            ];
+                    
+                            self::MailSendAccountAuthorityRequest($mailData);
+                            // B U mail End
 
-                        if($success){
-                            $notification = [ 'status' => 'success', 'msg'=> 'Successfully Approved', 'data'=> $userData ];
+                            if($success){
+                                $notification = [ 'status' => 'success', 'msg'=> 'Successfully Approved', 'data'=> $userData ];
+                            }else{
+                                $notification = [ 'status' => 'error', 'msg'=> 'Somthing going wrong. Try again, please.', 'data'=> null ];
+                            }
+
                         }else{
-                            $notification = [ 'status' => 'error', 'msg'=> 'Somthing going wrong. Try again, please.', 'data'=> null ];
+                            $notification = [ 'status' => 'warning', 'msg'=> 'Already Approved', 'data'=> $userData ];
                         }
-
                     }else{
-                        $notification = [ 'status' => 'warning', 'msg'=> 'Already Approved', 'data'=> $userData ];
+                        $notification = [ 'status' => 'warning', 'msg'=> 'Already Rejected', 'data'=> $userData ];
                     }
+                    
 
                 }else{
                     $notification = [ 'status' => 'error', 'msg'=> 'Token Not found', 'data'=> null ];
@@ -254,55 +260,60 @@ class AccountAuthorityController extends Controller
                
  
                  if($data){
- 
-                     if( empty($data->bu_approved) ){
-                        // Manager Part
+                    if( empty($data->bu_rejected) ){
+                        if( empty($data->bu_approved) ){
+                            // Manager Part
 
-                        $data->bu_approved = Carbon::now();
-                        $success = $data->save();
+                            $data->bu_approved = Carbon::now();
+                            $success = $data->save();
 
-                        // B U mail Start
-                        //$to = 'saifulislamw60@gmail.com';
-                        $to = 'sagor@cpbangladesh.com';
-                        $sub = $data->name.' : Account / Authority Request';
+                            // B U mail Start
+                            //$to = 'saifulislamw60@gmail.com';
+                            $to = 'sagor@cpbangladesh.com';
+                            $sub = $data->name.' : Account / Authority Request';
 
-                        $mailData = [
-                            'to'=> $to,
-                            'sub'=> $sub,
-                            'name'=> 'Md. Saiful Alam',
-                            'applicant_name'=> $data->name ?? '',
-                            'applicant_position'=> $data->position ?? '',
-                            'applicant_branch'=> $data->branch ?? '',
-                            'applicant_department'=> $data->department ?? '',
-                            'applicant_request_for'=> $data->request_for ?? '',
-                            'applicant_access_for'=> $data->access_for ?? '',
-                            'applicant_modules'=> $data->modules ?? '',
-                            'applicant_purpose'=> $data->purpose ?? '',
-                            'applicant_web_url'=> $data->web_url ?? '',
-                            'bu_name' => $data->buhead->name ?? '',
-                            'manager_name' => $data->manager->name ?? '',
-                        ];
-                
-                        Mail::send('iaccess.user.email.acc-authority.accept', compact('mailData'), function ($message) use ($mailData) {
-                            $message->to( $mailData['to'] );
-                            $message->subject( $mailData['sub'] );
-                            $message->from( 'it-noreply@cpbangladesh.com' );
-                        });
-                         // B U mail End
+                            $mailData = [
+                                'to'=> $to,
+                                'sub'=> $sub,
+                                'name'=> 'Md. Saiful Alam',
+                                'applicant_name'=> $data->name ?? '',
+                                'applicant_position'=> $data->position ?? '',
+                                'applicant_branch'=> $data->branch ?? '',
+                                'applicant_department'=> $data->department ?? '',
+                                'applicant_request_for'=> $data->request_for ?? '',
+                                'applicant_access_for'=> $data->access_for ?? '',
+                                'applicant_modules'=> $data->modules ?? '',
+                                'applicant_purpose'=> $data->purpose ?? '',
+                                'applicant_web_url'=> $data->web_url ?? '',
+                                'bu_name' => $data->buhead->name ?? '',
+                                'manager_name' => $data->manager->name ?? '',
+                            ];
+                    
+                            Mail::send('iaccess.user.email.acc-authority.accept', compact('mailData'), function ($message) use ($mailData) {
+                                $message->to( $mailData['to'] );
+                                $message->subject( $mailData['sub'] );
+                                $message->from( 'it-noreply@cpbangladesh.com' );
+                            });
+                                // B U mail End
+
+                                if($success){
+                                    $notification = [ 'status' => 'success', 'msg'=> 'Successfully Approved', 'data'=> $userData ];
+                                }else{
+                                    $notification = [ 'status' => 'error', 'msg'=> 'Somthing going wrong. Try again, please.', 'data'=> null ];
+                                }
+
+                        }else{
+                            $notification = [ 'status' => 'warning', 'msg'=> 'Already Approved', 'data'=> $userData ];
+                        }
+
+                    }else{
+                        $notification = [ 'status' => 'warning', 'msg'=> 'Already Rejected', 'data'=> $userData ];
+                    }
+                     
  
-                         if($success){
-                             $notification = [ 'status' => 'success', 'msg'=> 'Successfully Approved', 'data'=> $userData ];
-                         }else{
-                             $notification = [ 'status' => 'error', 'msg'=> 'Somthing going wrong. Try again, please.', 'data'=> null ];
-                         }
- 
-                     }else{
-                         $notification = [ 'status' => 'warning', 'msg'=> 'Already Approved', 'data'=> $userData ];
-                     }
- 
-                 }else{
-                     $notification = [ 'status' => 'error', 'msg'=> 'Token Not found', 'data'=> null ];
-                 }
+                }else{
+                    $notification = [ 'status' => 'error', 'msg'=> 'Token Not found', 'data'=> null ];
+                }
 
 
 
@@ -310,7 +321,7 @@ class AccountAuthorityController extends Controller
                 $notification = [ 'status' => 'error', 'msg'=> 'Token not valid', 'data'=> null ];
             }
 
-       
+
 
             //dd($notification['status'],  $notification );
             return view('iaccess.user.approve-status', compact('notification'));
@@ -332,6 +343,186 @@ class AccountAuthorityController extends Controller
             $message->from( 'it-noreply@cpbangladesh.com' );
         });
  
+    }
+
+
+    // reject
+    public function reject(){
+
+        //dd( Request('token') );
+
+        $token = Request('token');
+
+        if( $token ){
+
+            $notification = [];
+
+            $tokenArray = explode("_", $token);
+            if($tokenArray[0] == 'm'){
+                // Manager reject
+                $data = iaccessAccountRequest::with('buhead')->where('manager_token', $token)->orderBy('id', 'desc')->first();
+
+                $userData = [
+                    'id' => $data->id,
+                    'name' => $data->name,
+                    'branch' => $data->branch,
+                    'position' => $data->position,
+                    'department' => $data->department,
+                    'office_mobile' => $data->office_mobile,
+                    'personal_mobile' => $data->personal_mobile,
+                    'personal_email' => $data->personal_email,
+                    'office_email' => $data->office_email,
+                    'request_for' => $data->request_for,
+                    'access_for' => $data->access_for,
+                ];
+
+                if($data){
+                    if( empty($data->manager_approved) ){
+                        if( empty($data->manager_rejected) ){
+                            // Manager Part
+
+                            $data->manager_rejected = Carbon::now();
+                            $data->verify_status = 3;
+                            $success = $data->save();
+
+
+                            self::rejectEmail($data);
+
+                            
+
+                            if($success){
+                                $notification = [ 'status' => 'reject', 'msg'=> 'Successfully Rejected', 'data'=> $userData ];
+                            }else{
+                                $notification = [ 'status' => 'error', 'msg'=> 'Somthing going wrong. Try again, please.', 'data'=> null ];
+                            }
+
+                        }else{
+                            $notification = [ 'status' => 'warning', 'msg'=> 'Already Rejected', 'data'=> $userData ];
+                        }
+                    }else{
+                        $notification = [ 'status' => 'warning', 'msg'=> 'Already Approved', 'data'=> $userData ];
+                    
+                    }
+
+                    
+
+                }else{
+                    $notification = [ 'status' => 'error', 'msg'=> 'Token Not found', 'data'=> null ];
+                }
+                
+
+            }elseif($tokenArray[0] == 'b'){
+                // BU Head Approve
+
+                // Manager Approve
+                $data = iaccessAccountRequest::with('buhead', 'manager')->where('bu_token', $token)->orderBy('id', 'desc')->first();
+
+                $userData = [
+                    'id' => $data->id,
+                    'name' => $data->name,
+                    'branch' => $data->branch,
+                    'position' => $data->position,
+                    'department' => $data->department,
+                    'office_mobile' => $data->office_mobile,
+                    'personal_mobile' => $data->personal_mobile,
+                    'personal_email' => $data->personal_email,
+                    'office_email' => $data->office_email,
+                    'request_for' => $data->request_for,
+                    'access_for' => $data->access_for,
+                ];
+
+               
+ 
+                if($data){
+                    if( empty($data->approved) ){
+                        if( empty($data->bu_rejected) ){
+                            // Manager Part
+
+                            $data->bu_rejected = Carbon::now();
+                            $data->verify_status = 3;
+                            $success = $data->save();
+
+                            self::rejectEmail($data);
+
+
+                            if($success){
+                                $notification = [ 'status' => 'reject' ,'msg'=> 'Successfully Rejected', 'data'=> $userData ];
+                            }else{
+                                $notification = [ 'status' => 'error', 'msg'=> 'Somthing going wrong. Try again, please.', 'data'=> null ];
+                            }
+
+                        }else{
+                            $notification = [ 'status' => 'warning', 'msg'=> 'Already Rejected', 'data'=> $userData ];
+                        }
+                    }else{
+                        $notification = [ 'status' => 'warning', 'msg'=> 'Already Approved', 'data'=> $userData ];
+                    }
+                    
+ 
+                }else{
+                    $notification = [ 'status' => 'error', 'msg'=> 'Token Not found', 'data'=> null ];
+                }
+
+
+
+            }else{
+                $notification = [ 'status' => 'error', 'msg'=> 'Token not valid', 'data'=> null ];
+            }
+
+       
+
+            //dd($notification['status'],  $notification );
+            return view('iaccess.user.approve-status', compact('notification'));
+         
+           
+        }
+
+
+    }
+
+
+
+
+
+    // reject Email
+    public static function rejectEmail($data){
+
+        if(!empty($data->office_email)){
+            $to = $data->office_email;
+        }else{
+            $to = $data->personal_email;
+        }
+
+        // $to = $data->buhead->email;
+        if(empty($to)){
+            return response()->json([
+                'msg' => 'Sending Email Error !!'
+            ], 422);  
+        }
+        $sub = $data->name.' : Account / Authority Request Update';
+
+        $mailData = [
+            'to'=> $to,
+            'sub'=> $sub,
+            'applicant_name'=> $data->name ?? '',
+            'applicant_position'=> $data->position ?? '',
+            'applicant_branch'=> $data->branch ?? '',
+            'applicant_department'=> $data->department ?? '',
+            'applicant_request_for'=> $data->request_for ?? '',
+            'applicant_access_for'=> $data->access_for ?? '',
+            'applicant_modules'=> $data->modules ?? '',
+            'applicant_purpose'=> $data->purpose ?? '',
+            'verify_status'  => $data->verify_status ?? '',
+            'verify_remarks' => $data->verify_remarks ?? '',
+        ];
+ 
+        Mail::send('iaccess.user.email.acc-authority.verify', compact('mailData'), function ($message) use ($mailData) {
+            $message->to( $mailData['to'] );
+            $message->subject( $mailData['sub'] );
+            $message->from( 'it-noreply@cpbangladesh.com' );
+        });
+
+        return true;
     }
 
 

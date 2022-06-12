@@ -205,7 +205,7 @@ class GuestRequestController extends Controller
                 'msg' => 'Sending Email Error !!'
             ], 422);  
         }
-        $sub = $data->name.' : Internet / Web Access Request';
+        $sub = $data->name.' : Guest User Request';
 
         $mailData = [
             'to'=> $to,
@@ -249,7 +249,7 @@ class GuestRequestController extends Controller
                 'msg' => 'Sending Email Error !!'
             ], 422);  
         }
-        $sub = $data->name.' : Internet / Web Access Request';
+        $sub = $data->name.' : Guest User Request';
 
         $mailData = [
             'to'=> $to,

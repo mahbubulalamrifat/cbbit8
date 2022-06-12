@@ -33,11 +33,13 @@ class CreateIaccessEmailRequestsTable extends Migration
             $table->integer('manager_id')->nullable();
             $table->string('manager_token')->nullable();
             $table->dateTime('manager_approved')->nullable();
+            $table->dateTime('manager_rejected')->nullable();
 
             // approved by bu head
             $table->integer('bu_id')->nullable();
             $table->string('bu_token')->nullable();
             $table->dateTime('bu_approved')->nullable();
+            $table->dateTime('bu_rejected')->nullable();
 
             // received by cpb it
             $table->integer('verify_status')->nullable();

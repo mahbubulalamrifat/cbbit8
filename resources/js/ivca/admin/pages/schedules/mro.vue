@@ -43,116 +43,121 @@
             </div>
           </div>
 
-          <table class="table table-bordered table-responsive">
-            <thead>
-              <tr>
-                <th>Action</th>
-                <th>
-                  <a href="#" @click.prevent="change_sort('date')"
-                    >Audit Date</a
-                  >
-                  <span v-if="sort_direction == 'desc' && sort_field == 'date'"
-                    >&uarr;</span
-                  >
-                  <span v-if="sort_direction == 'asc' && sort_field == 'date'"
-                    >&darr;</span
-                  >
-                </th>
-                <th>
-                  <a href="#" @click.prevent="change_sort('remarks')"
-                    >Remarks</a
-                  >
-                  <span
-                    v-if="sort_direction == 'desc' && sort_field == 'remarks'"
-                    >&uarr;</span
-                  >
-                  <span
-                    v-if="sort_direction == 'asc' && sort_field == 'remarks'"
-                    >&darr;</span
-                  >
-                </th>
-                <th>Vendor Number</th>
-                <th>Suppier Name</th>
-                <th>Address</th>
-                <th>Telephone</th>
-                <th>Auditor Name</th>
-                <th>Auditor Office</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="singleData in allData.data" :key="singleData.id">
-                <td class="text-center">
-                  <!-- v-if="isAdmin()" -->
-                  <div>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>
+                    <a href="#" @click.prevent="change_sort('date')"
+                      >Audit Date</a
+                    >
+                    <span
+                      v-if="sort_direction == 'desc' && sort_field == 'date'"
+                      >&uarr;</span
+                    >
+                    <span v-if="sort_direction == 'asc' && sort_field == 'date'"
+                      >&darr;</span
+                    >
+                  </th>
+                  <th>
+                    <a href="#" @click.prevent="change_sort('remarks')"
+                      >Remarks</a
+                    >
+                    <span
+                      v-if="sort_direction == 'desc' && sort_field == 'remarks'"
+                      >&uarr;</span
+                    >
+                    <span
+                      v-if="sort_direction == 'asc' && sort_field == 'remarks'"
+                      >&darr;</span
+                    >
+                  </th>
+                  <th>Vendor Number</th>
+                  <th>Suppier Name</th>
+                  <th>Address</th>
+                  <th>Telephone</th>
+                  <th>Auditor Name</th>
+                  <th>Auditor Office</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="singleData in allData.data" :key="singleData.id">
+                  <td class="text-center">
+                    <!-- v-if="isAdmin()" -->
+                    <div>
+                      <v-btn
+                        v-if="singleData.status"
+                        @click="statusChange(singleData)"
+                        small
+                        color="success"
+                        elevation="10"
+                        class="mb-1"
+                      >
+                        <v-icon left>mdi-check-decagram</v-icon> Approved
+                      </v-btn>
+                      <v-btn
+                        v-else
+                        @click="statusChange(singleData)"
+                        small
+                        color="warning"
+                        elevation="10"
+                        class="mb-1"
+                      >
+                        <v-icon left>mdi-close-octagon</v-icon> Approve
+                      </v-btn>
+                    </div>
                     <v-btn
-                      v-if="singleData.status"
-                      @click="statusChange(singleData)"
+                      @click="editDataModel(singleData)"
                       small
-                      color="success"
+                      color="info"
                       elevation="10"
                       class="mb-1"
                     >
-                      <v-icon left>mdi-check-decagram</v-icon> Approved
+                      <v-icon left>mdi-circle-edit-outline</v-icon> Modify
                     </v-btn>
-                    <v-btn
-                      v-else
-                      @click="statusChange(singleData)"
-                      small
-                      color="warning"
-                      elevation="10"
-                      class="mb-1"
-                    >
-                      <v-icon left>mdi-close-octagon</v-icon> Approve
-                    </v-btn>
-                  </div>
-                  <v-btn
-                    @click="editDataModel(singleData)"
-                    small
-                    color="info"
-                    elevation="10"
-                    class="mb-1"
-                  >
-                    <v-icon left>mdi-circle-edit-outline</v-icon> Modify
-                  </v-btn>
-                  <!-- v-if="!isAdmin()" -->
-                  <div>
-                    <div
-                      v-if="singleData.status"
-                      small
-                      class="pa-1 text-no-wrap rounded-pill success"
-                    >
-                      <v-icon small>mdi-clock-time-eight-outline</v-icon>
-                      Approved
+                    <!-- v-if="!isAdmin()" -->
+                    <div>
+                      <div
+                        v-if="singleData.status"
+                        small
+                        class="pa-1 text-no-wrap rounded-pill success"
+                      >
+                        <v-icon small>mdi-clock-time-eight-outline</v-icon>
+                        Approved
+                      </div>
+                      <div
+                        v-if="!singleData.status"
+                        small
+                        color="warning"
+                        class="pa-1 text-no-wrap warning rounded-pill"
+                      >
+                        <v-icon small>mdi-clock-time-eight-outline</v-icon>
+                        Waiting
+                      </div>
                     </div>
-                    <div
-                      v-if="!singleData.status"
-                      small
-                      color="warning"
-                      class="pa-1 text-no-wrap warning rounded-pill"
-                    >
-                      <v-icon small>mdi-clock-time-eight-outline</v-icon>
-                      Waiting
-                    </div>
-                  </div>
-                </td>
+                  </td>
 
-                <td>{{ singleData.date }}</td>
-                <td>{{ singleData.remarks }}</td>
-                <td>{{ singleData.vendor.vendor_number }}</td>
-                <td>{{ singleData.vendor.suppier_name }}</td>
-                <td>{{ singleData.vendor.address }}</td>
-                <td>{{ singleData.vendor.telephone }}</td>
-                <td>
-                  <span v-if="singleData.user">{{ singleData.user.name }}</span>
-                </td>
-                <td>
-                  <span v-if="singleData.user">{{
-                    singleData.user.office
-                  }}</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  <td>{{ singleData.date }}</td>
+                  <td>{{ singleData.remarks }}</td>
+                  <td>{{ singleData.vendor.vendor_number }}</td>
+                  <td>{{ singleData.vendor.suppier_name }}</td>
+                  <td>{{ singleData.vendor.address }}</td>
+                  <td>{{ singleData.vendor.telephone }}</td>
+                  <td>
+                    <span v-if="singleData.user">{{
+                      singleData.user.name
+                    }}</span>
+                  </td>
+                  <td>
+                    <span v-if="singleData.user">{{
+                      singleData.user.office
+                    }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div>
             <span>Total Records: {{ totalValue }}</span>
           </div>

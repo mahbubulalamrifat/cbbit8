@@ -199,7 +199,7 @@ class EmailRequestController extends Controller
                 'msg' => 'Sending Email Error !!'
             ], 422);  
         }
-        $sub = $data->name.' : Internet / Web Access Request';
+        $sub = $data->name.' : Email Request';
 
         $mailData = [
             'to'=> $to,
@@ -239,7 +239,7 @@ class EmailRequestController extends Controller
                 'msg' => 'Sending Email Error !!'
             ], 422);  
         }
-        $sub = $data->name.' : Account / Authority Request';
+        $sub = $data->name.' : Email Request';
 
         $mailData = [
             'to'=> $to,
