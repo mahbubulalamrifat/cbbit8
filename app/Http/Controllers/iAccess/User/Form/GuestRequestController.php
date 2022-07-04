@@ -432,7 +432,7 @@ class GuestRequestController extends Controller
                
  
                  if($data){
-                    if( empty($data->approved) ){
+                    if( empty($data->bu_approved) ){
                         if( empty($data->bu_rejected) ){
                             // Manager Part
 
